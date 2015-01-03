@@ -135,7 +135,7 @@ date.isLeapYear(date1); // false
 date.isLeapYear(date2); // true
 ```
 # Locale
-Months and day of week are written in English. If you want to change language, rewrite them.
+Months, day of week, and meridian are written in English. If you want to change language, rewrite them.
 ```JavaScript
 var date = require('date-and-time');
 
@@ -152,9 +152,9 @@ date.hour12.meridian = ['午前', '午後'];
 date.format(new Date(), 'YYYY年MM月DD日(E) Ahh時');   // 2015年01月02日(金) 午前10時
 ```
 # For developers in Japan (about [12-hour clock](http://en.wikipedia.org/wiki/12-hour_clock))
-日本では時刻を午前と午後に分ける12時間制の表現が英米式と異なるばかりでなく、それ自体に曖昧さがあり、しばしば混乱が生じます。
-そのため日本のシステム開発の現場では多くの場合24時間制が用いられるかと思いますが、念のため12時間制を用いる必要が生じた場合の対策方法について説明します。
-まず、日本での12時間制についてはWikipediaの[こちらのページ](http://ja.wikipedia.org/wiki/%E5%8D%88%E5%89%8D%E3%81%A8%E5%8D%88%E5%BE%8C)で詳しく解説されています。
+日本では時刻を午前と午後に分ける12時間制の表現が英米式と異なるばかりでなく、それ自体に曖昧さがあり、しばしば混乱が生じます。  
+そのため日本のシステム開発の現場では多くの場合24時間制が用いられるかと思いますが、念のため12時間制を用いる必要が生じた場合の対策方法について説明します。  
+まず、日本での12時間制についてはWikipediaの[こちらのページ](http://ja.wikipedia.org/wiki/%E5%8D%88%E5%89%8D%E3%81%A8%E5%8D%88%E5%BE%8C)で詳しく解説されています。  
 `date-and-time`では英米式の12時間制をデフォルト実装しているため、日本向けにロジックのカスタマイズが必要です。以下に例をご紹介します。
 ```JavaScript
 var date = require('date-and-time');
