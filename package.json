@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Date and time utilities for Node.js and a browser",
   "main": "src/date-and-time.js",
   "scripts": {
