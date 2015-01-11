@@ -1,10 +1,10 @@
-# date-and-time
-Date-and-time is date and time utilities for Node.js and a browser.
+# date-and-time [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=svg)](https://circleci.com/gh/knowledgecode/date-and-time)
+Date-and-time is date and time utilities for Node.js and browser.
 ## WHY?
 Probably the most famous date library is [Moment.js](http://momentjs.com/). It is so great, but has been bloated (11.3k gz). It needs more simple one.
 ## Features
 - Simple and Small (1k gz).
-- Not extend built-in objects.
+- Not extending built-in objects.
 - Legacy IE support (IE6+).
 
 ## Installation
@@ -12,7 +12,7 @@ Node.js:
 ```Shell
 $ npm install date-and-time --save
 ```
-a browser:
+browser:
 ```html
 <script src="./src/date-and-time.min.js"></script>
 ```
