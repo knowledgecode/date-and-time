@@ -1,7 +1,7 @@
 {
   "name": "date-and-time",
-  "version": "0.1.4",
-  "description": "Date and time utilities for Node.js and a browser",
+  "version": "0.1.5",
+  "description": "Date and time utilities for Node.js and browser",
   "main": "src/date-and-time.js",
   "scripts": {
     "test": "node ./node_modules/jasmine-node/lib/jasmine-node/cli.js ./spec",
