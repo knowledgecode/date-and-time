@@ -1,7 +1,7 @@
 # date-and-time [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=svg)](https://circleci.com/gh/knowledgecode/date-and-time)
 Date and time utilities for Node.js and browser.
 ## WHY
-Probably the most famous date library is [Moment.js](http://momentjs.com/). That is so great but has been bloated (11.3k gz). Required for us another simpler one.
+Probably the most famous date library is [Moment.js](http://momentjs.com/). That is so great but has been bloated (11.3k gz). We require a simpler one than that.
 ## Features
 - Simple and slim (only 1.3k gz).
 - Not extending built-in objects.
