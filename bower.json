@@ -1,0 +1,36 @@
+{
+  "name": "date-and-time",
+  "description": "Date and time utilities for Node.js and browser",
+  "version": "0.1.7",
+  "main": "date-and-time.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "*.json",
+    "*.yml"
+  ],
+  "keywords": [
+    "date-time",
+    "datetime",
+    "date",
+    "time",
+    "format",
+    "parse",
+    "utility"
+  ],
+  "authors": [
+    "knowledgecode <knowledgecode@gmail.com>"
+  ],
+  "homepage": "https://github.com/knowledgecode/date-and-time",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/knowledgecode/date-and-time.git"
+  }
+}
