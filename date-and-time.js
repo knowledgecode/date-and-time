@@ -1,7 +1,6 @@
 /**
  * @preserve date-and-time.js (c) 2015 KNOWLEDGECODE | MIT
  */
-/*jslint node: true, bitwise: true, plusplus: true, regexp: true */
 /*global define */
 (function (global) {
     'use strict';
@@ -108,10 +107,10 @@
 
     /**
      * formatting strings
-     * @param {Object} date - the target
+     * @param {Object} dateObj - the target
      * @param {String} formatString - the format string
      */
-    date.format = function (date, formatString) {
+    date.format = function (dateObj, formatString) {
         var i, len,
             tokens = formatString.match(/(YYYY|YY|MMM|MM?|DD?|HH?|hh?|A|mm?|ss?|SS?S?|E|.)/g) || [],
             noop = function () {
@@ -119,7 +118,7 @@
             };
 
         for (i = 0, len = tokens.length; i < len; i++) {
-            tokens[i] = (formats[tokens[i]] || noop)(date) || tokens[i];
+            tokens[i] = (formats[tokens[i]] || noop)(dateObj) || tokens[i];
         }
         return tokens.join('');
     };
@@ -137,12 +136,12 @@
 
     /**
      * addition ( years )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} years - the addend
      * @returns {Object} the date after addition
      */
-    date.addYears = function (date, years) {
-        var d = new Date(date.getTime());
+    date.addYears = function (dateObj, years) {
+        var d = new Date(dateObj.getTime());
 
         d.setFullYear(d.getFullYear() + years);
         return d;
@@ -150,12 +149,12 @@
 
     /**
      * addition ( months )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} months - the addend
      * @returns {Object} the date after addition
      */
-    date.addMonths = function (date, months) {
-        var d = new Date(date.getTime());
+    date.addMonths = function (dateObj, months) {
+        var d = new Date(dateObj.getTime());
 
         d.setMonth(d.getMonth() + months);
         return d;
@@ -163,12 +162,12 @@
 
     /**
      * addition ( days )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} days - the addend
      * @returns {Object} the date after addition
      */
-    date.addDays = function (date, days) {
-        var d = new Date(date.getTime());
+    date.addDays = function (dateObj, days) {
+        var d = new Date(dateObj.getTime());
 
         d.setDate(d.getDate() + days);
         return d;
@@ -176,12 +175,12 @@
 
     /**
      * addition ( hours )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} hours - the addend
      * @returns {Object} the date after addition
      */
-    date.addHours = function (date, hours) {
-        var d = new Date(date.getTime());
+    date.addHours = function (dateObj, hours) {
+        var d = new Date(dateObj.getTime());
 
         d.setHours(d.getHours() + hours);
         return d;
@@ -189,12 +188,12 @@
 
     /**
      * addition ( minutes )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} minutes - the addend
      * @returns {Object} the date after addition
      */
-    date.addMinutes = function (date, minutes) {
-        var d = new Date(date.getTime());
+    date.addMinutes = function (dateObj, minutes) {
+        var d = new Date(dateObj.getTime());
 
         d.setMinutes(d.getMinutes() + minutes);
         return d;
@@ -202,12 +201,12 @@
 
     /**
      * addition ( seconds )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} seconds - the addend
      * @returns {Object} the date after addition
      */
-    date.addSeconds = function (date, seconds) {
-        var d = new Date(date.getTime());
+    date.addSeconds = function (dateObj, seconds) {
+        var d = new Date(dateObj.getTime());
 
         d.setSeconds(d.getSeconds() + seconds);
         return d;
@@ -215,12 +214,12 @@
 
     /**
      * addition ( milliseconds )
-     * @param {Object} date - the augend
+     * @param {Object} dateObj - the augend
      * @param {Number} milliseconds - the addend
      * @returns {Object} the date after addition
      */
-    date.addMilliseconds = function (date, milliseconds) {
-        var d = new Date(date.getTime());
+    date.addMilliseconds = function (dateObj, milliseconds) {
+        var d = new Date(dateObj.getTime());
 
         d.setMilliseconds(d.getMilliseconds() + milliseconds);
         return d;
@@ -271,11 +270,11 @@
 
     /**
      * leap year
-     * @param {Object} date - the target
+     * @param {Object} dateObj - the target
      * @returns {Boolean} whether leap year
      */
-    date.isLeapYear = function (date) {
-        var y = date.getFullYear();
+    date.isLeapYear = function (dateObj) {
+        var y = dateObj.getFullYear();
         return (!(y % 4) && !!(y % 100)) || !(y % 400);
     };
 

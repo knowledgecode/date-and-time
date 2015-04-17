@@ -1,11 +1,11 @@
 {
   "name": "date-and-time",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Date and time utilities for Node.js and browser",
-  "main": "src/date-and-time.js",
+  "main": "date-and-time.js",
   "scripts": {
-    "test": "node ./node_modules/jasmine-node/lib/jasmine-node/cli.js ./spec",
-    "compile": "./node_modules/gulp/bin/gulp.js compile"
+    "test": "mocha test/test.js && mocha-phantomjs test/test.html",
+    "compile": "./compile"
   },
   "repository": {
     "type": "git",
@@ -27,9 +27,8 @@
   },
   "homepage": "https://github.com/knowledgecode/date-and-time",
   "devDependencies": {
-    "gulp": "^3.8.10",
-    "gulp-closure-compiler-service": "^0.5.0",
-    "gulp-rename": "^1.2.0",
-    "jasmine-node": "^1.14.5"
+    "expect.js": "^0.3.1",
+    "mocha": "^2.2.4",
+    "mocha-phantomjs": "^3.5.3"
   }
 }
