@@ -1,4 +1,4 @@
-# date-and-time [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=svg)](https://circleci.com/gh/knowledgecode/date-and-time)
+# date-and-time [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)
 This is a date and time utility for Node.js and browser.
 
 ## WHY
