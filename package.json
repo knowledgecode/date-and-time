@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Date and time utilities for Node.js and browser",
   "main": "date-and-time.js",
   "scripts": {
@@ -28,7 +28,7 @@
   "homepage": "https://github.com/knowledgecode/date-and-time",
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^2.2.4",
+    "mocha": "^2.2.5",
     "mocha-phantomjs": "^3.5.3"
   }
 }

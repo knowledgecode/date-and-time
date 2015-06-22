@@ -1,7 +1,7 @@
 {
   "name": "date-and-time",
   "description": "Date and time utilities for Node.js and browser",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "date-and-time.js",
   "moduleType": [
     "amd",
@@ -11,6 +11,7 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
+    "compile",
     "node_modules",
     "test",
     "*.json",
