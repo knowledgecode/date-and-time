@@ -1,0 +1,5 @@
+.*
+bower.json
+*.yml
+compile
+test
