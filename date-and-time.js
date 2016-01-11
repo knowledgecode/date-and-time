@@ -1,141 +1,153 @@
 /**
- * @preserve date-and-time.js (c) 2015 KNOWLEDGECODE | MIT
+ * @preserve date-and-time.js (c) KNOWLEDGECODE | MIT
  */
-/*global define */
 (function (global) {
     'use strict';
 
-    var date = {
-            month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            dayOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            hour12: {
-                meridian: ['a.m.', 'p.m.'],
-                h: function (d) {
-                    var h = d.getHours() || 12;
-
-                    return h > 12 ? h - 12 : h;
+    var date = {},
+        lang = 'en',
+        locales = {
+            en: {
+                MMMM: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                dddd: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                ddd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                dd: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                A: ['a.m.', 'p.m.'],
+                formats: {
+                    YYYY: function (d) { return ('000' + d.getFullYear()).slice(-4); },
+                    YY: function (d) { return this.formats.YYYY(d).slice(2); },
+                    MMMM: function (d) { return this.MMMM[d.getMonth()]; },
+                    MMM: function (d) { return this.MMM[d.getMonth()]; },
+                    M: function (d) { return '' + (d.getMonth() + 1); },
+                    MM: function (d) { return ('0' + this.formats.M(d)).slice(-2); },
+                    D: function (d) { return '' + d.getDate(); },
+                    DD: function (d) { return ('0' + this.formats.D(d)).slice(-2); },
+                    H: function (d) { return '' + d.getHours(); },
+                    HH: function (d) { return ('0' + this.formats.H(d)).slice(-2); },
+                    h: function (d) {
+                        var h = d.getHours() || 12;
+                        return '' + (h > 12 ? h - 12 : h);
+                    },
+                    hh: function (d) { return ('0' + this.formats.h(d)).slice(-2); },
+                    A: function (d) { return this.A[d.getHours() > 11 | 0]; },
+                    m: function (d) { return '' + d.getMinutes(); },
+                    mm: function (d) { return ('0' + this.formats.m(d)).slice(-2); },
+                    s: function (d) { return '' + d.getSeconds(); },
+                    ss: function (d) { return ('0' + this.formats.s(d)).slice(-2); },
+                    SSS: function (d) { return ('00' + d.getMilliseconds()).slice(-3); },
+                    SS: function (d) { return this.formats.SSS(d).slice(0, 2); },
+                    S: function (d) { return this.formats.SSS(d).slice(0, 1); },
+                    dddd: function (d) { return this.dddd[d.getDay()]; },
+                    ddd: function (d) { return this.ddd[d.getDay()]; },
+                    dd: function (d) { return this.dd[d.getDay()]; },
+                    Z: function (d) {
+                        var offset = d.utc ? 0 : d.getTimezoneOffset(), sign = '-';
+                        if (offset <= 0) {
+                            sign = '+';
+                            offset = -offset;
+                        }
+                        return sign + ('000' + ((offset / 60 | 0) * 100 + offset % 60)).slice(-4);
+                    }
                 },
-                A: function (d) {
-                    return this.meridian[d.getHours() > 11 | 0];
+                parsers: {
+                    h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; }
                 }
             }
         },
-        formats = {
-            YYYY: function (d) {
-                return ('000' + d.getFullYear()).slice(-4);
-            },
-            YY: function (d) {
-                return formats.YYYY(d).slice(2);
-            },
-            MMM: function (d) {
-                return date.month[d.getMonth()];
-            },
-            M: function (d) {
-                return String(d.getMonth() + 1);
-            },
-            MM: function (d) {
-                return ('0' + formats.M(d)).slice(-2);
-            },
-            D: function (d) {
-                return String(d.getDate());
-            },
-            DD: function (d) {
-                return ('0' + formats.D(d)).slice(-2);
-            },
-            H: function (d) {
-                return String(d.getHours());
-            },
-            HH: function (d) {
-                return ('0' + formats.H(d)).slice(-2);
-            },
-            h: function (d) {
-                return date.hour12.h(d);
-            },
-            hh: function (d) {
-                return ('0' + formats.h(d)).slice(-2);
-            },
-            A: function (d) {
-                return date.hour12.A(d);
-            },
-            m: function (d) {
-                return String(d.getMinutes());
-            },
-            mm: function (d) {
-                return ('0' + formats.m(d)).slice(-2);
-            },
-            s: function (d) {
-                return String(d.getSeconds());
-            },
-            ss: function (d) {
-                return ('0' + formats.s(d)).slice(-2);
-            },
-            SSS: function (d) {
-                return ('00' + d.getMilliseconds()).slice(-3);
-            },
-            SS: function (d) {
-                return formats.SSS(d).slice(0, 2);
-            },
-            S: function (d) {
-                return formats.SSS(d).slice(0, 1);
-            },
-            E: function (d) {
-                return date.dayOfWeek[d.getDay()];
+        forEach = function (array, fn) {
+            for (var i = 0, len = array.length; i < len; i++) {
+                if (fn(array[i], i) === 0) {
+                    break;
+                }
             }
         },
         parse = function (dateString, formatString) {
-            var i, j, tokens, token, len, len2, index,
-                vals = dateString.split(/[^\d+]/g),
-                keys = formatString.split(/[^YYYY|YY|MM?|DD?|HH?|mm?|ss?|SS?S?]/g),
-                dt = { Y: 0, M: 1, D: 1, H: 0, m: 0, s: 0, S: 0 };
+            var offset = 0, k, length, str,
+                keys = formatString.match(/YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|./g),
+                dt = { Y: 0, M: 1, D: 1, A: 0, H: 0, h: 0, m: 0, s: 0, S: 0 };
 
-            for (i = 0, len = keys.length; i < len; i++) {
-                tokens = keys[i].match(/YYYY|YY|MM?|DD?|HH?|mm?|ss?|SS?S?/g) || [];
-                for (j = 0, len2 = tokens.length; j < len2; j++) {
-                    token = tokens[j];
-                    index = keys[i].indexOf(token);
-                    if (index >= 0) {
-                        token = token.replace(/^(M|D|H|m|s)$/, '$1$1');
-                        dt[token.charAt(0)] = (vals[i] || '').slice(index, index + token.length) | 0;
-                        if (token === 'YY') {
-                            dt[token.charAt(0)] += (dt[token.charAt(0)] < 70) ? 2000 : 1900;
-                        }
+            forEach(keys, function (key) {
+                k = key.charAt(0);
+                length = key.length;
+                str = dateString.slice(offset);
+                if (/^(YYYY|YY|MM|DD|HH|hh|mm|ss|SS?S?)$/.test(key)) {
+                    dt[k] = str.slice(0, length) | 0;
+                    if (key === 'YY') {
+                        dt.Y += dt.Y < 70 ? 2000 : 1900;
                     }
+                } else if (/^(M|D|H|h|m|s)$/.test(key)) {
+                    str = (str.match(/^\d\d?/) || [''])[0];
+                    length = str.length;
+                    dt[k] = str | 0;
+                } else if (/^(MMMM?|A)$/.test(key)) {
+                    forEach(locales[lang][key], function (val, i) {
+                        if (!str.indexOf(val)) {
+                            dt[k] = k === 'M' ? i + 1 : i;
+                            length = val.length;
+                            return 0;
+                        }
+                    });
                 }
-            }
+                offset += length;
+            });
             return dt;
+        },
+        toH = function (h, a) {
+            return locales[lang].parsers.h(h, a);
         };
 
     /**
-     * formatting strings
-     * @param {Object} dateObj - the target
-     * @param {String} formatString - the format string
+     * formatting a date
+     * @param {Object} dateObj - target date
+     * @param {String} formatString - format string
+     * @param {Boolean} [utc] - output as UTC
+     * @returns {String} the formatted string
      */
-    date.format = function (dateObj, formatString) {
-        var i, len,
-            tokens = formatString.match(/(YYYY|YY|MMM|MM?|DD?|HH?|hh?|A|mm?|ss?|SS?S?|E|.)/g) || [],
-            noop = function () {
-                return null;
-            };
+    date.format = function (dateObj, formatString, utc) {
+        var tokens = formatString.match(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g) || [],
+            d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
+            locale = locales[lang];
 
-        for (i = 0, len = tokens.length; i < len; i++) {
-            tokens[i] = (formats[tokens[i]] || noop)(dateObj) || tokens[i];
-        }
+        d.utc = utc;
+        forEach(tokens, function (token, i) {
+            tokens[i] = (locale.formats[token] || function () {}).call(locale, d) || token.replace(/\[(.*)]/, '$1');
+        });
         return tokens.join('');
     };
 
     /**
-     * parsing date strings
-     * @param {String} dateString - the date string
-     * @param {String} formatString - the format string
-     * @returns {Object} the parsed date
+     * parsing a date string
+     * @param {String} dateString - date string
+     * @param {String} formatString - format string
+     * @param {Boolean} [utc] - input as UTC
+     * @returns {Object} the constructed date
      */
-    date.parse = function (dateString, formatString) {
-        var dt = parse(dateString, formatString);
-        return new Date(dt.Y, dt.M - 1, dt.D, dt.H, dt.m, dt.s, dt.S);
+    date.parse = function (dateString, formatString, utc) {
+        var dt = parse(dateString, formatString),
+            dateObj = new Date(dt.Y, dt.M - 1, dt.D, dt.H || toH(dt.h, dt.A), dt.m, dt.s, dt.S);
+
+        return utc ? new Date(dateObj.getTime() - dateObj.getTimezoneOffset() * 60000) : dateObj;
     };
 
     /**
-     * addition ( years )
+     * validation
+     * @param {String} dateString - date string
+     * @param {String} formatString - format string
+     * @returns {Boolean} whether the date string is a valid date
+     */
+    date.isValid = function (dateString, formatString) {
+        var dt = parse(dateString, formatString),
+            H = dt.H || toH(dt.h, dt.A),
+            d = new Date(dt.Y, dt.M - 1, dt.D, H, dt.m, dt.s, dt.S);
+
+        return dt.Y === d.getFullYear() && dt.M - 1 === d.getMonth() && dt.D === d.getDate()
+            && H === d.getHours() && dt.m === d.getMinutes() && dt.s === d.getSeconds()
+            && dt.S === d.getMilliseconds();
+    };
+
+    /**
+     * adding years
      * @param {Object} dateObj - the augend
      * @param {Number} years - the addend
      * @returns {Object} the date after addition
@@ -148,7 +160,7 @@
     };
 
     /**
-     * addition ( months )
+     * adding months
      * @param {Object} dateObj - the augend
      * @param {Number} months - the addend
      * @returns {Object} the date after addition
@@ -161,75 +173,60 @@
     };
 
     /**
-     * addition ( days )
+     * adding days
      * @param {Object} dateObj - the augend
      * @param {Number} days - the addend
      * @returns {Object} the date after addition
      */
     date.addDays = function (dateObj, days) {
-        var d = new Date(dateObj.getTime());
-
-        d.setDate(d.getDate() + days);
-        return d;
+        return new Date(dateObj.getTime() + days * 86400000);
     };
 
     /**
-     * addition ( hours )
+     * adding hours
      * @param {Object} dateObj - the augend
      * @param {Number} hours - the addend
      * @returns {Object} the date after addition
      */
     date.addHours = function (dateObj, hours) {
-        var d = new Date(dateObj.getTime());
-
-        d.setHours(d.getHours() + hours);
-        return d;
+        return new Date(dateObj.getTime() + hours * 3600000);
     };
 
     /**
-     * addition ( minutes )
+     * adding minutes
      * @param {Object} dateObj - the augend
      * @param {Number} minutes - the addend
      * @returns {Object} the date after addition
      */
     date.addMinutes = function (dateObj, minutes) {
-        var d = new Date(dateObj.getTime());
-
-        d.setMinutes(d.getMinutes() + minutes);
-        return d;
+        return new Date(dateObj.getTime() + minutes * 60000);
     };
 
     /**
-     * addition ( seconds )
+     * adding seconds
      * @param {Object} dateObj - the augend
      * @param {Number} seconds - the addend
      * @returns {Object} the date after addition
      */
     date.addSeconds = function (dateObj, seconds) {
-        var d = new Date(dateObj.getTime());
-
-        d.setSeconds(d.getSeconds() + seconds);
-        return d;
+        return new Date(dateObj.getTime() + seconds * 1000);
     };
 
     /**
-     * addition ( milliseconds )
+     * adding milliseconds
      * @param {Object} dateObj - the augend
      * @param {Number} milliseconds - the addend
      * @returns {Object} the date after addition
      */
     date.addMilliseconds = function (dateObj, milliseconds) {
-        var d = new Date(dateObj.getTime());
-
-        d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        return d;
+        return new Date(dateObj.getTime() + milliseconds);
     };
 
     /**
-     * subtraction
+     * subtracting
      * @param {Object} date1 - the minuend
      * @param {Object} date2 - the subtrahend
-     * @returns {Object} the date after subtraction
+     * @returns {Object} the result object after subtraction
      */
     date.subtract = function (date1, date2) {
         var delta = date1.getTime() - date2.getTime();
@@ -254,28 +251,59 @@
     };
 
     /**
-     * validation
-     * @param {String} dateString - the date string
-     * @param {String} formatString - the format string
-     * @returns {Boolean} whether valid date
-     */
-    date.isValid = function (dateString, formatString) {
-        var dt = parse(dateString, formatString),
-            d = new Date(dt.Y, dt.M - 1, dt.D, dt.H, dt.m, dt.s, dt.S);
-
-        return dt.Y === d.getFullYear() && dt.M - 1 === d.getMonth() && dt.D === d.getDate()
-            && dt.H === d.getHours() && dt.m === d.getMinutes() && dt.s === d.getSeconds()
-            && dt.S === d.getMilliseconds();
-    };
-
-    /**
      * leap year
-     * @param {Object} dateObj - the target
-     * @returns {Boolean} whether leap year
+     * @param {Object} dateObj - target date
+     * @returns {Boolean} whether the year is a leap year
      */
     date.isLeapYear = function (dateObj) {
         var y = dateObj.getFullYear();
         return (!(y % 4) && !!(y % 100)) || !(y % 400);
+    };
+
+    /**
+     * setting a locale
+     * @param {String} [code] - language code
+     * @returns {String} current language code
+     */
+    date.locale = function (code) {
+        if (code) {
+            if (typeof module === 'object' && typeof module.exports === 'object') {
+                require('./locale/' + code);
+            }
+            lang = code;
+        }
+        return lang;
+    };
+
+    /**
+     * adding a new definition of locale
+     * @param {String} code - language code
+     * @param {Object} options - definition of locale
+     * @returns {void}
+     */
+    date.setLocales = function (code, options) {
+        var copy = function (src, proto) {
+                var Locale = function () {}, dst, key;
+
+                Locale.prototype = proto;
+                dst = new Locale();
+                for (key in src) {
+                    if (src.hasOwnProperty(key)) {
+                        dst[key] = src[key];
+                    }
+                }
+                return dst;
+            },
+            base = locales[code] || locales.en,
+            locale = copy(options, base);
+
+        if (options.formats) {
+            locale.formats = copy(options.formats, base.formats);
+        }
+        if (options.parsers) {
+            locale.parsers = copy(options.parsers, base.parsers);
+        }
+        locales[code] = locale;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -289,3 +317,4 @@
     }
 
 }(this));
+
