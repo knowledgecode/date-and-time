@@ -10,3 +10,4 @@ curl --silent \
     --data-urlencode "js_code=$js_code" \
     --data-urlencode "output_info=compiled_code" \
     $url > $output
+
