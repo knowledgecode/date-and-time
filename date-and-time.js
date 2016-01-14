@@ -48,10 +48,16 @@
                             offset = -offset;
                         }
                         return sign + ('000' + ((offset / 60 | 0) * 100 + offset % 60)).slice(-4);
+                    },
+                    post: function (str) {
+                        return str;
                     }
                 },
                 parsers: {
-                    h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; }
+                    h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
+                    pre: function (str) {
+                        return str;
+                    }
                 }
             }
         },
@@ -67,6 +73,7 @@
                 keys = formatString.match(/YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|./g),
                 dt = { Y: 0, M: 1, D: 1, A: 0, H: 0, h: 0, m: 0, s: 0, S: 0 };
 
+            dateString = locales[lang].parsers.pre(dateString);
             forEach(keys, function (key) {
                 k = key.charAt(0);
                 length = key.length;
@@ -107,13 +114,13 @@
     date.format = function (dateObj, formatString, utc) {
         var tokens = formatString.match(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g) || [],
             d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
-            locale = locales[lang];
+            locale = locales[lang], formats = locale.formats;
 
         d.utc = utc;
         forEach(tokens, function (token, i) {
-            tokens[i] = (locale.formats[token] || function () {}).call(locale, d) || token.replace(/\[(.*)]/, '$1');
+            tokens[i] = (formats[token] || function () {}).call(locale, d) || token.replace(/\[(.*)]/, '$1');
         });
-        return tokens.join('');
+        return formats.post(tokens.join(''));
     };
 
     /**
@@ -273,6 +280,15 @@
             lang = code;
         }
         return lang;
+    };
+
+    /**
+     * getting a definition of locale
+     * @param {String} code - language code
+     * @returns {Object} definition of locale
+     */
+    date.getLocales = function (code) {
+        return locales[code || lang];
     };
 
     /**

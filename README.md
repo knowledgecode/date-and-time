@@ -1,11 +1,11 @@
 # date-and-time [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)
-This is a Minimalism DateTime utility for Node.js and the browser.
+This is a Minimalist DateTime utility for Node.js and the browser.
 
 ## WHY
 Probably the most famous DateTime library is [Moment.js](http://momentjs.com/), that is so great but has been bloated (13.8k gz). This will be a good solution if you require a small one.  
 
 ## Features
-- Minimalism. only 1.8k gz
+- Minimalist. only 1.8k gz
 - multi language support
 - not extending built-in date object
 - legacy IE support. IE6+
@@ -235,13 +235,13 @@ Node.js:
 ```javascript
 var date = require('date-and-time');
 date.locale('fr');  // French
-date.format(new Date(), 'dddd DD MMMM');    // => 'lundi 11 janvier'
+date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
 AMD:
 ```javascript
 require(['date-and-time', 'locale/de'], function (date) {
     date.locale('de');  // German
-    date.format(new Date(), 'dddd DD MMMM');    // => 'Montag 11 Januar'
+    date.format(new Date(), 'dddd, D. MMMM');   // => 'Montag, 11. Januar'
 });
 ```
 the browser:
@@ -250,7 +250,7 @@ the browser:
 <script src="locale/zh-cn.js"></script>
 <script>
 date.locale('zh-cn');  // Chinese
-date.format(new Date(), 'dddd DD MMMM');    // => '星期一 11 一月'
+date.format(new Date(), 'MMMD日dddd');  // => '1月11日星期一'
 </script>
 ```
 
