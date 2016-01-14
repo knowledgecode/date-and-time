@@ -283,6 +283,15 @@
     };
 
     /**
+     * getting a definition of locale
+     * @param {String} code - language code
+     * @returns {Object} definition of locale
+     */
+    date.getLocales = function (code) {
+        return locales[code || lang];
+    };
+
+    /**
      * adding a new definition of locale
      * @param {String} code - language code
      * @param {Object} options - definition of locale

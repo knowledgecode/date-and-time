@@ -860,6 +860,11 @@
     });
 
     describe('customize', function () {
+        it('getting default meridiem', function () {
+            var locale = date.getLocales('en');
+            expect(locale.A[0]).to.equal('a.m.');
+            expect(locale.A[1]).to.equal('p.m.');
+        });
         it('changing default meridiem', function () {
             date.setLocales('en', {
                 A: ['AM', 'PM']
