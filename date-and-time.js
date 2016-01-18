@@ -115,15 +115,14 @@
      * @returns {String} the formatted string
      */
     date.format = function (dateObj, formatString, utc) {
-        var tokens = formatString.match(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g) || [],
-            d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
+        var d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
             locale = locales[lang], formats = locale.formats;
 
         d.utc = utc;
-        forEach(tokens, function (token, i) {
-            tokens[i] = (formats[token] || function () {}).call(locale, d) || token.replace(/\[(.*)]/, '$1');
+        return formatString.replace(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g, function (token) {
+            var format = formats[token];
+            return format ? formats.post(format.call(locale, d)) : token.replace(/\[(.*)]/, '$1');
         });
-        return formats.post(tokens.join(''));
     };
 
     /**
