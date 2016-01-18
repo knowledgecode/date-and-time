@@ -20,9 +20,11 @@
              'дня', 'дня', 'дня', 'дня', 'дня',  // 12 - 17
              'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера'];   // 18 - 23
 
-    date.locale('ru');
+    describe('format with "ru"', function () {
+        before(function () {
+            date.locale('ru');
+        });
 
-    describe('format', function () {
         forEach(MMMM, function (m, i) {
             it('"MMMM" equals to "' + m + '"', function () {
                 var now = new Date(2015, i, 1, 12, 34, 56, 789);
@@ -59,9 +61,17 @@
                 expect(date.format(now, 'A')).to.equal(a);
             });
         });
+
+        after(function () {
+            date.locale('en');
+        });
     });
 
-    describe('parse', function () {
+    describe('parse with "ru"', function () {
+        before(function () {
+            date.locale('ru');
+        });
+
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
                 var now = new Date(0, i, 1);
@@ -79,6 +89,10 @@
                 var now = new Date(0, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
+        });
+
+        after(function () {
+            date.locale('en');
         });
     });
 

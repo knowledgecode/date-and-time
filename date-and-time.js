@@ -61,6 +61,9 @@
                 }
             }
         },
+        isCommonJS = function () {
+            return typeof module === 'object' && typeof module.exports === 'object';
+        },
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -112,15 +115,14 @@
      * @returns {String} the formatted string
      */
     date.format = function (dateObj, formatString, utc) {
-        var tokens = formatString.match(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g) || [],
-            d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
+        var d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
             locale = locales[lang], formats = locale.formats;
 
         d.utc = utc;
-        forEach(tokens, function (token, i) {
-            tokens[i] = (formats[token] || function () {}).call(locale, d) || token.replace(/\[(.*)]/, '$1');
+        return formatString.replace(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g, function (token) {
+            var format = formats[token];
+            return format ? formats.post(format.call(locale, d)) : token.replace(/\[(.*)]/, '$1');
         });
-        return formats.post(tokens.join(''));
     };
 
     /**
@@ -274,7 +276,7 @@
      */
     date.locale = function (code) {
         if (code) {
-            if (typeof module === 'object' && typeof module.exports === 'object') {
+            if (code !== 'en' && isCommonJS()) {
                 require('./locale/' + code);
             }
             lang = code;
@@ -322,7 +324,7 @@
         locales[code] = locale;
     };
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
+    if (isCommonJS()) {
         module.exports = date;
     } else if (typeof define === 'function' && define.amd) {
         define([], function () {

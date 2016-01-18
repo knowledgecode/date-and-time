@@ -18,9 +18,11 @@
         A = ['Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags',    // 0 - 11
              'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens'];   // 12 - 23
 
-    date.locale('de');
+    describe('format with "de"', function () {
+        before(function () {
+            date.locale('de');
+        });
 
-    describe('format', function () {
         forEach(MMMM, function (m, i) {
             it('"MMMM" equals to "' + m + '"', function () {
                 var now = new Date(2015, i, 1, 12, 34, 56, 789);
@@ -57,9 +59,17 @@
                 expect(date.format(now, 'A')).to.equal(a);
             });
         });
+
+        after(function () {
+            date.locale('en');
+        });
     });
 
-    describe('parse', function () {
+    describe('parse with "de"', function () {
+        before(function () {
+            date.locale('de');
+        });
+
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
                 var now = new Date(0, i, 1);
@@ -77,6 +87,10 @@
                 var now = new Date(0, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
+        });
+
+        after(function () {
+            date.locale('en');
         });
     });
 
