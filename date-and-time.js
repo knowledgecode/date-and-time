@@ -61,6 +61,9 @@
                 }
             }
         },
+        isCommonJS = function () {
+            return typeof module === 'object' && typeof module.exports === 'object';
+        },
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -274,7 +277,7 @@
      */
     date.locale = function (code) {
         if (code) {
-            if (typeof module === 'object' && typeof module.exports === 'object') {
+            if (code !== 'en' && isCommonJS()) {
                 require('./locale/' + code);
             }
             lang = code;
@@ -322,7 +325,7 @@
         locales[code] = locale;
     };
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
+    if (isCommonJS()) {
         module.exports = date;
     } else if (typeof define === 'function' && define.amd) {
         define([], function () {
