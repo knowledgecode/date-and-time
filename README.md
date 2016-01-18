@@ -1,11 +1,11 @@
-# date-and-time [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)
-This is a Minimalist DateTime utility for Node.js and the browser.
+# date-and-time
+[![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
 ## WHY
 Probably the most famous DateTime library is [Moment.js](http://momentjs.com/), that is so great but has been bloated (13.8k gz). This will be a good solution if you require a small one.  
 
 ## Features
-- Minimalist. only 1.8k gz
+- Minimalist. only has 1.8k gz
 - multi language support
 - not extending built-in date object
 - legacy IE support. IE6+
