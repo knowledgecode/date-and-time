@@ -18,9 +18,11 @@
         A = ['午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前',    // 0 - 11
              '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後'];   // 12 - 23
 
-    date.locale('ja');
+    describe('format with "ja"', function () {
+        before(function () {
+            date.locale('ja');
+        });
 
-    describe('format', function () {
         forEach(MMMM, function (m, i) {
             it('"MMMM" equals to "' + m + '"', function () {
                 var now = new Date(2015, i, 1, 12, 34, 56, 789);
@@ -81,9 +83,17 @@
             var now = new Date(2015, 0, 1, 23, 34, 56, 789);
             expect(date.format(now, 'h')).to.equal('11');
         });
+
+        after(function () {
+            date.locale('en');
+        });
     });
 
-    describe('parse', function () {
+    describe('parse with "ja"', function () {
+        before(function () {
+            date.locale('ja');
+        });
+
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
                 var now = new Date(0, i, 1);
@@ -101,6 +111,10 @@
                 var now = new Date(0, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
+        });
+
+        after(function () {
+            date.locale('en');
         });
     });
 
