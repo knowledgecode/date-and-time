@@ -81,15 +81,15 @@
                 k = key.charAt(0);
                 length = key.length;
                 str = dateString.slice(offset);
-                if (/^(YYYY|YY|MM|DD|HH|hh|mm|ss|SS?S?)$/.test(key)) {
+                if (/^(MM|DD|HH|hh|mm|ss|SS?S?)$/.test(key)) {
                     dt[k] = str.slice(0, length) | 0;
-                    if (key === 'YY') {
-                        dt.Y += dt.Y < 70 ? 2000 : 1900;
-                    }
-                } else if (/^(M|D|H|h|m|s)$/.test(key)) {
-                    str = (str.match(/^\d\d?/) || [''])[0];
+                } else if (/^(YYYY|YY|M|D|H|h|m|s)$/.test(key)) {
+                    str = (str.match(length === 4 ? /^\d{1,4}/ : /^\d\d?/) || [''])[0];
                     length = str.length;
                     dt[k] = str | 0;
+                    if (k === 'Y' && dt.Y < 70) {
+                        dt.Y += 2000;
+                    }
                 } else if (/^(MMMM?|A)$/.test(key)) {
                     forEach(locales[lang][key], function (val, i) {
                         if (!str.indexOf(val)) {
