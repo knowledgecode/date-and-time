@@ -11,15 +11,15 @@ Probably the most famous DateTime library is [Moment.js](http://momentjs.com/), 
 - legacy IE support. IE6+
 
 ## Installation
-Node.js:
+via npm:
 ```shell
 $ npm install date-and-time --save
 ```
-Bower:
+via Bower:
 ```shell
 $ bower install date-and-time
 ```
-the browser:
+the browser (directly):
 ```html
 <script src="date-and-time.min.js"></script>
 ```
@@ -123,7 +123,18 @@ date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => (15:14:05 GMT-
 | SS           | millisecond | 75, 02            |
 | S            | millisecond | 7, 0              |
 
-#### NOTE
+#### NOTE 1
+The minimum year that can be parsed is year 100, the maximum year is year 9999. Year 69 or less are translated into 2000s, year 70 or more and year 99 or less are translated into 1900s.
+```javascript
+date.parse('Dec 31 100', 'MMM d YYYY');     // => (Dec 31 100)
+date.parse('Dec 31 9999', 'MMM d YYYY');    // => (Dec 31 9999)
+date.parse('Dec 31 0', 'MMM d YYYY');       // => (Dec 31 2000)
+date.parse('Dec 31 69', 'MMM d YYYY');      // => (Dec 31 2069)
+date.parse('Dec 31 70', 'MMM d YYYY');      // => (Dec 31 1970)
+date.parse('Dec 31 99', 'MMM d YYYY');      // => (Dec 31 1999)
+```
+
+#### NOTE 2
 When using `hh` or `h` (hour-12), need to use together `A` (meridiem).
 
 ### isValid(dateString, formatString)
