@@ -17,6 +17,7 @@
                 formats: {
                     YYYY: function (d) { return ('000' + d.getFullYear()).slice(-4); },
                     YY: function (d) { return ('0' + d.getFullYear()).slice(-2); },
+                    Y: function (d) { return '' + d.getFullYear(); },
                     MMMM: function (d) { return this.MMMM[d.getMonth()]; },
                     MMM: function (d) { return this.MMM[d.getMonth()]; },
                     MM: function (d) { return ('0' + (d.getMonth() + 1)).slice(-2); },
