@@ -15,9 +15,11 @@
             dd: ['日', '月', '火', '水', '木', '金', '土'],
             A: ['午前', '午後'],
             formats: {
+                hh: function (d) {
+                    return ('0' + d.getHours() % 12).slice(-2);
+                },
                 h: function (d) {
-                    var h = d.getHours();
-                    return '' + (h > 11 ? h - 12 : h);
+                    return d.getHours() % 12;
                 }
             }
         });

@@ -46,6 +46,18 @@
             var now = new Date(2015, 0, 1, 12, 34, 56, 789);
             expect(date.format(now, 'YY')).to.equal('' + (now.getUTCFullYear() - 2000));
         });
+        it('"Y" equals to "100"', function () {
+            var now = new Date(100, 0, 1);
+            expect(date.format(now, 'Y')).to.equal('100');
+        });
+        it('"Y" equals to "1000"', function () {
+            var now = new Date(1000, 0, 1);
+            expect(date.format(now, 'Y')).to.equal('1000');
+        });
+        it('"Y" equals to "10000"', function () {
+            var now = new Date(10000, 0, 1);
+            expect(date.format(now, 'Y')).to.equal('10000');
+        });
         it('"MMMM" equals to "January"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789);
             expect(date.format(now, 'MMMM')).to.equal('January');
@@ -346,6 +358,14 @@
         it('"YYYY/MM/DD HH:mm:ss.SSS" equals to "1900/01/01 00:00:00.000"', function () {
             var now = new Date(0, 0, 1);
             expect(date.format(now, 'YYYY/MM/DD HH:mm:ss.SSS')).to.equal('1900/01/01 00:00:00.000');
+        });
+        it('"YY/MM/DD HH:mm:ss.SSS" equals to "00/01/01 00:00:00.000"', function () {
+            var now = new Date(0, 0, 1);
+            expect(date.format(now, 'YY/MM/DD HH:mm:ss.SSS')).to.equal('00/01/01 00:00:00.000');
+        });
+        it('"Y/M/D H:m:s.SSS" equals to "999/1/1 0:0:0.000"', function () {
+            var now = new Date(999, 0, 1);
+            expect(date.format(now, 'Y/M/D H:m:s.SSS')).to.equal('999/1/1 0:0:0.000');
         });
         it('"dddd, MMMM D, YYYY h A" equals to "Saturday, January 1, 2000 10 a.m."', function () {
             var now = new Date(2000, 0, 1, 10, 0, 0);

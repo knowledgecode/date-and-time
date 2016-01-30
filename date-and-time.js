@@ -16,48 +16,38 @@
                 A: ['a.m.', 'p.m.'],
                 formats: {
                     YYYY: function (d) { return ('000' + d.getFullYear()).slice(-4); },
-                    YY: function (d) { return this.formats.YYYY(d).slice(2); },
+                    YY: function (d) { return ('0' + d.getFullYear()).slice(-2); },
+                    Y: function (d) { return '' + d.getFullYear(); },
                     MMMM: function (d) { return this.MMMM[d.getMonth()]; },
                     MMM: function (d) { return this.MMM[d.getMonth()]; },
+                    MM: function (d) { return ('0' + (d.getMonth() + 1)).slice(-2); },
                     M: function (d) { return '' + (d.getMonth() + 1); },
-                    MM: function (d) { return ('0' + this.formats.M(d)).slice(-2); },
+                    DD: function (d) { return ('0' + d.getDate()).slice(-2); },
                     D: function (d) { return '' + d.getDate(); },
-                    DD: function (d) { return ('0' + this.formats.D(d)).slice(-2); },
+                    HH: function (d) { return ('0' + d.getHours()).slice(-2); },
                     H: function (d) { return '' + d.getHours(); },
-                    HH: function (d) { return ('0' + this.formats.H(d)).slice(-2); },
-                    h: function (d) {
-                        var h = d.getHours() || 12;
-                        return '' + (h > 12 ? h - 12 : h);
-                    },
-                    hh: function (d) { return ('0' + this.formats.h(d)).slice(-2); },
                     A: function (d) { return this.A[d.getHours() > 11 | 0]; },
+                    hh: function (d) { return ('0' + (d.getHours() % 12 || 12)).slice(-2); },
+                    h: function (d) { return '' + (d.getHours() % 12 || 12); },
+                    mm: function (d) { return ('0' + d.getMinutes()).slice(-2); },
                     m: function (d) { return '' + d.getMinutes(); },
-                    mm: function (d) { return ('0' + this.formats.m(d)).slice(-2); },
+                    ss: function (d) { return ('0' + d.getSeconds()).slice(-2); },
                     s: function (d) { return '' + d.getSeconds(); },
-                    ss: function (d) { return ('0' + this.formats.s(d)).slice(-2); },
                     SSS: function (d) { return ('00' + d.getMilliseconds()).slice(-3); },
-                    SS: function (d) { return this.formats.SSS(d).slice(0, 2); },
-                    S: function (d) { return this.formats.SSS(d).slice(0, 1); },
+                    SS: function (d) { return ('0' + (d.getMilliseconds() / 10 | 0)).slice(-2); },
+                    S: function (d) { return '' + (d.getMilliseconds() / 100 | 0); },
                     dddd: function (d) { return this.dddd[d.getDay()]; },
                     ddd: function (d) { return this.ddd[d.getDay()]; },
                     dd: function (d) { return this.dd[d.getDay()]; },
                     Z: function (d) {
-                        var offset = d.utc ? 0 : d.getTimezoneOffset(), sign = '-';
-                        if (offset <= 0) {
-                            sign = '+';
-                            offset = -offset;
-                        }
-                        return sign + ('000' + ((offset / 60 | 0) * 100 + offset % 60)).slice(-4);
+                        var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
+                        return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
                     },
-                    post: function (str) {
-                        return str;
-                    }
+                    post: function (str) { return str; }
                 },
                 parsers: {
                     h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
-                    pre: function (str) {
-                        return str;
-                    }
+                    pre: function (str) { return str; }
                 }
             }
         },

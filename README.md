@@ -56,8 +56,9 @@ date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
 
 | formatString | meaning     | example           |
 |:-------------|:------------|:------------------|
-| YYYY         | year        | 2015, 1999        |
+| YYYY         | year        | 0999, 2015        |
 | YY           | year        | 15, 99            |
+| Y            | year        | 999, 2015         |
 | MMMM         | month       | January, December |
 | MMM          | month       | Jan, Dec          |
 | MM           | month       | 01, 12            |
