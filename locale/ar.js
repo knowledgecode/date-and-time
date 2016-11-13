@@ -17,14 +17,14 @@
             ddd: ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
             dd: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
             A: ['ص', 'م'],
-            formats: {
+            formatter: {
                 post: function (str) {
                     return str.replace(/\d/g, function (i) {
                         return num[i | 0];
                     });
                 }
             },
-            parsers: {
+            parser: {
                 pre: function (str) {
                     return str.replace(/[٠١٢٣٤٥٦٧٨٩]/g, function (i) {
                         return '' + map[i];
@@ -43,4 +43,3 @@
     }
 
 }(this));
-

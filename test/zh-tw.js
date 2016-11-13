@@ -16,10 +16,10 @@
         ddd = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
         dd = ['日', '一', '二', '三', '四', '五', '六'],
         A = ['早上', '早上', '早上', '早上', '早上', '早上', '早上', '早上', '早上',    // 0 - 8
-             '上午', '上午',    // 9 - 11:29
-             '中午',    // 11:30 - 12:29
-             '下午', '下午', '下午', '下午', '下午', '下午',    // 12:30 - 17
-             '晚上', '晚上', '晚上', '晚上', '晚上', '晚上'];   // 18 - 23
+            '上午', '上午',     // 9 - 11:29
+            '中午',     // 11:30 - 12:29
+            '下午', '下午', '下午', '下午', '下午', '下午',     // 12:30 - 17
+            '晚上', '晚上', '晚上', '晚上', '晚上', '晚上'];    // 18 - 23
 
     describe('format with "zh-tw"', function () {
         before(function () {
@@ -75,19 +75,19 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
         });
@@ -98,4 +98,3 @@
     });
 
 }(this));
-

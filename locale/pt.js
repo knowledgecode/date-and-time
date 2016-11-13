@@ -14,7 +14,7 @@
             ddd: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
             dd: ['Dom', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sáb'],
             A: ['da madrugada', 'da manhã', 'da tarde', 'da noite'],
-            formats: {
+            formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 5) {
@@ -27,10 +27,10 @@
                     return this.A[3];       // da noite
                 }
             },
-            parsers: {
+            parser: {
                 h: function (h, a) {
-                    if (a < 2) {    // da madrugada, da manhã
-                        return h;
+                    if (a < 2) {
+                        return h;   // da madrugada, da manhã
                     }
                     return h > 11 ? h : h + 12; // da tarde, da noite
                 }
@@ -47,4 +47,3 @@
     }
 
 }(this));
-

@@ -16,7 +16,7 @@
         ddd = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
         dd = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         A = ['Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags',    // 0 - 11
-             'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens'];   // 12 - 23
+            'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens'];    // 12 - 23
 
     describe('format with "de"', function () {
         before(function () {
@@ -72,19 +72,19 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
         });
@@ -95,4 +95,3 @@
     });
 
 }(this));
-

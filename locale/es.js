@@ -14,7 +14,7 @@
             ddd: ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
             dd: ['do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sá'],
             A: ['de la mañana', 'de la tarde', 'de la noche'],
-            formats: {
+            formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 12) {
@@ -25,10 +25,10 @@
                     return this.A[2];       // de la noche
                 }
             },
-            parsers: {
+            parser: {
                 h: function (h, a) {
-                    if (a < 1) {    // de la mañana
-                        return h;
+                    if (a < 1) {
+                        return h;   // de la mañana
                     }
                     return h > 11 ? h : h + 12; // de la tarde, de la noche
                 }
@@ -45,4 +45,3 @@
     }
 
 }(this));
-

@@ -14,7 +14,7 @@
             ddd: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरू', 'शुक्र', 'शनि'],
             dd: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
             A: ['रात', 'सुबह', 'दोपहर', 'शाम'],
-            formats: {
+            formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 4) {
@@ -29,7 +29,7 @@
                     return this.A[0];       // रात
                 }
             },
-            parsers: {
+            parser: {
                 h: function (h, a) {
                     if (a < 1) {
                         return h < 4 || h > 11 ? h : h + 12;    // रात
@@ -53,4 +53,3 @@
     }
 
 }(this));
-

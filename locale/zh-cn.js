@@ -14,7 +14,7 @@
             ddd: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
             dd: ['日', '一', '二', '三', '四', '五', '六'],
             A: ['凌晨', '早上', '上午', '中午', '下午', '晚上'],
-            formats: {
+            formatter: {
                 A: function (d) {
                     var hm = d.getHours() * 100 + d.getMinutes();
                     if (hm < 600) {
@@ -31,10 +31,10 @@
                     return this.A[5];       // 晚上
                 }
             },
-            parsers: {
+            parser: {
                 h: function (h, a) {
-                    if (a < 4) {    // 凌晨, 早上, 上午, 中午
-                        return h;
+                    if (a < 4) {
+                        return h;   // 凌晨, 早上, 上午, 中午
                     }
                     return h > 11 ? h : h + 12; // 下午, 晚上
                 }
@@ -51,4 +51,3 @@
     }
 
 }(this));
-

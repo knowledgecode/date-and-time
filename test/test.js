@@ -447,8 +447,7 @@
             expect(date.parse('2015 December', 'YYYY MMMM')).to.eql(now);
         });
         it('YYYY MMMM', function () {
-            var now = new Date(2015, 0, 1);
-            expect(date.parse('2015 Zero', 'YYYY MMMM')).to.eql(now);
+            expect(isNaN(date.parse('2015 Zero', 'YYYY MMMM'))).to.be(true);
         });
         it('YYYY MMM', function () {
             var now = new Date(2015, 0, 1);
@@ -459,8 +458,7 @@
             expect(date.parse('2015 Dec', 'YYYY MMM')).to.eql(now);
         });
         it('YYYY MMM', function () {
-            var now = new Date(2015, 0, 1);
-            expect(date.parse('2015 Zero', 'YYYY MMM')).to.eql(now);
+            expect(isNaN(date.parse('2015 Zero', 'YYYY MMM'))).to.be(true);
         });
         it('YYYY-MM', function () {
             var now = new Date(2015, 0, 1);
@@ -471,8 +469,7 @@
             expect(date.parse('2015-12', 'YYYY-MM')).to.eql(now);
         });
         it('YYYY-MM', function () {
-            var now = new Date(2014, 10, 31);
-            expect(date.parse('2015-00', 'YYYY-MM')).to.eql(now);
+            expect(isNaN(date.parse('2015-00', 'YYYY-MM'))).to.be(true);
         });
         it('YYYY-M', function () {
             var now = new Date(2015, 0, 1);
@@ -483,8 +480,7 @@
             expect(date.parse('2015-12', 'YYYY-M')).to.eql(now);
         });
         it('YYYY-M', function () {
-            var now = new Date(2014, 10, 31);
-            expect(date.parse('2015-0', 'YYYY-M')).to.eql(now);
+            expect(isNaN(date.parse('2015-0', 'YYYY-M'))).to.be(true);
         });
         it('YYYY-MM-DD', function () {
             var now = new Date(2015, 0, 1);
@@ -495,8 +491,7 @@
             expect(date.parse('2015-12-31', 'YYYY-MM-DD')).to.eql(now);
         });
         it('YYYY-MM-DD', function () {
-            var now = new Date(2014, 10, 30);
-            expect(date.parse('2015-00-00', 'YYYY-MM-DD')).to.eql(now);
+            expect(isNaN(date.parse('2015-00-00', 'YYYY-MM-DD'))).to.be(true);
         });
         it('YYYY-M-D', function () {
             var now = new Date(2015, 0, 1);
@@ -507,8 +502,7 @@
             expect(date.parse('2015-12-31', 'YYYY-M-D')).to.eql(now);
         });
         it('YYYY-M-D', function () {
-            var now = new Date(2014, 10, 30);
-            expect(date.parse('2015-0-0', 'YYYY-M-D')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0', 'YYYY-M-D'))).to.be(true);
         });
         it('YYYY-MM-DD HH', function () {
             var now = new Date(2015, 0, 1, 0);
@@ -519,8 +513,7 @@
             expect(date.parse('2015-12-31 23', 'YYYY-MM-DD HH')).to.eql(now);
         });
         it('YYYY-MM-DD HH', function () {
-            var now = new Date(2014, 10, 30, 24);
-            expect(date.parse('2015-00-00 24', 'YYYY-MM-DD HH')).to.eql(now);
+            expect(isNaN(date.parse('2015-00-00 24', 'YYYY-MM-DD HH'))).to.be(true);
         });
         it('YYYY-M-D H', function () {
             var now = new Date(2015, 0, 1, 0);
@@ -531,8 +524,7 @@
             expect(date.parse('2015-12-31 23', 'YYYY-M-D H')).to.eql(now);
         });
         it('YYYY-M-D H', function () {
-            var now = new Date(2014, 10, 30, 24);
-            expect(date.parse('2015-0-0 24', 'YYYY-M-D H')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 24', 'YYYY-M-D H'))).to.be(true);
         });
         it('YYYY-M-D hh A', function () {
             var now = new Date(2015, 0, 1, 0);
@@ -543,8 +535,7 @@
             expect(date.parse('2015-12-31 11 p.m.', 'YYYY-M-D hh A')).to.eql(now);
         });
         it('YYYY-M-D hh A', function () {
-            var now = new Date(2014, 10, 29, 24);
-            expect(date.parse('2015-0-0 12 a.m.', 'YYYY-M-D hh A')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 12 a.m.', 'YYYY-M-D hh A'))).to.be(true);
         });
         it('YYYY-M-D h A', function () {
             var now = new Date(2015, 0, 1, 0);
@@ -555,8 +546,7 @@
             expect(date.parse('2015-12-31 11 p.m.', 'YYYY-M-D h A')).to.eql(now);
         });
         it('YYYY-M-D h A', function () {
-            var now = new Date(2014, 10, 29, 24);
-            expect(date.parse('2015-0-0 12 a.m.', 'YYYY-M-D h A')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 12 a.m.', 'YYYY-M-D h A'))).to.be(true);
         });
         it('YYYY-MM-DD HH:mm', function () {
             var now = new Date(2015, 0, 1, 0, 0);
@@ -567,8 +557,7 @@
             expect(date.parse('2015-12-31 23:59', 'YYYY-MM-DD HH:mm')).to.eql(now);
         });
         it('YYYY-MM-DD HH:mm', function () {
-            var now = new Date(2014, 10, 30, 24, 60);
-            expect(date.parse('2015-00-00 24:60', 'YYYY-MM-DD HH:mm')).to.eql(now);
+            expect(isNaN(date.parse('2015-00-00 24:60', 'YYYY-MM-DD HH:mm'))).to.be(true);
         });
         it('YYYY-M-D H:m', function () {
             var now = new Date(2015, 0, 1, 0, 0);
@@ -579,8 +568,7 @@
             expect(date.parse('2015-12-31 23:59', 'YYYY-M-D H:m')).to.eql(now);
         });
         it('YYYY-M-D H:m', function () {
-            var now = new Date(2014, 10, 30, 24, 60);
-            expect(date.parse('2015-0-0 24:60', 'YYYY-M-D H:m')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 24:60', 'YYYY-M-D H:m'))).to.be(true);
         });
         it('YYYY-MM-DD HH:mm:ss', function () {
             var now = new Date(2015, 0, 1, 0, 0, 0);
@@ -591,8 +579,7 @@
             expect(date.parse('2015-12-31 23:59:59', 'YYYY-MM-DD HH:mm:ss')).to.eql(now);
         });
         it('YYYY-MM-DD HH:mm:ss', function () {
-            var now = new Date(2014, 10, 30, 24, 60, 60);
-            expect(date.parse('2015-00-00 24:60:60', 'YYYY-MM-DD HH:mm:ss')).to.eql(now);
+            expect(isNaN(date.parse('2015-00-00 24:60:60', 'YYYY-MM-DD HH:mm:ss'))).to.be(true);
         });
         it('YYYY-M-D H:m:s', function () {
             var now = new Date(2015, 0, 1, 0, 0);
@@ -603,8 +590,7 @@
             expect(date.parse('2015-12-31 23:59:59', 'YYYY-M-D H:m:s')).to.eql(now);
         });
         it('YYYY-M-D H:m:s', function () {
-            var now = new Date(2014, 10, 30, 24, 60, 60);
-            expect(date.parse('2015-0-0 24:60:60', 'YYYY-M-D H:m:s')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 24:60:60', 'YYYY-M-D H:m:s'))).to.be(true);
         });
         it('YYYY-M-D H:m:s.SSS', function () {
             var now = new Date(2015, 0, 1, 0, 0, 0);
@@ -615,44 +601,41 @@
             expect(date.parse('2015-12-31 23:59:59.999', 'YYYY-M-D H:m:s.SSS')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SSS', function () {
-            var now = new Date(2014, 10, 30, 24, 60, 60, 1000);
-            expect(date.parse('2015-0-0 24:60:61.000', 'YYYY-M-D H:m:s.SSS')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 24:60:61.000', 'YYYY-M-D H:m:s.SSS'))).to.be(true);
         });
         it('YYYY-M-D H:m:s.SS', function () {
             var now = new Date(2015, 0, 1, 0, 0, 0);
             expect(date.parse('2015-1-1 0:0:0.0', 'YYYY-M-D H:m:s.SS')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SS', function () {
-            var now = new Date(2015, 11, 31, 23, 59, 59, 99);
+            var now = new Date(2015, 11, 31, 23, 59, 59, 990);
             expect(date.parse('2015-12-31 23:59:59.99', 'YYYY-M-D H:m:s.SS')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SS', function () {
-            var now = new Date(2014, 10, 30, 24, 60, 60, 1000);
-            expect(date.parse('2015-0-0 24:60:61.00', 'YYYY-M-D H:m:s.SS')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 24:60:61.00', 'YYYY-M-D H:m:s.SS'))).to.be(true);
         });
         it('YYYY-M-D H:m:s.S', function () {
             var now = new Date(2015, 0, 1, 0, 0, 0);
             expect(date.parse('2015-1-1 0:0:0.0', 'YYYY-M-D H:m:s.S')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.S', function () {
-            var now = new Date(2015, 11, 31, 23, 59, 59, 9);
+            var now = new Date(2015, 11, 31, 23, 59, 59, 900);
             expect(date.parse('2015-12-31 23:59:59.9', 'YYYY-M-D H:m:s.S')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.S', function () {
-            var now = new Date(2014, 10, 30, 24, 60, 60, 1000);
-            expect(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S')).to.eql(now);
+            expect(isNaN(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S'))).to.be(true);
         });
     });
 
     describe('addition', function () {
         it('add a year', function () {
-            var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
-            var date2 = new Date(2015, 11, 31, 23, 59, 59, 999);
+            var date1 = new Date(1969, 11, 31, 23, 59, 59, 999);
+            var date2 = new Date(1970, 11, 31, 23, 59, 59, 999);
             expect(date.addYears(date1, 1)).to.eql(date2);
         });
         it('subtract a year', function () {
-            var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
-            var date2 = new Date(2013, 11, 31, 23, 59, 59, 999);
+            var date1 = new Date(1970, 11, 31, 23, 59, 59, 999);
+            var date2 = new Date(1969, 11, 31, 23, 59, 59, 999);
             expect(date.addYears(date1, -1)).to.eql(date2);
         });
         it('add a month', function () {
@@ -900,6 +883,29 @@
         });
         it('2014-2-29 It is invalid.', function () {
             expect(date.isLeapYear(new Date(2014, 0, 1))).to.be(false);
+        });
+    });
+
+    describe('the same day', function () {
+        it('the same', function () {
+            var date1 = new Date(2016, 0, 1, 2, 34, 56, 789);
+            var date2 = new Date(2016, 0, 1, 23, 4, 56, 789);
+            expect(date.isSameDay(date1, date2)).to.be(true);
+        });
+        it('the same', function () {
+            var date1 = new Date(1916, 0, 1, 2, 34, 56, 789);
+            var date2 = new Date(1916, 0, 1, 23, 4, 56, 789);
+            expect(date.isSameDay(date1, date2)).to.be(true);
+        });
+        it('not the same', function () {
+            var date1 = new Date(2016, 0, 1, 23, 59, 59, 999);
+            var date2 = new Date(2016, 0, 2, 0, 0, 0, 0);
+            expect(date.isSameDay(date1, date2)).to.be(false);
+        });
+        it('not the same', function () {
+            var date1 = new Date(1916, 0, 1, 23, 59, 59, 999);
+            var date2 = new Date(1916, 0, 2, 0, 0, 0, 0);
+            expect(date.isSameDay(date1, date2)).to.be(false);
         });
     });
 
