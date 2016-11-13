@@ -16,10 +16,10 @@
         ddd = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পত্তি', 'শুক্র', 'শনি'],
         dd = ['রব', 'সম', 'মঙ্গ', 'বু', 'ব্রিহ', 'শু', 'শনি'],
         A = ['রাত', 'রাত', 'রাত', 'রাত',    // 0 - 3
-             'সকাল', 'সকাল', 'সকাল', 'সকাল', 'সকাল', 'সকাল',  // 4 - 9
-             'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর',   // 10 - 16
-             'বিকাল', 'বিকাল', 'বিকাল',   // 17 - 19
-             'রাত', 'রাত', 'রাত', 'রাত'];   // 20 - 23
+            'সকাল', 'সকাল', 'সকাল', 'সকাল', 'সকাল', 'সকাল',   // 4 - 9
+            'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর', 'দুপুর',    // 10 - 16
+            'বিকাল', 'বিকাল', 'বিকাল',    // 17 - 19
+            'রাত', 'রাত', 'রাত', 'রাত'];    // 20 - 23
 
     describe('format with "bn"', function () {
         before(function () {
@@ -75,19 +75,19 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
         });
@@ -98,4 +98,3 @@
     });
 
 }(this));
-

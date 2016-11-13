@@ -16,7 +16,7 @@
         ddd = ['日', '月', '火', '水', '木', '金', '土'],
         dd = ['日', '月', '火', '水', '木', '金', '土'],
         A = ['午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前',    // 0 - 11
-             '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後'];   // 12 - 23
+            '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後'];    // 12 - 23
 
     describe('format with "ja"', function () {
         before(function () {
@@ -96,19 +96,19 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
         });
@@ -119,4 +119,3 @@
     });
 
 }(this));
-

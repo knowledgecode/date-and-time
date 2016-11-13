@@ -2,13 +2,14 @@
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
 ## WHY
-Probably the most famous DateTime library is [Moment.js](http://momentjs.com/), that is so great but has been bloated (13.8k gz). This will be a good solution if you require a small one.  
+[Moment.js](http://momentjs.com/), the most famous DateTime utility, is very useful. But it's also the bloated module (**20.7k** gz). If you are looking for a similar and smaller one, this would be a good solution.  
 
 ## Features
-- Minimalist. only has 1.8k gz
-- multi language support
-- not extending built-in date object
-- legacy IE support. IE6+
+- Minimalist. Only has **1.9k** (minified and gzipped)
+- Universal (Isomorphic)
+- Multi language support
+- Not extending built-in Date object
+- Legacy IE support. IE6+
 
 ## Installation
 via npm:
@@ -19,7 +20,7 @@ via Bower:
 ```shell
 $ bower install date-and-time
 ```
-the browser (directly):
+directly:
 ```html
 <script src="date-and-time.min.js"></script>
 ```
@@ -39,12 +40,19 @@ the browser:
 window.date;    // global object
 ```
 
+## Breaking changes in 0.4.0
+- `parse`
+    - It comes to return a `NaN` object in case of parse error.
+    - If year is not supplied in a date string, the default year of the returning date object is `1970`.
+- `locale`
+    - Slightly changed the internal structure.
+
 ## API
 
 ### format(dateObj, formatString[, utc])
-- {object} dateObj - target date
-- {string} formatString - format string
-- {boolean} [utc] - output as UTC
+- {object} **dateObj** - date object
+- {string} **formatString** - format string
+- {boolean} [**utc**] - output as UTC *(optional)*
 
 ```javascript
 var now = new Date();
@@ -54,7 +62,7 @@ date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 p.m. GMT-0800'
 date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
 ```
 
-| formatString | meaning     | example           |
+| token        | meaning     | example           |
 |:-------------|:------------|:------------------|
 | YYYY         | year        | 0999, 2015        |
 | YY           | year        | 15, 99            |
@@ -90,18 +98,20 @@ date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 ```
 
 ### parse(dateString, formatString[, utc])
-- {string} dateString - date string
-- {string} formatString - format string
-- {boolean} [utc] - input as UTC
+- {string} **dateString** - date string
+- {string} **formatString** - format string
+- {boolean} [**utc**] - input as UTC *(optional)*
 
 ```javascript
 date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => date object
 date.parse('02-01-2015', 'DD-MM-YYYY');                     // => date object
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => (23:14:05 GMT-0800)
-date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => (15:14:05 GMT-0800)
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => (Jan 1 1970 23:14:05 GMT-0800)
+date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => (Jan 1 1970 15:14:05 GMT-0800)
+date.parse('Jam 1 2017', 'MMM D YYYY');                     // => NaN
+date.parse('Feb 29 2017', 'MMM D YYYY');                    // => NaN
 ```
 
-| formatString | meaning     | example           |
+| token        | meaning     | example           |
 |:-------------|:------------|:------------------|
 | YYYY         | year        | 2015, 1999        |
 | YY           | year        | 15, 99            |
@@ -139,77 +149,78 @@ date.parse('Dec 31 99', 'MMM d YYYY');      // => (Dec 31 1999)
 When using `hh` or `h` (hour-12), need to use together `A` (meridiem).
 
 ### isValid(dateString, formatString)
-- {string} dateString - date string
-- {string} formatString - format string
+- {string} **dateString** - date string
+- {string} **formatString** - format string
 ```javascript
 date.isValid('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss'); // => true
-date.isValid('02-29-2015', 'DD-MM-YYYY');                   // => false
+date.isValid('29-02-2015', 'DD-MM-YYYY');                   // => false
 ```
-`formatString` is the same as one of `parse`.
+The `formatString` you can set is the same as the `parse` function's.
 
 ### addYears(dateObj, years)
-- {object} dateObj - the augend
-- {number} years - the addend
+- {object} **dateObj** - date object
+- {number} **years** - adding year
 ```javascript
 var now = new Date();
 var next_year = date.addYears(now, 1);  // => Date object
 ```
 
 ### addMonths(dateObj, months)
-- {object} dateObj - the augend
-- {number} months - the addend
+- {object} **dateObj** - date object
+- {number} **months** - adding month
 ```javascript
 var now = new Date();
 var next_month = date.addMonths(now, 1); // => Date object
 ```
 
 ### addDays(dateObj, days)
-- {object} dateObj - the augend
-- {number} days - the addend
+- {object} **dateObj** - date object
+- {number} **days** - adding day
 ```javascript
 var now = new Date();
 var yesterday = date.addDays(now, -1);  // => Date object
 ```
 
 ### addHours(dateObj, hours)
-- {object} dateObj - the augend
-- {number} hours - the addend
+- {object} **dateObj** - date object
+- {number} **hours** - adding hour
 ```javascript
 var now = new Date();
 var an_hour_ago = date.addHours(now, -1); // => Date object
 ```
 
 ### addMinutes(dateObj, minutes)
-- {object} dateObj - the augend
-- {number} minutes - the addend
+- {object} **dateObj** - date object
+- {number} **minutes** -  adding minute
 ```javascript
 var now = new Date();
 var two_minutes_later = date.addMinutes(now, 2);    // => Date object
 ```
 
 ### addSeconds(dateObj, seconds)
-- {object} dateObj - the augend
-- {number} seconds - the addend
+- {object} **dateObj** - date object
+- {number} **seconds** - adding second
 ```javascript
 var now = new Date();
 var three_seconds_ago = date.addSeconds(now, -3);   // => Date object
 ```
 
 ### addMilliseconds(dateObj, milliseconds)
-- {object} dateObj - the augend
-- {number} milliseconds -the addend
+- {object} **dateObj** - date object
+- {number} **milliseconds** - adding millisecond
 ```javascript
 var now = new Date();
 var a_millisecond_later = date.addMilliseconds(now, 1); // => Date object
 ```
 
 ### subtract(dateObj1, dateObj2)
-- {object} date1 - the minuend
-- {object} date2 - the subtrahend
+- {object} **date1** - date object
+- {object} **date2** - date object
 ```javascript
 var today = new Date(2015, 0, 2);
 var yesterday = new Date(2015, 0, 1);
-date.subtract(today, yesterday).toDays();           // => 1
+
+date.subtract(today, yesterday).toDays();           // => 1 = today - yesterday
 date.subtract(today, yesterday).toHours();          // => 24
 date.subtract(today, yesterday).toMinutes();        // => 1440
 date.subtract(today, yesterday).toSeconds();        // => 86400
@@ -217,7 +228,7 @@ date.subtract(today, yesterday).toMilliseconds();   // => 86400000
 ```
 
 ### isLeapYear(dateObj)
-- {object} dateObj - target date
+- {object} **dateObj** - date object
 ```javascript
 var date1 = new Date(2015, 0, 2);
 var date2 = new Date(2012, 0, 2);
@@ -225,24 +236,53 @@ date.isLeapYear(date1); // => false
 date.isLeapYear(date2); // => true
 ```
 
+### isSameDay(dateObj)
+- {object} **date1** - date object
+- {object} **date2** - date object
+```javascript
+var date1 = new Date(2017, 0, 2, 0);        // Jan 2 2017 00:00:00
+var date2 = new Date(2017, 0, 2, 23, 59);   // Jan 2 2017 23:59:00
+var date3 = new Date(2017, 0, 1, 23, 59);   // Jan 1 2017 23:59:00
+date.isSameDay(date1, date2);   // => true
+date.isSameDay(date1, date3);   // => false
+```
+
 ## Locale
 It supports the following languages for now:  
 - Arabic (ar)
+- Azerbaijani (az)
 - Bengali (bn)
+- Burmese (my)
 - Chinese (zh-cn)
 - Chinese (zh-tw)
+- Czech (cs)
+- Dutch (nl)
 - English (en)
 - French (fr)
 - German (de)
+- Greek (el)
 - Hindi (hi)
+- Hungarian (hu)
+- Indonesian (id)
 - Italian (it)
 - Japanese (ja)
+- Javanese (jv)
 - Korean (ko)
+- Persian (fa)
+- Polish (pl)
 - Portuguese (pt)
+- Punjabi (pa-in)
+- Romanian (ro)
 - Russian (ru)
+- Serbian (sr)
 - Spanish (es)
+- Thai (th)
+- Turkish (tr)
+- Ukrainian (uk)
+- Uzbek (uz)
+- Vietnamese (vi)
 
-Month, day of week, and meridiem are used English by default. If you want to use other languages, can switch to them as follows:  
+Month, day of week, and meridiem are displayed in English by default. If you want to use other languages, can switch to them as follows:  
 Node.js:
 ```javascript
 var date = require('date-and-time');

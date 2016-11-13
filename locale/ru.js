@@ -14,7 +14,7 @@
             ddd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
             dd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
             A: ['ночи', 'утра', 'дня', 'вечера'],
-            formats: {
+            formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 4) {
@@ -27,10 +27,10 @@
                     return this.A[3];       // вечера
                 }
             },
-            parsers: {
+            parser: {
                 h: function (h, a) {
-                    if (a < 2) {    // ночи, утра
-                        return h;
+                    if (a < 2) {
+                        return h;   // ночи, утра
                     }
                     return h > 11 ? h : h + 12; // дня, вечера
                 }
@@ -47,4 +47,3 @@
     }
 
 }(this));
-

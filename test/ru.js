@@ -16,9 +16,9 @@
         ddd = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dd = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         A = ['ночи', 'ночи', 'ночи', 'ночи',    // 0 - 3
-             'утра', 'утра', 'утра', 'утра', 'утра', 'утра', 'утра', 'утра',    // 4 - 11
-             'дня', 'дня', 'дня', 'дня', 'дня',  // 12 - 17
-             'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера'];   // 18 - 23
+            'утра', 'утра', 'утра', 'утра', 'утра', 'утра', 'утра', 'утра',     // 4 - 11
+            'дня', 'дня', 'дня', 'дня', 'дня',   // 12 - 17
+            'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера'];    // 18 - 23
 
     describe('format with "ru"', function () {
         before(function () {
@@ -74,19 +74,19 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
         });
@@ -97,4 +97,3 @@
     });
 
 }(this));
-

@@ -16,8 +16,8 @@
         ddd = ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
         dd = ['do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sá'],
         A = ['de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana', 'de la mañana',    // 0 - 11
-             'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde',   // 12 - 18
-             'de la noche', 'de la noche', 'de la noche', 'de la noche', 'de la noche'];    // 19 - 23
+            'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde',    // 12 - 18
+            'de la noche', 'de la noche', 'de la noche', 'de la noche', 'de la noche'];     // 19 - 23
 
     describe('format with "es"', function () {
         before(function () {
@@ -73,19 +73,19 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
         });
@@ -96,4 +96,3 @@
     });
 
 }(this));
-

@@ -1,19 +1,17 @@
 {
   "name": "date-and-time",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A Minimalist DateTime utility for Node.js and the browser",
   "main": "date-and-time.js",
   "scripts": {
     "test": "./test.sh",
-    "compile": "./compile.sh"
+    "compile": "./compile.sh date-and-time.js date-and-time.min.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/knowledgecode/date-and-time.git"
   },
   "keywords": [
-    "date-time",
-    "datetime",
     "date",
     "time",
     "format",
@@ -28,7 +26,7 @@
   "homepage": "https://github.com/knowledgecode/date-and-time",
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^2.3.4",
+    "mocha": "^2.5.3",
     "mocha-phantomjs": "^3.6.0",
     "phantomjs": "1.9.7-15"
   }

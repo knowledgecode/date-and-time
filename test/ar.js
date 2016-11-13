@@ -16,7 +16,7 @@
         ddd = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
         dd = ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
         A = ['ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص',    // 00 - 11
-             'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م'];   // 12 - 23
+            'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م'];    // 12 - 23
 
     describe('format with "ar"', function () {
         before(function () {
@@ -59,6 +59,11 @@
                 expect(date.format(now, 'A')).to.equal(a);
             });
         });
+        it('numeric expression', function () {
+            var now = new Date(2016, 0, 1, 2, 34, 56, 789),
+                str = '٢٠١٦٠١٠١٠٢٣٤٥٦٧٨٩';
+            expect(date.format(now, 'YYYYMMDDHHmmssSSS')).to.equal(str);
+        });
 
         after(function () {
             date.locale('en');
@@ -72,21 +77,26 @@
 
         forEach(MMMM, function (m, i) {
             it('"MMMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMMM')).to.eql(now);
             });
         });
         forEach(MMM, function (m, i) {
             it('"MMM"', function () {
-                var now = new Date(0, i, 1);
+                var now = new Date(1970, i, 1);
                 expect(date.parse(m, 'MMM')).to.eql(now);
             });
         });
         forEach(A, function (a, i) {
             it('h A', function () {
-                var now = new Date(0, 0, 1, i);
+                var now = new Date(1970, 0, 1, i);
                 expect(date.parse((i > 11 ? i - 12 : i) + ' ' + a, 'h A')).to.eql(now);
             });
+        });
+        it('numeric expression', function () {
+            var now = new Date(2016, 0, 1, 2, 34, 56, 789),
+                str = '٢٠١٦٠١٠١٠٢٣٤٥٦٧٨٩';
+            expect(date.parse(str, 'YYYYMMDDHHmmssSSS')).to.eql(now);
         });
 
         after(function () {
@@ -95,4 +105,3 @@
     });
 
 }(this));
-
