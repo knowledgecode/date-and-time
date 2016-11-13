@@ -14,38 +14,59 @@
                 ddd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                 dd: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
                 A: ['a.m.', 'p.m.'],
-                formats: {
-                    YYYY: function (d) { return ('000' + d.getFullYear()).slice(-4); },
-                    YY: function (d) { return ('0' + d.getFullYear()).slice(-2); },
-                    Y: function (d) { return '' + d.getFullYear(); },
-                    MMMM: function (d) { return this.MMMM[d.getMonth()]; },
-                    MMM: function (d) { return this.MMM[d.getMonth()]; },
-                    MM: function (d) { return ('0' + (d.getMonth() + 1)).slice(-2); },
-                    M: function (d) { return '' + (d.getMonth() + 1); },
-                    DD: function (d) { return ('0' + d.getDate()).slice(-2); },
-                    D: function (d) { return '' + d.getDate(); },
-                    HH: function (d) { return ('0' + d.getHours()).slice(-2); },
-                    H: function (d) { return '' + d.getHours(); },
-                    A: function (d) { return this.A[d.getHours() > 11 | 0]; },
-                    hh: function (d) { return ('0' + (d.getHours() % 12 || 12)).slice(-2); },
-                    h: function (d) { return '' + (d.getHours() % 12 || 12); },
-                    mm: function (d) { return ('0' + d.getMinutes()).slice(-2); },
-                    m: function (d) { return '' + d.getMinutes(); },
-                    ss: function (d) { return ('0' + d.getSeconds()).slice(-2); },
-                    s: function (d) { return '' + d.getSeconds(); },
-                    SSS: function (d) { return ('00' + d.getMilliseconds()).slice(-3); },
-                    SS: function (d) { return ('0' + (d.getMilliseconds() / 10 | 0)).slice(-2); },
-                    S: function (d) { return '' + (d.getMilliseconds() / 100 | 0); },
-                    dddd: function (d) { return this.dddd[d.getDay()]; },
-                    ddd: function (d) { return this.ddd[d.getDay()]; },
-                    dd: function (d) { return this.dd[d.getDay()]; },
-                    Z: function (d) {
+                formatter: {
+                    YYYY: function (d/*, formatString*/) { return ('000' + d.getFullYear()).slice(-4); },
+                    YY: function (d/*, formatString*/) { return ('0' + d.getFullYear()).slice(-2); },
+                    Y: function (d/*, formatString*/) { return '' + d.getFullYear(); },
+                    MMMM: function (d/*, formatString*/) { return this.MMMM[d.getMonth()]; },
+                    MMM: function (d/*, formatString*/) { return this.MMM[d.getMonth()]; },
+                    MM: function (d/*, formatString*/) { return ('0' + (d.getMonth() + 1)).slice(-2); },
+                    M: function (d/*, formatString*/) { return '' + (d.getMonth() + 1); },
+                    DD: function (d/*, formatString*/) { return ('0' + d.getDate()).slice(-2); },
+                    D: function (d/*, formatString*/) { return '' + d.getDate(); },
+                    HH: function (d/*, formatString*/) { return ('0' + d.getHours()).slice(-2); },
+                    H: function (d/*, formatString*/) { return '' + d.getHours(); },
+                    A: function (d/*, formatString*/) { return this.A[d.getHours() > 11 | 0]; },
+                    hh: function (d/*, formatString*/) { return ('0' + (d.getHours() % 12 || 12)).slice(-2); },
+                    h: function (d/*, formatString*/) { return '' + (d.getHours() % 12 || 12); },
+                    mm: function (d/*, formatString*/) { return ('0' + d.getMinutes()).slice(-2); },
+                    m: function (d/*, formatString*/) { return '' + d.getMinutes(); },
+                    ss: function (d/*, formatString*/) { return ('0' + d.getSeconds()).slice(-2); },
+                    s: function (d/*, formatString*/) { return '' + d.getSeconds(); },
+                    SSS: function (d/*, formatString*/) { return ('00' + d.getMilliseconds()).slice(-3); },
+                    SS: function (d/*, formatString*/) { return ('0' + (d.getMilliseconds() / 10 | 0)).slice(-2); },
+                    S: function (d/*, formatString*/) { return '' + (d.getMilliseconds() / 100 | 0); },
+                    dddd: function (d/*, formatString*/) { return this.dddd[d.getDay()]; },
+                    ddd: function (d/*, formatString*/) { return this.ddd[d.getDay()]; },
+                    dd: function (d/*, formatString*/) { return this.dd[d.getDay()]; },
+                    Z: function (d/*, formatString*/) {
                         var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
                         return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
                     },
                     post: function (str) { return str; }
                 },
-                parsers: {
+                parser: {
+                    find: function (array, str) {
+                        var index = -1, length = 0;
+
+                        for (var i = 0, len = array.length, item; i < len; i++) {
+                            item = array[i];
+                            if (!str.indexOf(item) && item.length > length) {
+                                index = i;
+                                length = item.length;
+                            }
+                        }
+                        return { index: index, length: length };
+                    },
+                    MMMM: function (str/*, formatString*/) {
+                        return this.parser.find(this.MMMM, str);
+                    },
+                    MMM: function (str/*, formatString*/) {
+                        return this.parser.find(this.MMM, str);
+                    },
+                    A: function (str/*, formatString*/) {
+                        return this.parser.find(this.A, str);
+                    },
                     h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
                     pre: function (str) { return str; }
                 }
@@ -53,65 +74,23 @@
         },
         isCommonJS = function () {
             return typeof module === 'object' && typeof module.exports === 'object';
-        },
-        forEach = function (array, fn) {
-            for (var i = 0, len = array.length; i < len; i++) {
-                if (fn(array[i], i) === 0) {
-                    break;
-                }
-            }
-        },
-        parse = function (dateString, formatString) {
-            var offset = 0, k, length, str,
-                keys = formatString.match(/YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|./g),
-                dt = { Y: 0, M: 1, D: 1, A: 0, H: 0, h: 0, m: 0, s: 0, S: 0 };
-
-            dateString = locales[lang].parsers.pre(dateString);
-            forEach(keys, function (key) {
-                k = key.charAt(0);
-                length = key.length;
-                str = dateString.slice(offset);
-                if (/^(MM|DD|HH|hh|mm|ss|SS?S?)$/.test(key)) {
-                    dt[k] = str.slice(0, length) | 0;
-                } else if (/^(YYYY|YY|M|D|H|h|m|s)$/.test(key)) {
-                    str = (str.match(length === 4 ? /^\d{1,4}/ : /^\d\d?/) || [''])[0];
-                    length = str.length;
-                    dt[k] = str | 0;
-                    if (k === 'Y' && dt.Y < 70) {
-                        dt.Y += 2000;
-                    }
-                } else if (/^(MMMM?|A)$/.test(key)) {
-                    forEach(locales[lang][key], function (val, i) {
-                        if (!str.indexOf(val)) {
-                            dt[k] = k === 'M' ? i + 1 : i;
-                            length = val.length;
-                            return 0;
-                        }
-                    });
-                }
-                offset += length;
-            });
-            return dt;
-        },
-        toH = function (h, a) {
-            return locales[lang].parsers.h(h, a);
         };
 
     /**
      * formatting a date
-     * @param {Object} dateObj - target date
+     * @param {Object} dateObj - date object
      * @param {String} formatString - format string
      * @param {Boolean} [utc] - output as UTC
      * @returns {String} the formatted string
      */
     date.format = function (dateObj, formatString, utc) {
-        var d = new Date(dateObj.getTime() + (utc ? dateObj.getTimezoneOffset() * 60000 : 0)),
-            locale = locales[lang], formats = locale.formats;
+        var d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
+            locale = locales[lang], formatter = locale.formatter;
 
         d.utc = utc;
         return formatString.replace(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g, function (token) {
-            var format = formats[token];
-            return format ? formats.post(format.call(locale, d)) : token.replace(/\[(.*)]/, '$1');
+            var format = formatter[token];
+            return format ? formatter.post(format.call(locale, d, formatString)) : token.replace(/\[(.*)]/, '$1');
         });
     };
 
@@ -123,10 +102,48 @@
      * @returns {Object} the constructed date
      */
     date.parse = function (dateString, formatString, utc) {
-        var dt = parse(dateString, formatString),
-            dateObj = new Date(dt.Y, dt.M - 1, dt.D, dt.H || toH(dt.h, dt.A), dt.m, dt.s, dt.S);
+        var locale = locales[lang], dString = locale.parser.pre(dateString),
+            offset = 0, keys, i, token, length, p, str, result, dateObj,
+            re = /(MMMM?|A)|(YYYY)|(SSS)|(MM|DD|HH|hh|mm|ss)|(YY|M|D|H|h|m|s|SS)|(S)|(.)/g,
+            exp = { 2: /^\d{1,4}/, 3: /^\d{1,3}/, 4: /^\d\d/, 5: /^\d\d?/, 6: /^\d/ },
+            dt = { Y: 1970, M: 1, D: 1, H: 0, m: 0, s: 0, S: 0 };
 
-        return utc ? new Date(dateObj.getTime() - dateObj.getTimezoneOffset() * 60000) : dateObj;
+        while ((keys = re.exec(formatString))) {
+            for (i = 0, length = 1, token = ''; !token;) {
+                token = keys[++i];
+            }
+            p = token.charAt(0);
+            str = dString.slice(offset);
+            if (i < 2) {
+                result = locale.parser[token].call(locale, str, formatString);
+                dt[p] = result.index;
+                if (p === 'M') {
+                    dt[p]++;
+                }
+                length = result.length;
+                if (!length) {
+                    return NaN;
+                }
+            } else if (i < 7) {
+                str = (str.match(exp[i]) || [''])[0];
+                if (!str) {
+                    return NaN;
+                }
+                dt[p] = (p === 'S' ? (str + '000').slice(0, -token.length) : str) | 0;
+                length = str.length;
+            }
+            offset += length;
+        }
+        dt.Y += dt.Y < 70 ? 2000 : dt.Y < 100 ? 1900 : 0;
+        dt.H = dt.H || locale.parser.h(dt.h || 0, dt.A || 0);
+
+        dateObj = new Date(dt.Y, dt.M - 1, dt.D, dt.H, dt.m, dt.s, dt.S);
+        if (dt.Y !== dateObj.getFullYear() || dt.M - 1 !== dateObj.getMonth() || dt.D !== dateObj.getDate()
+            || dt.H !== dateObj.getHours() || dt.m !== dateObj.getMinutes() || dt.s !== dateObj.getSeconds()
+            || dt.S !== dateObj.getMilliseconds()) {
+            return NaN;
+        }
+        return utc ? date.addMinutes(dateObj, -dateObj.getTimezoneOffset()) : dateObj;
     };
 
     /**
@@ -136,33 +153,24 @@
      * @returns {Boolean} whether the date string is a valid date
      */
     date.isValid = function (dateString, formatString) {
-        var dt = parse(dateString, formatString),
-            H = dt.H || toH(dt.h, dt.A),
-            d = new Date(dt.Y, dt.M - 1, dt.D, H, dt.m, dt.s, dt.S);
-
-        return dt.Y === d.getFullYear() && dt.M - 1 === d.getMonth() && dt.D === d.getDate()
-            && H === d.getHours() && dt.m === d.getMinutes() && dt.s === d.getSeconds()
-            && dt.S === d.getMilliseconds();
+        return !!date.parse(dateString, formatString);
     };
 
     /**
      * adding years
-     * @param {Object} dateObj - the augend
-     * @param {Number} years - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} years - adding year
+     * @returns {Object} the date after adding the value
      */
     date.addYears = function (dateObj, years) {
-        var d = new Date(dateObj.getTime());
-
-        d.setFullYear(d.getFullYear() + years);
-        return d;
+        return date.addMonths(dateObj, years * 12);
     };
 
     /**
      * adding months
-     * @param {Object} dateObj - the augend
-     * @param {Number} months - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} months - adding month
+     * @returns {Object} the date after adding the value
      */
     date.addMonths = function (dateObj, months) {
         var d = new Date(dateObj.getTime());
@@ -173,49 +181,49 @@
 
     /**
      * adding days
-     * @param {Object} dateObj - the augend
-     * @param {Number} days - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} days - adding day
+     * @returns {Object} the date after adding the value
      */
     date.addDays = function (dateObj, days) {
-        return new Date(dateObj.getTime() + days * 86400000);
+        return date.addMilliseconds(dateObj, days * 86400000);
     };
 
     /**
      * adding hours
-     * @param {Object} dateObj - the augend
-     * @param {Number} hours - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} hours - adding hour
+     * @returns {Object} the date after adding the value
      */
     date.addHours = function (dateObj, hours) {
-        return new Date(dateObj.getTime() + hours * 3600000);
+        return date.addMilliseconds(dateObj, hours * 3600000);
     };
 
     /**
      * adding minutes
-     * @param {Object} dateObj - the augend
-     * @param {Number} minutes - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} minutes - adding minute
+     * @returns {Object} the date after adding the value
      */
     date.addMinutes = function (dateObj, minutes) {
-        return new Date(dateObj.getTime() + minutes * 60000);
+        return date.addMilliseconds(dateObj, minutes * 60000);
     };
 
     /**
      * adding seconds
-     * @param {Object} dateObj - the augend
-     * @param {Number} seconds - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} seconds - adding second
+     * @returns {Object} the date after adding the value
      */
     date.addSeconds = function (dateObj, seconds) {
-        return new Date(dateObj.getTime() + seconds * 1000);
+        return date.addMilliseconds(dateObj, seconds * 1000);
     };
 
     /**
      * adding milliseconds
-     * @param {Object} dateObj - the augend
-     * @param {Number} milliseconds - the addend
-     * @returns {Object} the date after addition
+     * @param {Object} dateObj - date object
+     * @param {Number} milliseconds - adding millisecond
+     * @returns {Object} the date after adding the value
      */
     date.addMilliseconds = function (dateObj, milliseconds) {
         return new Date(dateObj.getTime() + milliseconds);
@@ -223,9 +231,9 @@
 
     /**
      * subtracting
-     * @param {Object} date1 - the minuend
-     * @param {Object} date2 - the subtrahend
-     * @returns {Object} the result object after subtraction
+     * @param {Object} date1 - date object
+     * @param {Object} date2 - date object
+     * @returns {Object} the result object after subtracting the date
      */
     date.subtract = function (date1, date2) {
         var delta = date1.getTime() - date2.getTime();
@@ -251,12 +259,22 @@
 
     /**
      * leap year
-     * @param {Object} dateObj - target date
+     * @param {Object} dateObj - date object
      * @returns {Boolean} whether the year is a leap year
      */
     date.isLeapYear = function (dateObj) {
         var y = dateObj.getFullYear();
         return (!(y % 4) && !!(y % 100)) || !(y % 400);
+    };
+
+    /**
+     * comparison of dates
+     * @param {Object} date1 - target for comparison
+     * @param {Object} date2 - target for comparison
+     * @returns {Boolean} whether the dates are the same day (times are ignored)
+     */
+    date.isSameDay = function (date1, date2) {
+        return date.format(date1, 'YYYYMMDD') === date.format(date2, 'YYYYMMDD');
     };
 
     /**
@@ -305,11 +323,11 @@
             base = locales[code] || locales.en,
             locale = copy(options, base);
 
-        if (options.formats) {
-            locale.formats = copy(options.formats, base.formats);
+        if (options.formatter) {
+            locale.formatter = copy(options.formatter, base.formatter);
         }
-        if (options.parsers) {
-            locale.parsers = copy(options.parsers, base.parsers);
+        if (options.parser) {
+            locale.parser = copy(options.parser, base.parser);
         }
         locales[code] = locale;
     };
@@ -325,4 +343,3 @@
     }
 
 }(this));
-
