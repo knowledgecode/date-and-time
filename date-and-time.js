@@ -186,7 +186,10 @@
      * @returns {Object} the date after adding the value
      */
     date.addDays = function (dateObj, days) {
-        return date.addMilliseconds(dateObj, days * 86400000);
+        var d = new Date(dateObj.getTime());
+
+        d.setDate(d.getDate() + days);
+        return d;
     };
 
     /**

@@ -2,7 +2,7 @@
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
 ## WHY
-[Moment.js](http://momentjs.com/), the most famous DateTime utility, is very useful. But it's also the bloated module (**20.7k** gz). If you are looking for a similar and smaller one, this would be a good solution.  
+[Moment.js](http://momentjs.com/), the most famous DateTime utility, is very useful. But it's also the bloated module (**16.6k** gz). If you are looking for a similar and smaller one, this would be a good solution.  
 
 ## Features
 - Minimalist. Only has **1.9k** (minified and gzipped)
@@ -28,7 +28,7 @@ directly:
 ## Usage
 Node.js:
 ```javascript
-var date = require('date-and-time');
+let date = require('date-and-time');
 ```
 AMD:
 ```javascript
@@ -55,7 +55,7 @@ window.date;    // global object
 - {boolean} [**utc**] - output as UTC *(optional)*
 
 ```javascript
-var now = new Date();
+let now = new Date();
 date.format(now, 'YYYY/MM/DD HH:mm:ss');    // => '2015/01/02 23:14:05'
 date.format(now, 'ddd MMM DD YYYY');        // => 'Fri Jan 02 2015'
 date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 p.m. GMT-0800'
@@ -161,64 +161,64 @@ The `formatString` you can set is the same as the `parse` function's.
 - {object} **dateObj** - date object
 - {number} **years** - adding year
 ```javascript
-var now = new Date();
-var next_year = date.addYears(now, 1);  // => Date object
+let now = new Date();
+let next_year = date.addYears(now, 1);  // => Date object
 ```
 
 ### addMonths(dateObj, months)
 - {object} **dateObj** - date object
 - {number} **months** - adding month
 ```javascript
-var now = new Date();
-var next_month = date.addMonths(now, 1); // => Date object
+let now = new Date();
+let next_month = date.addMonths(now, 1); // => Date object
 ```
 
 ### addDays(dateObj, days)
 - {object} **dateObj** - date object
 - {number} **days** - adding day
 ```javascript
-var now = new Date();
-var yesterday = date.addDays(now, -1);  // => Date object
+let now = new Date();
+let yesterday = date.addDays(now, -1);  // => Date object
 ```
 
 ### addHours(dateObj, hours)
 - {object} **dateObj** - date object
 - {number} **hours** - adding hour
 ```javascript
-var now = new Date();
-var an_hour_ago = date.addHours(now, -1); // => Date object
+let now = new Date();
+let an_hour_ago = date.addHours(now, -1); // => Date object
 ```
 
 ### addMinutes(dateObj, minutes)
 - {object} **dateObj** - date object
 - {number} **minutes** -  adding minute
 ```javascript
-var now = new Date();
-var two_minutes_later = date.addMinutes(now, 2);    // => Date object
+let now = new Date();
+let two_minutes_later = date.addMinutes(now, 2);    // => Date object
 ```
 
 ### addSeconds(dateObj, seconds)
 - {object} **dateObj** - date object
 - {number} **seconds** - adding second
 ```javascript
-var now = new Date();
-var three_seconds_ago = date.addSeconds(now, -3);   // => Date object
+let now = new Date();
+let three_seconds_ago = date.addSeconds(now, -3);   // => Date object
 ```
 
 ### addMilliseconds(dateObj, milliseconds)
 - {object} **dateObj** - date object
 - {number} **milliseconds** - adding millisecond
 ```javascript
-var now = new Date();
-var a_millisecond_later = date.addMilliseconds(now, 1); // => Date object
+let now = new Date();
+let a_millisecond_later = date.addMilliseconds(now, 1); // => Date object
 ```
 
 ### subtract(dateObj1, dateObj2)
 - {object} **date1** - date object
 - {object} **date2** - date object
 ```javascript
-var today = new Date(2015, 0, 2);
-var yesterday = new Date(2015, 0, 1);
+let today = new Date(2015, 0, 2);
+let yesterday = new Date(2015, 0, 1);
 
 date.subtract(today, yesterday).toDays();           // => 1 = today - yesterday
 date.subtract(today, yesterday).toHours();          // => 24
@@ -230,8 +230,8 @@ date.subtract(today, yesterday).toMilliseconds();   // => 86400000
 ### isLeapYear(dateObj)
 - {object} **dateObj** - date object
 ```javascript
-var date1 = new Date(2015, 0, 2);
-var date2 = new Date(2012, 0, 2);
+let date1 = new Date(2015, 0, 2);
+let date2 = new Date(2012, 0, 2);
 date.isLeapYear(date1); // => false
 date.isLeapYear(date2); // => true
 ```
@@ -240,9 +240,9 @@ date.isLeapYear(date2); // => true
 - {object} **date1** - date object
 - {object} **date2** - date object
 ```javascript
-var date1 = new Date(2017, 0, 2, 0);        // Jan 2 2017 00:00:00
-var date2 = new Date(2017, 0, 2, 23, 59);   // Jan 2 2017 23:59:00
-var date3 = new Date(2017, 0, 1, 23, 59);   // Jan 1 2017 23:59:00
+let date1 = new Date(2017, 0, 2, 0);        // Jan 2 2017 00:00:00
+let date2 = new Date(2017, 0, 2, 23, 59);   // Jan 2 2017 23:59:00
+let date3 = new Date(2017, 0, 1, 23, 59);   // Jan 1 2017 23:59:00
 date.isSameDay(date1, date2);   // => true
 date.isSameDay(date1, date3);   // => false
 ```
@@ -285,7 +285,7 @@ It supports the following languages for now:
 Month, day of week, and meridiem are displayed in English by default. If you want to use other languages, can switch to them as follows:  
 Node.js:
 ```javascript
-var date = require('date-and-time');
+let date = require('date-and-time');
 date.locale('fr');  // French
 date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
@@ -309,7 +309,7 @@ date.format(new Date(), 'MMMD日dddd');  // => '1月11日星期一'
 ## Customizing
 You can not only switch to other languages, but can customize them as you want:  
 ```javascript
-var now = new Date();
+let now = new Date();
 date.format(now, 'h:m A');  // => '12:34 p.m.'
 
 date.setLocales('en', {
