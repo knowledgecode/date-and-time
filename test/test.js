@@ -625,6 +625,18 @@
         it('YYYY-M-D H:m:s.S', function () {
             expect(isNaN(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S'))).to.be(true);
         });
+        it('foo', function () {
+            expect(isNaN(date.parse('20150101235959', 'foo'))).to.be(true);
+        });
+        it('bar', function () {
+            expect(isNaN(date.parse('20150101235959', 'bar'))).to.be(true);
+        });
+        it('YYYYMMDD', function () {
+            expect(isNaN(date.parse('20150101235959', 'YYYYMMDD'))).to.be(true);
+        });
+        it('20150101235959', function () {
+            expect(isNaN(date.parse('20150101235959', '20150101235959'))).to.be(true);
+        });
     });
 
     describe('addition', function () {
@@ -868,6 +880,18 @@
         });
         it('All nine is invalid', function () {
             expect(date.isValid('99999999999999999', 'YYYYMMDDHHmmssSSS')).to.be(false);
+        });
+        it('foo is invalid', function () {
+            expect(date.isValid('20150101235959', 'foo')).to.be(false);
+        });
+        it('bar is invalid', function () {
+            expect(date.isValid('20150101235959', 'bar')).to.be(false);
+        });
+        it('YYYYMMDD is invalid', function () {
+            expect(date.isValid('20150101235959', 'YYYYMMDD')).to.be(false);
+        });
+        it('20150101235959 is invalid', function () {
+            expect(date.isValid('20150101235959', '20150101235959')).to.be(false);
         });
     });
 
