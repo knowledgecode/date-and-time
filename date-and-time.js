@@ -121,18 +121,18 @@
                     dt[p]++;
                 }
                 length = result.length;
-                if (!length) {
-                    return NaN;
-                }
             } else if (i < 7) {
-                str = (str.match(exp[i]) || [''])[0];
-                if (!str) {
-                    return NaN;
-                }
-                dt[p] = (p === 'S' ? (str + '000').slice(0, -token.length) : str) | 0;
-                length = str.length;
+                result = (str.match(exp[i]) || [''])[0];
+                dt[p] = (p === 'S' ? (result + '000').slice(0, -token.length) : result) | 0;
+                length = result.length;
+            }
+            if (!length) {
+                return NaN;
             }
             offset += length;
+        }
+        if (offset !== dString.length || !result) {
+            return NaN;
         }
         dt.Y += dt.Y < 70 ? 2000 : dt.Y < 100 ? 1900 : 0;
         dt.H = dt.H || locale.parser.h(dt.h || 0, dt.A || 0);
