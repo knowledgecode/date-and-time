@@ -9,6 +9,7 @@
 - Universal (Isomorphic)
 - Multi language support
 - Not extending built-in Date object
+- Browserify support
 - Legacy IE support. IE6+
 
 ## Installation
@@ -16,7 +17,7 @@ via npm:
 ```shell
 $ npm install date-and-time --save
 ```
-via Bower:
+via Bower (DEPRECATED):
 ```shell
 $ bower install date-and-time
 ```
@@ -30,6 +31,10 @@ Node.js:
 ```javascript
 let date = require('date-and-time');
 ```
+ES6 Modules:
+```javascript
+import date from './date-and-time';
+```
 AMD:
 ```javascript
 require(['date-and-time'], function (date) {
@@ -39,13 +44,6 @@ the browser:
 ```javascript
 window.date;    // global object
 ```
-
-## Breaking changes in 0.4.0
-- `parse`
-    - It comes to return a `NaN` object in case of parse error.
-    - If year is not supplied in a date string, the default year of the returning date object is `1970`.
-- `locale`
-    - Slightly changed the internal structure.
 
 ## API
 
@@ -288,6 +286,14 @@ Node.js:
 let date = require('date-and-time');
 date.locale('fr');  // French
 date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
+```
+ES6 Modules:
+```javascript
+import date from './date-and-time';
+import './locale/it';
+
+date.locale('it');  // Italian
+date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
 ```
 AMD:
 ```javascript

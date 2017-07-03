@@ -71,9 +71,6 @@
                     pre: function (str) { return str; }
                 }
             }
-        },
-        isCommonJS = function () {
-            return typeof module === 'object' && typeof module.exports === 'object';
         };
 
     /**
@@ -287,7 +284,7 @@
      */
     date.locale = function (code) {
         if (code) {
-            if (code !== 'en' && isCommonJS()) {
+            if (code !== 'en' && typeof require === 'function' && global) {
                 require('./locale/' + code);
             }
             lang = code;
@@ -297,7 +294,7 @@
 
     /**
      * getting a definition of locale
-     * @param {String} code - language code
+     * @param {String} [code] - language code
      * @returns {Object} definition of locale
      */
     date.getLocales = function (code) {
@@ -335,7 +332,7 @@
         locales[code] = locale;
     };
 
-    if (isCommonJS()) {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = date;
     } else if (typeof define === 'function' && define.amd) {
         define([], function () {
