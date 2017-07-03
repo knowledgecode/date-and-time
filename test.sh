@@ -1,6 +1,7 @@
 #!/bin/sh -eu
 
 mocha test/test.js
+
 mocha test/ar.js
 mocha test/az.js
 mocha test/bn.js
@@ -35,3 +36,8 @@ mocha test/zh-tw.js
 
 mocha-phantomjs test/test.html
 
+browserify -t [ babelify --presets [ es2015 ] ] test/test.es6.js --outfile test/test.es5.js
+mocha-phantomjs test/test-es5.html
+
+browserify -t [ babelify --presets [ es2015 ] ] test/ja.es6.js --outfile test/ja.es5.js
+mocha-phantomjs test/ja-es5.html
