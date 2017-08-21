@@ -33,7 +33,7 @@ let date = require('date-and-time');
 ```
 ES6 Modules:
 ```javascript
-import date from './date-and-time';
+import date from 'date-and-time'
 ```
 AMD:
 ```javascript
@@ -289,8 +289,8 @@ date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
 ES6 Modules:
 ```javascript
-import date from './date-and-time';
-import './locale/it';
+import date from 'date-and-time';
+import 'date-and-time/locale/it';
 
 date.locale('it');  // Italian
 date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
