@@ -103,6 +103,7 @@
             offset = 0, keys, i, token, length, p, str, result, dateObj,
             re = /(MMMM?|A)|(YYYY)|(SSS)|(MM|DD|HH|hh|mm|ss)|(YY|M|D|H|h|m|s|SS)|(S)|(.)/g,
             exp = { 2: /^\d{1,4}/, 3: /^\d{1,3}/, 4: /^\d\d/, 5: /^\d\d?/, 6: /^\d/ },
+            last = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
             dt = { Y: 1970, M: 1, D: 1, H: 0, m: 0, s: 0, S: 0 };
 
         while ((keys = re.exec(formatString))) {
@@ -122,6 +123,8 @@
                 result = (str.match(exp[i]) || [''])[0];
                 dt[p] = (p === 'S' ? (result + '000').slice(0, -token.length) : result) | 0;
                 length = result.length;
+            } else if (p !== ' ' && p !== str[0]) {
+                return NaN;
             }
             if (!length) {
                 return NaN;
@@ -135,9 +138,8 @@
         dt.H = dt.H || locale.parser.h(dt.h || 0, dt.A || 0);
 
         dateObj = new Date(dt.Y, dt.M - 1, dt.D, dt.H, dt.m, dt.s, dt.S);
-        if (dt.Y !== dateObj.getFullYear() || dt.M - 1 !== dateObj.getMonth() || dt.D !== dateObj.getDate()
-            || dt.H !== dateObj.getHours() || dt.m !== dateObj.getMinutes() || dt.s !== dateObj.getSeconds()
-            || dt.S !== dateObj.getMilliseconds()) {
+        last[1] += date.isLeapYear(dateObj) | 0;
+        if (dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last[dt.M - 1] || dt.H > 23 || dt.m > 59 || dt.s > 59) {
             return NaN;
         }
         return utc ? date.addMinutes(dateObj, -dateObj.getTimezoneOffset()) : dateObj;

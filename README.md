@@ -2,7 +2,7 @@
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
 ## WHY
-[Moment.js](http://momentjs.com/), the most famous DateTime utility, is very useful. But it's also the bloated module (**16.6k** gz). If you are looking for a similar and smaller one, this would be a good solution.  
+Since JS modules are usually used in combination, we think trying to keep the size of each module small is important. This date time utility is one of the modules aiming for minimal and efficient.
 
 ## Features
 - Minimalist. Only has **1.9k** (minified and gzipped)
@@ -26,12 +26,18 @@ directly:
 <script src="date-and-time.min.js"></script>
 ```
 
+## Changes
+- `parse()`
+    - Parsing a string stricter
+    - Added white space as a wildcard character
+    - Fixed a daylight saving time issue
+
 ## Usage
 Node.js:
 ```javascript
 let date = require('date-and-time');
 ```
-ES6 Modules:
+babelify:
 ```javascript
 import date from './date-and-time';
 ```
@@ -106,6 +112,7 @@ date.parse('02-01-2015', 'DD-MM-YYYY');                     // => date object
 date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => (Jan 1 1970 23:14:05 GMT-0800)
 date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => (Jan 1 1970 15:14:05 GMT-0800)
 date.parse('Jam 1 2017', 'MMM D YYYY');                     // => NaN
+date.parse('Feb 29 2016', 'MMM D YYYY');                    // => date object
 date.parse('Feb 29 2017', 'MMM D YYYY');                    // => NaN
 ```
 
@@ -287,7 +294,7 @@ let date = require('date-and-time');
 date.locale('fr');  // French
 date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
-ES6 Modules:
+babelify:
 ```javascript
 import date from './date-and-time';
 import './locale/it';
