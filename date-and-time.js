@@ -122,7 +122,7 @@
                 result = (str.match(exp[i]) || [''])[0];
                 dt[p] = (p === 'S' ? (result + '000').slice(0, -token.length) : result) | 0;
                 length = result.length;
-            } else if (p !== str[0]) {
+            } else if (p !== ' ' && p !== str[0]) {
                 return NaN;
             }
             if (!length) {
