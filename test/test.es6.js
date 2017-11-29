@@ -619,6 +619,10 @@ describe('parse', () => {
         let now = new Date(2015, 11, 31, 23, 59, 59, 900);
         expect(date.parse('2015-12-31 23:59:59.9', 'YYYY-M-D H:m:s.S')).to.eql(now);
     });
+    it('YYYY M D H m s S', () => {
+        let now = new Date(2015, 11, 31, 23, 59, 59, 900);
+        expect(date.parse('2015-12-31 23:59:59.9', 'YYYY M D H m s S')).to.eql(now);
+    });
     it('YYYY-M-D H:m:s.S', () => {
         expect(isNaN(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S'))).to.be(true);
     });
@@ -633,6 +637,9 @@ describe('parse', () => {
     });
     it('20150101235959', () => {
         expect(isNaN(date.parse('20150101235959', '20150101235959'))).to.be(true);
+    });
+    it('YYYY?M?D H?m?s?S', () => {
+        expect(isNaN(date.parse('2015-12-31 23:59:59.9', 'YYYY?M?D H?m?s?S'))).to.be(true);
     });
 });
 

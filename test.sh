@@ -34,10 +34,10 @@ mocha test/vi.js
 mocha test/zh-cn.js
 mocha test/zh-tw.js
 
-mocha-phantomjs test/test.html
+phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test.html spec "{\"useColors\":true}"
 
-browserify -t [ babelify --presets [ es2015 ] ] test/test.es6.js --outfile test/test.es5.js
-mocha-phantomjs test/test-es5.html
+browserify -t [ babelify --presets [ env ] ] test/test.es6.js --outfile test/test.es5.js
+phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-es5.html spec "{\"useColors\":true}"
 
-browserify -t [ babelify --presets [ es2015 ] ] test/ja.es6.js --outfile test/ja.es5.js
-mocha-phantomjs test/ja-es5.html
+browserify -t [ babelify --presets [ env ] ] test/ja.es6.js --outfile test/ja.es5.js
+phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/ja-es5.html spec "{\"useColors\":true}"
