@@ -286,7 +286,7 @@
      */
     date.locale = function (code) {
         if (code) {
-            if (code !== 'en' && typeof require === 'function' && global) {
+            if (!locales[code] && typeof require === 'function' && global) {
                 require('./locale/' + code);
             }
             lang = code;
