@@ -27,10 +27,14 @@ directly:
 ```
 
 ## Changes
-- `parse()`
-    - Parsing a string stricter
-    - Added white space as a wildcard character
-    - Fixed a daylight saving time issue
+- 0.7.0
+    - Added Danish support
+
+- 0.6.0
+    - `parse()`
+        - Parsing a string stricter
+        - Added white space as a wildcard character
+        - Fixed a daylight saving time issue
 
 ## Usage
 Node.js:
@@ -261,6 +265,7 @@ It supports the following languages for now:
 - Chinese (zh-cn)
 - Chinese (zh-tw)
 - Czech (cs)
+- Danish (dk)
 - Dutch (nl)
 - English (en)
 - French (fr)
