@@ -7,6 +7,7 @@ mocha test/az.js
 mocha test/bn.js
 mocha test/cs.js
 mocha test/de.js
+mocha test/dk.js
 mocha test/el.js
 mocha test/es.js
 mocha test/fa.js
