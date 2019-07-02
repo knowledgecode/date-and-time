@@ -46,6 +46,51 @@
                     post: function (str) { return str; }
                 },
                 parser: {
+                    YYYY: function (str/*, formatString */) { return this.parser.exec(/^\d{1,4}/, str); },
+                    YY: function (str/*, formatString */) {
+                        var result = this.parser.exec(/^\d\d?/, str);
+                        result.value += result.value < 70 ? 2000 : result.value < 100 ? 1900 : 0;
+                        return result;
+                    },
+                    MMMM: function (str/*, formatString */) {
+                        var result = this.parser.find(this.MMMM, str);
+                        result.value++;
+                        return result;
+                    },
+                    MMM: function (str/*, formatString */) {
+                        var result = this.parser.find(this.MMM, str);
+                        result.value++;
+                        return result;
+                    },
+                    MM: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
+                    M: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
+                    DD: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
+                    D: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
+                    HH: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
+                    H: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
+                    A: function (str/*, formatString */) { return this.parser.find(this.A, str); },
+                    hh: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
+                    h: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
+                    mm: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
+                    m: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
+                    ss: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
+                    s: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
+                    SSS: function (str/*, formatString */) { return this.parser.exec(/^\d{1,3}/, str); },
+                    SS: function (str/*, formatString */) {
+                        var result = this.parser.exec(/^\d\d?/, str);
+                        result.value = (result + '000').slice(0, -2) | 0;
+                        return result;
+                    },
+                    S: function (str/*, formatString */) {
+                        var result = this.parser.exec(/^\d/, str);
+                        result.value = (result + '000').slice(0, -1) | 0;
+                        return result;
+                    },
+                    h12: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
+                    exec: function (re, str) {
+                        var result = (re.exec(str) || [''])[0];
+                        return { value: result | 0, length: result.length };
+                    },
                     find: function (array, str) {
                         var index = -1, length = 0;
 
@@ -56,18 +101,8 @@
                                 length = item.length;
                             }
                         }
-                        return { index: index, length: length };
+                        return { value: index, length: length };
                     },
-                    MMMM: function (str/*, formatString*/) {
-                        return this.parser.find(this.MMMM, str);
-                    },
-                    MMM: function (str/*, formatString*/) {
-                        return this.parser.find(this.MMM, str);
-                    },
-                    A: function (str/*, formatString*/) {
-                        return this.parser.find(this.A, str);
-                    },
-                    h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
                     pre: function (str) { return str; }
                 }
             }
@@ -75,10 +110,10 @@
 
     /**
      * formatting a date
-     * @param {Object} dateObj - date object
-     * @param {String} formatString - format string
-     * @param {Boolean} [utc] - output as UTC
-     * @returns {String} the formatted string
+     * @param {Date} dateObj - a date object
+     * @param {string} formatString - a format string
+     * @param {boolean} [utc] - output as UTC
+     * @returns {string} a formatted string
      */
     date.format = function (dateObj, formatString, utc) {
         var d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
@@ -92,74 +127,75 @@
     };
 
     /**
-     * parsing a date string
-     * @param {String} dateString - date string
-     * @param {String} formatString - format string
-     * @param {Boolean} [utc] - input as UTC
-     * @returns {Object} the constructed date
+     * pre-parsing a date string
+     * @param {string} dateString - a date string
+     * @param {string} formatString - a format string
+     * @returns {Object} a date structure
      */
-    date.parse = function (dateString, formatString, utc) {
-        var locale = locales[lang], dString = locale.parser.pre(dateString),
-            offset = 0, keys, i, token, length, p, str, result, dateObj,
-            re = /(MMMM?|A)|(YYYY)|(SSS)|(MM|DD|HH|hh|mm|ss)|(YY|M|D|H|h|m|s|SS)|(S)|(.)/g,
-            exp = { 2: /^\d{1,4}/, 3: /^\d{1,3}/, 4: /^\d\d/, 5: /^\d\d?/, 6: /^\d/ },
-            last = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+    date.preparse = function (dateString, formatString) {
+        var locale = locales[lang], parser = locale.parser,
+            re = /YYYY|YY|MMMM?|MM?|DD?|HH?|A|hh?|mm?|ss?|SS?S?|./g,
+            keys, token, result, offset = 0,
             dt = { Y: 1970, M: 1, D: 1, H: 0, m: 0, s: 0, S: 0 };
 
+        dateString = parser.pre(dateString);
+        formatString = formatString.replace(/\[[^\[\]]*]/g, function (str) {
+            return new Array(str.length - 1).join(' ');
+        });
         while ((keys = re.exec(formatString))) {
-            for (i = 0, length = 1, token = ''; !token;) {
-                token = keys[++i];
+            token = keys[0];
+            if (parser[token]) {
+                result = parser[token].call(locale, dateString.slice(offset));
+                offset += result.length;
+                dt[token.charAt(0)] = result.value;
+            } else {
+                offset += token.length;
             }
-            p = token.charAt(0);
-            str = dString.slice(offset);
-            if (i < 2) {
-                result = locale.parser[token].call(locale, str, formatString);
-                dt[p] = result.index;
-                if (p === 'M') {
-                    dt[p]++;
-                }
-                length = result.length;
-            } else if (i < 7) {
-                result = (str.match(exp[i]) || [''])[0];
-                dt[p] = (p === 'S' ? (result + '000').slice(0, -token.length) : result) | 0;
-                length = result.length;
-            } else if (p !== ' ' && p !== str[0]) {
-                return NaN;
-            }
-            if (!length) {
-                return NaN;
-            }
-            offset += length;
         }
-        if (offset !== dString.length || !result) {
-            return NaN;
-        }
-        dt.Y += dt.Y < 70 ? 2000 : dt.Y < 100 ? 1900 : 0;
-        dt.H = dt.H || locale.parser.h(dt.h || 0, dt.A || 0);
-
-        dateObj = new Date(dt.Y, dt.M - 1, dt.D, dt.H, dt.m, dt.s, dt.S);
-        last[1] += date.isLeapYear(dateObj) | 0;
-        if (dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last[dt.M - 1] || dt.H > 23 || dt.m > 59 || dt.s > 59) {
-            return NaN;
-        }
-        return utc ? date.addMinutes(dateObj, -dateObj.getTimezoneOffset()) : dateObj;
+        dt.H = dt.H || parser.h12(dt.h || 0, dt.A || 0);
+        return dt;
     };
 
     /**
      * validation
-     * @param {String} dateString - date string
-     * @param {String} formatString - format string
-     * @returns {Boolean} whether the date string is a valid date
+     * @param {Object|string} arg - a date structure or a date string
+     * @param {string} [formatString] - a format string
+     * @returns {boolean} whether the date string is a valid date
      */
-    date.isValid = function (dateString, formatString) {
-        return !!date.parse(dateString, formatString);
+    date.isValid = function (arg, formatString) {
+        var dt = typeof arg === 'string' ? date.preparse(arg, formatString) : arg,
+            last = [31, 28 + date.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
+
+        return !(dt.Y < 1 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last || dt.H > 23 || dt.m > 59 || dt.s > 59);
+    };
+
+    /**
+     * parsing a date string
+     * @param {string} dateString - a date string
+     * @param {string} formatString - a format string
+     * @param {boolean} [utc] - input as UTC
+     * @returns {Date} a constructed date
+     */
+    date.parse = function (dateString, formatString, utc) {
+        var dt = date.preparse(dateString, formatString), dateObj;
+
+        if (date.isValid(dt)) {
+            dt.M -= dt.Y < 100 ? 22801 : 1; // 22801 = 1900 * 12 + 1
+            if (utc) {
+                dateObj = new Date(Date.UTC(dt.Y, dt.M, dt.D, dt.H, dt.m, dt.s, dt.S));
+            } else {
+                dateObj = new Date(dt.Y, dt.M, dt.D, dt.H, dt.m, dt.s, dt.S);
+            }
+            return dateObj;
+        }
+        return new Date(NaN);
     };
 
     /**
      * adding years
-     * @param {Object} dateObj - date object
-     * @param {Number} years - adding year
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} years - number of years to add
+     * @returns {Date} a date after adding the value
      */
     date.addYears = function (dateObj, years) {
         return date.addMonths(dateObj, years * 12);
@@ -167,9 +203,9 @@
 
     /**
      * adding months
-     * @param {Object} dateObj - date object
-     * @param {Number} months - adding month
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} months - number of months to add
+     * @returns {Date} a date after adding the value
      */
     date.addMonths = function (dateObj, months) {
         var d = new Date(dateObj.getTime());
@@ -180,9 +216,9 @@
 
     /**
      * adding days
-     * @param {Object} dateObj - date object
-     * @param {Number} days - adding day
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} days - number of days to add
+     * @returns {Date} a date after adding the value
      */
     date.addDays = function (dateObj, days) {
         var d = new Date(dateObj.getTime());
@@ -193,9 +229,9 @@
 
     /**
      * adding hours
-     * @param {Object} dateObj - date object
-     * @param {Number} hours - adding hour
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} hours - number of hours to add
+     * @returns {Date} a date after adding the value
      */
     date.addHours = function (dateObj, hours) {
         return date.addMilliseconds(dateObj, hours * 3600000);
@@ -203,9 +239,9 @@
 
     /**
      * adding minutes
-     * @param {Object} dateObj - date object
-     * @param {Number} minutes - adding minute
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} minutes - number of minutes to add
+     * @returns {Date} a date after adding the value
      */
     date.addMinutes = function (dateObj, minutes) {
         return date.addMilliseconds(dateObj, minutes * 60000);
@@ -213,9 +249,9 @@
 
     /**
      * adding seconds
-     * @param {Object} dateObj - date object
-     * @param {Number} seconds - adding second
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} seconds - number of seconds to add
+     * @returns {Date} a date after adding the value
      */
     date.addSeconds = function (dateObj, seconds) {
         return date.addMilliseconds(dateObj, seconds * 1000);
@@ -223,9 +259,9 @@
 
     /**
      * adding milliseconds
-     * @param {Object} dateObj - date object
-     * @param {Number} milliseconds - adding millisecond
-     * @returns {Object} the date after adding the value
+     * @param {Date} dateObj - a date object
+     * @param {number} milliseconds - number of milliseconds to add
+     * @returns {Date} a date after adding the value
      */
     date.addMilliseconds = function (dateObj, milliseconds) {
         return new Date(dateObj.getTime() + milliseconds);
@@ -233,9 +269,9 @@
 
     /**
      * subtracting
-     * @param {Object} date1 - date object
-     * @param {Object} date2 - date object
-     * @returns {Object} the result object after subtracting the date
+     * @param {Date} date1 - a date object
+     * @param {Date} date2 - a date object
+     * @returns {Object} a result object subtracting the date
      */
     date.subtract = function (date1, date2) {
         var delta = date1.getTime() - date2.getTime();
@@ -261,19 +297,18 @@
 
     /**
      * leap year
-     * @param {Object} dateObj - date object
-     * @returns {Boolean} whether the year is a leap year
+     * @param {number} y - year
+     * @returns {boolean} whether the year is a leap year
      */
-    date.isLeapYear = function (dateObj) {
-        var y = dateObj.getFullYear();
+    date.isLeapYear = function (y) {
         return (!(y % 4) && !!(y % 100)) || !(y % 400);
     };
 
     /**
-     * comparison of dates
-     * @param {Object} date1 - target for comparison
-     * @param {Object} date2 - target for comparison
-     * @returns {Boolean} whether the dates are the same day (times are ignored)
+     * comparison of two dates
+     * @param {Date} date1 - 1st date to compare
+     * @param {Date} date2 - 2nd date to compare
+     * @returns {boolean} whether the dates are the same day (times are ignored)
      */
     date.isSameDay = function (date1, date2) {
         return date.format(date1, 'YYYYMMDD') === date.format(date2, 'YYYYMMDD');
@@ -281,8 +316,8 @@
 
     /**
      * setting a locale
-     * @param {String} [code] - language code
-     * @returns {String} current language code
+     * @param {string} [code] - language code
+     * @returns {string} current language code
      */
     date.locale = function (code) {
         if (code) {
@@ -296,7 +331,7 @@
 
     /**
      * getting a definition of locale
-     * @param {String} [code] - language code
+     * @param {string} [code] - language code
      * @returns {Object} definition of locale
      */
     date.getLocales = function (code) {
@@ -305,7 +340,7 @@
 
     /**
      * adding a new definition of locale
-     * @param {String} code - language code
+     * @param {string} code - language code
      * @param {Object} options - definition of locale
      * @returns {void}
      */
