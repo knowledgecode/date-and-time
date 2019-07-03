@@ -28,7 +28,7 @@
                 }
             },
             parser: {
-                h: function (h, a) {
+                h12: function (h, a) {
                     if (a < 2) {
                         return h;   // ночи, утра
                     }

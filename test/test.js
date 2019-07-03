@@ -5,46 +5,130 @@
         date = global.date || require('../date-and-time');
 
     describe('format', function () {
-        it('"YYYY" equals to "2015"', function () {
-            var now = new Date(2015, 0, 1, 12, 34, 56, 789);
-            expect(date.format(now, 'YYYY')).to.equal('2015');
+        it('"YYYY" equals to "0001"', function () {
+            var now = new Date(0, -1899 * 12, 1);
+            expect(date.format(now, 'YYYY')).to.equal('0001');
+        });
+        it('"YYYY" equals to "0099"', function () {
+            var now = new Date(0, -1801 * 12, 1);
+            expect(date.format(now, 'YYYY')).to.equal('0099');
+        });
+        it('"YYYY" equals to "0100"', function () {
+            var now = new Date(100, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('0100');
+        });
+        it('"YYYY" equals to "1800"', function () {
+            var now = new Date(1800, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('1800');
+        });
+        it('"YYYY" equals to "1899"', function () {
+            var now = new Date(1899, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('1899');
         });
         it('"YYYY" equals to "1900"', function () {
-            var now = new Date(0, 0, 1);
+            var now = new Date(1900, 0, 1);
             expect(date.format(now, 'YYYY')).to.equal('1900');
+        });
+        it('"YYYY" equals to "1901"', function () {
+            var now = new Date(1901, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('1901');
+        });
+        it('"YYYY" equals to "1970"', function () {
+            var now = new Date(1970, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('1970');
+        });
+        it('"YYYY" equals to "1999"', function () {
+            var now = new Date(1999, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('1999');
+        });
+        it('"YYYY" equals to "2000"', function () {
+            var now = new Date(2000, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('2000');
+        });
+        it('"YYYY" equals to "2001"', function () {
+            var now = new Date(2001, 0, 1);
+            expect(date.format(now, 'YYYY')).to.equal('2001');
         });
         it('"YYYY" equals to "9999"', function () {
             var now = new Date(9999, 0, 1);
             expect(date.format(now, 'YYYY')).to.equal('9999');
-        });
-        it('"YYYY" equals to "0101"', function () {
-            var now = new Date(101, 0, 1, 12, 34, 56, 789);
-            expect(date.format(now, 'YYYY')).to.equal('0101');
         });
         it('"YYYY" as UTC equals to "XXXX"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789),
                 utc = true;
             expect(date.format(now, 'YYYY', utc)).to.equal('' + now.getUTCFullYear());
         });
-        it('"YY" equals to "15"', function () {
-            var now = new Date(2015, 0, 1, 12, 34, 56, 789);
-            expect(date.format(now, 'YY')).to.equal('15');
-        });
         it('"YY" equals to "00"', function () {
             var now = new Date(0, 0, 1);
             expect(date.format(now, 'YY')).to.equal('00');
+        });
+        it('"YY" equals to "01"', function () {
+            var now = new Date(0, -1899 * 12, 1);
+            expect(date.format(now, 'YY')).to.equal('01');
+        });
+        it('"YY" equals to "99"', function () {
+            var now = new Date(0, -1801 * 12, 1);
+            expect(date.format(now, 'YY')).to.equal('99');
+        });
+        it('"YY" equals to "00"', function () {
+            var now = new Date(100, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('00');
+        });
+        it('"YY" equals to "01"', function () {
+            var now = new Date(101, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('01');
+        });
+        it('"YY" equals to "99"', function () {
+            var now = new Date(199, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('99');
+        });
+        it('"YY" equals to "00"', function () {
+            var now = new Date(1900, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('00');
+        });
+        it('"YY" equals to "01"', function () {
+            var now = new Date(1901, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('01');
+        });
+        it('"YY" equals to "99"', function () {
+            var now = new Date(1999, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('99');
+        });
+        it('"YY" equals to "00"', function () {
+            var now = new Date(2000, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('00');
+        });
+        it('"YY" equals to "01"', function () {
+            var now = new Date(2001, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('01');
+        });
+        it('"YY" equals to "99"', function () {
+            var now = new Date(2099, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('99');
+        });
+        it('"YY" equals to "00"', function () {
+            var now = new Date(9900, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('00');
+        });
+        it('"YY" equals to "01"', function () {
+            var now = new Date(9901, 0, 1);
+            expect(date.format(now, 'YY')).to.equal('01');
         });
         it('"YY" equals to "99"', function () {
             var now = new Date(9999, 0, 1);
             expect(date.format(now, 'YY')).to.equal('99');
         });
-        it('"YY" equals to "01"', function () {
-            var now = new Date(101, 0, 1, 12, 34, 56, 789);
-            expect(date.format(now, 'YY')).to.equal('01');
-        });
         it('"YY" as UTC equals to "XX"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789);
             expect(date.format(now, 'YY')).to.equal('' + (now.getUTCFullYear() - 2000));
+        });
+        it('"Y" equals to "1"', function () {
+            var now = new Date(0, -1899 * 12, 1);
+            expect(date.format(now, 'Y')).to.equal('1');
+        });
+        it('"Y" equals to "10"', function () {
+            var now = new Date(0, -1890 * 12, 1);
+            expect(date.format(now, 'Y')).to.equal('10');
         });
         it('"Y" equals to "100"', function () {
             var now = new Date(100, 0, 1);
@@ -57,6 +141,10 @@
         it('"Y" equals to "10000"', function () {
             var now = new Date(10000, 0, 1);
             expect(date.format(now, 'Y')).to.equal('10000');
+        });
+        it('"Y" as UTC equals to "X"', function () {
+            var now = new Date(2015, 0, 1, 12, 34, 56, 789);
+            expect(date.format(now, 'Y')).to.equal('' + (now.getUTCFullYear()));
         });
         it('"MMMM" equals to "January"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789);
@@ -391,36 +479,78 @@
 
     describe('parse', function () {
         it('YYYY', function () {
-            var now = new Date(2015, 0, 1);
-            expect(date.parse('2015', 'YYYY')).to.eql(now);
+            expect(isNaN(date.parse('0', 'YYYY'))).to.be(true);
+        });
+        it('YYYY', function () {
+            expect(isNaN(date.parse('0000', 'YYYY'))).to.be(true);
+        });
+        it('YYYY', function () {
+            var now = new Date(0, -1899 * 12, 1);
+            expect(date.parse('1', 'YYYY')).to.eql(now);
+        });
+        it('YYYY', function () {
+            var now = new Date(0, -1899 * 12, 1);
+            expect(date.parse('0001', 'YYYY')).to.eql(now);
+        });
+        it('YYYY', function () {
+            var now = new Date(0, -1801 * 12, 1);
+            expect(date.parse('99', 'YYYY')).to.eql(now);
+        });
+        it('YYYY', function () {
+            var now = new Date(0, -1801 * 12, 1);
+            expect(date.parse('0099', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
             var now = new Date(100, 0, 1);
             expect(date.parse('100', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
-            var now = new Date(9999, 0, 1);
-            expect(date.parse('9999', 'YYYY')).to.eql(now);
+            var now = new Date(100, 0, 1);
+            expect(date.parse('0100', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
-            var now = new Date(99, 0, 1);
-            expect(date.parse('99', 'YYYY')).to.eql(now);
+            var now = new Date(1899, 0, 1);
+            expect(date.parse('1899', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
-            var now = new Date(2009, 0, 1);
-            expect(date.parse('9', 'YYYY')).to.eql(now);
+            var now = new Date(1900, 0, 1);
+            expect(date.parse('1900', 'YYYY')).to.eql(now);
+        });
+        it('YYYY', function () {
+            var now = new Date(1969, 0, 1);
+            expect(date.parse('1969', 'YYYY')).to.eql(now);
+        });
+        it('YYYY', function () {
+            var now = new Date(1970, 0, 1);
+            expect(date.parse('1970', 'YYYY')).to.eql(now);
+        });
+        it('YYYY', function () {
+            var now = new Date(1999, 0, 1);
+            expect(date.parse('1999', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
             var now = new Date(2000, 0, 1);
-            expect(date.parse('0', 'YYYY')).to.eql(now);
+            expect(date.parse('2000', 'YYYY')).to.eql(now);
         });
-        it('YY', function () {
-            var now = new Date(2015, 0, 1);
-            expect(date.parse('15', 'YY')).to.eql(now);
+        it('YYYY', function () {
+            var now = new Date(9999, 0, 1);
+            expect(date.parse('9999', 'YYYY')).to.eql(now);
         });
         it('YY', function () {
             var now = new Date(2000, 0, 1);
             expect(date.parse('0', 'YY')).to.eql(now);
+        });
+        it('YY', function () {
+            var now = new Date(2000, 0, 1);
+            expect(date.parse('00', 'YY')).to.eql(now);
+        });
+        it('YY', function () {
+            var now = new Date(2001, 0, 1);
+            expect(date.parse('1', 'YY')).to.eql(now);
+        });
+        it('YY', function () {
+            var now = new Date(2001, 0, 1);
+            expect(date.parse('01', 'YY')).to.eql(now);
         });
         it('YY', function () {
             var now = new Date(2010, 0, 1);
@@ -629,6 +759,30 @@
         it('YYYY-M-D H:m:s.S', function () {
             expect(isNaN(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S'))).to.be(true);
         });
+        it('MMDDHHmmssSSS', function () {
+            var now = new Date(1970, 11, 31, 23, 59, 59, 999);
+            expect(date.parse('1231235959999', 'MMDDHHmmssSSS')).to.eql(now);
+        });
+        it('DDHHmmssSSS', function () {
+            var now = new Date(1970, 0, 31, 23, 59, 59, 999);
+            expect(date.parse('31235959999', 'DDHHmmssSSS')).to.eql(now);
+        });
+        it('HHmmssSSS', function () {
+            var now = new Date(1970, 0, 1, 23, 59, 59, 999);
+            expect(date.parse('235959999', 'HHmmssSSS')).to.eql(now);
+        });
+        it('mmssSSS', function () {
+            var now = new Date(1970, 0, 1, 0, 59, 59, 999);
+            expect(date.parse('5959999', 'mmssSSS')).to.eql(now);
+        });
+        it('ssSSS', function () {
+            var now = new Date(1970, 0, 1, 0, 0, 59, 999);
+            expect(date.parse('59999', 'ssSSS')).to.eql(now);
+        });
+        it('SSS', function () {
+            var now = new Date(1970, 0, 1, 0, 0, 0, 999);
+            expect(date.parse('999', 'SSS')).to.eql(now);
+        });
         it('foo', function () {
             expect(isNaN(date.parse('20150101235959', 'foo'))).to.be(true);
         });
@@ -643,6 +797,16 @@
         });
         it('YYYY?M?D H?m?s?S', function () {
             expect(isNaN(date.parse('2015-12-31 23:59:59.9', 'YYYY?M?D H?m?s?S'))).to.be(true);
+        });
+        it('[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S', function () {
+            var now = new Date(2015, 11, 31, 23, 59, 59, 900);
+            expect(date.parse('Y2015M12D31H23m59s59S9', '[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S')).to.eql(now);
+        });
+        it('[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]', function () {
+            expect(isNaN(date.parse('[Y]2015[M]12[D]31[H]23[m]59[s]59[S]9', '[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]'))).to.be(true);
+        });
+        it('                 ', function () {
+            expect(isNaN(date.parse('20151231235959900', '                 '))).to.be(true);
         });
     });
 
@@ -904,16 +1068,16 @@
 
     describe('leap year', function () {
         it('2012-2-29 It is valid.', function () {
-            expect(date.isLeapYear(new Date(2012, 0, 1))).to.be(true);
+            expect(date.isLeapYear(new Date(2012, 0, 1).getFullYear())).to.be(true);
         });
         it('2100-2-29 It is invalid.', function () {
-            expect(date.isLeapYear(new Date(2100, 0, 1))).to.be(false);
+            expect(date.isLeapYear(new Date(2100, 0, 1).getFullYear())).to.be(false);
         });
         it('2000-2-29 It is valid.', function () {
-            expect(date.isLeapYear(new Date(2000, 0, 1))).to.be(true);
+            expect(date.isLeapYear(new Date(2000, 0, 1).getFullYear())).to.be(true);
         });
         it('2014-2-29 It is invalid.', function () {
-            expect(date.isLeapYear(new Date(2014, 0, 1))).to.be(false);
+            expect(date.isLeapYear(new Date(2014, 0, 1).getFullYear())).to.be(false);
         });
     });
 

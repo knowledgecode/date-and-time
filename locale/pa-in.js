@@ -38,7 +38,7 @@
                 }
             },
             parser: {
-                h: function (h, a) {
+                h12: function (h, a) {
                     if (a < 1) {
                         return h < 4 || h > 11 ? h : h + 12;    // ਰਾਤ
                     } else if (a < 2) {

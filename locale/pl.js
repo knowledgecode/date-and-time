@@ -23,7 +23,9 @@
             },
             parser: {
                 MMMM: function (str, formatString) {
-                    return this.parser.find(this.MMMM[/D MMMM/.test(formatString) ? 'subjective' : 'nominative'], str);
+                    var result = this.parser.find(this.MMMM[/D MMMM/.test(formatString) ? 'subjective' : 'nominative'], str);
+                    result.value++;
+                    return result;
                 }
             }
         });

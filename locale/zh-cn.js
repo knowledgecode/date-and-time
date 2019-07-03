@@ -32,7 +32,7 @@
                 }
             },
             parser: {
-                h: function (h, a) {
+                h12: function (h, a) {
                     if (a < 4) {
                         return h;   // 凌晨, 早上, 上午, 中午
                     }
