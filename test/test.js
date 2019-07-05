@@ -477,6 +477,365 @@
         });
     });
 
+    describe('preparse', function () {
+        it('YYYY', function () {
+            var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.preparse('0', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('0000', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.preparse('1', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('0001', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 99, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('99', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 99, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('0099', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 100, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 3, _length: 3, _match: 1 };
+            expect(date.preparse('100', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 100, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('0100', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1899, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('1899', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1900, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('1900', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1969, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('1969', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('1970', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 1999, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('1999', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 2000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('2000', 'YYYY')).to.eql(dt);
+        });
+        it('YYYY', function () {
+            var dt = { Y: 9999, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
+            expect(date.preparse('9999', 'YYYY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 2000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.preparse('0', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 2000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('00', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 2001, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.preparse('1', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 2001, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('01', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 2010, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('10', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 2069, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('69', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('70', 'YY')).to.eql(dt);
+        });
+        it('YY', function () {
+            var dt = { Y: 1999, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('99', 'YY')).to.eql(dt);
+        });
+        it('YYYY MMMM', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 12, _length: 12, _match: 2 };
+            expect(date.preparse('2015 January', 'YYYY MMMM')).to.eql(dt);
+        });
+        it('YYYY MMMM', function () {
+            var dt = { Y: 2015, M: 12, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 13, _length: 13, _match: 2 };
+            expect(date.preparse('2015 December', 'YYYY MMMM')).to.eql(dt);
+        });
+        it('YYYY MMMM', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 5, _length: 9, _match: 1 };
+            expect(date.preparse('2015 Zero', 'YYYY MMMM')).to.eql(dt);
+        });
+        it('YYYY MMM', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 8, _length: 8, _match: 2 };
+            expect(date.preparse('2015 Jan', 'YYYY MMM')).to.eql(dt);
+        });
+        it('YYYY MMM', function () {
+            var dt = { Y: 2015, M: 12, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 8, _length: 8, _match: 2 };
+            expect(date.preparse('2015 Dec', 'YYYY MMM')).to.eql(dt);
+        });
+        it('YYYY MMM', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 5, _length: 9, _match: 1 };
+            expect(date.preparse('2015 Zero', 'YYYY MMM')).to.eql(dt);
+        });
+        it('YYYY-MM', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 7, _length: 7, _match: 2 };
+            expect(date.preparse('2015-01', 'YYYY-MM')).to.eql(dt);
+        });
+        it('YYYY-MM', function () {
+            var dt = { Y: 2015, M: 12, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 7, _length: 7, _match: 2 };
+            expect(date.preparse('2015-12', 'YYYY-MM')).to.eql(dt);
+        });
+        it('YYYY-MM', function () {
+            var dt = { Y: 2015, M: 0, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 7, _length: 7, _match: 2 };
+            expect(date.preparse('2015-00', 'YYYY-MM')).to.eql(dt);
+        });
+        it('YYYY-M', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 6, _length: 6, _match: 2 };
+            expect(date.preparse('2015-1', 'YYYY-M')).to.eql(dt);
+        });
+        it('YYYY-M', function () {
+            var dt = { Y: 2015, M: 12, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 7, _length: 7, _match: 2 };
+            expect(date.preparse('2015-12', 'YYYY-M')).to.eql(dt);
+        });
+        it('YYYY-M', function () {
+            var dt = { Y: 2015, M: 0, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 6, _length: 6, _match: 2 };
+            expect(date.preparse('2015-0', 'YYYY-M')).to.eql(dt);
+        });
+        it('YYYY-MM-DD', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 10, _length: 10, _match: 3 };
+            expect(date.preparse('2015-01-01', 'YYYY-MM-DD')).to.eql(dt);
+        });
+        it('YYYY-MM-DD', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 10, _length: 10, _match: 3 };
+            expect(date.preparse('2015-12-31', 'YYYY-MM-DD')).to.eql(dt);
+        });
+        it('YYYY-MM-DD', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 10, _length: 10, _match: 3 };
+            expect(date.preparse('2015-00-00', 'YYYY-MM-DD')).to.eql(dt);
+        });
+        it('YYYY-M-D', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 8, _length: 8, _match: 3 };
+            expect(date.preparse('2015-1-1', 'YYYY-M-D')).to.eql(dt);
+        });
+        it('YYYY-M-D', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 10, _length: 10, _match: 3 };
+            expect(date.preparse('2015-12-31', 'YYYY-M-D')).to.eql(dt);
+        });
+        it('YYYY-M-D', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 8, _length: 8, _match: 3 };
+            expect(date.preparse('2015-0-0', 'YYYY-M-D')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 13, _length: 13, _match: 4 };
+            expect(date.preparse('2015-01-01 00', 'YYYY-MM-DD HH')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 13, _length: 13, _match: 4 };
+            expect(date.preparse('2015-12-31 23', 'YYYY-MM-DD HH')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 13, _length: 13, _match: 4 };
+            expect(date.preparse('2015-00-00 24', 'YYYY-MM-DD HH')).to.eql(dt);
+        });
+        it('YYYY-M-D H', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 10, _length: 10, _match: 4 };
+            expect(date.preparse('2015-1-1 0', 'YYYY-M-D H')).to.eql(dt);
+        });
+        it('YYYY-M-D H', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 13, _length: 13, _match: 4 };
+            expect(date.preparse('2015-12-31 23', 'YYYY-M-D H')).to.eql(dt);
+        });
+        it('YYYY-M-D H', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 11, _length: 11, _match: 4 };
+            expect(date.preparse('2015-0-0 24', 'YYYY-M-D H')).to.eql(dt);
+        });
+        it('YYYY-M-D hh A', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 12, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-1-1 12 a.m.', 'YYYY-M-D hh A')).to.eql(dt);
+        });
+        it('YYYY-M-D hh A', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 1, h: 11, m: 0, s: 0, S: 0, _index: 18, _length: 18, _match: 5 };
+            expect(date.preparse('2015-12-31 11 p.m.', 'YYYY-M-D hh A')).to.eql(dt);
+        });
+        it('YYYY-M-D hh A', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 0, A: 0, h: 12, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-0-0 12 a.m.', 'YYYY-M-D hh A')).to.eql(dt);
+        });
+        it('YYYY-M-D h A', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 12, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-1-1 12 a.m.', 'YYYY-M-D h A')).to.eql(dt);
+        });
+        it('YYYY-M-D h A', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 1, h: 11, m: 0, s: 0, S: 0, _index: 18, _length: 18, _match: 5 };
+            expect(date.preparse('2015-12-31 11 p.m.', 'YYYY-M-D h A')).to.eql(dt);
+        });
+        it('YYYY-M-D h A', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 0, A: 0, h: 12, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-0-0 12 a.m.', 'YYYY-M-D h A')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH:mm', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-01-01 00:00', 'YYYY-MM-DD HH:mm')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH:mm', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-12-31 23:59', 'YYYY-MM-DD HH:mm')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH:mm', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-00-00 24:60', 'YYYY-MM-DD HH:mm')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 12, _length: 12, _match: 5 };
+            expect(date.preparse('2015-1-1 0:0', 'YYYY-M-D H:m')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 0, S: 0, _index: 16, _length: 16, _match: 5 };
+            expect(date.preparse('2015-12-31 23:59', 'YYYY-M-D H:m')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 0, S: 0, _index: 14, _length: 14, _match: 5 };
+            expect(date.preparse('2015-0-0 24:60', 'YYYY-M-D H:m')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH:mm:ss', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 19, _length: 19, _match: 6 };
+            expect(date.preparse('2015-01-01 00:00:00', 'YYYY-MM-DD HH:mm:ss')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH:mm:ss', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 0, _index: 19, _length: 19, _match: 6 };
+            expect(date.preparse('2015-12-31 23:59:59', 'YYYY-MM-DD HH:mm:ss')).to.eql(dt);
+        });
+        it('YYYY-MM-DD HH:mm:ss', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 60, S: 0, _index: 19, _length: 19, _match: 6 };
+            expect(date.preparse('2015-00-00 24:60:60', 'YYYY-MM-DD HH:mm:ss')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 14, _length: 14, _match: 6 };
+            expect(date.preparse('2015-1-1 0:0:0', 'YYYY-M-D H:m:s')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 0, _index: 19, _length: 19, _match: 6 };
+            expect(date.preparse('2015-12-31 23:59:59', 'YYYY-M-D H:m:s')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 60, S: 0, _index: 17, _length: 17, _match: 6 };
+            expect(date.preparse('2015-0-0 24:60:60', 'YYYY-M-D H:m:s')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.SSS', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 7 };
+            expect(date.preparse('2015-1-1 0:0:0.0', 'YYYY-M-D H:m:s.SSS')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.SSS', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 999, _index: 23, _length: 23, _match: 7 };
+            expect(date.preparse('2015-12-31 23:59:59.999', 'YYYY-M-D H:m:s.SSS')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.SSS', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 61, S: 0, _index: 21, _length: 21, _match: 7 };
+            expect(date.preparse('2015-0-0 24:60:61.000', 'YYYY-M-D H:m:s.SSS')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.SS', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 7 };
+            expect(date.preparse('2015-1-1 0:0:0.0', 'YYYY-M-D H:m:s.SS')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.SS', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 990, _index: 22, _length: 22, _match: 7 };
+            expect(date.preparse('2015-12-31 23:59:59.99', 'YYYY-M-D H:m:s.SS')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.SS', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 61, S: 0, _index: 20, _length: 20, _match: 7 };
+            expect(date.preparse('2015-0-0 24:60:61.00', 'YYYY-M-D H:m:s.SS')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.S', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 16, _length: 16, _match: 7 };
+            expect(date.preparse('2015-1-1 0:0:0.0', 'YYYY-M-D H:m:s.S')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.S', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 900, _index: 21, _length: 21, _match: 7 };
+            expect(date.preparse('2015-12-31 23:59:59.9', 'YYYY-M-D H:m:s.S')).to.eql(dt);
+        });
+        it('YYYY M D H m s S', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 900, _index: 21, _length: 21, _match: 7 };
+            expect(date.preparse('2015-12-31 23:59:59.9', 'YYYY M D H m s S')).to.eql(dt);
+        });
+        it('YYYY-M-D H:m:s.S', function () {
+            var dt = { Y: 2015, M: 0, D: 0, H: 24, A: 0, h: 0, m: 60, s: 61, S: 0, _index: 19, _length: 19, _match: 7 };
+            expect(date.preparse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S')).to.eql(dt);
+        });
+        it('MMDDHHmmssSSS', function () {
+            var dt = { Y: 1970, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 999, _index: 13, _length: 13, _match: 6 };
+            expect(date.preparse('1231235959999', 'MMDDHHmmssSSS')).to.eql(dt);
+        });
+        it('DDHHmmssSSS', function () {
+            var dt = { Y: 1970, M: 1, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 999, _index: 11, _length: 11, _match: 5 };
+            expect(date.preparse('31235959999', 'DDHHmmssSSS')).to.eql(dt);
+        });
+        it('HHmmssSSS', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 23, A: 0, h: 0, m: 59, s: 59, S: 999, _index: 9, _length: 9, _match: 4 };
+            expect(date.preparse('235959999', 'HHmmssSSS')).to.eql(dt);
+        });
+        it('mmssSSS', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 59, s: 59, S: 999, _index: 7, _length: 7, _match: 3 };
+            expect(date.preparse('5959999', 'mmssSSS')).to.eql(dt);
+        });
+        it('ssSSS', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 59, S: 999, _index: 5, _length: 5, _match: 2 };
+            expect(date.preparse('59999', 'ssSSS')).to.eql(dt);
+        });
+        it('SSS', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 999, _index: 3, _length: 3, _match: 1 };
+            expect(date.preparse('999', 'SSS')).to.eql(dt);
+        });
+        it('foo', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 14, _match: 0 };
+            expect(date.preparse('20150101235959', 'foo')).to.eql(dt);
+        });
+        it('bar', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 14, _match: 0 };
+            expect(date.preparse('20150101235959', 'bar')).to.eql(dt);
+        });
+        it('YYYYMMDD', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 8, _length: 14, _match: 3 };
+            expect(date.preparse('20150101235959', 'YYYYMMDD')).to.eql(dt);
+        });
+        it('20150101235959', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 14, _length: 14, _match: 0 };
+            expect(date.preparse('20150101235959', '20150101235959')).to.eql(dt);
+        });
+        it('YYYY?M?D H?m?s?S', function () {
+            var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 21, _match: 1 };
+            expect(date.preparse('2015-12-31 23:59:59.9', 'YYYY?M?D H?m?s?S')).to.eql(dt);
+        });
+        it('[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 900, _index: 22, _length: 22, _match: 7 };
+            expect(date.preparse('Y2015M12D31H23m59s59S9', '[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S')).to.eql(dt);
+        });
+        it('[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 36, _length: 36, _match: 0 };
+            expect(date.preparse('[Y]2015[M]12[D]31[H]23[m]59[s]59[S]9', '[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]')).to.eql(dt);
+        });
+        it('                 ', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 17, _length: 17, _match: 0 };
+            expect(date.preparse('20151231235959900', '                 ')).to.eql(dt);
+        });
+    });
+
     describe('parse', function () {
         it('YYYY', function () {
             expect(isNaN(date.parse('0', 'YYYY'))).to.be(true);
