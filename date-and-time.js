@@ -136,7 +136,7 @@
         var locale = locales[lang], parser = locale.parser,
             re = /YYYY|YY|MMMM?|MM?|DD?|HH?|A|hh?|mm?|ss?|SS?S?|./g,
             keys, token, result, offset = 0,
-            dt = { Y: 1970, M: 1, D: 1, H: 0, m: 0, s: 0, S: 0, match: 0, mismatch: 0 };
+            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 0, _match: 0 };
 
         dateString = parser.pre(dateString);
         formatString = formatString.replace(/\[[^\[\]]*]|\[.*\][^\[]*\]/g, function (str) {
@@ -146,17 +146,21 @@
             token = keys[0];
             if (parser[token]) {
                 result = parser[token].call(locale, dateString.slice(offset), formatString);
+                if (!result.length) {
+                    break;
+                }
                 offset += result.length;
                 dt[token.charAt(0)] = result.value;
-                dt.match += result.length;
+                dt._match++;
             } else if (token === dateString.charAt(offset) || token === ' ') {
-                offset += token.length;
+                offset++;
             } else {
                 break;
             }
         }
-        dt.H = dt.H || parser.h12(dt.h || 0, dt.A || 0);
-        dt.mismatch = dateString.length - offset;
+        dt.H = dt.H || parser.h12(dt.h, dt.A);
+        dt._index = offset;
+        dt._length = dateString.length;
         return dt;
     };
 
@@ -171,8 +175,9 @@
             last = [31, 28 + date.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
 
         return !(
-            dt.mismatch || !dt.match ||
-            dt.Y < 1 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last || dt.H > 23 || dt.m > 59 || dt.s > 59
+            !dt._match || dt._length - dt._index ||
+            dt.Y < 1 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
+            dt.H > 23 || dt.m > 59 || dt.s > 59
         );
     };
 
