@@ -175,9 +175,9 @@
             last = [31, 28 + date.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
 
         return !(
-            !dt._match || dt._length - dt._index ||
+            dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
             dt.Y < 1 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
-            dt.H > 23 || dt.m > 59 || dt.s > 59
+            dt.H > 23 || dt.H < 0 || dt.m > 59 || dt.m < 0 || dt.s > 59 || dt.s < 0 || dt.S > 999 || dt.S < 0
         );
     };
 
