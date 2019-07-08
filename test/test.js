@@ -1423,6 +1423,194 @@
         it('20150101235959 is invalid', function () {
             expect(date.isValid('20150101235959', '20150101235959')).to.be(false);
         });
+        it('Y == 0', function () {
+            var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('Y > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('Y < 0', function () {
+            var dt = { Y: -1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('Y > 9999', function () {
+            var dt = { Y: 100000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('M == 0', function () {
+            var dt = { Y: 1, M: 0, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('M > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('M < 0', function () {
+            var dt = { Y: 1, M: -1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('M > 12', function () {
+            var dt = { Y: 1, M: 13, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('M < 13', function () {
+            var dt = { Y: 1, M: 12, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('D == 0', function () {
+            var dt = { Y: 1, M: 1, D: 0, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('D > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('D < 0', function () {
+            var dt = { Y: 1, M: 1, D: -1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('D == 28', function () {
+            var dt = { Y: 1, M: 2, D: 28, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('D == 29', function () {
+            var dt = { Y: 20000, M: 2, D: 29, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('D == 30', function () {
+            var dt = { Y: 2000, M: 2, D: 30, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('D == 31', function () {
+            var dt = { Y: 1, M: 4, D: 31, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('D == 31', function () {
+            var dt = { Y: 1, M: 3, D: 31, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('D > 31', function () {
+            var dt = { Y: 1, M: 1, D: 32, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('H == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('H > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 1, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('H < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: -1, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('H > 23', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 24, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('H < 24', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 23, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('m == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('m > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 1, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('m < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: -1, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('m > 59', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 60, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('m < 60', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 59, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('s == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('s > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 1, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('s < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: -1, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('s > 59', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 60, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('s < 60', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 59, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('S == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('S > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 1, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('S < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: -1, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('S > 999', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 1000, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('S < 1000', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 999, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('index == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 0, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('index > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('length < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: -1, _length: -1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('length == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 0, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('length > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('length < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: -1, _match: 1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('match == 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 0 };
+            expect(date.isValid(dt)).to.be(false);
+        });
+        it('match > 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.isValid(dt)).to.be(true);
+        });
+        it('match < 0', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: -1 };
+            expect(date.isValid(dt)).to.be(false);
+        });
     });
 
     describe('leap year', function () {
