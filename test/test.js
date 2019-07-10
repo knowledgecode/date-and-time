@@ -1437,7 +1437,7 @@
         });
         it('Y > 9999', function () {
             var dt = { Y: 100000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
-            expect(date.isValid(dt)).to.be(true);
+            expect(date.isValid(dt)).to.be(false);
         });
         it('M == 0', function () {
             var dt = { Y: 1, M: 0, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
@@ -1476,7 +1476,7 @@
             expect(date.isValid(dt)).to.be(true);
         });
         it('D == 29', function () {
-            var dt = { Y: 20000, M: 2, D: 29, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            var dt = { Y: 2000, M: 2, D: 29, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
             expect(date.isValid(dt)).to.be(true);
         });
         it('D == 30', function () {
