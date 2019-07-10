@@ -43,7 +43,7 @@ let date = require('date-and-time');
 ```
 babelify:
 ```javascript
-import date from './date-and-time';
+import date from 'date-and-time'
 ```
 AMD:
 ```javascript
@@ -301,8 +301,8 @@ date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
 babelify:
 ```javascript
-import date from './date-and-time';
-import './locale/it';
+import date from 'date-and-time';
+import 'date-and-time/locale/it';
 
 date.locale('it');  // Italian
 date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
