@@ -110,7 +110,7 @@
 
     /**
      * formatting a date
-     * @param {Date} dateObj - a date object
+     * @param {Date} dateObj - a Date object
      * @param {string} formatString - a format string
      * @param {boolean} [utc] - output as UTC
      * @returns {string} a formatted string
@@ -281,9 +281,9 @@
 
     /**
      * subtracting
-     * @param {Date} date1 - a date object
-     * @param {Date} date2 - a date object
-     * @returns {Object} a result object subtracting the date
+     * @param {Date} date1 - a Date object
+     * @param {Date} date2 - a Date object
+     * @returns {Object} a result object subtracting date2 from date1
      */
     date.subtract = function (date1, date2) {
         var delta = date1.getTime() - date2.getTime();
@@ -318,8 +318,8 @@
 
     /**
      * comparison of two dates
-     * @param {Date} date1 - 1st date to compare
-     * @param {Date} date2 - 2nd date to compare
+     * @param {Date} date1 - a Date object
+     * @param {Date} date2 - a Date object
      * @returns {boolean} whether the dates are the same day (times are ignored)
      */
     date.isSameDay = function (date1, date2) {
