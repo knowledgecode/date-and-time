@@ -23,7 +23,9 @@
             },
             parser: {
                 MMM: function (str, formatString) {
-                    return this.parser.find(this.MMM[/-MMM-/.test(formatString) ? 'withoutdots' : 'withdots'], str);
+                    var result = this.parser.find(this.MMM[/-MMM-/.test(formatString) ? 'withoutdots' : 'withdots'], str);
+                    result.value++;
+                    return result;
                 }
             }
         });

@@ -1,18 +1,20 @@
 # date-and-time
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
-## WHY
-Since JS modules are usually used in combination, we think trying to keep the size of each module small is important. This date time utility is one of the modules aiming for minimal and efficient.
+## What
+This library is just a function collection for manipulation of date and time. It's tiny, simple, easy to learn.
+
+## Why
+Because JS modules nowadays are getting more huge and complex, and there are many dependencies. Trying to keep simple and small each module is meaningful.
 
 ## Features
-- Minimalist. Only has **1.9k** (minified and gzipped)
+- Minimalist. Less than 2k. (minified and gzipped)
 - Universal (Isomorphic)
 - Multi language support
 - Not extending built-in Date object
-- Browserify support
-- Legacy IE support. IE6+
+- Old browser support. It even works on IE6
 
-## Installation
+## Install
 via npm:
 ```shell
 $ npm install date-and-time --save
@@ -27,30 +29,30 @@ directly:
 ```
 
 ## Changes
+- 0.8.0 (Parser Update)
+    - The `parse()` has become to return `Invalid Date` instead of `NaN` when parsing is failure (**Breaking Change**).
+    - Added `preparse()`. It returns a Date Structure.
+    - The `isValid()` has become to take a Date Structure in addition to a date string.
+    - The `isLeapYear()` has become to take a year (number type) instead of a Date object (**Breaking Change**).
+
 - 0.7.0
     - Added Danish support
-
-- 0.6.0
-    - `parse()`
-        - Parsing a string stricter
-        - Added white space as a wildcard character
-        - Fixed a daylight saving time issue
 
 ## Usage
 Node.js:
 ```javascript
-let date = require('date-and-time');
+const date = require('date-and-time');
 ```
-babelify:
+Babel:
 ```javascript
-import date from 'date-and-time'
+import date from 'date-and-time';
 ```
 AMD:
 ```javascript
 require(['date-and-time'], function (date) {
 });
 ```
-the browser:
+Browser:
 ```javascript
 window.date;    // global object
 ```
@@ -58,12 +60,14 @@ window.date;    // global object
 ## API
 
 ### format(dateObj, formatString[, utc])
-- {object} **dateObj** - date object
-- {string} **formatString** - format string
-- {boolean} [**utc**] - output as UTC *(optional)*
+*Formatting a date*
+- @param {**Date**} dateObj - a Date object
+- @param {**string**} formatString - a format string
+- @param {**boolean**} [utc] - output as UTC
+- @returns {**string**} a formatted string
 
 ```javascript
-let now = new Date();
+const now = new Date();
 date.format(now, 'YYYY/MM/DD HH:mm:ss');    // => '2015/01/02 23:14:05'
 date.format(now, 'ddd MMM DD YYYY');        // => 'Fri Jan 02 2015'
 date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 p.m. GMT-0800'
@@ -84,11 +88,11 @@ date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
 | dddd         | day of week | Friday, Sunday    |
 | ddd          | day of week | Fri, Sun          |
 | dd           | day of week | Fr, Su            |
-| HH           | hour-24     | 23, 08            |
-| H            | hour-24     | 23, 8             |
+| HH           | 24-hour     | 23, 08            |
+| H            | 24-hour     | 23, 8             |
 | A            | meridiem    | a.m., p.m.        |
-| hh           | hour-12     | 11, 08            |
-| h            | hour-12     | 11, 8             |
+| hh           | 12-hour     | 11, 08            |
+| h            | 12-hour     | 11, 8             |
 | mm           | minute      | 14, 07            |
 | m            | minute      | 14, 7             |
 | ss           | second      | 05, 10            |
@@ -98,26 +102,31 @@ date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
 | S            | millisecond | 7, 0              |
 | Z            | timezone    | +0100, -0800      |
 
-#### NOTE
-`[...]` in the `formatString` will be a comment:
+#### NOTE 1. Comments
+Strings in parenthese `[...]` in the `formatString` will be ignored as comments:
+
 ```javascript
 date.format(new Date(), 'DD-[MM]-YYYY');    // => '02-MM-2015'
 date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 ```
 
+---
+
 ### parse(dateString, formatString[, utc])
-- {string} **dateString** - date string
-- {string} **formatString** - format string
-- {boolean} [**utc**] - input as UTC *(optional)*
+*Parsing a date string*
+- @param {**string**} dateString - a date string
+- @param {**string**} formatString - a format string
+- @param {**boolean**} [utc] - input as UTC
+- @returns {**Date**} a constructed date
 
 ```javascript
-date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => date object
-date.parse('02-01-2015', 'DD-MM-YYYY');                     // => date object
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => (Jan 1 1970 23:14:05 GMT-0800)
-date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => (Jan 1 1970 15:14:05 GMT-0800)
-date.parse('Jam 1 2017', 'MMM D YYYY');                     // => NaN
-date.parse('Feb 29 2016', 'MMM D YYYY');                    // => date object
-date.parse('Feb 29 2017', 'MMM D YYYY');                    // => NaN
+date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan 2 2015 23:14:05 GMT-0800
+date.parse('02-01-2015', 'DD-MM-YYYY');                     // => Jan 2 2015 00:00:00 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => Jan 1 1970 23:14:05 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => Jan 1 1970 15:14:05 GMT-0800
+date.parse('Jam 1 2017', 'MMM D YYYY');                     // => Invalid Date
+date.parse('Feb 29 2016', 'MMM D YYYY');                    // => Feb 29 2016 00:00:00 GMT-0800
+date.parse('Feb 29 2017', 'MMM D YYYY');                    // => Invalid Date
 ```
 
 | token        | meaning     | example           |
@@ -130,10 +139,10 @@ date.parse('Feb 29 2017', 'MMM D YYYY');                    // => NaN
 | M            | month       | 1, 12             |
 | DD           | day         | 02, 31            |
 | D            | day         | 2, 31             |
-| HH           | hour-24     | 23, 08            |
-| H            | hour-24     | 23, 8             |
-| hh           | hour-12     | 11, 08            |
-| h            | hour-12     | 11, 8             |
+| HH           | 24-hour     | 23, 08            |
+| H            | 24-hour     | 23, 8             |
+| hh           | 12-hour     | 11, 08            |
+| h            | 12-hour     | 11, 8             |
 | A            | meridiem    | a.m., p.m.        |
 | mm           | minute      | 14, 07            |
 | m            | minute      | 14, 7             |
@@ -143,91 +152,219 @@ date.parse('Feb 29 2017', 'MMM D YYYY');                    // => NaN
 | SS           | millisecond | 75, 02            |
 | S            | millisecond | 7, 0              |
 
-#### NOTE 1
-The minimum year that can be parsed is year 100, the maximum year is year 9999. Year 69 or less are translated into 2000s, year 70 or more and year 99 or less are translated into 1900s.
+#### NOTE 1. Invalid Date
+If the function fails to parse, it will return `Invalid Date`. Be careful as the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
+
 ```javascript
-date.parse('Dec 31 100', 'MMM d YYYY');     // => (Dec 31 100)
-date.parse('Dec 31 9999', 'MMM d YYYY');    // => (Dec 31 9999)
-date.parse('Dec 31 0', 'MMM d YYYY');       // => (Dec 31 2000)
-date.parse('Dec 31 69', 'MMM d YYYY');      // => (Dec 31 2069)
-date.parse('Dec 31 70', 'MMM d YYYY');      // => (Dec 31 1970)
-date.parse('Dec 31 99', 'MMM d YYYY');      // => (Dec 31 1999)
+const today = date.parse('Jam 1 2017', 'MMM D YYYY');
+
+if (isNaN(today)) {
+    // Failure
+}
 ```
 
-#### NOTE 2
-When using `hh` or `h` (hour-12), need to use together `A` (meridiem).
+#### NOTE 2. Default Date Time
+Default date is `January 1, 1970`, time is `00:00:00.000`. Not passed values will be replaced with them:
 
-### isValid(dateString, formatString)
-- {string} **dateString** - date string
-- {string} **formatString** - format string
+```javascript
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan 1 1970 23:14:05 GMT-0800
+date.parse('Feb 2000', 'MMM YYYY');         // => Feb 1 2000 00:00:00 GMT-0800
+```
+
+#### NOTE 3. Max Date / Min Date
+Parsable maximum date is `December 31, 9999`, minimum date is `January 1, 0001`.
+
+```javascript
+date.parse('Dec 31 9999', 'MMM D YYYY');    // => Dec 31 9999 00:00:00 GMT-0800
+date.parse('Dec 31 10000', 'MMM D YYYY');   // => Invalid Date
+
+date.parse('Jan 1 0001', 'MMM D YYYY');     // => Jan 1 0001 00:00:00 GMT-0800
+date.parse('Jan 1 0000', 'MMM D YYYY');     // => Invalid Date
+```
+
+#### NOTE 4. Auto Mapping
+The `YY` token maps the year 69 or less to 2000s, the year 70 or more to 1900s. Using it is not recommended.
+
+```javascript
+date.parse('Dec 31 0', 'MMM D YY');     // => Dec 31 2000 00:00:00 GMT-0800
+date.parse('Dec 31 69', 'MMM D YY');    // => Dec 31 2069 00:00:00 GMT-0800
+date.parse('Dec 31 70', 'MMM D YY');    // => Dec 31 1970 00:00:00 GMT-0800
+date.parse('Dec 31 99', 'MMM D YY');    // => Dec 31 1999 00:00:00 GMT-0800
+```
+
+#### NOTE 5. 12-hour notation and Meridiem
+If use the `hh` or `h` (12-hour) token, use together the `A` (meridiem) token to get the right value.
+
+```javascript
+date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan 1 1970 23:14:05 GMT-0800
+```
+
+#### NOTE 6. Comments
+Strings in parenthese `[...]` in the formatString will be ignored as comments:
+
+```javascript
+date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Date
+date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan 1 1970 12:34:00 GMT-0800
+```
+
+A white space works as a wild card, so that you can also write as follows:
+
+```javascript
+date.parse('12 hours 34 minutes', 'HH       mm        ');   // => Jan 1 1970 12:34:00 GMT-0800
+```
+
+---
+
+### preparse(dateString, formatString)
+*Pre-parsing a date string*
+- @param {**string**} dateString - a date string
+- @param {**string**} formatString - a format string
+- @returns {**Object**} a date structure
+
+This function takes exactly the same parameters with the `parse()`, but instead it returns a date structure like this:
+
+```javascript
+date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
+
+{
+    Y: 2015,        // Year
+    M: 1,           // Month
+    D: 2,           // Day
+    H: 23,          // 24-hour
+    A: 0,           // Meridiem
+    h: 0,           // 12-hour
+    m: 14,          // Minute
+    s: 5,           // Second
+    S: 0,           // Millisecond
+    _index: 19,     // Pointer offset
+    _length: 19,    // Length of the date string
+    _match: 6       // Token matching count
+}
+```
+
+This object shows a parsing result. You can realize from it how the date string was parsed(, or why the parsing was failed).
+
+---
+
+### isValid(arg[, formatString])
+*Validation*
+- @param {**Object**|**string**} arg - a date structure or a date string
+- @param {**string**} [formatString] - a format string
+- @returns {**boolean**} whether the date string is a valid date
+
+This function takes either exactly the same parameters with the `parse()` or a date structure which the `preparse()` returns, evaluates the validity of them.
+
 ```javascript
 date.isValid('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss'); // => true
 date.isValid('29-02-2015', 'DD-MM-YYYY');                   // => false
+
+const result = date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
+date.isValid(result);   // => true
 ```
-The `formatString` you can set is the same as the `parse` function's.
+
+---
 
 ### addYears(dateObj, years)
-- {object} **dateObj** - date object
-- {number} **years** - adding year
+*Adding years*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} years - number of years to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let next_year = date.addYears(now, 1);  // => Date object
+const now = new Date();
+const next_year = date.addYears(now, 1);  // => Date object
 ```
+
+---
 
 ### addMonths(dateObj, months)
-- {object} **dateObj** - date object
-- {number} **months** - adding month
+*Adding months*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} months - number of months to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let next_month = date.addMonths(now, 1); // => Date object
+const now = new Date();
+const next_month = date.addMonths(now, 1);
 ```
+
+---
 
 ### addDays(dateObj, days)
-- {object} **dateObj** - date object
-- {number} **days** - adding day
+*Adding days*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} days - number of days to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let yesterday = date.addDays(now, -1);  // => Date object
+const now = new Date();
+const yesterday = date.addDays(now, -1);
 ```
+
+---
 
 ### addHours(dateObj, hours)
-- {object} **dateObj** - date object
-- {number} **hours** - adding hour
+*Adding hours*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} hours - number of hours to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let an_hour_ago = date.addHours(now, -1); // => Date object
+const now = new Date();
+const an_hour_ago = date.addHours(now, -1);
 ```
+
+---
 
 ### addMinutes(dateObj, minutes)
-- {object} **dateObj** - date object
-- {number} **minutes** -  adding minute
+*Adding minutes*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} minutes - number of minutes to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let two_minutes_later = date.addMinutes(now, 2);    // => Date object
+const now = new Date();
+const two_minutes_later = date.addMinutes(now, 2);
 ```
+
+---
 
 ### addSeconds(dateObj, seconds)
-- {object} **dateObj** - date object
-- {number} **seconds** - adding second
+*Adding seconds*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} seconds - number of seconds to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let three_seconds_ago = date.addSeconds(now, -3);   // => Date object
+const now = new Date();
+const three_seconds_ago = date.addSeconds(now, -3);
 ```
+
+---
 
 ### addMilliseconds(dateObj, milliseconds)
-- {object} **dateObj** - date object
-- {number} **milliseconds** - adding millisecond
+*Adding milliseconds*
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} milliseconds - number of milliseconds to add
+- @returns {**Date**} a date after adding the value
+
 ```javascript
-let now = new Date();
-let a_millisecond_later = date.addMilliseconds(now, 1); // => Date object
+const now = new Date();
+const a_millisecond_later = date.addMilliseconds(now, 1);
 ```
 
-### subtract(dateObj1, dateObj2)
-- {object} **date1** - date object
-- {object} **date2** - date object
+---
+
+### subtract(date1, date2)
+*Subtracting*
+- @param {**Date**} date1 - a Date object
+- @param {**Date**} date2 - a Date object
+- @returns {**Object**} a result object subtracting date2 from date1
+
 ```javascript
-let today = new Date(2015, 0, 2);
-let yesterday = new Date(2015, 0, 1);
+const today = new Date(2015, 0, 2);
+const yesterday = new Date(2015, 0, 1);
 
 date.subtract(today, yesterday).toDays();           // => 1 = today - yesterday
 date.subtract(today, yesterday).toHours();          // => 24
@@ -236,70 +373,76 @@ date.subtract(today, yesterday).toSeconds();        // => 86400
 date.subtract(today, yesterday).toMilliseconds();   // => 86400000
 ```
 
-### isLeapYear(dateObj)
-- {object} **dateObj** - date object
+---
+
+### isLeapYear(y)
+*Leap year*
+- @param {**number**} y - year
+- @returns {**boolean**} whether the year is a leap year
+
 ```javascript
-let date1 = new Date(2015, 0, 2);
-let date2 = new Date(2012, 0, 2);
+const date1 = new Date(2015, 0, 2);
+const date2 = new Date(2012, 0, 2);
 date.isLeapYear(date1); // => false
 date.isLeapYear(date2); // => true
 ```
 
-### isSameDay(dateObj)
-- {object} **date1** - date object
-- {object} **date2** - date object
+---
+
+### isSameDay(date1, date2)
+*Comparison of two dates*
+- @param {**Date**} date1 - a Date object
+- @param {**Date**} date2 - a Date object
+- @returns {**boolean**} whether the dates are the same day (times are ignored)
+
 ```javascript
-let date1 = new Date(2017, 0, 2, 0);        // Jan 2 2017 00:00:00
-let date2 = new Date(2017, 0, 2, 23, 59);   // Jan 2 2017 23:59:00
-let date3 = new Date(2017, 0, 1, 23, 59);   // Jan 1 2017 23:59:00
+const date1 = new Date(2017, 0, 2, 0);          // Jan 2 2017 00:00:00
+const date2 = new Date(2017, 0, 2, 23, 59);     // Jan 2 2017 23:59:00
+const date3 = new Date(2017, 0, 1, 23, 59);     // Jan 1 2017 23:59:00
 date.isSameDay(date1, date2);   // => true
 date.isSameDay(date1, date3);   // => false
 ```
 
-## Locale
-It supports the following languages for now:  
-- Arabic (ar)
-- Azerbaijani (az)
-- Bengali (bn)
-- Burmese (my)
-- Chinese (zh-cn)
-- Chinese (zh-tw)
-- Czech (cs)
-- Danish (dk)
-- Dutch (nl)
-- English (en)
-- French (fr)
-- German (de)
-- Greek (el)
-- Hindi (hi)
-- Hungarian (hu)
-- Indonesian (id)
-- Italian (it)
-- Japanese (ja)
-- Javanese (jv)
-- Korean (ko)
-- Persian (fa)
-- Polish (pl)
-- Portuguese (pt)
-- Punjabi (pa-in)
-- Romanian (ro)
-- Russian (ru)
-- Serbian (sr)
-- Spanish (es)
-- Thai (th)
-- Turkish (tr)
-- Ukrainian (uk)
-- Uzbek (uz)
-- Vietnamese (vi)
+---
 
-Month, day of week, and meridiem are displayed in English by default. If you want to use other languages, can switch to them as follows:  
+### locale([code])
+*Setting a locale*
+- @param {**string**} [code] - language code
+- @returns {**string**} current language code
+
+See the `Locale` section for details.
+
+---
+
+### getLocales([code])
+*Getting a definition of locale*
+- @param {**string**} [code] - language code
+- @returns {**Object**} definition of locale
+
+See the `Locale` section for details.
+
+---
+
+### setLocales(code, options)
+*Adding a new definition of locale*
+- @param {**string**} code - language code
+- @param {**Object**} options - definition of locale
+
+See the `Locale` section for details.
+
+---
+
+## Locale
+Although month, day of week, and meridiem (am / pm) are displayed in English, you can switch to other languages as follows:  
+
 Node.js:
 ```javascript
-let date = require('date-and-time');
+const date = require('date-and-time');
 date.locale('fr');  // French
 date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
-babelify:
+
+Babel:
 ```javascript
 import date from 'date-and-time';
 import 'date-and-time/locale/it';
@@ -307,6 +450,7 @@ import 'date-and-time/locale/it';
 date.locale('it');  // Italian
 date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
 ```
+
 AMD:
 ```javascript
 require(['date-and-time', 'locale/de'], function (date) {
@@ -314,7 +458,8 @@ require(['date-and-time', 'locale/de'], function (date) {
     date.format(new Date(), 'dddd, D. MMMM');   // => 'Montag, 11. Januar'
 });
 ```
-the browser:
+
+Browser:
 ```html
 <script src="date-and-time.min.js"></script>
 <script src="locale/zh-cn.js"></script>
@@ -324,10 +469,14 @@ date.format(new Date(), 'MMMD日dddd');  // => '1月11日星期一'
 </script>
 ```
 
+It supports the following languages for now:  
+> Arabic (ar), Azerbaijani (az), Bengali (bn), Burmese (my), Chinese (zh-cn), Chinese (zh-tw), Czech (cs), Danish (dk), Dutch (nl), English (en), French (fr), German (de), Greek (el), Hindi (hi), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Javanese (jv), Korean (ko), Persian (fa), Polish (pl), Portuguese (pt), Punjabi (pa-in), Romanian (ro), Russian (ru), Serbian (sr), Spanish (es), Thai (th), Turkish (tr), Ukrainian (uk), Uzbek (uz), Vietnamese (vi)
+
 ## Customizing
-You can not only switch to other languages, but can customize them as you want:  
+If you have some problems with the default translation, you could change them as you want:
+
 ```javascript
-let now = new Date();
+const now = new Date();
 date.format(now, 'h:m A');  // => '12:34 p.m.'
 
 date.setLocales('en', {
@@ -336,10 +485,10 @@ date.setLocales('en', {
 
 date.format(now, 'h:m A');  // => '12:34 PM'
 ```
+However, If **obviously** wrong, please send a PR or post the issue.  
 
 ## Browser Support
-Chrome, Firefox, Safari, Opera, and Internet Explorer 6+.
+Chrome, Firefox, Safari, Edge, and Internet Explorer 6+.
 
 ## License
 MIT
-
