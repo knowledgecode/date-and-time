@@ -1,4 +1,3 @@
 .DS_Store
 node_modules
-test/test.es5.js
-test/ja.es5.js
+test/*.es5.js
