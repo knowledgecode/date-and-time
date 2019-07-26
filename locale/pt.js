@@ -6,25 +6,27 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('pt', {
-            MMMM: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            MMM: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dddd: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
-            ddd: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-            dd: ['Dom', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sáb'],
-            A: ['da madrugada', 'da manhã', 'da tarde', 'da noite'],
+    var exec = function (date) {
+        date.locale('pt', {
+            res: {
+                MMMM: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                MMM: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dddd: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
+                ddd: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dd: ['Dom', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sáb'],
+                A: ['da madrugada', 'da manhã', 'da tarde', 'da noite']
+            },
             formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 5) {
-                        return this.A[0];   // da madrugada
+                        return this.res.A[0];   // da madrugada
                     } else if (h < 12) {
-                        return this.A[1];   // da manhã
+                        return this.res.A[1];   // da manhã
                     } else if (h < 19) {
-                        return this.A[2];   // da tarde
+                        return this.res.A[2];   // da tarde
                     }
-                    return this.A[3];       // da noite
+                    return this.res.A[3];       // da noite
                 }
             },
             parser: {
@@ -39,11 +41,11 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

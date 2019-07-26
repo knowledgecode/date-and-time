@@ -6,22 +6,24 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('sr', {
-            MMMM: ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'],
-            MMM: ['jan.', 'feb.', 'mar.', 'apr.', 'maj', 'jun', 'jul', 'avg.', 'sep.', 'okt.', 'nov.', 'dec.'],
-            dddd: ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota'],
-            ddd: ['ned.', 'pon.', 'uto.', 'sre.', 'čet.', 'pet.', 'sub.'],
-            dd: ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su']
+    var exec = function (date) {
+        date.locale('sr', {
+            res: {
+                MMMM: ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'],
+                MMM: ['jan.', 'feb.', 'mar.', 'apr.', 'maj', 'jun', 'jul', 'avg.', 'sep.', 'okt.', 'nov.', 'dec.'],
+                dddd: ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota'],
+                ddd: ['ned.', 'pon.', 'uto.', 'sre.', 'čet.', 'pet.', 'sub.'],
+                dd: ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su']
+            }
         });
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

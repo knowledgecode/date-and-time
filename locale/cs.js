@@ -6,22 +6,24 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('cs', {
-            MMMM: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
-            MMM: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
-            dddd: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
-            ddd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-            dd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so']
+    var exec = function (date) {
+        date.locale('cs', {
+            res: {
+                MMMM: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
+                MMM: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
+                dddd: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
+                ddd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+                dd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so']
+            }
         });
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

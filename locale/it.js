@@ -6,23 +6,25 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('it', {
-            MMMM: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
-            MMM: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
-            dddd: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
-            ddd: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
-            dd: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
-            A: ['di mattina', 'di pomerrigio']
+    var exec = function (date) {
+        date.locale('it', {
+            res: {
+                MMMM: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+                MMM: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
+                dddd: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+                ddd: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+                dd: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+                A: ['di mattina', 'di pomerrigio']
+            }
         });
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

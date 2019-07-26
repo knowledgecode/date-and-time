@@ -6,25 +6,27 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('ru', {
-            MMMM: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
-            MMM: ['янв', 'фев', 'мар', 'апр', 'мая', 'июня', 'июля', 'авг', 'сен', 'окт', 'ноя', 'дек'],
-            dddd: ['Воскресенье', 'Понедельник', 'Вторник', 'Среду', 'Четверг', 'Пятницу', 'Субботу'],
-            ddd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-            dd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-            A: ['ночи', 'утра', 'дня', 'вечера'],
+    var exec = function (date) {
+        date.locale('ru', {
+            res: {
+                MMMM: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
+                MMM: ['янв', 'фев', 'мар', 'апр', 'мая', 'июня', 'июля', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+                dddd: ['Воскресенье', 'Понедельник', 'Вторник', 'Среду', 'Четверг', 'Пятницу', 'Субботу'],
+                ddd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                dd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                A: ['ночи', 'утра', 'дня', 'вечера']
+            },
             formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 4) {
-                        return this.A[0];   // ночи
+                        return this.res.A[0];   // ночи
                     } else if (h < 12) {
-                        return this.A[1];   // утра
+                        return this.res.A[1];   // утра
                     } else if (h < 17) {
-                        return this.A[2];   // дня
+                        return this.res.A[2];   // дня
                     }
-                    return this.A[3];       // вечера
+                    return this.res.A[3];       // вечера
                 }
             },
             parser: {
@@ -39,11 +41,11 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

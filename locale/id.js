@@ -6,25 +6,27 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('id', {
-            MMMM: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-            MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
-            dddd: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-            ddd: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-            dd: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
-            A: ['pagi', 'siang', 'sore', 'malam'],
+    var exec = function (date) {
+        date.locale('id', {
+            res: {
+                MMMM: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                dddd: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+                ddd: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                dd: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
+                A: ['pagi', 'siang', 'sore', 'malam']
+            },
             formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 11) {
-                        return this.A[0];   // pagi
+                        return this.res.A[0];   // pagi
                     } else if (h < 15) {
-                        return this.A[1];   // siang
+                        return this.res.A[1];   // siang
                     } else if (h < 19) {
-                        return this.A[2];   // sore
+                        return this.res.A[2];   // sore
                     }
-                    return this.A[3];       // malam
+                    return this.res.A[3];       // malam
                 }
             },
             parser: {
@@ -41,11 +43,11 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

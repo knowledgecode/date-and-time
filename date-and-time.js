@@ -5,107 +5,133 @@
     'use strict';
 
     var date = {},
+        locales = {},
+        plugins = {},
         lang = 'en',
-        locales = {
-            en: {
-                MMMM: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                dddd: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-                ddd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                dd: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                A: ['a.m.', 'p.m.'],
-                formatter: {
-                    YYYY: function (d/*, formatString*/) { return ('000' + d.getFullYear()).slice(-4); },
-                    YY: function (d/*, formatString*/) { return ('0' + d.getFullYear()).slice(-2); },
-                    Y: function (d/*, formatString*/) { return '' + d.getFullYear(); },
-                    MMMM: function (d/*, formatString*/) { return this.MMMM[d.getMonth()]; },
-                    MMM: function (d/*, formatString*/) { return this.MMM[d.getMonth()]; },
-                    MM: function (d/*, formatString*/) { return ('0' + (d.getMonth() + 1)).slice(-2); },
-                    M: function (d/*, formatString*/) { return '' + (d.getMonth() + 1); },
-                    DD: function (d/*, formatString*/) { return ('0' + d.getDate()).slice(-2); },
-                    D: function (d/*, formatString*/) { return '' + d.getDate(); },
-                    HH: function (d/*, formatString*/) { return ('0' + d.getHours()).slice(-2); },
-                    H: function (d/*, formatString*/) { return '' + d.getHours(); },
-                    A: function (d/*, formatString*/) { return this.A[d.getHours() > 11 | 0]; },
-                    hh: function (d/*, formatString*/) { return ('0' + (d.getHours() % 12 || 12)).slice(-2); },
-                    h: function (d/*, formatString*/) { return '' + (d.getHours() % 12 || 12); },
-                    mm: function (d/*, formatString*/) { return ('0' + d.getMinutes()).slice(-2); },
-                    m: function (d/*, formatString*/) { return '' + d.getMinutes(); },
-                    ss: function (d/*, formatString*/) { return ('0' + d.getSeconds()).slice(-2); },
-                    s: function (d/*, formatString*/) { return '' + d.getSeconds(); },
-                    SSS: function (d/*, formatString*/) { return ('00' + d.getMilliseconds()).slice(-3); },
-                    SS: function (d/*, formatString*/) { return ('0' + (d.getMilliseconds() / 10 | 0)).slice(-2); },
-                    S: function (d/*, formatString*/) { return '' + (d.getMilliseconds() / 100 | 0); },
-                    dddd: function (d/*, formatString*/) { return this.dddd[d.getDay()]; },
-                    ddd: function (d/*, formatString*/) { return this.ddd[d.getDay()]; },
-                    dd: function (d/*, formatString*/) { return this.dd[d.getDay()]; },
-                    Z: function (d/*, formatString*/) {
-                        var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
-                        return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
-                    },
-                    post: function (str) { return str; }
-                },
-                parser: {
-                    YYYY: function (str/*, formatString */) { return this.parser.exec(/^\d{1,4}/, str); },
-                    YY: function (str/*, formatString */) {
-                        var result = this.parser.exec(/^\d\d?/, str);
-                        result.value += result.value < 70 ? 2000 : result.value < 100 ? 1900 : 0;
-                        return result;
-                    },
-                    MMMM: function (str/*, formatString */) {
-                        var result = this.parser.find(this.MMMM, str);
-                        result.value++;
-                        return result;
-                    },
-                    MMM: function (str/*, formatString */) {
-                        var result = this.parser.find(this.MMM, str);
-                        result.value++;
-                        return result;
-                    },
-                    MM: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
-                    M: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
-                    DD: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
-                    D: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
-                    HH: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
-                    H: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
-                    A: function (str/*, formatString */) { return this.parser.find(this.A, str); },
-                    hh: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
-                    h: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
-                    mm: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
-                    m: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
-                    ss: function (str/*, formatString */) { return this.parser.exec(/^\d\d/, str); },
-                    s: function (str/*, formatString */) { return this.parser.exec(/^\d\d?/, str); },
-                    SSS: function (str/*, formatString */) { return this.parser.exec(/^\d{1,3}/, str); },
-                    SS: function (str/*, formatString */) {
-                        var result = this.parser.exec(/^\d\d?/, str);
-                        result.value *= 10;
-                        return result;
-                    },
-                    S: function (str/*, formatString */) {
-                        var result = this.parser.exec(/^\d/, str);
-                        result.value *= 100;
-                        return result;
-                    },
-                    h12: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
-                    exec: function (re, str) {
-                        var result = (re.exec(str) || [''])[0];
-                        return { value: result | 0, length: result.length };
-                    },
-                    find: function (array, str) {
-                        var index = -1, length = 0;
+        _res = {
+            MMMM: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            dddd: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            ddd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            dd: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            A: ['a.m.', 'p.m.']
+        },
+        _formatter = {
+            YYYY: function (d/*, formatString*/) { return ('000' + d.getFullYear()).slice(-4); },
+            YY: function (d/*, formatString*/) { return ('0' + d.getFullYear()).slice(-2); },
+            Y: function (d/*, formatString*/) { return '' + d.getFullYear(); },
+            MMMM: function (d/*, formatString*/) { return this.res.MMMM[d.getMonth()]; },
+            MMM: function (d/*, formatString*/) { return this.res.MMM[d.getMonth()]; },
+            MM: function (d/*, formatString*/) { return ('0' + (d.getMonth() + 1)).slice(-2); },
+            M: function (d/*, formatString*/) { return '' + (d.getMonth() + 1); },
+            DD: function (d/*, formatString*/) { return ('0' + d.getDate()).slice(-2); },
+            D: function (d/*, formatString*/) { return '' + d.getDate(); },
+            HH: function (d/*, formatString*/) { return ('0' + d.getHours()).slice(-2); },
+            H: function (d/*, formatString*/) { return '' + d.getHours(); },
+            A: function (d/*, formatString*/) { return this.res.A[d.getHours() > 11 | 0]; },
+            hh: function (d/*, formatString*/) { return ('0' + (d.getHours() % 12 || 12)).slice(-2); },
+            h: function (d/*, formatString*/) { return '' + (d.getHours() % 12 || 12); },
+            mm: function (d/*, formatString*/) { return ('0' + d.getMinutes()).slice(-2); },
+            m: function (d/*, formatString*/) { return '' + d.getMinutes(); },
+            ss: function (d/*, formatString*/) { return ('0' + d.getSeconds()).slice(-2); },
+            s: function (d/*, formatString*/) { return '' + d.getSeconds(); },
+            SSS: function (d/*, formatString*/) { return ('00' + d.getMilliseconds()).slice(-3); },
+            SS: function (d/*, formatString*/) { return ('0' + (d.getMilliseconds() / 10 | 0)).slice(-2); },
+            S: function (d/*, formatString*/) { return '' + (d.getMilliseconds() / 100 | 0); },
+            dddd: function (d/*, formatString*/) { return this.res.dddd[d.getDay()]; },
+            ddd: function (d/*, formatString*/) { return this.res.ddd[d.getDay()]; },
+            dd: function (d/*, formatString*/) { return this.res.dd[d.getDay()]; },
+            Z: function (d/*, formatString*/) {
+                var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
+                return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
+            },
+            post: function (str) { return str; }
+        },
+        _parser = {
+            YYYY: function (str/*, formatString */) { return this.exec(/^\d{1,4}/, str); },
+            YY: function (str/*, formatString */) {
+                var result = this.exec(/^\d\d?/, str);
+                result.value += result.value < 70 ? 2000 : result.value < 100 ? 1900 : 0;
+                return result;
+            },
+            MMMM: function (str/*, formatString */) {
+                var result = this.find(this.res.MMMM, str);
+                result.value++;
+                return result;
+            },
+            MMM: function (str/*, formatString */) {
+                var result = this.find(this.res.MMM, str);
+                result.value++;
+                return result;
+            },
+            MM: function (str/*, formatString */) { return this.exec(/^\d\d/, str); },
+            M: function (str/*, formatString */) { return this.exec(/^\d\d?/, str); },
+            DD: function (str/*, formatString */) { return this.exec(/^\d\d/, str); },
+            D: function (str/*, formatString */) { return this.exec(/^\d\d?/, str); },
+            HH: function (str/*, formatString */) { return this.exec(/^\d\d/, str); },
+            H: function (str/*, formatString */) { return this.exec(/^\d\d?/, str); },
+            A: function (str/*, formatString */) { return this.find(this.res.A, str); },
+            hh: function (str/*, formatString */) { return this.exec(/^\d\d/, str); },
+            h: function (str/*, formatString */) { return this.exec(/^\d\d?/, str); },
+            mm: function (str/*, formatString */) { return this.exec(/^\d\d/, str); },
+            m: function (str/*, formatString */) { return this.exec(/^\d\d?/, str); },
+            ss: function (str/*, formatString */) { return this.exec(/^\d\d/, str); },
+            s: function (str/*, formatString */) { return this.exec(/^\d\d?/, str); },
+            SSS: function (str/*, formatString */) { return this.exec(/^\d{1,3}/, str); },
+            SS: function (str/*, formatString */) {
+                var result = this.exec(/^\d\d?/, str);
+                result.value *= 10;
+                return result;
+            },
+            S: function (str/*, formatString */) {
+                var result = this.exec(/^\d/, str);
+                result.value *= 100;
+                return result;
+            },
+            h12: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
+            exec: function (re, str) {
+                var result = (re.exec(str) || [''])[0];
+                return { value: result | 0, length: result.length };
+            },
+            find: function (array, str) {
+                var index = -1, length = 0;
 
-                        for (var i = 0, len = array.length, item; i < len; i++) {
-                            item = array[i];
-                            if (!str.indexOf(item) && item.length > length) {
-                                index = i;
-                                length = item.length;
-                            }
-                        }
-                        return { value: index, length: length };
-                    },
-                    pre: function (str) { return str; }
+                for (var i = 0, len = array.length, item; i < len; i++) {
+                    item = array[i];
+                    if (!str.indexOf(item) && item.length > length) {
+                        index = i;
+                        length = item.length;
+                    }
                 }
-            }
+                return { value: index, length: length };
+            },
+            pre: function (str) { return str; }
+        },
+        customize = function (code, base, locale) {
+            var extend = function (proto, props, res) {
+                    var Locale = function (r) {
+                        if (r) { this.res = r; }
+                    };
+
+                    Locale.prototype = proto;
+                    Locale.prototype.constructor = Locale;
+
+                    var newLocale = new Locale(res),
+                        value;
+
+                    for (var key in props || {}) {
+                        if (props.hasOwnProperty(key)) {
+                            value = props[key];
+                            newLocale[key] = value.slice ? value.slice() : value;
+                        }
+                    }
+                    return newLocale;
+                },
+                loc = { res: extend(base.res, locale.res) };
+
+            loc.formatter = extend(base.formatter, locale.formatter, loc.res);
+            loc.parser = extend(base.parser, locale.parser, loc.res);
+            locales[code] = loc;
         };
 
     /**
@@ -117,12 +143,11 @@
      */
     date.format = function (dateObj, formatString, utc) {
         var d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
-            locale = locales[lang], formatter = locale.formatter;
+            formatter = locales[lang].formatter;
 
         d.utc = utc;
-        return formatString.replace(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g, function (token) {
-            var format = formatter[token];
-            return format ? formatter.post(format.call(locale, d, formatString)) : token.replace(/\[(.*)]/, '$1');
+        return formatString.replace(/\[[^\[\]]*]|\[.*\][^\[]*\]|([A-Za-z])\1*|./g, function (token) {
+            return formatter[token] ? formatter.post(formatter[token](d, formatString)) : token.replace(/\[(.*)]/, '$1');
         });
     };
 
@@ -133,19 +158,19 @@
      * @returns {Object} a date structure
      */
     date.preparse = function (dateString, formatString) {
-        var locale = locales[lang], parser = locale.parser,
-            re = /YYYY|YY|MMMM?|MM?|DD?|HH?|A|hh?|mm?|ss?|SS?S?|./g,
+        var parser = locales[lang].parser,
+            re = /([A-Za-z])\1*|./g,
             keys, token, result, offset = 0,
             dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 0, _match: 0 };
 
         dateString = parser.pre(dateString);
         formatString = formatString.replace(/\[[^\[\]]*]|\[.*\][^\[]*\]/g, function (str) {
-            return new Array(str.length - 1).join(' ');
+            return str.replace(/./g, ' ').slice(2);
         });
         while ((keys = re.exec(formatString))) {
             token = keys[0];
             if (parser[token]) {
-                result = parser[token].call(locale, dateString.slice(offset), formatString);
+                result = parser[token](dateString.slice(offset), formatString);
                 if (!result.length) {
                     break;
                 }
@@ -327,12 +352,15 @@
     };
 
     /**
-     * setting a locale
+     * change locale or setting a new locale definition
      * @param {string} [code] - language code
+     * @param {Object} [locale] - locale definition
      * @returns {string} current language code
      */
-    date.locale = function (code) {
-        if (code) {
+    date.locale = function (code, locale) {
+        if (locale) {
+            customize(code, { res: _res, formatter: _formatter, parser: _parser }, locale);
+        } else if (code) {
             if (!locales[code] && typeof require === 'function' && global) {
                 require('./locale/' + code);
             }
@@ -342,44 +370,34 @@
     };
 
     /**
-     * getting a definition of locale
-     * @param {string} [code] - language code
-     * @returns {Object} definition of locale
+     * current locale extension
+     * @param {Object} extension - locale definition
+     * @returns {void}
      */
-    date.getLocales = function (code) {
-        return locales[code || lang];
+    date.extend = function (extension) {
+        customize(lang, locales[lang], extension);
     };
 
     /**
-     * adding a new definition of locale
-     * @param {string} code - language code
-     * @param {Object} options - definition of locale
+     * plugin definition
+     * @param {string} name - plugin name
+     * @param {Object} [extension] - locale definition
      * @returns {void}
      */
-    date.setLocales = function (code, options) {
-        var copy = function (src, proto) {
-                var Locale = function () {}, dst, key;
-
-                Locale.prototype = proto;
-                dst = new Locale();
-                for (key in src) {
-                    if (src.hasOwnProperty(key)) {
-                        dst[key] = src[key];
-                    }
-                }
-                return dst;
-            },
-            base = locales[code] || locales.en,
-            locale = copy(options, base);
-
-        if (options.formatter) {
-            locale.formatter = copy(options.formatter, base.formatter);
+    date.plugin = function (name, extension) {
+        plugins[name] = plugins[name] || extension;
+        if (!extension) {
+            if (!plugins[name] && typeof require === 'function' && global) {
+                require('./plugin/' + name);
+            }
+            if (plugins[name]) {
+                date.extend(plugins[name]);
+            }
         }
-        if (options.parser) {
-            locale.parser = copy(options.parser, base.parser);
-        }
-        locales[code] = locale;
     };
+
+    // Create default locale (English)
+    date.locale(lang, {});
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = date;

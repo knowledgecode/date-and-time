@@ -6,27 +6,29 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('hi', {
-            MMMM: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 'अक्टूबर', 'नवम्बर', 'दिसम्बर'],
-            MMM: ['जन.', 'फ़र.', 'मार्च', 'अप्रै.', 'मई', 'जून', 'जुल.', 'अग.', 'सित.', 'अक्टू.', 'नव.', 'दिस.'],
-            dddd: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरूवार', 'शुक्रवार', 'शनिवार'],
-            ddd: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरू', 'शुक्र', 'शनि'],
-            dd: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
-            A: ['रात', 'सुबह', 'दोपहर', 'शाम'],
+    var exec = function (date) {
+        date.locale('hi', {
+            res: {
+                MMMM: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 'अक्टूबर', 'नवम्बर', 'दिसम्बर'],
+                MMM: ['जन.', 'फ़र.', 'मार्च', 'अप्रै.', 'मई', 'जून', 'जुल.', 'अग.', 'सित.', 'अक्टू.', 'नव.', 'दिस.'],
+                dddd: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरूवार', 'शुक्रवार', 'शनिवार'],
+                ddd: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरू', 'शुक्र', 'शनि'],
+                dd: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
+                A: ['रात', 'सुबह', 'दोपहर', 'शाम']
+            },
             formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 4) {
-                        return this.A[0];   // रात
+                        return this.res.A[0];   // रात
                     } else if (h < 10) {
-                        return this.A[1];   // सुबह
+                        return this.res.A[1];   // सुबह
                     } else if (h < 17) {
-                        return this.A[2];   // दोपहर
+                        return this.res.A[2];   // दोपहर
                     } else if (h < 20) {
-                        return this.A[3];   // शाम
+                        return this.res.A[3];   // शाम
                     }
-                    return this.A[0];       // रात
+                    return this.res.A[0];       // रात
                 }
             },
             parser: {
@@ -45,11 +47,11 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));

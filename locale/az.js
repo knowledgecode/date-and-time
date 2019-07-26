@@ -6,25 +6,27 @@
 (function (global) {
     'use strict';
 
-    var locale = function (date) {
-        date.setLocales('az', {
-            MMMM: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avqust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'],
-            MMM: ['yan', 'fev', 'mar', 'apr', 'may', 'iyn', 'iyl', 'avq', 'sen', 'okt', 'noy', 'dek'],
-            dddd: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
-            ddd: ['Baz', 'BzE', 'ÇAx', 'Çər', 'CAx', 'Cüm', 'Şən'],
-            dd: ['Bz', 'BE', 'ÇA', 'Çə', 'CA', 'Cü', 'Şə'],
-            A: ['gecə', 'səhər', 'gündüz', 'axşam'],
+    var exec = function (date) {
+        date.locale('az', {
+            res: {
+                MMMM: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avqust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'],
+                MMM: ['yan', 'fev', 'mar', 'apr', 'may', 'iyn', 'iyl', 'avq', 'sen', 'okt', 'noy', 'dek'],
+                dddd: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
+                ddd: ['Baz', 'BzE', 'ÇAx', 'Çər', 'CAx', 'Cüm', 'Şən'],
+                dd: ['Bz', 'BE', 'ÇA', 'Çə', 'CA', 'Cü', 'Şə'],
+                A: ['gecə', 'səhər', 'gündüz', 'axşam']
+            },
             formatter: {
                 A: function (d) {
                     var h = d.getHours();
                     if (h < 4) {
-                        return this.A[0];   // gecə
+                        return this.res.A[0];   // gecə
                     } else if (h < 12) {
-                        return this.A[1];   // səhər
+                        return this.res.A[1];   // səhər
                     } else if (h < 17) {
-                        return this.A[2];   // gündüz
+                        return this.res.A[2];   // gündüz
                     }
-                    return this.A[3];       // axşam
+                    return this.res.A[3];       // axşam
                 }
             },
             parser: {
@@ -39,11 +41,11 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        locale(require('../date-and-time'));
+        exec(require('../date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], locale);
+        define(['date-and-time'], exec);
     } else {
-        locale(global.date);
+        exec(global.date);
     }
 
 }(this));
