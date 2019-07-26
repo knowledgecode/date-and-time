@@ -1,7 +1,9 @@
 #!/bin/sh -eu
 
+# Core
 mocha test/test.js
 
+# Locales
 mocha test/ar.js
 mocha test/az.js
 mocha test/bn.js
@@ -35,10 +37,20 @@ mocha test/vi.js
 mocha test/zh-cn.js
 mocha test/zh-tw.js
 
+# Plugins
+mocha test/meridiem.js
+
+# Core (browser)
 phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test.html spec "{\"useColors\":true}"
 
+# Core (es6 -> es5 browser)
 browserify -t [ babelify --presets [ env ] ] test/test.es6.js --outfile test/test.es5.js
 phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-es5.html spec "{\"useColors\":true}"
 
+# Locale (es6 -> es5 browser)
 browserify -t [ babelify --presets [ env ] ] test/ja.es6.js --outfile test/ja.es5.js
 phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/ja-es5.html spec "{\"useColors\":true}"
+
+# Plugin (es6 -> es5 browser)
+browserify -t [ babelify --presets [ env ] ] test/meridiem.es6.js --outfile test/meridiem.es5.js
+phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/meridiem-es5.html spec "{\"useColors\":true}"

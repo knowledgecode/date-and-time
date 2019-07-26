@@ -1102,15 +1102,11 @@ describe('the same day', () => {
 });
 
 describe('customize', () => {
-    it('getting default meridiem', () => {
-        const locale = date.getLocales('en');
-        expect(locale.A[0]).to.equal('a.m.');
-        expect(locale.A[1]).to.equal('p.m.');
+    it('getting current locale', () => {
+        expect(date.locale()).to.equal('en');
     });
     it('changing default meridiem', () => {
-        date.setLocales('en', {
-            A: ['AM', 'PM']
-        });
+        date.extend({ res: { A: ['AM', 'PM'] } });
         expect(date.format(new Date(2012, 0, 1, 12), 'h A')).to.equal('12 PM');
     });
 });
