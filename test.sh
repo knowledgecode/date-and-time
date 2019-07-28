@@ -39,6 +39,7 @@ mocha test/zh-tw.js
 
 # Plugins
 mocha test/meridiem.js
+mocha test/ordinal.js
 
 # Core (browser)
 phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test.html spec "{\"useColors\":true}"
