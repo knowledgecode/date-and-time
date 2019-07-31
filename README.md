@@ -14,11 +14,11 @@ Because JS modules nowadays are getting more huge and complex, and there are als
 - Older browser support. Even works on IE6. :)
 
 ## Install
-via npm:
+- via npm:
 ```shell
 $ npm install date-and-time --save
 ```
-using directly:
+- using directly:
 ```html
 <script src="/path/to/date-and-time.min.js"></script>
 ```
@@ -36,15 +36,15 @@ using directly:
     - The `isLeapYear()` has come to take a year (number type) instead of a Date object (**Breaking Change**).
 
 ## Usage
-Node.js:
+- Node.js:
 ```javascript
 const date = require('date-and-time');
 ```
-ES6 transpiler:
+- ES6 transpiler:
 ```javascript
 import date from 'date-and-time';
 ```
-Browser:
+- Browser:
 ```javascript
 window.date;    // global object
 ```
