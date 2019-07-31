@@ -41,7 +41,7 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        (module.paths || []).push('../');
+        (module.paths || []).push('./');
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);
