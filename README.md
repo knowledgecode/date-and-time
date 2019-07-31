@@ -1,56 +1,48 @@
 # date-and-time
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
-## What
-This library is just a function collection for manipulation of date and time. It's tiny, simple, easy to learn.
+This library is just a function collection for manipulating JS date and time. It's tiny, simple, easy to learn.
 
 ## Why
-Because JS modules nowadays are getting more huge and complex, and there are many dependencies. Trying to keep simple and small each module is meaningful.
+Because JS modules nowadays are getting more huge and complex, and there are also many dependencies. Trying to keep each module simple and small is meaningful.
 
 ## Features
 - Minimalist. Less than 2k. (minified and gzipped)
-- Universal (Isomorphic)
-- Multi language support
-- Not extending built-in Date object
-- Old browser support. It even works on IE6
+- Universal / Isomorphic. Wherever JS runtime works.
+- Multi language support.
+- Not extending built-in Date object.
+- Older browser support. Even works on IE6. :)
 
 ## Install
 via npm:
 ```shell
 $ npm install date-and-time --save
 ```
-via Bower (DEPRECATED):
-```shell
-$ bower install date-and-time
-```
-directly:
+using directly:
 ```html
-<script src="date-and-time.min.js"></script>
+<script src="/path/to/date-and-time.min.js"></script>
 ```
 
-## Changes
-- 0.8.0 (Parser Update)
-    - The `parse()` has become to return `Invalid Date` instead of `NaN` when parsing is failure (**Breaking Change**).
-    - Added `preparse()`. It returns a Date Structure.
-    - The `isValid()` has become to take a Date Structure in addition to a date string.
-    - The `isLeapYear()` has become to take a year (number type) instead of a Date object (**Breaking Change**).
+## Recent Changes
+- 0.9.0 (Locale Update)
+    - Renewal of the locale system. Some functions were merged (**Breaking Change**).
+    - Added a plugin system. You could extend the formatter and the parser by using it.
+    - The `format()` has come to support a user original token in association with the plugin system.
 
-- 0.7.0
-    - Added Danish support
+- 0.8.0 (Parser Update)
+    - The `parse()` has come to return `Invalid Date` instead of `NaN` when parsing is failure (**Breaking Change**).
+    - Added `preparse()`. It returns a Date Structure.
+    - The `isValid()` has come to take a Date Structure in addition to a date string.
+    - The `isLeapYear()` has come to take a year (number type) instead of a Date object (**Breaking Change**).
 
 ## Usage
 Node.js:
 ```javascript
 const date = require('date-and-time');
 ```
-Babel:
+ES6 transpiler:
 ```javascript
 import date from 'date-and-time';
-```
-AMD:
-```javascript
-require(['date-and-time'], function (date) {
-});
 ```
 Browser:
 ```javascript
@@ -69,10 +61,12 @@ window.date;    // global object
 ```javascript
 const now = new Date();
 date.format(now, 'YYYY/MM/DD HH:mm:ss');    // => '2015/01/02 23:14:05'
-date.format(now, 'ddd MMM DD YYYY');        // => 'Fri Jan 02 2015'
+date.format(now, 'ddd., MMM. DD YYYY');     // => 'Fri., Jan. 02 2015'
 date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 p.m. GMT-0800'
 date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
 ```
+
+Available tokens and their meanings are as follows:
 
 | token        | meaning     | example           |
 |:-------------|:------------|:------------------|
@@ -110,6 +104,17 @@ date.format(new Date(), 'DD-[MM]-YYYY');    // => '02-MM-2015'
 date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 ```
 
+#### NOTE 2. UTC
+This function usually outputs a local date-time string. Set to true a `utc` option (the 3rd parameter) if you would like to get a UTC date/time string.
+
+```javascript
+date.format(new Date(), 'hh:mm A [GMT]Z');          // => '11:14 p.m. GMT-0800'
+date.format(new Date(), 'hh:mm A [GMT]Z', true);    // => '07:14 a.m. GMT+0000'
+```
+
+#### NOTE 3. More Tokens
+You could also define your own tokens. See [PLUGINS.md](./PLUGINS.md) for details.
+
 ---
 
 ### parse(dateString, formatString[, utc])
@@ -120,14 +125,16 @@ date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 - @returns {**Date**} a constructed date
 
 ```javascript
-date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan 2 2015 23:14:05 GMT-0800
-date.parse('02-01-2015', 'DD-MM-YYYY');                     // => Jan 2 2015 00:00:00 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => Jan 1 1970 23:14:05 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => Jan 1 1970 15:14:05 GMT-0800
-date.parse('Jam 1 2017', 'MMM D YYYY');                     // => Invalid Date
-date.parse('Feb 29 2016', 'MMM D YYYY');                    // => Feb 29 2016 00:00:00 GMT-0800
-date.parse('Feb 29 2017', 'MMM D YYYY');                    // => Invalid Date
+date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan. 2 2015 23:14:05 GMT-0800
+date.parse('02-01-2015', 'DD-MM-YYYY');                     // => Jan. 2 2015 00:00:00 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => Jan. 1 1970 23:14:05 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => Jan. 1 1970 15:14:05 GMT-0800
+date.parse('Jam. 1 2017', 'MMM. D YYYY');                   // => Invalid Date
+date.parse('Feb. 29 2016', 'MMM. D YYYY');                  // => Feb. 29 2016 00:00:00 GMT-0800
+date.parse('Feb. 29 2017', 'MMM. D YYYY');                  // => Invalid Date
 ```
+
+Available tokens and their meanings are as follows:
 
 | token        | meaning     | example           |
 |:-------------|:------------|:------------------|
@@ -153,65 +160,73 @@ date.parse('Feb 29 2017', 'MMM D YYYY');                    // => Invalid Date
 | S            | millisecond | 7, 0              |
 
 #### NOTE 1. Invalid Date
-If the function fails to parse, it will return `Invalid Date`. Be careful as the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
+If the function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You could tell whether the Date object is invalid as follows:
 
 ```javascript
-const today = date.parse('Jam 1 2017', 'MMM D YYYY');
+const today = date.parse('Jam. 1 2017', 'MMM. D YYYY');
 
 if (isNaN(today)) {
     // Failure
 }
 ```
 
-#### NOTE 2. Default Date Time
-Default date is `January 1, 1970`, time is `00:00:00.000`. Not passed values will be replaced with them:
+#### NOTE 2. UTC
+This function usually assumes the `dateString` is local date-time. Set to true a `utc` option (the 3rd parameter) if it is UTC.
 
 ```javascript
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan 1 1970 23:14:05 GMT-0800
-date.parse('Feb 2000', 'MMM YYYY');         // => Feb 1 2000 00:00:00 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');          // => Jan. 1 1970 23:14:05 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);    // => Jan. 1 1970 15:14:05 GMT-0800
 ```
 
-#### NOTE 3. Max Date / Min Date
+#### NOTE 3. Default Date Time
+Default date is `January 1, 1970`, time is `00:00:00.000`. Values not passed will be complemented with them:
+
+```javascript
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan. 1 1970 23:14:05 GMT-0800
+date.parse('Feb. 2000', 'MMM. YYYY');       // => Feb. 1 2000 00:00:00 GMT-0800
+```
+
+#### NOTE 4. Max Date / Min Date
 Parsable maximum date is `December 31, 9999`, minimum date is `January 1, 0001`.
 
 ```javascript
-date.parse('Dec 31 9999', 'MMM D YYYY');    // => Dec 31 9999 00:00:00 GMT-0800
-date.parse('Dec 31 10000', 'MMM D YYYY');   // => Invalid Date
+date.parse('Dec. 31 9999', 'MMM. D YYYY');  // => Dec. 31 9999 00:00:00 GMT-0800
+date.parse('Dec. 31 10000', 'MMM. D YYYY'); // => Invalid Date
 
-date.parse('Jan 1 0001', 'MMM D YYYY');     // => Jan 1 0001 00:00:00 GMT-0800
-date.parse('Jan 1 0000', 'MMM D YYYY');     // => Invalid Date
+date.parse('Jan. 1 0001', 'MMM. D YYYY');   // => Jan. 1 0001 00:00:00 GMT-0800
+date.parse('Jan. 1 0000', 'MMM. D YYYY');   // => Invalid Date
 ```
 
-#### NOTE 4. Auto Mapping
-The `YY` token maps the year 69 or less to 2000s, the year 70 or more to 1900s. Using it is not recommended.
+#### NOTE 5. Auto Mapping
+The `YY` token maps the year 69 or less to the 2000s, the year 70 or more to the 1900s. Using it is not recommended.
 
 ```javascript
-date.parse('Dec 31 0', 'MMM D YY');     // => Dec 31 2000 00:00:00 GMT-0800
-date.parse('Dec 31 69', 'MMM D YY');    // => Dec 31 2069 00:00:00 GMT-0800
-date.parse('Dec 31 70', 'MMM D YY');    // => Dec 31 1970 00:00:00 GMT-0800
-date.parse('Dec 31 99', 'MMM D YY');    // => Dec 31 1999 00:00:00 GMT-0800
+date.parse('Dec. 31 0', 'MMM. D YY');   // => Dec. 31 2000 00:00:00 GMT-0800
+date.parse('Dec. 31 69', 'MMM. D YY');  // => Dec. 31 2069 00:00:00 GMT-0800
+date.parse('Dec. 31 70', 'MMM. D YY');  // => Dec. 31 1970 00:00:00 GMT-0800
+date.parse('Dec. 31 99', 'MMM. D YY');  // => Dec. 31 1999 00:00:00 GMT-0800
 ```
 
-#### NOTE 5. 12-hour notation and Meridiem
+#### NOTE 6. 12-hour notation and Meridiem
 If use the `hh` or `h` (12-hour) token, use together the `A` (meridiem) token to get the right value.
 
 ```javascript
-date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan 1 1970 23:14:05 GMT-0800
+date.parse('11:14:05', 'hh:mm:ss');         // => Jan. 1 1970 11:14:05 GMT-0800
+date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan. 1 1970 23:14:05 GMT-0800
 ```
 
-#### NOTE 6. Comments
+#### NOTE 7. Comments
 Strings in parenthese `[...]` in the formatString will be ignored as comments:
 
 ```javascript
 date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Date
-date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan 1 1970 12:34:00 GMT-0800
+date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan. 1 1970 12:34:00 GMT-0800
 ```
 
-A white space works as a wild card, so that you can also write as follows:
+As a white space works as a wild card, you could also write as follows:
 
 ```javascript
-date.parse('12 hours 34 minutes', 'HH       mm        ');   // => Jan 1 1970 12:34:00 GMT-0800
+date.parse('12 hours 34 minutes', 'HH       mm        ');   // => Jan. 1 1970 12:34:00 GMT-0800
 ```
 
 ---
@@ -222,7 +237,7 @@ date.parse('12 hours 34 minutes', 'HH       mm        ');   // => Jan 1 1970 12:
 - @param {**string**} formatString - a format string
 - @returns {**Object**} a date structure
 
-This function takes exactly the same parameters with the `parse()`, but instead it returns a date structure like this:
+This function takes exactly the same parameters with the `parse()`, but returns a date structure as follows unlike it:
 
 ```javascript
 date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
@@ -243,7 +258,7 @@ date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
 }
 ```
 
-This object shows a parsing result. You can realize from it how the date string was parsed(, or why the parsing was failed).
+This object shows a parsing result. You will be able to tell from it how the date string was parsed(, or why the parsing was failed).
 
 ---
 
@@ -273,7 +288,7 @@ date.isValid(result);   // => true
 
 ```javascript
 const now = new Date();
-const next_year = date.addYears(now, 1);  // => Date object
+const next_year = date.addYears(now, 1);
 ```
 
 ---
@@ -396,96 +411,55 @@ date.isLeapYear(date2); // => true
 - @returns {**boolean**} whether the dates are the same day (times are ignored)
 
 ```javascript
-const date1 = new Date(2017, 0, 2, 0);          // Jan 2 2017 00:00:00
-const date2 = new Date(2017, 0, 2, 23, 59);     // Jan 2 2017 23:59:00
-const date3 = new Date(2017, 0, 1, 23, 59);     // Jan 1 2017 23:59:00
+const date1 = new Date(2017, 0, 2, 0);          // Jan. 2 2017 00:00:00
+const date2 = new Date(2017, 0, 2, 23, 59);     // Jan. 2 2017 23:59:00
+const date3 = new Date(2017, 0, 1, 23, 59);     // Jan. 1 2017 23:59:00
 date.isSameDay(date1, date2);   // => true
 date.isSameDay(date1, date3);   // => false
 ```
 
 ---
 
-### locale([code])
-*Setting a locale*
+### locale([code[, locale]])
+*Change locale or setting a new locale definition*
 - @param {**string**} [code] - language code
+- @param {**Object**} [locale] - locale definition
 - @returns {**string**} current language code
 
-See the `Locale` section for details.
+Returns current language code if called without any parameters.
+
+```javascript
+date.locale();  // "en"
+```
+
+To switch to any other language, call it with a language code.
+
+```javascript
+date.locale('es');  // Switch to Spanish
+```
+
+To define a new locale, call it with new language code and a locale definition. See [LOCALE.md](./LOCALE.md) for details.
 
 ---
 
-### getLocales([code])
-*Getting a definition of locale*
-- @param {**string**} [code] - language code
-- @returns {**Object**} definition of locale
+### extend(extension)
+*Locale extension*
+- @param {**Object**} extension - locale definition
+- @returns {**void**}
 
-See the `Locale` section for details.
-
----
-
-### setLocales(code, options)
-*Adding a new definition of locale*
-- @param {**string**} code - language code
-- @param {**Object**} options - definition of locale
-
-See the `Locale` section for details.
+Extends a current locale (formatter and parser). See [PLUGINS.md](./PLUGINS.md) for details.
 
 ---
 
-## Locale
-Although month, day of week, and meridiem (am / pm) are displayed in English, you can switch to other languages as follows:  
+### plugin(name[, extension])
+*Plugin import or definition*
+- @param {**string**} name - plugin name
+- @param {**Object**} [extension] - locale definition
+- @returns {**void**}
 
-Node.js:
-```javascript
-const date = require('date-and-time');
-date.locale('fr');  // French
-date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
-```
+Plugin is a named locale definition defined with the `extend()`. See [PLUGINS.md](./PLUGINS.md) for details.
 
-Babel:
-```javascript
-import date from 'date-and-time';
-import 'date-and-time/locale/it';
-
-date.locale('it');  // Italian
-date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
-```
-
-AMD:
-```javascript
-require(['date-and-time', 'locale/de'], function (date) {
-    date.locale('de');  // German
-    date.format(new Date(), 'dddd, D. MMMM');   // => 'Montag, 11. Januar'
-});
-```
-
-Browser:
-```html
-<script src="date-and-time.min.js"></script>
-<script src="locale/zh-cn.js"></script>
-<script>
-date.locale('zh-cn');  // Chinese
-date.format(new Date(), 'MMMD日dddd');  // => '1月11日星期一'
-</script>
-```
-
-It supports the following languages for now:  
-> Arabic (ar), Azerbaijani (az), Bengali (bn), Burmese (my), Chinese (zh-cn), Chinese (zh-tw), Czech (cs), Danish (dk), Dutch (nl), English (en), French (fr), German (de), Greek (el), Hindi (hi), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Javanese (jv), Korean (ko), Persian (fa), Polish (pl), Portuguese (pt), Punjabi (pa-in), Romanian (ro), Russian (ru), Serbian (sr), Spanish (es), Thai (th), Turkish (tr), Ukrainian (uk), Uzbek (uz), Vietnamese (vi)
-
-## Customizing
-If you have some problems with the default translation, you could change them as you want:
-
-```javascript
-const now = new Date();
-date.format(now, 'h:m A');  // => '12:34 p.m.'
-
-date.setLocales('en', {
-    A: ['AM', 'PM']
-});
-
-date.format(now, 'h:m A');  // => '12:34 PM'
-```
-However, If **obviously** wrong, please send a PR or post the issue.  
+---
 
 ## Browser Support
 Chrome, Firefox, Safari, Edge, and Internet Explorer 6+.
