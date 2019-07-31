@@ -20,6 +20,10 @@
             'gündüz', 'gündüz', 'gündüz', 'gündüz', 'gündüz', // 12 - 16
             'axşam', 'axşam', 'axşam', 'axşam', 'axşam', 'axşam', 'axşam']; // 17 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/az');
+    }
+
     describe('format with "az"', function () {
         before(function () {
             date.locale('az');

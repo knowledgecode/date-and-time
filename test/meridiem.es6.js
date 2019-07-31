@@ -8,7 +8,7 @@ const A = ['a.m.', 'p.m.'],
     aa = ['am', 'pm'];
 
 describe('extended meridiem', () => {
-    before(() =>  {
+    before(() => {
         date.plugin('meridiem');
     });
 

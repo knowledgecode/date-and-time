@@ -18,6 +18,10 @@
         A = ['sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa',    // 0 - 11
             'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/vi');
+    }
+
     describe('format with "vi"', function () {
         before(function () {
             date.locale('vi');

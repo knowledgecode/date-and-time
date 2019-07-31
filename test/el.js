@@ -21,6 +21,10 @@
         A = ['πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ',
             'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ'];
 
+    if (typeof require === 'function') {
+        require('../locale/el');
+    }
+
     describe('format with "el"', function () {
         before(function () {
             date.locale('el');

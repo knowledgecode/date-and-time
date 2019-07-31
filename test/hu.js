@@ -18,6 +18,10 @@
         A = ['de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de',
             'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du'];
 
+    if (typeof require === 'function') {
+        require('../locale/hu');
+    }
+
     describe('format with "hu"', function () {
         before(function () {
             date.locale('hu');

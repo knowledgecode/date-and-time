@@ -16,6 +16,10 @@
         ddd = ['ned.', 'pon.', 'uto.', 'sre.', 'čet.', 'pet.', 'sub.'],
         dd = ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su'];
 
+    if (typeof require === 'function') {
+        require('../locale/sr');
+    }
+
     describe('format with "sr"', function () {
         before(function () {
             date.locale('sr');

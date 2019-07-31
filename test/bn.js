@@ -21,6 +21,10 @@
             'বিকাল', 'বিকাল', 'বিকাল',    // 17 - 19
             'রাত', 'রাত', 'রাত', 'রাত'];    // 20 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/bn');
+    }
+
     describe('format with "bn"', function () {
         before(function () {
             date.locale('bn');

@@ -19,6 +19,10 @@
         ddd = ['nie', 'pon', 'wt', 'śr', 'czw', 'pt', 'sb'],
         dd = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'];
 
+    if (typeof require === 'function') {
+        require('../locale/pl');
+    }
+
     describe('format with "pl"', function () {
         before(function () {
             date.locale('pl');

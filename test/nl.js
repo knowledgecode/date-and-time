@@ -19,6 +19,10 @@
         ddd = ['zo.', 'ma.', 'di.', 'wo.', 'do.', 'vr.', 'za.'],
         dd = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
 
+    if (typeof require === 'function') {
+        require('../locale/nl');
+    }
+
     describe('format with "nl"', function () {
         before(function () {
             date.locale('nl');

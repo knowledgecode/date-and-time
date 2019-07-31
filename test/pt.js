@@ -20,6 +20,10 @@
             'da tarde', 'da tarde', 'da tarde', 'da tarde', 'da tarde', 'da tarde', 'da tarde',     // 12 - 18
             'da noite', 'da noite', 'da noite', 'da noite', 'da noite'];    // 19 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/pt');
+    }
+
     describe('format with "pt"', function () {
         before(function () {
             date.locale('pt');

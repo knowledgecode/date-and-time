@@ -18,6 +18,10 @@
         A = ['Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags',    // 0 - 11
             'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/de');
+    }
+
     describe('format with "de"', function () {
         before(function () {
             date.locale('de');

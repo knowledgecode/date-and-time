@@ -18,6 +18,10 @@
         A = ['di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina',    // 0 - 11
             'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/it');
+    }
+
     describe('format with "it"', function () {
         before(function () {
             date.locale('it');

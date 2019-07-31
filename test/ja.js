@@ -18,6 +18,10 @@
         A = ['午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前',    // 0 - 11
             '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/ja');
+    }
+
     describe('format with "ja"', function () {
         before(function () {
             date.locale('ja');

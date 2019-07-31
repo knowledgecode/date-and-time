@@ -21,6 +21,10 @@
             'शाम', 'शाम', 'शाम',   // 17 - 19
             'रात', 'रात', 'रात', 'रात'];    // 20 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/hi');
+    }
+
     describe('format with "hi"', function () {
         before(function () {
             date.locale('hi');

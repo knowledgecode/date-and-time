@@ -21,6 +21,10 @@
             'ਸ਼ਾਮ', 'ਸ਼ਾਮ', 'ਸ਼ਾਮ',   // 17 - 19
             'ਰਾਤ', 'ਰਾਤ', 'ਰਾਤ', 'ਰਾਤ'];    // 20 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/pa-in');
+    }
+
     describe('format with "pa-in"', function () {
         before(function () {
             date.locale('pa-in');

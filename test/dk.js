@@ -16,7 +16,11 @@
         ddd = ['søn', 'man', 'tir', 'ons', 'tors', 'fre', 'lør'],
         dd = ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'];
 
-    describe('format with "cs"', function () {
+    if (typeof require === 'function') {
+        require('../locale/dk');
+    }
+
+    describe('format with "dk"', function () {
         before(function () {
             date.locale('dk');
         });

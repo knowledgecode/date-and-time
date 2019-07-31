@@ -361,17 +361,14 @@
         if (locale) {
             customize(code, { res: _res, formatter: _formatter, parser: _parser }, locale);
         } else if (code) {
-            if (!locales[code] && typeof require === 'function' && global) {
-                require('./locale/' + code);
-            }
             lang = code;
         }
         return lang;
     };
 
     /**
-     * current locale extension
-     * @param {Object} extension - locale definition
+     * locale extension
+     * @param {Object} extension - locale extension
      * @returns {void}
      */
     date.extend = function (extension) {
@@ -379,20 +376,15 @@
     };
 
     /**
-     * plugin definition
+     * plugin import or definition
      * @param {string} name - plugin name
-     * @param {Object} [extension] - locale definition
+     * @param {Object} [extension] - locale extension
      * @returns {void}
      */
     date.plugin = function (name, extension) {
         plugins[name] = plugins[name] || extension;
-        if (!extension) {
-            if (!plugins[name] && typeof require === 'function' && global) {
-                require('./plugin/' + name);
-            }
-            if (plugins[name]) {
-                date.extend(plugins[name]);
-            }
+        if (!extension && plugins[name]) {
+            date.extend(plugins[name]);
         }
     };
 

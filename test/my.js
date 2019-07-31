@@ -16,6 +16,10 @@
         ddd = ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'ကြာ', 'သော', 'နေ'],
         dd = ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'ကြာ', 'သော', 'နေ'];
 
+    if (typeof require === 'function') {
+        require('../locale/my');
+    }
+
     describe('format with "my"', function () {
         before(function () {
             date.locale('my');

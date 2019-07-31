@@ -20,6 +20,10 @@
             'sonten', 'sonten', 'sonten', 'sonten', // 15 - 18
             'ndalu', 'ndalu', 'ndalu', 'ndalu', 'ndalu'];   // 19 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/jv');
+    }
+
     describe('format with "jv"', function () {
         before(function () {
             date.locale('jv');

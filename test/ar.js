@@ -18,6 +18,10 @@
         A = ['ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص',    // 00 - 11
             'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/ar');
+    }
+
     describe('format with "ar"', function () {
         before(function () {
             date.locale('ar');

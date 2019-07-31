@@ -18,6 +18,10 @@
         A = ['matin', 'matin', 'matin', 'matin', 'matin', 'matin', 'matin', 'matin', 'matin', 'matin', 'matin', 'matin',    // 0 - 11
             'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi', 'l\'après-midi'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/fr');
+    }
+
     describe('format with "fr"', function () {
         before(function () {
             date.locale('fr');

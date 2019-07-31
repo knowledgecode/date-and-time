@@ -16,6 +16,10 @@
         ddd = ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'],
         dd = ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'];
 
+    if (typeof require === 'function') {
+        require('../locale/ro');
+    }
+
     describe('format with "ro"', function () {
         before(function () {
             date.locale('ro');

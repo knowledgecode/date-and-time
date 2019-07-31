@@ -4,6 +4,10 @@
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time');
 
+    if (typeof require === 'function') {
+        require('../plugin/ordinal');
+    }
+
     describe('ordinal number', function () {
         before(function () {
             date.plugin('ordinal');

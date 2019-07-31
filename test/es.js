@@ -19,6 +19,10 @@
             'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde',    // 12 - 18
             'de la noche', 'de la noche', 'de la noche', 'de la noche', 'de la noche'];     // 19 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/es');
+    }
+
     describe('format with "es"', function () {
         before(function () {
             date.locale('es');

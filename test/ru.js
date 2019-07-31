@@ -20,6 +20,10 @@
             'дня', 'дня', 'дня', 'дня', 'дня',   // 12 - 17
             'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера', 'вечера'];    // 18 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/ru');
+    }
+
     describe('format with "ru"', function () {
         before(function () {
             date.locale('ru');

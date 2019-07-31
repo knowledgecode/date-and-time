@@ -35,7 +35,8 @@
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        exec(require('../date-and-time'));
+        (module.paths || []).push('../');
+        exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);
     } else {

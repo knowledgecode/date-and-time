@@ -16,6 +16,10 @@
         ddd = ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
         dd = ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'];
 
+    if (typeof require === 'function') {
+        require('../locale/cs');
+    }
+
     describe('format with "cs"', function () {
         before(function () {
             date.locale('cs');

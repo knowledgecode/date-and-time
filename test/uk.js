@@ -24,6 +24,10 @@
             'дня', 'дня', 'дня', 'дня', 'дня',   // 12 - 16
             'вечора', 'вечора', 'вечора', 'вечора', 'вечора', 'вечора', 'вечора']; // 17 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/uk');
+    }
+
     describe('format with "uk"', function () {
         before(function () {
             date.locale('uk');

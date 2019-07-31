@@ -18,6 +18,10 @@
         A = ['오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전',    // 0 - 11
             '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후'];    // 12 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/ko');
+    }
+
     describe('format with "ko"', function () {
         before(function () {
             date.locale('ko');

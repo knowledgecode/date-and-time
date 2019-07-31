@@ -16,6 +16,10 @@
         ddd = ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
         dd = ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'];
 
+    if (typeof require === 'function') {
+        require('../locale/tr');
+    }
+
     describe('format with "tr"', function () {
         before(function () {
             date.locale('tr');

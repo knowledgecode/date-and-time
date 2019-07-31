@@ -20,6 +20,10 @@
             'sore', 'sore', 'sore', 'sore', // 15 - 18
             'malam', 'malam', 'malam', 'malam', 'malam'];   // 19 - 23
 
+    if (typeof require === 'function') {
+        require('../locale/id');
+    }
+
     describe('format with "id"', function () {
         before(function () {
             date.locale('id');

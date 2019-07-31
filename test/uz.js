@@ -16,6 +16,10 @@
         ddd = ['Якш', 'Душ', 'Сеш', 'Чор', 'Пай', 'Жум', 'Шан'],
         dd = ['Як', 'Ду', 'Се', 'Чо', 'Па', 'Жу', 'Ша'];
 
+    if (typeof require === 'function') {
+        require('../locale/uz');
+    }
+
     describe('format with "uz"', function () {
         before(function () {
             date.locale('uz');
