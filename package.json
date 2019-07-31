@@ -32,5 +32,8 @@
     "mocha": "^5.2.0",
     "mocha-phantomjs-core": "^2.1.2",
     "phantomjs-prebuilt": "^2.1.16"
+  },
+  "browser": {
+      "date-and-time": "./date-and-time.js"
   }
 }
