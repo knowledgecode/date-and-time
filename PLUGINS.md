@@ -2,7 +2,7 @@
 As this library is oriented towards minimalism, it might be lacking in functionality for some people. Plugin is the most realistic solution for solving such dissatisfaction.
 
 ## Usage
-In this section describes how to use official plugins.
+In this section it describes how to use official plugins.
 
 - Node.js:
 ```javascript
@@ -32,7 +32,9 @@ date.plugin('foobar');
 
 ---
 
-### 1. Meridiem
+## Official Plugins
+
+### Meridiem
 Extends meridiem notation (`AA`, `a` and `aa`).
 
 ```javascript
@@ -57,7 +59,7 @@ date.parse('12:34 pm', 'hh:mm A');      // => Jan. 1 1970 12:34:00
 date.parse('12:34 PM', 'hh:mm AA');     // => Invalid Date
 ```
 
-### 2. Ordinal
+### Ordinal
 Adds ordinal notation (`DDD`).
 
 ```javascript
@@ -72,7 +74,7 @@ date.format(new Date(), 'MMM. DD YYYY');    // => Jan. 01 2019
 date.format(new Date(), 'MMM. DDD YYYY');   // => Jan. 1st 2019
 ```
 
-## Expand Freely
+## Extension
 You could not only use existing plugins, but define your own tokens or modify existing tokens behavior.
 
 ### WIP
