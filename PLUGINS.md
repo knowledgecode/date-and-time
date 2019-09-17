@@ -1,10 +1,13 @@
 # Plugins
-As this library is oriented towards minimalism, it might be lacking in functionality for some people. Plugin is the most realistic solution for solving such dissatisfaction.
+
+As this library is oriented towards minimalism, it might be lacking in functionality for some developers. Plugin is the most realistic solution for solving such dissatisfaction.
 
 ## Usage
+
 In this section it describes how to use official plugins.
 
 - Node.js:
+
 ```javascript
 const date = require('date-and-time');
 require('date-and-time/plugin/foobar');
@@ -12,7 +15,8 @@ require('date-and-time/plugin/foobar');
 date.plugin('foobar');
 ```
 
-- ES6 transpiler:
+- With a transpiler:
+
 ```javascript
 import date from 'date-and-time';
 import 'date-and-time/plugin/foobar';
@@ -20,7 +24,8 @@ import 'date-and-time/plugin/foobar';
 date.plugin('foobar');
 ```
 
-- Browser:
+- With an older browser:
+
 ```html
 <script src="/path/to/date-and-time.min.js"></script>
 <script src="/path/to/plugin/foobar.js"></script>
@@ -34,8 +39,9 @@ date.plugin('foobar');
 
 ## Official Plugins
 
-### Meridiem
-Extends meridiem notation (`AA`, `a` and `aa`).
+### 1. Meridiem
+
+This plugin extends meridiem notation (`AA`, `a` and `aa`).
 
 ```javascript
 // Import "medidiem" plugin.
@@ -59,8 +65,9 @@ date.parse('12:34 pm', 'hh:mm A');      // => Jan. 1 1970 12:34:00
 date.parse('12:34 PM', 'hh:mm AA');     // => Invalid Date
 ```
 
-### Ordinal
-Adds ordinal notation (`DDD`).
+### 2. Ordinal
+
+This plugin adds ordinal notation (`DDD`).
 
 ```javascript
 // Import "ordinal" plugin.
@@ -70,11 +77,114 @@ date.plugin('ordinal');
 date.format(new Date(), 'MMM. D YYYY');     // => Jan. 1 2019
 date.format(new Date(), 'MMM. DD YYYY');    // => Jan. 01 2019
 
-// DDD token outputs ordinal number of day.
+// The DDD token outputs ordinal number of day.
 date.format(new Date(), 'MMM. DDD YYYY');   // => Jan. 1st 2019
 ```
 
-## Extension
-You could not only use existing plugins, but define your own tokens or modify existing tokens behavior.
+---
+
+## Writing a Plugin
+
+You could not only use official plugins, but define your own tokens or modify the behavior of existing tokens. Hereafter, it describes about how to write your own plugin.
+
+Tokens in this library have the following rules:
+
+- All of the characters must be the same alphabet (`A-Z, a-z`).
+
+```javascript
+'E'             // Good
+'EE'            // Good
+'EEEEEEEEEE'    // Good, but why so long!?
+'EES'           // Not good
+'???'           // Not good
+```
+
+- It is case sensitive.
+
+```javascript
+'eee'           // Good
+'Eee'           // Not good
+```
+
+- It is not able to add new alphabet's token to the parser.  
+
+```javascript
+'EEE'           // This is not able to add.
+'YYY'           // This is OK because a `Y` token is existing in the parser.
+'SSS'           // This is modifying, not adding because the same token is existing.
+```
+
+### Example 1
+
+This is a plugin named `AMPM`. It replaces the meridiem words from `a.m./p.m.` to `AM/PM`.
+
+```javascript
+(global => {
+
+  const exec = date => {
+    // This is the body of the plugin.
+    date.plugin('AMPM', {
+      res: {
+        A: ['AM', 'PM']
+      }
+    });
+  };
+
+  if (typeof module === 'object' && typeof module.exports === 'object') {
+    (module.paths || []).push('./');
+    exec(require('date-and-time'));
+  } else if (typeof define === 'function' && define.amd) {
+    define(['date-and-time'], exec);
+  } else {
+    exec(global.date);
+  }
+
+})(this);
+```
+
+### Example 2
+
+This is the above `ordinal` plugin. This plugin adds `DDD` token to return ordinal number of day.
+
+```javascript
+(global => {
+
+  const exec = date => {
+    // This is the body of the plugin.
+    date.plugin('ordinal', {
+      formatter: {
+        DDD: function (d) {
+          var day = d.getDate();
+
+          switch (day) {
+          case 1:
+          case 21:
+          case 31:
+              return day + 'st';
+          case 2:
+          case 22:
+              return day + 'nd';
+          case 3:
+          case 23:
+              return day + 'rd';
+          default:
+              return day + 'th';
+          }
+        }
+      }
+    });
+  };
+
+  if (typeof module === 'object' && typeof module.exports === 'object') {
+    (module.paths || []).push('./');
+    exec(require('date-and-time'));
+  } else if (typeof define === 'function' && define.amd) {
+    define(['date-and-time'], exec);
+  } else {
+    exec(global.date);
+  }
+
+})(this);
+```
 
 ### WIP
