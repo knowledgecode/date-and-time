@@ -476,14 +476,7 @@ describe('format', () => {
 
 describe('parse', () => {
     it('YYYY', () => {
-        expect(isNaN(date.parse('0', 'YYYY'))).to.be(true);
-    });
-    it('YYYY', () => {
         expect(isNaN(date.parse('0000', 'YYYY'))).to.be(true);
-    });
-    it('YYYY', () => {
-        const now = new Date(0, -1899 * 12, 1);
-        expect(date.parse('1', 'YYYY')).to.eql(now);
     });
     it('YYYY', () => {
         const now = new Date(0, -1899 * 12, 1);
@@ -491,15 +484,7 @@ describe('parse', () => {
     });
     it('YYYY', () => {
         const now = new Date(0, -1801 * 12, 1);
-        expect(date.parse('99', 'YYYY')).to.eql(now);
-    });
-    it('YYYY', () => {
-        const now = new Date(0, -1801 * 12, 1);
         expect(date.parse('0099', 'YYYY')).to.eql(now);
-    });
-    it('YYYY', () => {
-        const now = new Date(100, 0, 1);
-        expect(date.parse('100', 'YYYY')).to.eql(now);
     });
     it('YYYY', () => {
         const now = new Date(100, 0, 1);
@@ -535,15 +520,7 @@ describe('parse', () => {
     });
     it('YY', () => {
         const now = new Date(2000, 0, 1);
-        expect(date.parse('0', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(2000, 0, 1);
         expect(date.parse('00', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(2001, 0, 1);
-        expect(date.parse('1', 'YY')).to.eql(now);
     });
     it('YY', () => {
         const now = new Date(2001, 0, 1);
@@ -564,6 +541,21 @@ describe('parse', () => {
     it('YY', () => {
         const now = new Date(1999, 0, 1);
         expect(date.parse('99', 'YY')).to.eql(now);
+    });
+    it('Y', () => {
+        expect(isNaN(date.parse('0', 'Y'))).to.be(true);
+    });
+    it('Y', () => {
+        const now = new Date(0, -1899 * 12, 1);
+        expect(date.parse('1', 'Y')).to.eql(now);
+    });
+    it('Y', () => {
+        const now = new Date(0, -1801 * 12, 1);
+        expect(date.parse('99', 'Y')).to.eql(now);
+    });
+    it('Y', () => {
+        const now = new Date(100, 0, 1);
+        expect(date.parse('100', 'Y')).to.eql(now);
     });
     it('YYYY MMMM', () => {
         const now = new Date(2015, 0, 1);

@@ -48,12 +48,13 @@
             post: function (str) { return str; }
         },
         _parser = {
-            YYYY: function (str/*, formatString */) { return this.exec(/^\d{1,4}/, str); },
+            YYYY: function (str/*, formatString */) { return this.exec(/^\d{4}/, str); },
             YY: function (str/*, formatString */) {
-                var result = this.exec(/^\d\d?/, str);
+                var result = this.exec(/^\d\d/, str);
                 result.value += result.value < 70 ? 2000 : result.value < 100 ? 1900 : 0;
                 return result;
             },
+            Y: function (str/*, formatString */) { return this.exec(/^\d{1,4}/, str); },
             MMMM: function (str/*, formatString */) {
                 var result = this.find(this.res.MMMM, str);
                 result.value++;

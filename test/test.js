@@ -479,32 +479,16 @@
 
     describe('preparse', function () {
         it('YYYY', function () {
-            var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
-            expect(date.preparse('0', 'YYYY')).to.eql(dt);
-        });
-        it('YYYY', function () {
             var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
             expect(date.preparse('0000', 'YYYY')).to.eql(dt);
-        });
-        it('YYYY', function () {
-            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
-            expect(date.preparse('1', 'YYYY')).to.eql(dt);
         });
         it('YYYY', function () {
             var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
             expect(date.preparse('0001', 'YYYY')).to.eql(dt);
         });
         it('YYYY', function () {
-            var dt = { Y: 99, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
-            expect(date.preparse('99', 'YYYY')).to.eql(dt);
-        });
-        it('YYYY', function () {
             var dt = { Y: 99, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
             expect(date.preparse('0099', 'YYYY')).to.eql(dt);
-        });
-        it('YYYY', function () {
-            var dt = { Y: 100, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 3, _length: 3, _match: 1 };
-            expect(date.preparse('100', 'YYYY')).to.eql(dt);
         });
         it('YYYY', function () {
             var dt = { Y: 100, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
@@ -539,16 +523,8 @@
             expect(date.preparse('9999', 'YYYY')).to.eql(dt);
         });
         it('YY', function () {
-            var dt = { Y: 2000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
-            expect(date.preparse('0', 'YY')).to.eql(dt);
-        });
-        it('YY', function () {
             var dt = { Y: 2000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
             expect(date.preparse('00', 'YY')).to.eql(dt);
-        });
-        it('YY', function () {
-            var dt = { Y: 2001, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
-            expect(date.preparse('1', 'YY')).to.eql(dt);
         });
         it('YY', function () {
             var dt = { Y: 2001, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
@@ -569,6 +545,22 @@
         it('YY', function () {
             var dt = { Y: 1999, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
             expect(date.preparse('99', 'YY')).to.eql(dt);
+        });
+        it('Y', function () {
+            var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.preparse('0', 'Y')).to.eql(dt);
+        });
+        it('Y', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 1, _length: 1, _match: 1 };
+            expect(date.preparse('1', 'Y')).to.eql(dt);
+        });
+        it('Y', function () {
+            var dt = { Y: 99, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 2, _length: 2, _match: 1 };
+            expect(date.preparse('99', 'Y')).to.eql(dt);
+        });
+        it('Y', function () {
+            var dt = { Y: 100, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 3, _length: 3, _match: 1 };
+            expect(date.preparse('100', 'Y')).to.eql(dt);
         });
         it('YYYY MMMM', function () {
             var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 12, _length: 12, _match: 2 };
@@ -838,14 +830,7 @@
 
     describe('parse', function () {
         it('YYYY', function () {
-            expect(isNaN(date.parse('0', 'YYYY'))).to.be(true);
-        });
-        it('YYYY', function () {
             expect(isNaN(date.parse('0000', 'YYYY'))).to.be(true);
-        });
-        it('YYYY', function () {
-            var now = new Date(0, -1899 * 12, 1);
-            expect(date.parse('1', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
             var now = new Date(0, -1899 * 12, 1);
@@ -853,15 +838,7 @@
         });
         it('YYYY', function () {
             var now = new Date(0, -1801 * 12, 1);
-            expect(date.parse('99', 'YYYY')).to.eql(now);
-        });
-        it('YYYY', function () {
-            var now = new Date(0, -1801 * 12, 1);
             expect(date.parse('0099', 'YYYY')).to.eql(now);
-        });
-        it('YYYY', function () {
-            var now = new Date(100, 0, 1);
-            expect(date.parse('100', 'YYYY')).to.eql(now);
         });
         it('YYYY', function () {
             var now = new Date(100, 0, 1);
@@ -897,15 +874,7 @@
         });
         it('YY', function () {
             var now = new Date(2000, 0, 1);
-            expect(date.parse('0', 'YY')).to.eql(now);
-        });
-        it('YY', function () {
-            var now = new Date(2000, 0, 1);
             expect(date.parse('00', 'YY')).to.eql(now);
-        });
-        it('YY', function () {
-            var now = new Date(2001, 0, 1);
-            expect(date.parse('1', 'YY')).to.eql(now);
         });
         it('YY', function () {
             var now = new Date(2001, 0, 1);
@@ -926,6 +895,21 @@
         it('YY', function () {
             var now = new Date(1999, 0, 1);
             expect(date.parse('99', 'YY')).to.eql(now);
+        });
+        it('Y', function () {
+            expect(isNaN(date.parse('0', 'Y'))).to.be(true);
+        });
+        it('Y', function () {
+            var now = new Date(0, -1899 * 12, 1);
+            expect(date.parse('1', 'Y')).to.eql(now);
+        });
+        it('Y', function () {
+            var now = new Date(0, -1801 * 12, 1);
+            expect(date.parse('99', 'Y')).to.eql(now);
+        });
+        it('Y', function () {
+            var now = new Date(100, 0, 1);
+            expect(date.parse('100', 'Y')).to.eql(now);
         });
         it('YYYY MMMM', function () {
             var now = new Date(2015, 0, 1);
