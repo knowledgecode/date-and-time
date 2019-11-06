@@ -153,23 +153,36 @@
     };
 
     /**
-     * pre-parsing a date string
-     * @param {string} dateString - a date string
+     * compiling a format string for the parser
      * @param {string} formatString - a format string
-     * @returns {Object} a date structure
+     * @returns {Array.<string>} a compiled object
      */
-    date.preparse = function (dateString, formatString) {
-        var parser = locales[lang].parser,
-            re = /([A-Za-z])\1*|./g,
-            keys, token, result, offset = 0,
-            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 0, _match: 0 };
+    date.compile = function (formatString) {
+        var re = /([A-Za-z])\1*|./g, keys, pattern = [formatString];
 
-        dateString = parser.pre(dateString);
         formatString = formatString.replace(/\[[^\[\]]*]|\[.*\][^\[]*\]/g, function (str) {
             return str.replace(/./g, ' ').slice(2);
         });
         while ((keys = re.exec(formatString))) {
-            token = keys[0];
+            pattern[pattern.length] = keys[0];
+        }
+        return pattern;
+    };
+
+    /**
+     * pre-parsing a date string
+     * @param {string} dateString - a date string
+     * @param {string|Array.<string>} arg - a format string or a compiled object
+     * @returns {Object} a date structure
+     */
+    date.preparse = function (dateString, arg) {
+        var parser = locales[lang].parser, token, result, offset = 0,
+            pattern = typeof arg === 'string' ? date.compile(arg) : arg, formatString = pattern[0],
+            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 0, _match: 0 };
+
+        dateString = parser.pre(dateString);
+        for (var i = 1, len = pattern.length; i < len; i++) {
+            token = pattern[i];
             if (parser[token]) {
                 result = parser[token](dateString.slice(offset), formatString);
                 if (!result.length) {
@@ -192,12 +205,12 @@
 
     /**
      * validation
-     * @param {Object|string} arg - a date structure or a date string
-     * @param {string} [formatString] - a format string
+     * @param {Object|string} arg1 - a date structure or a date string
+     * @param {string|Array.<string>} [arg2] - a format string or a compiled object
      * @returns {boolean} whether the date string is a valid date
      */
-    date.isValid = function (arg, formatString) {
-        var dt = typeof arg === 'string' ? date.preparse(arg, formatString) : arg,
+    date.isValid = function (arg1, arg2) {
+        var dt = typeof arg1 === 'string' ? date.preparse(arg1, arg2) : arg1,
             last = [31, 28 + date.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
 
         return !(
@@ -210,12 +223,12 @@
     /**
      * parsing a date string
      * @param {string} dateString - a date string
-     * @param {string} formatString - a format string
+     * @param {string|Array.<string>} arg - a format string or a compiled object
      * @param {boolean} [utc] - input as UTC
      * @returns {Date} a constructed date
      */
-    date.parse = function (dateString, formatString, utc) {
-        var dt = date.preparse(dateString, formatString), dateObj;
+    date.parse = function (dateString, arg, utc) {
+        var dt = date.preparse(dateString, arg), dateObj;
 
         if (date.isValid(dt)) {
             dt.M -= dt.Y < 100 ? 22801 : 1; // 22801 = 1900 * 12 + 1
