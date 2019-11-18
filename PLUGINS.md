@@ -106,12 +106,12 @@ Tokens in this library have the following rules:
 'Eee'           // Not good
 ```
 
-- It is not able to add new alphabet's token to the parser.  
+- To the parser, it is not able to add new alphabet's token.  
 
 ```javascript
 'EEE'           // This is not able to add.
 'YYY'           // This is OK because a `Y` token is existing in the parser.
-'SSS'           // This is modifying, not adding because the same token is existing.
+'SSS'           // This is modifying, not adding. Because the same token is existing.
 ```
 
 ### Example 1
@@ -187,4 +187,21 @@ This is the above `ordinal` plugin. This plugin adds `DDD` token to return ordin
 })(this);
 ```
 
-### WIP
+---
+
+## Direct Replacement
+
+All you are enough to change a bit the default behavior of this library? You are not going to write a plugin? Of course, you could replace the default behavior directly like this:
+
+```javascript
+date.format(new Date(), 'hh:mm A'); // => 11:20 p.m.
+
+// Replace the words that a.m./p.m. to AM/PM.
+date.extend({ res: { A: ['AM', 'PM'] } });
+
+date.format(new Date(), 'hh:mm A'); // => 11:20 PM
+```
+
+### Hint
+
+The `extend()` can be regarded as an unnamed `plugin()`.
