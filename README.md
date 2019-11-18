@@ -2,7 +2,7 @@
 
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
-This library is just a function collection for manipulating JS date and time. It's tiny, simple, easy to learn.
+This library is a minimalist collection of functions for manipulating JS date and time. It's tiny, simple, easy to learn.
 
 ## Why
 
@@ -11,9 +11,9 @@ JS modules nowadays are getting more huge and complex, and there are also many d
 ## Features
 
 - Minimalist. Less than 2k. (minified and gzipped)
-- Universal / Isomorphic. Wherever JS runtime works.
+- Extensible. Plugin system support.
 - Multi language support.
-- Not extending built-in Date object.
+- Universal / Isomorphic. Wherever JS runtime works.
 - Older browser support. Even works on IE6. :)
 
 ## Install
@@ -31,6 +31,31 @@ npm install date-and-time --save
 ```
 
 ## Recent Changes
+
+- 0.11.0
+  - Added a `compile()` function that precompiling a date string for the parser. In case of processing many date string with one format, by using this function, you could be able to get results faster than before.
+
+  ```javascript
+  // We have passed a string format at the 2nd parameter every time when calling the parse() function.
+  date.parse('Mar. 22 2019 2:54:21 p.m.', 'MMM. D YYYY h:m:s A');
+  date.parse('Jul. 27 2019 4:15:24 a.m.', 'MMM. D YYYY h:m:s A');
+  date.parse('Dec. 25 2019 3:51:11 a.m.', 'MMM. D YYYY h:m:s A');
+
+  // You can precompile the string format.
+  const pattern = date.compile('MMM. D YYYY h:m:s A');
+
+  // The parse() will be able to finish faster than passing the format string every time.
+  date.parse('Mar. 22 2019 2:54:21 p.m.', pattern);
+  date.parse('Jul. 27 2019 4:15:24 a.m.', pattern);
+  date.parse('Dec. 25 2019 3:51:11 a.m.', pattern);
+  ```
+
+  ```javascript
+  const pattern = date.compile('MMM. D YYYY h:m:s A');
+
+  // The isValid() will also too.
+  date.isValid('Mar. 22 2019 2:54:21 p.m.', pattern);
+  ```
 
 - 0.10.0
   - The `YYYY` token has come to require 4 digits in the `parse()`, the `preparse()` and the `isValid()` (**Breaking Change**).
@@ -50,8 +75,8 @@ npm install date-and-time --save
   - Added a `Y` token to support year, 4 or less digits in the above functions. This new token, `Y` is equivalent to the previous `YYYY` token.
 
   ```javascript
-  date.parse('31-12-123', 'DD-MM-Y');   // good
-  date.parse('31-12-3', 'DD-MM-Y');     // good
+  date.parse('31-12-123', 'DD-MM-Y');   // Good
+  date.parse('31-12-3', 'DD-MM-Y');     // Good
   ```
 
 - 0.9.0 (Locale Update)
@@ -163,11 +188,29 @@ You could also define your own tokens. See [PLUGINS.md](./PLUGINS.md) for detail
 
 ---
 
-### parse(dateString, formatString[, utc])
+### compile(formatString)
+
+- Compiling a format string for the parser.
+  - @param {**string**} formatString - a format string
+  - @returns {**Array.\<string\>**} a compiled object
+
+```javascript
+  const pattern = date.compile('MMM. D YYYY h:m:s A');
+
+  date.parse('Mar. 22 2019 2:54:21 p.m.', pattern);
+  date.parse('Jul. 27 2019 4:15:24 a.m.', pattern);
+  date.parse('Dec. 25 2019 3:51:11 a.m.', pattern);
+```
+
+If you are going to call the `parse()` or the `isValid()` many times with one string format, recommended to precompile and reuse it for performance.
+
+---
+
+### parse(dateString, arg[, utc])
 
 - Parsing a date string.
   - @param {**string**} dateString - a date string
-  - @param {**string**} formatString - a format string
+  - @param {**string|Array.\<string\>**} arg - a format string or a compiled object
   - @param {**boolean**} [utc] - input as UTC
   - @returns {**Date**} a constructed date
 
@@ -291,11 +334,11 @@ date.parse('12 hours 34 minutes', 'HH       mm        ');   // => Jan. 1 1970 12
 
 ---
 
-### preparse(dateString, formatString)
+### preparse(dateString, arg)
 
 - Pre-parsing a date string.
   - @param {**string**} dateString - a date string
-  - @param {**string**} formatString - a format string
+  - @param {**string|Array.\<string\>**} arg - a format string or a compiled object
   - @returns {**Object**} a date structure
 
 This function takes exactly the same parameters with the `parse()`, but returns a date structure as follows unlike it:
@@ -319,15 +362,15 @@ date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
 }
 ```
 
-This object shows a parsing result. You will be able to tell from it how the date string was parsed(, or why the parsing was failed).
+This object shows a parsing result. You would be able to tell from it how the date string was parsed(, or why the parsing was failed).
 
 ---
 
-### isValid(arg[, formatString])
+### isValid(arg1[, arg2])
 
 - Validation.
-  - @param {**Object**|**string**} arg - a date structure or a date string
-  - @param {**string**} [formatString] - a format string
+  - @param {**Object|string**} arg1 - a date structure or a date string
+  - @param {**string|Array.\<string\>**} [arg2] - a format string or a compiled object
   - @returns {**boolean**} whether the date string is a valid date
 
 This function takes either exactly the same parameters with the `parse()` or a date structure which the `preparse()` returns, evaluates the validity of them.
