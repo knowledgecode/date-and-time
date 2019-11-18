@@ -477,6 +477,145 @@
         });
     });
 
+    describe('compile', function () {
+        it('YYYY', function () {
+            var obj = ['YYYY', 'YYYY'];
+            expect(date.compile('YYYY')).to.eql(obj);
+        });
+        it('YY', function () {
+            var obj = ['YY', 'YY'];
+            expect(date.compile('YY')).to.eql(obj);
+        });
+        it('Y', function () {
+            var obj = ['Y', 'Y'];
+            expect(date.compile('Y')).to.eql(obj);
+        });
+        it('YYYY MMMM', function () {
+            var obj = ['YYYY MMMM', 'YYYY', ' ', 'MMMM'];
+            expect(date.compile('YYYY MMMM')).to.eql(obj);
+        });
+        it('YYYY MMM', function () {
+            var obj = ['YYYY MMM', 'YYYY', ' ', 'MMM'];
+            expect(date.compile('YYYY MMM')).to.eql(obj);
+        });
+        it('YYYY-MM', function () {
+            var obj = ['YYYY-MM', 'YYYY', '-', 'MM'];
+            expect(date.compile('YYYY-MM')).to.eql(obj);
+        });
+        it('YYYY-M', function () {
+            var obj = ['YYYY-M', 'YYYY', '-', 'M'];
+            expect(date.compile('YYYY-M')).to.eql(obj);
+        });
+        it('YYYY-MM-DD', function () {
+            var obj = ['YYYY-MM-DD', 'YYYY', '-', 'MM', '-', 'DD'];
+            expect(date.compile('YYYY-MM-DD')).to.eql(obj);
+        });
+        it('YYYY-M-D', function () {
+            var obj = ['YYYY-M-D', 'YYYY', '-', 'M', '-', 'D'];
+            expect(date.compile('YYYY-M-D')).to.eql(obj);
+        });
+        it('YYYY-MM-DD HH', function () {
+            var obj = ['YYYY-MM-DD HH', 'YYYY', '-', 'MM', '-', 'DD', ' ', 'HH'];
+            expect(date.compile('YYYY-MM-DD HH')).to.eql(obj);
+        });
+        it('YYYY-M-D H', function () {
+            var obj = ['YYYY-M-D H', 'YYYY', '-', 'M', '-', 'D', ' ', 'H'];
+            expect(date.compile('YYYY-M-D H')).to.eql(obj);
+        });
+        it('YYYY-M-D hh A', function () {
+            var obj = ['YYYY-M-D hh A', 'YYYY', '-', 'M', '-', 'D', ' ', 'hh', ' ', 'A'];
+            expect(date.compile('YYYY-M-D hh A')).to.eql(obj);
+        });
+        it('YYYY-M-D h A', function () {
+            var obj = ['YYYY-M-D h A', 'YYYY', '-', 'M', '-', 'D', ' ', 'h', ' ', 'A'];
+            expect(date.compile('YYYY-M-D h A')).to.eql(obj);
+        });
+        it('YYYY-MM-DD HH:mm', function () {
+            var obj = ['YYYY-MM-DD HH:mm', 'YYYY', '-', 'MM', '-', 'DD', ' ', 'HH', ':', 'mm'];
+            expect(date.compile('YYYY-MM-DD HH:mm')).to.eql(obj);
+        });
+        it('YYYY-M-D H:m', function () {
+            var obj = ['YYYY-M-D H:m', 'YYYY', '-', 'M', '-', 'D', ' ', 'H', ':', 'm'];
+            expect(date.compile('YYYY-M-D H:m')).to.eql(obj);
+        });
+        it('YYYY-MM-DD HH:mm:ss', function () {
+            var obj = ['YYYY-MM-DD HH:mm:ss', 'YYYY', '-', 'MM', '-', 'DD', ' ', 'HH', ':', 'mm', ':', 'ss'];
+            expect(date.compile('YYYY-MM-DD HH:mm:ss')).to.eql(obj);
+        });
+        it('YYYY-M-D H:m:s', function () {
+            var obj = ['YYYY-M-D H:m:s', 'YYYY', '-', 'M', '-', 'D', ' ', 'H', ':', 'm', ':', 's'];
+            expect(date.compile('YYYY-M-D H:m:s')).to.eql(obj);
+        });
+        it('YYYY-M-D H:m:s.SSS', function () {
+            var obj = ['YYYY-M-D H:m:s.SSS', 'YYYY', '-', 'M', '-', 'D', ' ', 'H', ':', 'm', ':', 's', '.', 'SSS'];
+            expect(date.compile('YYYY-M-D H:m:s.SSS')).to.eql(obj);
+        });
+        it('YYYY-M-D H:m:s.SS', function () {
+            var obj = ['YYYY-M-D H:m:s.SS', 'YYYY', '-', 'M', '-', 'D', ' ', 'H', ':', 'm', ':', 's', '.', 'SS'];
+            expect(date.compile('YYYY-M-D H:m:s.SS')).to.eql(obj);
+        });
+        it('YYYY-M-D H:m:s.S', function () {
+            var obj = ['YYYY-M-D H:m:s.S', 'YYYY', '-', 'M', '-', 'D', ' ', 'H', ':', 'm', ':', 's', '.', 'S'];
+            expect(date.compile('YYYY-M-D H:m:s.S')).to.eql(obj);
+        });
+        it('MMDDHHmmssSSS', function () {
+            var obj = ['MMDDHHmmssSSS', 'MM', 'DD', 'HH', 'mm', 'ss', 'SSS'];
+            expect(date.compile('MMDDHHmmssSSS')).to.eql(obj);
+        });
+        it('DDHHmmssSSS', function () {
+            var obj = ['DDHHmmssSSS', 'DD', 'HH', 'mm', 'ss', 'SSS'];
+            expect(date.compile('DDHHmmssSSS')).to.eql(obj);
+        });
+        it('HHmmssSSS', function () {
+            var obj = ['HHmmssSSS', 'HH', 'mm', 'ss', 'SSS'];
+            expect(date.compile('HHmmssSSS')).to.eql(obj);
+        });
+        it('mmssSSS', function () {
+            var obj = ['mmssSSS', 'mm', 'ss', 'SSS'];
+            expect(date.compile('mmssSSS')).to.eql(obj);
+        });
+        it('ssSSS', function () {
+            var obj = ['ssSSS', 'ss', 'SSS'];
+            expect(date.compile('ssSSS')).to.eql(obj);
+        });
+        it('SSS', function () {
+            var obj = ['SSS', 'SSS'];
+            expect(date.compile('SSS')).to.eql(obj);
+        });
+        it('foo', function () {
+            var obj = ['foo', 'f', 'oo'];
+            expect(date.compile('foo')).to.eql(obj);
+        });
+        it('bar', function () {
+            var obj = ['bar', 'b', 'a', 'r'];
+            expect(date.compile('bar')).to.eql(obj);
+        });
+        it('YYYYMMDD', function () {
+            var obj = ['YYYYMMDD', 'YYYY', 'MM', 'DD'];
+            expect(date.compile('YYYYMMDD')).to.eql(obj);
+        });
+        it('20150101235959', function () {
+            var obj = ['20150101235959', '2', '0', '1', '5', '0', '1', '0', '1', '2', '3', '5', '9', '5', '9'];
+            expect(date.compile('20150101235959')).to.eql(obj);
+        });
+        it('YYYY?M?D H?m?s?S', function () {
+            var obj = ['YYYY?M?D H?m?s?S', 'YYYY', '?', 'M', '?', 'D', ' ', 'H', '?', 'm', '?', 's', '?', 'S'];
+            expect(date.compile('YYYY?M?D H?m?s?S')).to.eql(obj);
+        });
+        it('[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S', function () {
+            var obj = ['[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S', ' ', 'YYYY', ' ', 'M', ' ', 'D', ' ', 'H', ' ', 'm', ' ', 's', ' ', 'S'];
+            expect(date.compile('[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S')).to.eql(obj);
+        });
+        it('[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]', function () {
+            var obj = ['[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+            expect(date.compile('[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]')).to.eql(obj);
+        });
+        it('                 ', function () {
+            var obj = ['                 ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+            expect(date.compile('                 ')).to.eql(obj);
+        });
+    });
+
     describe('preparse', function () {
         it('YYYY', function () {
             var dt = { Y: 0, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 4, _length: 4, _match: 1 };
