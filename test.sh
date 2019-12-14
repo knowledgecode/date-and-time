@@ -42,16 +42,16 @@ mocha test/meridiem.js
 mocha test/ordinal.js
 
 # Core (browser)
-phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test.html spec "{\"useColors\":true}"
+mocha-headless-chrome -f test/test.html
 
 # Core (es6 -> es5 browser)
 browserify -t [ babelify --presets [ env ] ] test/test.es6.js --outfile test/test.es5.js
-phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-es5.html spec "{\"useColors\":true}"
+mocha-headless-chrome -f test/test-es5.html
 
 # Locale (es6 -> es5 browser)
 browserify -t [ babelify --presets [ env ] ] test/ja.es6.js --outfile test/ja.es5.js
-phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/ja-es5.html spec "{\"useColors\":true}"
+mocha-headless-chrome -f test/ja-es5.html
 
 # Plugin (es6 -> es5 browser)
 browserify -t [ babelify --presets [ env ] ] test/meridiem.es6.js --outfile test/meridiem.es5.js
-phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/meridiem-es5.html spec "{\"useColors\":true}"
+mocha-headless-chrome -f test/meridiem-es5.html

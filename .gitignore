@@ -1,3 +1,5 @@
 .DS_Store
+.cache/
+.mocha-puppeteer/
 node_modules
 test/*.es5.js
