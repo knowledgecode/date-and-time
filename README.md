@@ -130,37 +130,37 @@ date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
 
 Available tokens and their meanings are as follows:
 
-| token        | meaning     | example           |
-|:-------------|:------------|:------------------|
-| YYYY         | year        | 0999, 2015        |
-| YY           | year        | 05, 99            |
-| Y            | year        | 2, 44, 888, 2015  |
-| MMMM         | month       | January, December |
-| MMM          | month       | Jan, Dec          |
-| MM           | month       | 01, 12            |
-| M            | month       | 1, 12             |
-| DDD (*)      | day         | 1st, 2nd, 3rd     |
-| DD           | day         | 02, 31            |
-| D            | day         | 2, 31             |
-| dddd         | day of week | Friday, Sunday    |
-| ddd          | day of week | Fri, Sun          |
-| dd           | day of week | Fr, Su            |
-| HH           | 24-hour     | 23, 08            |
-| H            | 24-hour     | 23, 8             |
-| A            | meridiem    | a.m., p.m.        |
-| a (*)        | meridiem    | A.M., P.M.        |
-| AA (*)       | meridiem    | AM, PM            |
-| aa (*)       | meridiem    | am, pm            |
-| hh           | 12-hour     | 11, 08            |
-| h            | 12-hour     | 11, 8             |
-| mm           | minute      | 14, 07            |
-| m            | minute      | 14, 7             |
-| ss           | second      | 05, 10            |
-| s            | second      | 5, 10             |
-| SSS          | millisecond | 753, 022          |
-| SS           | millisecond | 75, 02            |
-| S            | millisecond | 7, 0              |
-| Z            | timezone    | +0100, -0800      |
+| token       | meaning     | example           |
+|:------------|:------------|:------------------|
+| YYYY        | year        | 0999, 2015        |
+| YY          | year        | 05, 99            |
+| Y           | year        | 2, 44, 888, 2015  |
+| MMMM        | month       | January, December |
+| MMM         | month       | Jan, Dec          |
+| MM          | month       | 01, 12            |
+| M           | month       | 1, 12             |
+| DDD (*)     | day         | 1st, 2nd, 3rd     |
+| DD          | day         | 02, 31            |
+| D           | day         | 2, 31             |
+| dddd        | day of week | Friday, Sunday    |
+| ddd         | day of week | Fri, Sun          |
+| dd          | day of week | Fr, Su            |
+| HH          | 24-hour     | 23, 08            |
+| H           | 24-hour     | 23, 8             |
+| A           | meridiem    | a.m., p.m.        |
+| a (*)       | meridiem    | A.M., P.M.        |
+| AA (*)      | meridiem    | AM, PM            |
+| aa (*)      | meridiem    | am, pm            |
+| hh          | 12-hour     | 11, 08            |
+| h           | 12-hour     | 11, 8             |
+| mm          | minute      | 14, 07            |
+| m           | minute      | 14, 7             |
+| ss          | second      | 05, 10            |
+| s           | second      | 5, 10             |
+| SSS         | millisecond | 753, 022          |
+| SS          | millisecond | 75, 02            |
+| S           | millisecond | 7, 0              |
+| Z           | timezone    | +0100, -0800      |
 
 (*) Not available by default. See [PLUGINS.md](./PLUGINS.md) for details.
 
