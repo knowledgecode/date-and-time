@@ -33,7 +33,7 @@ npm install date-and-time --save
 ## Recent Changes
 
 - 0.11.0
-  - Added a `compile()` function that precompiling a date string for the parser. In case of processing many date string with one format, by using this function, you could be able to get results faster than before.
+  - Added a `compile()` function that precompiling a date string for the parser. In case of processing many date string with one format, by using this function, you could get results faster than before.
 
   ```javascript
   // We have passed a string format at the 2nd parameter every time when calling the parse() function.
@@ -226,32 +226,32 @@ date.parse('Feb. 29 2017', 'MMM. D YYYY');                  // => Invalid Date
 
 Available tokens and their meanings are as follows:
 
-| token        | meaning     | example           |
-|:-------------|:------------|:------------------|
-| YYYY         | year        | 0999, 2015        |
-| YY           | year        | 05, 99            |
-| Y            | year        | 2, 44, 88, 2015   |
-| MMMM         | month       | January, December |
-| MMM          | month       | Jan, Dec          |
-| MM           | month       | 01, 12            |
-| M            | month       | 1, 12             |
-| DD           | day         | 02, 31            |
-| D            | day         | 2, 31             |
-| HH           | 24-hour     | 23, 08            |
-| H            | 24-hour     | 23, 8             |
-| hh           | 12-hour     | 11, 08            |
-| h            | 12-hour     | 11, 8             |
-| A            | meridiem    | a.m., p.m.        |
-| A (*)        | meridiem    | A.M., P.M.        |
-| A (*)        | meridiem    | AM, PM            |
-| A (*)        | meridiem    | am, pm            |
-| mm           | minute      | 14, 07            |
-| m            | minute      | 14, 7             |
-| ss           | second      | 05, 10            |
-| s            | second      | 5, 10             |
-| SSS          | millisecond | 753, 022          |
-| SS           | millisecond | 75, 02            |
-| S            | millisecond | 7, 0              |
+| token         | meaning     | example           |
+|:--------------|:------------|:------------------|
+| YYYY          | year        | 0999, 2015        |
+| YY            | year        | 05, 99            |
+| Y             | year        | 2, 44, 88, 2015   |
+| MMMM          | month       | January, December |
+| MMM           | month       | Jan, Dec          |
+| MM            | month       | 01, 12            |
+| M             | month       | 1, 12             |
+| DD            | day         | 02, 31            |
+| D             | day         | 2, 31             |
+| HH            | 24-hour     | 23, 08            |
+| H             | 24-hour     | 23, 8             |
+| hh            | 12-hour     | 11, 08            |
+| h             | 12-hour     | 11, 8             |
+| A             | meridiem    | a.m., p.m.        |
+| A (*)         | meridiem    | A.M., P.M.        |
+| A (*)         | meridiem    | AM, PM            |
+| A (*)         | meridiem    | am, pm            |
+| mm            | minute      | 14, 07            |
+| m             | minute      | 14, 7             |
+| ss            | second      | 05, 10            |
+| s             | second      | 5, 10             |
+| SSS           | millisecond | 753, 022          |
+| SS            | millisecond | 75, 02            |
+| S             | millisecond | 7, 0              |
 
 (*) Not available by default. See [PLUGINS.md](./PLUGINS.md) for details.
 
@@ -326,10 +326,16 @@ date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Da
 date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan. 1 1970 12:34:00 GMT-0800
 ```
 
-As a white space works as a wild card, you could also write as follows:
+#### NOTE 8. Wildcard
+
+A white space works as a wildcard token. This token is not interpret into anything. This means it can be ignored a specific variable string. For example, when you want to ignore a time part from a date string, you can write as follows:
 
 ```javascript
-date.parse('12 hours 34 minutes', 'HH       mm        ');   // => Jan. 1 1970 12:34:00 GMT-0800
+// This will be an error.
+date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD');            // => Invalid Date
+
+// Append the same length white spaces behind the formatString.
+date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan. 2 2015 00:00:00 GMT-0800
 ```
 
 ---
