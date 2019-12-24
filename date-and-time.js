@@ -41,10 +41,7 @@
             dddd: function (d/*, formatString*/) { return this.res.dddd[d.getDay()]; },
             ddd: function (d/*, formatString*/) { return this.res.ddd[d.getDay()]; },
             dd: function (d/*, formatString*/) { return this.res.dd[d.getDay()]; },
-            Z: function (d/*, formatString*/) {
-                var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
-                return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
-            },
+            Z: function (d/*, formatString*/) { return d.utc ? '+0000' : /[\+-]\d{4}/.exec(d.toTimeString())[0]; },
             post: function (str) { return str; }
         },
         _parser = {
@@ -362,7 +359,7 @@
      * @returns {boolean} whether the dates are the same day (times are ignored)
      */
     date.isSameDay = function (date1, date2) {
-        return date.format(date1, 'YYYYMMDD') === date.format(date2, 'YYYYMMDD');
+        return date1.toDateString() === date2.toDateString();
     };
 
     /**
