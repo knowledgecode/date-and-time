@@ -86,6 +86,11 @@
                 result.value *= 100;
                 return result;
             },
+            Z: function (str/*, formatString */) {
+                var result = this.exec(/^[\+-]\d{2}[0-5]\d/, str);
+                result.value = (result.value / 100 | 0) * -60 - result.value % 100;
+                return result;
+            },
             h12: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
             exec: function (re, str) {
                 var result = (re.exec(str) || [''])[0];
@@ -175,7 +180,7 @@
     date.preparse = function (dateString, arg) {
         var parser = locales[lang].parser, token, result, offset = 0,
             pattern = typeof arg === 'string' ? date.compile(arg) : arg, formatString = pattern[0],
-            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, _index: 0, _length: 0, _match: 0 };
+            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 };
 
         dateString = parser.pre(dateString);
         for (var i = 1, len = pattern.length; i < len; i++) {
@@ -213,7 +218,8 @@
         return !(
             dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
             dt.Y < 1 || dt.Y > 9999 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
-            dt.H > 23 || dt.H < 0 || dt.m > 59 || dt.m < 0 || dt.s > 59 || dt.s < 0 || dt.S > 999 || dt.S < 0
+            dt.H < 0 || dt.H > 23 || dt.m < 0 || dt.m > 59 || dt.s < 0 || dt.s > 59 || dt.S < 0 || dt.S > 999 ||
+            dt.Z < -720 || dt.Z > 840
         );
     };
 
@@ -225,16 +231,14 @@
      * @returns {Date} a constructed date
      */
     date.parse = function (dateString, arg, utc) {
-        var dt = date.preparse(dateString, arg), dateObj;
+        var dt = date.preparse(dateString, arg);
 
         if (date.isValid(dt)) {
             dt.M -= dt.Y < 100 ? 22801 : 1; // 22801 = 1900 * 12 + 1
-            if (utc) {
-                dateObj = new Date(Date.UTC(dt.Y, dt.M, dt.D, dt.H, dt.m, dt.s, dt.S));
-            } else {
-                dateObj = new Date(dt.Y, dt.M, dt.D, dt.H, dt.m, dt.s, dt.S);
+            if (utc || dt.Z) {
+                return new Date(Date.UTC(dt.Y, dt.M, dt.D, dt.H, dt.m + dt.Z, dt.s, dt.S));
             }
-            return dateObj;
+            return new Date(dt.Y, dt.M, dt.D, dt.H, dt.m, dt.s, dt.S);
         }
         return new Date(NaN);
     };

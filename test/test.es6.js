@@ -748,6 +748,28 @@ describe('parse', () => {
     it('YYYY-M-D H:m:s.S', () => {
         expect(isNaN(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S'))).to.be(true);
     });
+    it('YYYY-M-D H:m:s.SSS Z', () => {
+        const now = new Date(2015, 0, 1, 0, 0, 0);
+        expect(date.parse('2015-1-1 0:0:0.0 +0000', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS Z', () => {
+        const now = new Date(Date.UTC(2015, 11, 31, 23, 59, 59, 999));
+        expect(date.parse('2015-12-31 23:00:59.999 -0059', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS Z', () => {
+        const now = new Date(Date.UTC(2015, 11, 31, 23, 59, 59, 999));
+        expect(date.parse('2015-12-31 09:59:59.999 -1400', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS Z', () => {
+        expect(isNaN(date.parse('2015-12-31 09:58:59.999 -1401', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
+    });
+    it('YYYY-M-D H:m:s.SSS Z', () => {
+        const now = new Date(Date.UTC(2015, 11, 31, 0, 0, 59, 999));
+        expect(date.parse('2015-12-31 12:00:59.999 +1200', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS Z', () => {
+        expect(isNaN(date.parse('2015-12-31 12:01:59.999 +1201', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
+    });
     it('MMDDHHmmssSSS', () => {
         const now = new Date(1970, 11, 31, 23, 59, 59, 999);
         expect(date.parse('1231235959999', 'MMDDHHmmssSSS')).to.eql(now);
@@ -771,6 +793,24 @@ describe('parse', () => {
     it('SSS', () => {
         const now = new Date(1970, 0, 1, 0, 0, 0, 999);
         expect(date.parse('999', 'SSS')).to.eql(now);
+    });
+    it('Z', () => {
+        expect(isNaN(date.parse('+000', 'Z'))).to.be(true);
+    });
+    it('Z', () => {
+        expect(isNaN(date.parse('+00', 'Z'))).to.be(true);
+    });
+    it('Z', () => {
+        expect(isNaN(date.parse('+0', 'Z'))).to.be(true);
+    });
+    it('Z', () => {
+        expect(isNaN(date.parse('0', 'Z'))).to.be(true);
+    });
+    it('Z', () => {
+        expect(isNaN(date.parse('0000', 'Z'))).to.be(true);
+    });
+    it('Z', () => {
+        expect(isNaN(date.parse('00000', 'Z'))).to.be(true);
     });
     it('foo', () => {
         expect(isNaN(date.parse('20150101235959', 'foo'))).to.be(true);
