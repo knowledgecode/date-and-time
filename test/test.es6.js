@@ -518,30 +518,6 @@ describe('parse', () => {
         const now = new Date(9999, 0, 1);
         expect(date.parse('9999', 'YYYY')).to.eql(now);
     });
-    it('YY', () => {
-        const now = new Date(2000, 0, 1);
-        expect(date.parse('00', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(2001, 0, 1);
-        expect(date.parse('01', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(2010, 0, 1);
-        expect(date.parse('10', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(2069, 0, 1);
-        expect(date.parse('69', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(1970, 0, 1);
-        expect(date.parse('70', 'YY')).to.eql(now);
-    });
-    it('YY', () => {
-        const now = new Date(1999, 0, 1);
-        expect(date.parse('99', 'YY')).to.eql(now);
-    });
     it('Y', () => {
         expect(isNaN(date.parse('0', 'Y'))).to.be(true);
     });

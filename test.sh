@@ -40,6 +40,7 @@ mocha test/zh-tw.js
 # Plugins
 mocha test/meridiem.js
 mocha test/ordinal.js
+mocha test/two-digit-year.js
 
 # Core (browser)
 mocha-headless-chrome -f test/test.html
