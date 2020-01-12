@@ -1,17 +1,18 @@
 # Plugins
 
-As this library is oriented towards minimalism, it might be lacking in functionality for some developers. Plugin is the most realistic solution for solving such dissatisfaction.
+As this library is oriented toward minimalism, it may seem like a lack of functionality. We think plugin is the most realistic solution for solving such dissatisfaction. By importing the plugins, you could extend the functionality of this library, mainly the formatter and the parser.
+
 
 ## Usage
-
-In this section it describes how to use official plugins.
 
 - Node.js:
 
 ```javascript
 const date = require('date-and-time');
+// Import a plugin "foobar".
 require('date-and-time/plugin/foobar');
 
+// Apply the plugin to "date-and-time".
 date.plugin('foobar');
 ```
 
@@ -19,189 +20,135 @@ date.plugin('foobar');
 
 ```javascript
 import date from 'date-and-time';
+// Import a plugin "foobar".
 import 'date-and-time/plugin/foobar';
 
+// Apply the plugin to "date-and-time".
 date.plugin('foobar');
 ```
 
-- With an older browser:
+- The browser:
 
 ```html
 <script src="/path/to/date-and-time.min.js"></script>
+<!-- Import a plugin "foobar". -->
 <script src="/path/to/plugin/foobar.js"></script>
 
 <script>
+// Apply the plugin to "date-and-time".
 date.plugin('foobar');
 </script>
 ```
 
----
+## Plugin List
 
-## Official Plugins
+- meridiem
+  - It extends `A` token.
 
-### 1. Meridiem
+- ordinal
+  - It adds ordinal notation of date to the formatter.
 
-This plugin extends meridiem notation (`AA`, `a` and `aa`).
+- two-digit-year
+  - It adds two-digit year notation to the parser.
+
+## Plugin Details
+
+### meridiem
+
+It adds `AA`, `a` and `aa` token to the formatter. These meanings are as follows:
+
+| token | meaning                            | examples of output | added or modified |
+|:------|:-----------------------------------|:-------------------|:------------------|
+| A     | meridiem (uppercase)               | AM, PM             |                   |
+| AA    | meridiem (uppercase with ellipsis) | A.M., P.M.         | ✔                 |
+| a     | meridiem (lowercase)               | am, pm             | ✔                 |
+| aa    | meridiem (lowercase with ellipsis) | a.m., p.m.         | ✔                 |
+
+It also extends `A` token of the parser as follows:
+
+| token | meaning                          | examples of acceptable form            | added or modified |
+|:------|:---------------------------------|:---------------------------------------|:------------------|
+| A     | all the above notations          | AM, PM, A.M., P.M., am, pm, a.m., p.m. | ✔                 |
 
 ```javascript
-// Import "medidiem" plugin.
+const date = require('date-and-time');
+// Import "meridiem" plugin.
+require('date-and-time/plugin/meridiem');
+
+// Apply "medidiem" plugin to `date-and-time`.
 date.plugin('meridiem');
 
-// This is a default A token.
-date.format(new Date(), 'hh:mm A');     // => '12:34 p.m.'
+// This is default behavior of the formatter.
+date.format(new Date(), 'hh:mm A');     // => '12:34 PM'
 
-// These are extended tokens.
-date.format(new Date(), 'hh:mm AA');    // => '12:34 PM'
-date.format(new Date(), 'hh:mm a');     // => '12:34 P.M.'
-date.format(new Date(), 'hh:mm aa');    // => '12:34 pm'
+// These are added tokens to the formatter.
+date.format(new Date(), 'hh:mm AA');    // => '12:34 P.M.'
+date.format(new Date(), 'hh:mm a');     // => '12:34 pm'
+date.format(new Date(), 'hh:mm aa');    // => '12:34 p.m.'
 
-// The parse() comes to interpret all these meridiem notation with only A token.
-date.parse('12:34 p.m.', 'hh:mm A');    // => Jan. 1 1970 12:34:00
-date.parse('12:34 PM', 'hh:mm A');      // => Jan. 1 1970 12:34:00
-date.parse('12:34 P.M.', 'hh:mm A');    // => Jan. 1 1970 12:34:00
-date.parse('12:34 pm', 'hh:mm A');      // => Jan. 1 1970 12:34:00
-
-// The new tokens cannot be used unlike the format().
-date.parse('12:34 PM', 'hh:mm AA');     // => Invalid Date
+// The parser will be acceptable all the above notations with only `A` token.
+date.parse('12:34 PM', 'hh:mm A');      // => Jan 1 1970 12:34:00
+date.parse('12:34 P.M.', 'hh:mm A');    // => Jan 1 1970 12:34:00
+date.parse('12:34 pm', 'hh:mm A');      // => Jan 1 1970 12:34:00
+date.parse('12:34 p.m.', 'hh:mm A');    // => Jan 1 1970 12:34:00
 ```
 
-### 2. Ordinal
+### ordinal
 
-This plugin adds ordinal notation (`DDD`).
+It adds `DDD` token to the formatter. This meaning is as follows:
+
+| token | meaning                  | examples of output  | added or modified |
+|:------|:-------------------------|:--------------------|:------------------|
+| D     | date                     | 1, 2, 3, 31         |                   |
+| DD    | date with zero-padding   | 01, 02, 03, 31      |                   |
+| DDD   | ordinal notation of date | 1st, 2nd, 3rd, 31th | ✔                 |
 
 ```javascript
+const date = require('date-and-time');
 // Import "ordinal" plugin.
+require('date-and-time/plugin/ordinal');
+
+// Apply "ordinal" plugin to `date-and-time`.
 date.plugin('ordinal');
 
-// These are default D/DD tokens.
-date.format(new Date(), 'MMM. D YYYY');     // => Jan. 1 2019
-date.format(new Date(), 'MMM. DD YYYY');    // => Jan. 01 2019
+// These are default behavior of the formatter.
+date.format(new Date(), 'MMM D YYYY');    // => Jan 1 2019
+date.format(new Date(), 'MMM DD YYYY');   // => Jan 01 2019
 
-// The DDD token outputs ordinal number of day.
-date.format(new Date(), 'MMM. DDD YYYY');   // => Jan. 1st 2019
+// `DDD` token outputs ordinal number of date.
+date.format(new Date(), 'MMM DDD YYYY');  // => Jan 1st 2019
 ```
 
----
+### two-digit-year
 
-## Writing a Plugin
+It adds `YY` token to the parser and also changes behavior of `Y` token. These meanings are as follows:
 
-You could not only use official plugins, but define your own tokens or modify the behavior of existing tokens. Hereafter, it describes about how to write your own plugin.
+| token | meaning                             | examples of acceptable form | added or modified |
+|:------|:------------------------------------|:----------------------------|:------------------|
+| YYYY  | four-digit year                     | 2019, 0123, 0001            |                   |
+| YY    | two-digit year                      | 90, 00, 08, 19              | ✔                 |
+| Y     | two-digit year without zero-padding | 90, 0, 8, 19                | ✔                 |
 
-Tokens in this library have the following rules:
-
-- All of the characters must be the same alphabet (`A-Z, a-z`).
+`YY` and `Y` token will convert the year 69 or earlier to 2000s, the year 70 or later to 1900s. By this change, `Y` token will no longer acceptable the year 100 or later, so use `YYYY` token instead if necessary.
 
 ```javascript
-'E'             // Good
-'EE'            // Good
-'EEEEEEEEEE'    // Good, but why so long!?
-'EES'           // Not good
-'???'           // Not good
+const date = require('date-and-time');
+// Import "two-digit-year" plugin.
+require('date-and-time/plugin/two-digit-year');
+
+// These are default behavior of the parser.
+date.parse('Dec 25 69', 'MMM D YY');      // => Invalid Date
+date.parse('Dec 25 70', 'MMM D Y');       // => 70 AD (ancient times)
+
+// Apply "two-digit-year" plugin to `date-and-time`.
+date.plugin('two-digit-year');
+
+// These convert the year 69 or earlier to 2000s, the year 70 or later to 1900s.
+date.parse('Dec 25 69', 'MMM D YY');      // => Dec 25 2069
+date.parse('Dec 25 70', 'MMM D Y');       // => Dec 25 1970
+
+// `Y` token will no longer acceptable the year 100 or later.
+date.parse('Dec 25 2019', 'MMM D Y');     // => Invalid Date
+// Use `YYYY` token instead if necessary.
+date.parse('Dec 25 2019', 'MMM D YYYY');  // => Dec 25 2019
 ```
-
-- It is case sensitive.
-
-```javascript
-'eee'           // Good
-'Eee'           // Not good
-```
-
-- To the parser, it is not able to add new alphabet's token.  
-
-```javascript
-'EEE'           // This is not able to add.
-'YYY'           // This is OK because a `Y` token is existing in the parser.
-'SSS'           // This is modifying, not adding. Because the same token is existing.
-```
-
-### Example 1
-
-This is a plugin named `AMPM`. It replaces the meridiem words from `a.m./p.m.` to `AM/PM`.
-
-```javascript
-(global => {
-
-  const exec = date => {
-    // This is the body of the plugin.
-    date.plugin('AMPM', {
-      res: {
-        A: ['AM', 'PM']
-      }
-    });
-  };
-
-  if (typeof module === 'object' && typeof module.exports === 'object') {
-    (module.paths || []).push('./');
-    exec(require('date-and-time'));
-  } else if (typeof define === 'function' && define.amd) {
-    define(['date-and-time'], exec);
-  } else {
-    exec(global.date);
-  }
-
-})(this);
-```
-
-### Example 2
-
-This is the above `ordinal` plugin. This plugin adds `DDD` token to return ordinal number of day.
-
-```javascript
-(global => {
-
-  const exec = date => {
-    // This is the body of the plugin.
-    date.plugin('ordinal', {
-      formatter: {
-        DDD: function (d) {
-          var day = d.getDate();
-
-          switch (day) {
-          case 1:
-          case 21:
-          case 31:
-              return day + 'st';
-          case 2:
-          case 22:
-              return day + 'nd';
-          case 3:
-          case 23:
-              return day + 'rd';
-          default:
-              return day + 'th';
-          }
-        }
-      }
-    });
-  };
-
-  if (typeof module === 'object' && typeof module.exports === 'object') {
-    (module.paths || []).push('./');
-    exec(require('date-and-time'));
-  } else if (typeof define === 'function' && define.amd) {
-    define(['date-and-time'], exec);
-  } else {
-    exec(global.date);
-  }
-
-})(this);
-```
-
----
-
-## Direct Replacement
-
-All you are enough to change a bit the default behavior of this library? You are not going to write a plugin? Of course, you could replace the default behavior directly like this:
-
-```javascript
-date.format(new Date(), 'hh:mm A'); // => 11:20 p.m.
-
-// Replace the words that a.m./p.m. to AM/PM.
-date.extend({ res: { A: ['AM', 'PM'] } });
-
-date.format(new Date(), 'hh:mm A'); // => 11:20 PM
-```
-
-### Hint
-
-The `extend()` can be regarded as an unnamed `plugin()`.
