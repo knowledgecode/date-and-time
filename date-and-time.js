@@ -14,7 +14,7 @@
             dddd: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             ddd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             dd: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-            A: ['a.m.', 'p.m.']
+            A: ['AM', 'PM']
         },
         _formatter = {
             YYYY: function (d/*, formatString*/) { return ('000' + d.getFullYear()).slice(-4); },

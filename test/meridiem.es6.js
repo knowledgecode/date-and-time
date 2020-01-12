@@ -2,10 +2,10 @@ import expect from 'expect.js';
 import date from '../date-and-time';
 import '../plugin/meridiem';
 
-const A = ['a.m.', 'p.m.'],
-    a = ['A.M.', 'P.M.'],
-    AA = ['AM', 'PM'],
-    aa = ['am', 'pm'];
+const A = ['AM', 'PM'],
+    AA = ['A.M.', 'P.M.'],
+    a = ['am', 'pm'],
+    aa = ['a.m.', 'p.m.'];
 
 describe('extended meridiem', () => {
     before(() => {

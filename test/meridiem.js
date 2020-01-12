@@ -3,10 +3,10 @@
 
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time'),
-        A = ['a.m.', 'p.m.'],
-        a = ['A.M.', 'P.M.'],
-        AA = ['AM', 'PM'],
-        aa = ['am', 'pm'];
+        A = ['AM', 'PM'],
+        AA = ['A.M.', 'P.M.'],
+        a = ['am', 'pm'],
+        aa = ['a.m.', 'p.m.'];
 
     if (typeof require === 'function') {
         require('../plugin/meridiem');

@@ -268,45 +268,45 @@ describe('format', () => {
             utc = true;
         expect(date.format(now, 'H', utc)).to.equal('' + now.getUTCHours());
     });
-    it('"hh A" equals to "12 p.m."', () => {
+    it('"hh A" equals to "12 PM"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
-        expect(date.format(now, 'hh A')).to.equal('12 p.m.');
+        expect(date.format(now, 'hh A')).to.equal('12 PM');
     });
-    it('"hh A" equals to "12 a.m."', () => {
+    it('"hh A" equals to "12 AM"', () => {
         const now = new Date(2015, 0, 1, 0, 34, 56, 789);
-        expect(date.format(now, 'hh A')).to.equal('12 a.m.');
+        expect(date.format(now, 'hh A')).to.equal('12 AM');
     });
-    it('"hh A" equals to "11 p.m."', () => {
+    it('"hh A" equals to "11 PM"', () => {
         const now = new Date(2015, 0, 1, 23, 34, 56, 789);
-        expect(date.format(now, 'hh A')).to.equal('11 p.m.');
+        expect(date.format(now, 'hh A')).to.equal('11 PM');
     });
-    it('"hh A" equals to "01 a.m."', () => {
+    it('"hh A" equals to "01 AM"', () => {
         const now = new Date(2015, 0, 1, 1, 34, 56, 789);
-        expect(date.format(now, 'hh A')).to.equal('01 a.m.');
+        expect(date.format(now, 'hh A')).to.equal('01 AM');
     });
-    it('"hh A" equals to "01 p.m."', () => {
+    it('"hh A" equals to "01 PM"', () => {
         const now = new Date(2015, 0, 1, 13, 34, 56, 789);
-        expect(date.format(now, 'hh A')).to.equal('01 p.m.');
+        expect(date.format(now, 'hh A')).to.equal('01 PM');
     });
-    it('"h A" equals to "12 p.m."', () => {
+    it('"h A" equals to "12 PM"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
-        expect(date.format(now, 'h A')).to.equal('12 p.m.');
+        expect(date.format(now, 'h A')).to.equal('12 PM');
     });
-    it('"h A" equals to "12 a.m."', () => {
+    it('"h A" equals to "12 AM"', () => {
         const now = new Date(2015, 0, 1, 0, 34, 56, 789);
-        expect(date.format(now, 'h A')).to.equal('12 a.m.');
+        expect(date.format(now, 'h A')).to.equal('12 AM');
     });
-    it('"h A" equals to "11 p.m."', () => {
+    it('"h A" equals to "11 PM"', () => {
         const now = new Date(2015, 0, 1, 23, 34, 56, 789);
-        expect(date.format(now, 'h A')).to.equal('11 p.m.');
+        expect(date.format(now, 'h A')).to.equal('11 PM');
     });
-    it('"h A" equals to "1 a.m."', () => {
+    it('"h A" equals to "1 AM"', () => {
         const now = new Date(2015, 0, 1, 1, 34, 56, 789);
-        expect(date.format(now, 'h A')).to.equal('1 a.m.');
+        expect(date.format(now, 'h A')).to.equal('1 AM');
     });
-    it('"h A" equals to "1 p.m."', () => {
+    it('"h A" equals to "1 PM"', () => {
         const now = new Date(2015, 0, 1, 13, 34, 56, 789);
-        expect(date.format(now, 'h A')).to.equal('1 p.m.');
+        expect(date.format(now, 'h A')).to.equal('1 PM');
     });
     it('"mm" equals to "34"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
@@ -452,25 +452,25 @@ describe('format', () => {
         const now = new Date(999, 0, 1);
         expect(date.format(now, 'Y/M/D H:m:s.SSS')).to.equal('999/1/1 0:0:0.000');
     });
-    it('"dddd, MMMM D, YYYY h A" equals to "Saturday, January 1, 2000 10 a.m."', () => {
+    it('"dddd, MMMM D, YYYY h A" equals to "Saturday, January 1, 2000 10 AM"', () => {
         const now = new Date(2000, 0, 1, 10, 0, 0);
-        expect(date.format(now, 'dddd, MMMM D, YYYY h A')).to.equal('Saturday, January 1, 2000 10 a.m.');
+        expect(date.format(now, 'dddd, MMMM D, YYYY h A')).to.equal('Saturday, January 1, 2000 10 AM');
     });
     it('"[dddd, MMMM D, YYYY h A]" equals to "dddd, MMMM D, YYYY h A"', () => {
         const now = new Date(2000, 0, 1, 10, 0, 0);
         expect(date.format(now, '[dddd, MMMM D, YYYY h A]')).to.equal('dddd, MMMM D, YYYY h A');
     });
-    it('"[dddd], MMMM [D], YYYY [h] A" equals to "dddd, January D, 2000 h a.m."', () => {
+    it('"[dddd], MMMM [D], YYYY [h] A" equals to "dddd, January D, 2000 h AM"', () => {
         const now = new Date(2000, 0, 1, 10, 0, 0);
-        expect(date.format(now, '[dddd], MMMM [D], YYYY [h] A')).to.equal('dddd, January D, 2000 h a.m.');
+        expect(date.format(now, '[dddd], MMMM [D], YYYY [h] A')).to.equal('dddd, January D, 2000 h AM');
     });
     it('"[[dddd], MMMM [D], YYYY [h] A]" equals to "[dddd], MMMM [D], YYYY [h] A"', () => {
         const now = new Date(2000, 0, 1, 10, 0, 0);
         expect(date.format(now, '[[dddd], MMMM [D], YYYY [h] A]')).to.equal('[dddd], MMMM [D], YYYY [h] A');
     });
-    it('"[dddd], MMMM [[D], YYYY] [h] A" equals to "dddd, January [D], YYYY h a.m."', () => {
+    it('"[dddd], MMMM [[D], YYYY] [h] A" equals to "dddd, January [D], YYYY h AM"', () => {
         const now = new Date(2000, 0, 1, 10, 0, 0);
-        expect(date.format(now, '[dddd], MMMM [[D], YYYY] [h] A')).to.equal('dddd, January [D], YYYY h a.m.');
+        expect(date.format(now, '[dddd], MMMM [[D], YYYY] [h] A')).to.equal('dddd, January [D], YYYY h AM');
     });
 });
 
@@ -623,25 +623,25 @@ describe('parse', () => {
     });
     it('YYYY-M-D hh A', () => {
         const now = new Date(2015, 0, 1, 0);
-        expect(date.parse('2015-1-1 12 a.m.', 'YYYY-M-D hh A')).to.eql(now);
+        expect(date.parse('2015-1-1 12 AM', 'YYYY-M-D hh A')).to.eql(now);
     });
     it('YYYY-M-D hh A', () => {
         const now = new Date(2015, 11, 31, 23);
-        expect(date.parse('2015-12-31 11 p.m.', 'YYYY-M-D hh A')).to.eql(now);
+        expect(date.parse('2015-12-31 11 PM', 'YYYY-M-D hh A')).to.eql(now);
     });
     it('YYYY-M-D hh A', () => {
-        expect(isNaN(date.parse('2015-0-0 12 a.m.', 'YYYY-M-D hh A'))).to.be(true);
+        expect(isNaN(date.parse('2015-0-0 12 AM', 'YYYY-M-D hh A'))).to.be(true);
     });
     it('YYYY-M-D h A', () => {
         const now = new Date(2015, 0, 1, 0);
-        expect(date.parse('2015-1-1 12 a.m.', 'YYYY-M-D h A')).to.eql(now);
+        expect(date.parse('2015-1-1 12 AM', 'YYYY-M-D h A')).to.eql(now);
     });
     it('YYYY-M-D h A', () => {
         const now = new Date(2015, 11, 31, 23);
-        expect(date.parse('2015-12-31 11 p.m.', 'YYYY-M-D h A')).to.eql(now);
+        expect(date.parse('2015-12-31 11 PM', 'YYYY-M-D h A')).to.eql(now);
     });
     it('YYYY-M-D h A', () => {
-        expect(isNaN(date.parse('2015-0-0 12 a.m.', 'YYYY-M-D h A'))).to.be(true);
+        expect(isNaN(date.parse('2015-0-0 12 AM', 'YYYY-M-D h A'))).to.be(true);
     });
     it('YYYY-MM-DD HH:mm', () => {
         const now = new Date(2015, 0, 1, 0, 0);
@@ -1042,8 +1042,8 @@ describe('validation', () => {
     it('24:00 is invalid', () => {
         expect(date.isValid('2014-4-30 24:00', 'YYYY-M-D H:m')).to.be(false);
     });
-    it('13:00 p.m. is invalid', () => {
-        expect(date.isValid('2014-4-30 13:00 p.m.', 'YYYY-M-D h:m A')).to.be(false);
+    it('13:00 PM is invalid', () => {
+        expect(date.isValid('2014-4-30 13:00 PM', 'YYYY-M-D h:m A')).to.be(false);
     });
     it('23:60 is invalid', () => {
         expect(date.isValid('2014-4-30 23:60', 'YYYY-M-D H:m')).to.be(false);
@@ -1114,7 +1114,7 @@ describe('customize', () => {
         expect(date.locale()).to.equal('en');
     });
     it('changing default meridiem', () => {
-        date.extend({ res: { A: ['AM', 'PM'] } });
-        expect(date.format(new Date(2012, 0, 1, 12), 'h A')).to.equal('12 PM');
+        date.extend({ res: { A: ['am', 'pm'] } });
+        expect(date.format(new Date(2012, 0, 1, 12), 'h A')).to.equal('12 pm');
     });
 });

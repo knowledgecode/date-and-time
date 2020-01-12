@@ -4,19 +4,19 @@
     var exec = function (date) {
         date.plugin('meridiem', {
             res: {
-                A: ['a.m.', 'p.m.', 'AM', 'PM', 'A.M.', 'P.M.', 'am', 'pm']
+                A: ['AM', 'PM', 'A.M.', 'P.M.', 'am', 'pm', 'a.m.', 'p.m.']
             },
             formatter: {
                 AA: function (d) {
-                    // AM / PM
+                    // A.M. / P.M.
                     return this.res.A[d.getHours() > 11 | 0 + 2];
                 },
                 a: function (d) {
-                    // A.M. / P.M.
+                    // am / pm
                     return this.res.A[d.getHours() > 11 | 0 + 4];
                 },
                 aa: function (d) {
-                    // am / pm
+                    // a.m. / p.m.
                     return this.res.A[d.getHours() > 11 | 0 + 6];
                 }
             },
