@@ -32,63 +32,64 @@ npm install date-and-time --save
 
 ## Recent Changes
 
+- 0.12.0
+  - The parser now supports `Z` token to parse timezone offset.
+  - (**Breaking Change**) **Excleded `YY` token from the parser**, added it as `two-digit-year` plugin.
+  - (**Breaking Change**) Decided to **change the default behavior of `A` token** to fix the non-intuitive definition. Sepcifically, in the `format()` it now outputs `AM` / `PM` instead of `a.m.` / `p.m.`, and in the `parse()` it recognizes `AM` / `PM` only. Other `A` tokens are supported as `meridiem` plugin.
+
+    | token | new meaning                        | example    | default |
+    |:------|:-----------------------------------|:-----------|:--------|
+    | A     | meridiem (uppercase)               | AM, PM     | ✔️       |
+    | AA    | meridiem (uppercase with ellipsis) | A.M., P.M. |         |
+    | a     | meridiem (lowercase)               | am, pm     |         |
+    | aa    | meridiem (lowercase with ellipsis) | a.m., p.m. |         |
+
 - 0.11.0
-  - Added a `compile()` function that precompiling a date string for the parser. In case of processing many date string with one format, by using this function, you could get results faster than before.
+  - Added compile() function that precompiling a date-time string for the parser. If you need to process many date-time string with one format, you could get results faster than before by precompiling the format string with this function.
 
   ```javascript
-  // We have passed a string format at the 2nd parameter every time when calling the parse() function.
-  date.parse('Mar. 22 2019 2:54:21 p.m.', 'MMM. D YYYY h:m:s A');
-  date.parse('Jul. 27 2019 4:15:24 a.m.', 'MMM. D YYYY h:m:s A');
-  date.parse('Dec. 25 2019 3:51:11 a.m.', 'MMM. D YYYY h:m:s A');
+  // We have passed a string format at the 2nd parameter each time when calling the parse() function.
+  date.parse('Mar 22 2019 2:54:21 PM', 'MMM D YYYY h:m:s A');
+  date.parse('Jul 27 2019 4:15:24 AM', 'MMM D YYYY h:m:s A');
+  date.parse('Dec 25 2019 3:51:11 AM', 'MMM D YYYY h:m:s A');
 
   // You can precompile the string format.
-  const pattern = date.compile('MMM. D YYYY h:m:s A');
+  const pattern = date.compile('MMM D YYYY h:m:s A');
 
-  // The parse() will be able to finish faster than passing the format string every time.
-  date.parse('Mar. 22 2019 2:54:21 p.m.', pattern);
-  date.parse('Jul. 27 2019 4:15:24 a.m.', pattern);
-  date.parse('Dec. 25 2019 3:51:11 a.m.', pattern);
+  // The parse() will be able to finish faster than passing the format string each time.
+  date.parse('Mar 22 2019 2:54:21 PM', pattern);
+  date.parse('Jul 27 2019 4:15:24 AM', pattern);
+  date.parse('Dec 25 2019 3:51:11 AM', pattern);
   ```
 
   ```javascript
-  const pattern = date.compile('MMM. D YYYY h:m:s A');
+  const pattern = date.compile('MMM D YYYY h:m:s A');
 
   // The isValid() will also too.
-  date.isValid('Mar. 22 2019 2:54:21 p.m.', pattern);
+  date.isValid('Mar 22 2019 2:54:21 PM', pattern);
   ```
 
 - 0.10.0
-  - The `YYYY` token has come to require 4 digits in the `parse()`, the `preparse()` and the `isValid()` (**Breaking Change**).
+  - (**Breaking Change**) `YYYY` token now requires 4 digits in the `parse()`, `preparse()` and `isValid()`.
 
   ```javascript
   date.parse('31-12-0123', 'DD-MM-YYYY');   // Good
   date.parse('31-12-123', 'DD-MM-YYYY');    // Not good
   ```
 
-  - The `YY` token has come to require 2 digits in the above functions (**Breaking Change**).
+  - (**Breaking Change**) `YY` token now requires 2 digits in the same functions.
 
   ```javascript
-  date.parse('31-12-03', 'DD-MM-YY');   // Good, but It's interpreted the year is 2003.
+  date.parse('31-12-03', 'DD-MM-YY');   // Good, but it assumes the year is 2003.
   date.parse('31-12-3', 'DD-MM-YY');    // Not good
   ```
 
-  - Added a `Y` token to support year, 4 or less digits in the above functions. This new token, `Y` is equivalent to the previous `YYYY` token.
+  - Added `Y` token to support year without zero-padding in the same functions.
 
   ```javascript
-  date.parse('31-12-123', 'DD-MM-Y');   // Good
-  date.parse('31-12-3', 'DD-MM-Y');     // Good
+  date.parse('31-12-123', 'DD-MM-Y');   // Good, 123 AD.
+  date.parse('31-12-3', 'DD-MM-Y');     // Good, 3 AD.
   ```
-
-- 0.9.0 (Locale Update)
-  - Renewal of the locale system. Some functions were merged (**Breaking Change**).
-  - Added a plugin system. You could extend a formatter and a parser by using this mechanism.
-  - With the addition of the plugin system, the `format()` has come to accept a user original token.
-
-- 0.8.0 (Parser Update)
-  - The `parse()` has come to return `Invalid Date` instead of `NaN` when parsing is failure (**Breaking Change**).
-  - Added `preparse()`. It returns a Date Structure.
-  - The `isValid()` has come to take a Date Structure in addition to a date string.
-  - The `isLeapYear()` has come to take a year (number type) instead of a Date object (**Breaking Change**).
 
 ## Usage
 
@@ -104,7 +105,7 @@ const date = require('date-and-time');
 import date from 'date-and-time';
 ```
 
-- With an older browser:
+- The browser:
 
 ```javascript
 window.date;    // global object
@@ -123,50 +124,53 @@ window.date;    // global object
 ```javascript
 const now = new Date();
 date.format(now, 'YYYY/MM/DD HH:mm:ss');    // => '2015/01/02 23:14:05'
-date.format(now, 'ddd., MMM. DD YYYY');     // => 'Fri., Jan. 02 2015'
-date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 p.m. GMT-0800'
-date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 a.m. GMT+0000'
+date.format(now, 'ddd, MMM DD YYYY');       // => 'Fri, Jan 02 2015'
+date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 PM GMT-0800'
+date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 AM GMT+0000'
 ```
 
 Available tokens and their meanings are as follows:
 
-| token       | meaning     | example           |
-|:------------|:------------|:------------------|
-| YYYY        | year        | 0999, 2015        |
-| YY          | year        | 05, 99            |
-| Y           | year        | 2, 44, 888, 2015  |
-| MMMM        | month       | January, December |
-| MMM         | month       | Jan, Dec          |
-| MM          | month       | 01, 12            |
-| M           | month       | 1, 12             |
-| DDD (*)     | day         | 1st, 2nd, 3rd     |
-| DD          | day         | 02, 31            |
-| D           | day         | 2, 31             |
-| dddd        | day of week | Friday, Sunday    |
-| ddd         | day of week | Fri, Sun          |
-| dd          | day of week | Fr, Su            |
-| HH          | 24-hour     | 23, 08            |
-| H           | 24-hour     | 23, 8             |
-| A           | meridiem    | a.m., p.m.        |
-| a (*)       | meridiem    | A.M., P.M.        |
-| AA (*)      | meridiem    | AM, PM            |
-| aa (*)      | meridiem    | am, pm            |
-| hh          | 12-hour     | 11, 08            |
-| h           | 12-hour     | 11, 8             |
-| mm          | minute      | 14, 07            |
-| m           | minute      | 14, 7             |
-| ss          | second      | 05, 10            |
-| s           | second      | 5, 10             |
-| SSS         | millisecond | 753, 022          |
-| SS          | millisecond | 75, 02            |
-| S           | millisecond | 7, 0              |
-| Z           | timezone    | +0100, -0800      |
+| token | meaning                              | examples of output |
+|:------|:-------------------------------------|:-------------------|
+| YYYY  | four-digit year                      | 0999, 2015         |
+| YY    | two-digit year                       | 99, 01, 15         |
+| Y     | four-digit year without zero-padding | 2, 44, 888, 2015   |
+| MMMM  | month name (long)                    | January, December  |
+| MMM   | month name (short)                   | Jan, Dec           |
+| MM    | month with zero-padding              | 01, 12             |
+| M     | month                                | 1, 12              |
+| DD    | date with zero-padding               | 02, 31             |
+| D     | date                                 | 2, 31              |
+| dddd  | day of week (long)                   | Friday, Sunday     |
+| ddd   | day of week (short)                  | Fri, Sun           |
+| dd    | day of week (very short)             | Fr, Su             |
+| HH    | 24-hour with zero-padding            | 23, 08             |
+| H     | 24-hour                              | 23, 8              |
+| hh    | 12-hour with zero-padding            | 11, 08             |
+| h     | 12-hour                              | 11, 8              |
+| A     | meridiem (uppercase)                 | AM, PM             |
+| mm    | minute with zero-padding             | 14, 07             |
+| m     | minute                               | 14, 7              |
+| ss    | second with zero-padding             | 05, 10             |
+| s     | second                               | 5, 10              |
+| SSS   | millisecond (high accuracy)          | 753, 022           |
+| SS    | millisecond (middle accuracy)        | 75, 02             |
+| S     | millisecond (low accuracy)           | 7, 0               |
+| Z     | timezone offset                      | +0100, -0800       |
 
-(*) Not available by default. See [PLUGINS.md](./PLUGINS.md) for details.
+You could also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
+
+| token | meaning                              | examples of output |
+|:------|:-------------------------------------|:-------------------|
+| DDD   | ordinal notation of date             | 1st, 2nd, 3rd      |
+| AA    | meridiem (uppercase with ellipsis)   | A.M., P.M.         |
+| a     | meridiem (lowercase)                 | am, pm             |
+| aa    | meridiem (lowercase with ellipsis)   | a.m., p.m.         |
 
 #### NOTE 1. Comments
 
-Strings in parenthese `[...]` in the `formatString` will be ignored as comments:
+String in parenthese `[...]` in the `formatString` will be ignored as comments:
 
 ```javascript
 date.format(new Date(), 'DD-[MM]-YYYY');    // => '02-MM-2015'
@@ -175,34 +179,16 @@ date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 
 #### NOTE 2. Output as UTC
 
-This function usually outputs a local date-time string. Set to true a `utc` option (the 3rd parameter) if you would like to get a UTC date/time string.
+This function usually outputs a local date-time string. Set to true the `utc` option (the 3rd parameter) if you would like to get a UTC date-time string.
 
 ```javascript
-date.format(new Date(), 'hh:mm A [GMT]Z');          // => '11:14 p.m. GMT-0800'
-date.format(new Date(), 'hh:mm A [GMT]Z', true);    // => '07:14 a.m. GMT+0000'
+date.format(new Date(), 'hh:mm A [GMT]Z');          // => '11:14 PM GMT-0800'
+date.format(new Date(), 'hh:mm A [GMT]Z', true);    // => '07:14 AM GMT+0000'
 ```
 
 #### NOTE 3. More Tokens
 
-You could also define your own tokens. See [PLUGINS.md](./PLUGINS.md) for details.
-
----
-
-### compile(formatString)
-
-- Compiling a format string for the parser.
-  - @param {**string**} formatString - a format string
-  - @returns {**Array.\<string\>**} a compiled object
-
-```javascript
-  const pattern = date.compile('MMM. D YYYY h:m:s A');
-
-  date.parse('Mar. 22 2019 2:54:21 p.m.', pattern);
-  date.parse('Jul. 27 2019 4:15:24 a.m.', pattern);
-  date.parse('Dec. 25 2019 3:51:11 a.m.', pattern);
-```
-
-If you are going to call the `parse()` or the `isValid()` many times with one string format, recommended to precompile and reuse it for performance.
+You could also define your own tokens. See [EXTEND.md](./EXTEND.md) for details.
 
 ---
 
@@ -215,52 +201,55 @@ If you are going to call the `parse()` or the `isValid()` many times with one st
   - @returns {**Date**} a constructed date
 
 ```javascript
-date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan. 2 2015 23:14:05 GMT-0800
-date.parse('02-01-2015', 'DD-MM-YYYY');                     // => Jan. 2 2015 00:00:00 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');                  // => Jan. 1 1970 23:14:05 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);            // => Jan. 1 1970 15:14:05 GMT-0800
-date.parse('Jam. 1 2017', 'MMM. D YYYY');                   // => Invalid Date
-date.parse('Feb. 29 2016', 'MMM. D YYYY');                  // => Feb. 29 2016 00:00:00 GMT-0800
-date.parse('Feb. 29 2017', 'MMM. D YYYY');                  // => Invalid Date
+date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan 2 2015 23:14:05 GMT-0800
+date.parse('02-01-2015', 'DD-MM-YYYY');                     // => Jan 2 2015 00:00:00 GMT-0800
+date.parse('11:14:05 PM', 'hh:mm:ss A');                    // => Jan 1 1970 23:14:05 GMT-0800
+date.parse('11:14:05 PM', 'hh:mm:ss A', true);              // => Jan 1 1970 23:14:05 GMT+0000 (Jan 1 1970 15:14:05 GMT-0800)
+date.parse('23:14:05 GMT+0900', 'HH:mm:ss [GMT]Z');         // => Jan 1 1970 23:14:05 GMT+0900 (Jan 1 1970 06:14:05 GMT-0800)
+date.parse('Jam 1 2017', 'MMM D YYYY');                     // => Invalid Date
+date.parse('Feb 29 2017', 'MMM D YYYY');                    // => Invalid Date
 ```
 
 Available tokens and their meanings are as follows:
 
-| token         | meaning     | example           |
-|:--------------|:------------|:------------------|
-| YYYY          | year        | 0999, 2015        |
-| YY            | year        | 05, 99            |
-| Y             | year        | 2, 44, 88, 2015   |
-| MMMM          | month       | January, December |
-| MMM           | month       | Jan, Dec          |
-| MM            | month       | 01, 12            |
-| M             | month       | 1, 12             |
-| DD            | day         | 02, 31            |
-| D             | day         | 2, 31             |
-| HH            | 24-hour     | 23, 08            |
-| H             | 24-hour     | 23, 8             |
-| hh            | 12-hour     | 11, 08            |
-| h             | 12-hour     | 11, 8             |
-| A             | meridiem    | a.m., p.m.        |
-| A (*)         | meridiem    | A.M., P.M.        |
-| A (*)         | meridiem    | AM, PM            |
-| A (*)         | meridiem    | am, pm            |
-| mm            | minute      | 14, 07            |
-| m             | minute      | 14, 7             |
-| ss            | second      | 05, 10            |
-| s             | second      | 5, 10             |
-| SSS           | millisecond | 753, 022          |
-| SS            | millisecond | 75, 02            |
-| S             | millisecond | 7, 0              |
+| token | meaning                              | examples of acceptable form            |
+|:------|:-------------------------------------|:---------------------------------------|
+| YYYY  | four-digit year                      | 0999, 2015                             |
+| Y     | four-digit year without zero-padding | 2, 44, 88, 2015                        |
+| MMMM  | month name (long)                    | January, December                      |
+| MMM   | month name (short)                   | Jan, Dec                               |
+| MM    | month with zero-padding              | 01, 12                                 |
+| M     | month                                | 1, 12                                  |
+| DD    | date with zero-padding               | 02, 31                                 |
+| D     | date                                 | 2, 31                                  |
+| HH    | 24-hour with zero-padding            | 23, 08                                 |
+| H     | 24-hour                              | 23, 8                                  |
+| hh    | 12-hour with zero-padding            | 11, 08                                 |
+| h     | 12-hour                              | 11, 8                                  |
+| A     | meridiem (uppercase)                 | AM, PM                                 |
+| mm    | minute with zero-padding             | 14, 07                                 |
+| m     | minute                               | 14, 7                                  |
+| ss    | second with zero-padding             | 05, 10                                 |
+| s     | second                               | 5, 10                                  |
+| SSS   | millisecond (high accuracy)          | 753, 022                               |
+| SS    | millisecond (middle accuracy)        | 75, 02                                 |
+| S     | millisecond (low accuracy)           | 7, 0                                   |
+| Z     | timezone offset                      | +0100, -0800                           |
 
-(*) Not available by default. See [PLUGINS.md](./PLUGINS.md) for details.
+You could also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
+
+| token | meaning                              | examples of acceptable form            |
+|:------|:-------------------------------------|:---------------------------------------|
+| YY    | two-digit year                       | 90, 00, 08, 19                         |
+| Y     | two-digit year without zero-padding  | 90, 0, 8, 19                           |
+| A     | meridiem                             | AM, PM, A.M., P.M., am, pm, a.m., p.m. |
 
 #### NOTE 1. Invalid Date
 
 If the function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You could tell whether the Date object is invalid as follows:
 
 ```javascript
-const today = date.parse('Jam. 1 2017', 'MMM. D YYYY');
+const today = date.parse('Jam 1 2017', 'MMM D YYYY');
 
 if (isNaN(today)) {
     // Failure
@@ -269,11 +258,11 @@ if (isNaN(today)) {
 
 #### NOTE 2. Input as UTC
 
-This function usually assumes the `dateString` is local date-time. Set to true a `utc` option (the 3rd parameter) if it is UTC.
+This function usually assumes the `dateString` is a local date-time. Set to true the `utc` option (the 3rd parameter) if it is a UTC date-time.
 
 ```javascript
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');          // => Jan. 1 1970 23:14:05 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);    // => Jan. 1 1970 15:14:05 GMT-0800
+date.parse('11:14:05 PM', 'hh:mm:ss A');          // => Jan 1 1970 23:14:05 GMT-0800
+date.parse('11:14:05 PM', 'hh:mm:ss A', true);    // => Jan 1 1970 23:14:05 GMT+0000 (Jan 1 1970 15:14:05 GMT-0800)
 ```
 
 #### NOTE 3. Default Date Time
@@ -281,8 +270,8 @@ date.parse('11:14:05 p.m.', 'hh:mm:ss A', true);    // => Jan. 1 1970 15:14:05 G
 Default date is `January 1, 1970`, time is `00:00:00.000`. Values not passed will be complemented with them:
 
 ```javascript
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan. 1 1970 23:14:05 GMT-0800
-date.parse('Feb. 2000', 'MMM. YYYY');       // => Feb. 1 2000 00:00:00 GMT-0800
+date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
+date.parse('Feb 2000', 'MMM YYYY');         // => Feb 1 2000 00:00:00 GMT-0800
 ```
 
 #### NOTE 4. Max Date / Min Date
@@ -290,53 +279,59 @@ date.parse('Feb. 2000', 'MMM. YYYY');       // => Feb. 1 2000 00:00:00 GMT-0800
 Parsable maximum date is `December 31, 9999`, minimum date is `January 1, 0001`.
 
 ```javascript
-date.parse('Dec. 31 9999', 'MMM. D YYYY');  // => Dec. 31 9999 00:00:00 GMT-0800
-date.parse('Dec. 31 10000', 'MMM. D YYYY'); // => Invalid Date
+date.parse('Dec 31 9999', 'MMM D YYYY');    // => Dec 31 9999 00:00:00 GMT-0800
+date.parse('Dec 31 10000', 'MMM D YYYY');   // => Invalid Date
 
-date.parse('Jan. 1 0001', 'MMM. D YYYY');   // => Jan. 1 0001 00:00:00 GMT-0800
-date.parse('Jan. 1 0000', 'MMM. D YYYY');   // => Invalid Date
+date.parse('Jan 1 0001', 'MMM D YYYY');     // => Jan 1 0001 00:00:00 GMT-0800
+date.parse('Jan 1 0000', 'MMM D YYYY');     // => Invalid Date
 ```
 
-#### NOTE 5. Auto Mapping
+#### NOTE 5. 12-hour notation and Meridiem
 
-The `YY` token maps the year 69 or less to the 2000s, the year 70 or more to the 1900s. Using it is not recommended.
+If use `hh` or `h` (12-hour) token, use together `A` (meridiem) token to get the right value.
 
 ```javascript
-date.parse('Dec. 31 00', 'MMM. D YY');  // => Dec. 31 2000 00:00:00 GMT-0800
-date.parse('Dec. 31 69', 'MMM. D YY');  // => Dec. 31 2069 00:00:00 GMT-0800
-date.parse('Dec. 31 70', 'MMM. D YY');  // => Dec. 31 1970 00:00:00 GMT-0800
-date.parse('Dec. 31 99', 'MMM. D YY');  // => Dec. 31 1999 00:00:00 GMT-0800
+date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
+date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
 ```
 
-#### NOTE 6. 12-hour notation and Meridiem
+#### NOTE 6. Comments
 
-If use the `hh` or `h` (12-hour) token, use together the `A` (meridiem) token to get the right value.
-
-```javascript
-date.parse('11:14:05', 'hh:mm:ss');         // => Jan. 1 1970 11:14:05 GMT-0800
-date.parse('11:14:05 p.m.', 'hh:mm:ss A');  // => Jan. 1 1970 23:14:05 GMT-0800
-```
-
-#### NOTE 7. Comments
-
-Strings in parenthese `[...]` in the formatString will be ignored as comments:
+String in parenthese `[...]` in the `formatString` will be ignored as comments:
 
 ```javascript
 date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Date
-date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan. 1 1970 12:34:00 GMT-0800
+date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan 1 1970 12:34:00 GMT-0800
 ```
 
-#### NOTE 8. Wildcard
+#### NOTE 7. Wildcard
 
-A white space works as a wildcard token. This token is not interpret into anything. This means it can be ignored a specific variable string. For example, when you want to ignore a time part from a date string, you can write as follows:
+A white space works as a wildcard token. This token is not interpret into anything. This means it can be ignored a specific variable string. For example, when you would like to ignore a time part from a date string, you can write as follows:
 
 ```javascript
 // This will be an error.
 date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD');            // => Invalid Date
-
 // Append the same length white spaces behind the formatString.
-date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan. 2 2015 00:00:00 GMT-0800
+date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan 2 2015 00:00:00 GMT-0800
 ```
+
+---
+
+### compile(formatString)
+
+- Compiling a format string for the parser.
+  - @param {**string**} formatString - a format string
+  - @returns {**Array.\<string\>**} a compiled object
+
+```javascript
+  const pattern = date.compile('MMM D YYYY h:m:s A');
+
+  date.parse('Mar 22 2019 2:54:21 PM', pattern);
+  date.parse('Jul 27 2019 4:15:24 AM', pattern);
+  date.parse('Dec 25 2019 3:51:11 AM', pattern);
+```
+
+If you are going to call the `parse()` or the `isValid()` many times with one string format, recommended to precompile and reuse it for performance.
 
 ---
 
@@ -347,10 +342,10 @@ date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan. 2 2015 00
   - @param {**string|Array.\<string\>**} arg - a format string or a compiled object
   - @returns {**Object**} a date structure
 
-This function takes exactly the same parameters with the `parse()`, but returns a date structure as follows unlike it:
+This function takes exactly the same parameters with the `parse()`, but returns a date structure as follows unlike that:
 
 ```javascript
-date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
+date.preparse('Fri Jan 2015 02 23:14:05 GMT-0800', '    MMM YYYY DD HH:mm:ss [GMT]Z');
 
 {
     Y: 2015,        // Year
@@ -362,13 +357,14 @@ date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
     m: 14,          // Minute
     s: 5,           // Second
     S: 0,           // Millisecond
-    _index: 19,     // Pointer offset
-    _length: 19,    // Length of the date string
-    _match: 6       // Token matching count
+    Z: 480,         // Timsezone offset
+    _index: 33,     // Pointer offset
+    _length: 33,    // Length of the date string
+    _match: 7       // Token matching count
 }
 ```
 
-This object shows a parsing result. You would be able to tell from it how the date string was parsed(, or why the parsing was failed).
+This date structure provides a parsing result. You would be able to tell from it how the date string was parsed(, or why the parsing was failed).
 
 ---
 
@@ -384,7 +380,9 @@ This function takes either exactly the same parameters with the `parse()` or a d
 ```javascript
 date.isValid('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss'); // => true
 date.isValid('29-02-2015', 'DD-MM-YYYY');                   // => false
+```
 
+```javascript
 const result = date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
 date.isValid(result);   // => true
 ```
@@ -530,9 +528,9 @@ date.isLeapYear(2012);  // => true
   - @returns {**boolean**} whether the dates are the same day (times are ignored)
 
 ```javascript
-const date1 = new Date(2017, 0, 2, 0);          // Jan. 2 2017 00:00:00
-const date2 = new Date(2017, 0, 2, 23, 59);     // Jan. 2 2017 23:59:00
-const date3 = new Date(2017, 0, 1, 23, 59);     // Jan. 1 2017 23:59:00
+const date1 = new Date(2017, 0, 2, 0);          // Jan 2 2017 00:00:00
+const date2 = new Date(2017, 0, 2, 23, 59);     // Jan 2 2017 23:59:00
+const date3 = new Date(2017, 0, 1, 23, 59);     // Jan 1 2017 23:59:00
 date.isSameDay(date1, date2);   // => true
 date.isSameDay(date1, date3);   // => false
 ```
@@ -546,10 +544,10 @@ date.isSameDay(date1, date3);   // => false
   - @param {**Object**} [locale] - locale definition
   - @returns {**string**} current language code
 
-Returns current language code if called without any parameters.
+It returns a current language code if called without any parameters.
 
 ```javascript
-date.locale();  // "en"
+date.locale();  // => "en"
 ```
 
 To switch to any other language, call it with a language code.
@@ -558,7 +556,7 @@ To switch to any other language, call it with a language code.
 date.locale('es');  // Switch to Spanish
 ```
 
-To define a new locale, call it with new language code and a locale definition. See [LOCALE.md](./LOCALE.md) for details.
+See [LOCALE.md](./LOCALE.md) for details.
 
 ---
 
@@ -568,7 +566,7 @@ To define a new locale, call it with new language code and a locale definition. 
   - @param {**Object**} extension - locale definition
   - @returns {**void**}
 
-Extends a current locale (formatter and parser). See [PLUGINS.md](./PLUGINS.md) for details.
+Extend a current locale. See [EXTEND.md](./EXTEND.md) for details.
 
 ---
 
