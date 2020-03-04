@@ -41,6 +41,9 @@ mocha test/zh-tw.js
 mocha test/meridiem.js
 mocha test/ordinal.js
 mocha test/two-digit-year.js
+mocha test/day-of-week.js
+mocha test/microsecond.js
+mocha test/timespan.js
 
 # Core (browser)
 mocha-headless-chrome -f test/test.html

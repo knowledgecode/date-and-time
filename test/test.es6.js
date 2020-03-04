@@ -813,6 +813,13 @@ describe('parse', () => {
     it('                 ', () => {
         expect(isNaN(date.parse('20151231235959900', '                 '))).to.be(true);
     });
+    it('YYYY-MM-DD...', () => {
+        const now = new Date(2020, 2, 4, 0, 0, 0, 0);
+        expect(date.parse('2020-03-04 12:34 PM', 'YYYY-MM-DD...')).to.eql(now);
+    });
+    it('. .. [...] [[...]] ... ', () => {
+        expect(isNaN(date.parse('. .. ... [...] ... ', '. .. [...] [[...]] ... '))).to.be(true);
+    });
 });
 
 describe('addition', () => {
