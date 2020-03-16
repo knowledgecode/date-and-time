@@ -118,10 +118,8 @@
                         value;
 
                     for (var key in props || {}) {
-                        if (props.hasOwnProperty(key)) {
-                            value = props[key];
-                            newLocale[key] = value.slice ? value.slice() : value;
-                        }
+                        value = props[key];
+                        newLocale[key] = value.slice ? value.slice() : value;
                     }
                     return newLocale;
                 },
@@ -133,37 +131,37 @@
         };
 
     /**
-     * formatting a date
-     * @param {Date} dateObj - a Date object
-     * @param {string} formatString - a format string
-     * @param {boolean} [utc] - output as UTC
-     * @returns {string} a formatted string
-     */
-    date.format = function (dateObj, formatString, utc) {
-        var d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
-            formatter = locales[lang].formatter;
-
-        d.utc = utc;
-        return formatString.replace(/\[[^\[\]]*]|\[.*\][^\[]*\]|([A-Za-z])\1*|./g, function (token) {
-            return formatter[token] ? formatter.post(formatter[token](d, formatString)) : token.replace(/\[(.*)]/, '$1');
-        });
-    };
-
-    /**
-     * compiling a format string for the parser
+     * compiling a format string
      * @param {string} formatString - a format string
      * @returns {Array.<string>} a compiled object
      */
     date.compile = function (formatString) {
-        var re = /([A-Za-z])\1*|./g, keys, pattern = [formatString];
+        var re = /\[([^\[\]]*|\[[^\[\]]*\])*\]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
 
-        formatString = formatString.replace(/\[[^\[\]]*]|\[.*\][^\[]*\]/g, function (str) {
-            return str.replace(/./g, ' ').slice(2);
-        });
         while ((keys = re.exec(formatString))) {
             pattern[pattern.length] = keys[0];
         }
         return pattern;
+    };
+
+    /**
+     * formatting a date
+     * @param {Date} dateObj - a Date object
+     * @param {string|Array.<string>} arg - a format string or a compiled object
+     * @param {boolean} [utc] - output as UTC
+     * @returns {string} a formatted string
+     */
+    date.format = function (dateObj, arg, utc) {
+        var pattern = typeof arg === 'string' ? date.compile(arg) : arg,
+            d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
+            formatter = locales[lang].formatter, str = '';
+
+        d.utc = utc || false;
+        for (var i = 1, len = pattern.length, token; i < len; i++) {
+            token = pattern[i];
+            str += formatter[token] ? formatter.post(formatter[token](d, pattern[0])) : token.replace(/\[(.*)]/, '$1');
+        }
+        return str;
     };
 
     /**
@@ -173,15 +171,15 @@
      * @returns {Object} a date structure
      */
     date.preparse = function (dateString, arg) {
-        var parser = locales[lang].parser, token, result, offset = 0,
-            pattern = typeof arg === 'string' ? date.compile(arg) : arg, formatString = pattern[0],
-            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 };
+        var pattern = typeof arg === 'string' ? date.compile(arg) : arg,
+            dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 },
+            parser = locales[lang].parser, offset = 0;
 
         dateString = parser.pre(dateString);
-        for (var i = 1, len = pattern.length; i < len; i++) {
+        for (var i = 1, len = pattern.length, token, result; i < len; i++) {
             token = pattern[i];
             if (parser[token]) {
-                result = parser[token](dateString.slice(offset), formatString);
+                result = parser[token](dateString.slice(offset), pattern[0]);
                 if (!result.length) {
                     break;
                 }
@@ -190,6 +188,11 @@
                 dt._match++;
             } else if (token === dateString.charAt(offset) || token === ' ') {
                 offset++;
+            } else if (/\[.*]/.test(token)) {
+                offset += token.length - 2;
+            } else if (token === '...') {
+                offset = dateString.length;
+                break;
             } else {
                 break;
             }
@@ -281,7 +284,7 @@
      * @returns {Date} a date after adding the value
      */
     date.addHours = function (dateObj, hours) {
-        return date.addMilliseconds(dateObj, hours * 3600000);
+        return date.addMinutes(dateObj, hours * 60);
     };
 
     /**
@@ -291,7 +294,7 @@
      * @returns {Date} a date after adding the value
      */
     date.addMinutes = function (dateObj, minutes) {
-        return date.addMilliseconds(dateObj, minutes * 60000);
+        return date.addSeconds(dateObj, minutes * 60);
     };
 
     /**
@@ -328,16 +331,16 @@
                 return delta;
             },
             toSeconds: function () {
-                return delta / 1000 | 0;
+                return delta / 1000;
             },
             toMinutes: function () {
-                return delta / 60000 | 0;
+                return delta / 60000;
             },
             toHours: function () {
-                return delta / 3600000 | 0;
+                return delta / 3600000;
             },
             toDays: function () {
-                return delta / 86400000 | 0;
+                return delta / 86400000;
             }
         };
     };
@@ -382,7 +385,16 @@
      * @returns {void}
      */
     date.extend = function (extension) {
-        customize(lang, locales[lang], extension);
+        var extender = extension.extender || {};
+
+        for (var key in extender) {
+            if (!date[key]) {
+                date[key] = extender[key];
+            }
+        }
+        if (extension.formatter || extension.parser || extension.res) {
+            customize(lang, locales[lang], extension);
+        }
     };
 
     /**

@@ -813,6 +813,13 @@ describe('parse', () => {
     it('                 ', () => {
         expect(isNaN(date.parse('20151231235959900', '                 '))).to.be(true);
     });
+    it('YYYY-MM-DD...', () => {
+        const now = new Date(2020, 2, 4, 0, 0, 0, 0);
+        expect(date.parse('2020-03-04 12:34 PM', 'YYYY-MM-DD...')).to.eql(now);
+    });
+    it('. .. [...] [[...]] ... ', () => {
+        expect(isNaN(date.parse('. .. ... [...] ... ', '. .. [...] [[...]] ... '))).to.be(true);
+    });
 });
 
 describe('addition', () => {
@@ -946,7 +953,7 @@ describe('subtraction', () => {
     it('An hour', () => {
         const date1 = new Date(2014, 11, 31, 24, 59, 59, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 999);
-        expect(date.subtract(date1, date2).toDays()).to.equal(0);
+        expect(date.subtract(date1, date2).toDays()).to.equal(1 / 24);
         expect(date.subtract(date1, date2).toHours()).to.equal(1);
         expect(date.subtract(date1, date2).toMinutes()).to.equal(60);
         expect(date.subtract(date1, date2).toSeconds()).to.equal(60 * 60);
@@ -955,7 +962,7 @@ describe('subtraction', () => {
     it('An hour (reverse)', () => {
         const date1 = new Date(2014, 11, 31, 24, 59, 59, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 999);
-        expect(date.subtract(date2, date1).toDays()).to.equal(0);
+        expect(date.subtract(date2, date1).toDays()).to.equal(-1 / 24);
         expect(date.subtract(date2, date1).toHours()).to.equal(-1);
         expect(date.subtract(date2, date1).toMinutes()).to.equal(-1 * 60);
         expect(date.subtract(date2, date1).toSeconds()).to.equal(-1 * 60 * 60);
@@ -964,8 +971,8 @@ describe('subtraction', () => {
     it('A minute', () => {
         const date1 = new Date(2014, 11, 31, 23, 60, 59, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 999);
-        expect(date.subtract(date1, date2).toDays()).to.equal(0);
-        expect(date.subtract(date1, date2).toHours()).to.equal(0);
+        expect(date.subtract(date1, date2).toDays()).to.equal(1 / (24 * 60));
+        expect(date.subtract(date1, date2).toHours()).to.equal(1 / 60);
         expect(date.subtract(date1, date2).toMinutes()).to.equal(1);
         expect(date.subtract(date1, date2).toSeconds()).to.equal(60);
         expect(date.subtract(date1, date2).toMilliseconds()).to.equal(60 * 1000);
@@ -973,8 +980,8 @@ describe('subtraction', () => {
     it('A minute (reverse)', () => {
         const date1 = new Date(2014, 11, 31, 23, 60, 59, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 999);
-        expect(date.subtract(date2, date1).toDays()).to.equal(0);
-        expect(date.subtract(date2, date1).toHours()).to.equal(0);
+        expect(date.subtract(date2, date1).toDays()).to.equal(-1 / (24 * 60));
+        expect(date.subtract(date2, date1).toHours()).to.equal(-1 / 60);
         expect(date.subtract(date2, date1).toMinutes()).to.equal(-1);
         expect(date.subtract(date2, date1).toSeconds()).to.equal(-1 * 60);
         expect(date.subtract(date2, date1).toMilliseconds()).to.equal(-1 * 60 * 1000);
@@ -982,37 +989,37 @@ describe('subtraction', () => {
     it('A second', () => {
         const date1 = new Date(2014, 11, 31, 23, 59, 60, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 999);
-        expect(date.subtract(date1, date2).toDays()).to.equal(0);
-        expect(date.subtract(date1, date2).toHours()).to.equal(0);
-        expect(date.subtract(date1, date2).toMinutes()).to.equal(0);
+        expect(date.subtract(date1, date2).toDays()).to.equal(1 / (24 * 60 * 60));
+        expect(date.subtract(date1, date2).toHours()).to.equal(1 / (60 * 60));
+        expect(date.subtract(date1, date2).toMinutes()).to.equal(1 / 60);
         expect(date.subtract(date1, date2).toSeconds()).to.equal(1);
         expect(date.subtract(date1, date2).toMilliseconds()).to.equal(1000);
     });
     it('A second (reverse)', () => {
         const date1 = new Date(2014, 11, 31, 23, 59, 60, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 999);
-        expect(date.subtract(date2, date1).toDays()).to.equal(0);
-        expect(date.subtract(date2, date1).toHours()).to.equal(0);
-        expect(date.subtract(date2, date1).toMinutes()).to.equal(0);
+        expect(date.subtract(date2, date1).toDays()).to.equal(-1 / (24 * 60 * 60));
+        expect(date.subtract(date2, date1).toHours()).to.equal(-1 / (60 * 60));
+        expect(date.subtract(date2, date1).toMinutes()).to.equal(-1 / 60);
         expect(date.subtract(date2, date1).toSeconds()).to.equal(-1);
         expect(date.subtract(date2, date1).toMilliseconds()).to.equal(-1 * 1000);
     });
     it('A millisecond', () => {
         const date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 998);
-        expect(date.subtract(date1, date2).toDays()).to.equal(0);
-        expect(date.subtract(date1, date2).toHours()).to.equal(0);
-        expect(date.subtract(date1, date2).toMinutes()).to.equal(0);
-        expect(date.subtract(date1, date2).toSeconds()).to.equal(0);
+        expect(date.subtract(date1, date2).toDays()).to.equal(1 / (24 * 60 * 60 * 1000));
+        expect(date.subtract(date1, date2).toHours()).to.equal(1 / (60 * 60 * 1000));
+        expect(date.subtract(date1, date2).toMinutes()).to.equal(1 / (60 * 1000));
+        expect(date.subtract(date1, date2).toSeconds()).to.equal(1 / 1000);
         expect(date.subtract(date1, date2).toMilliseconds()).to.equal(1);
     });
     it('A millisecond (reverse)', () => {
         const date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
         const date2 = new Date(2014, 11, 31, 23, 59, 59, 998);
-        expect(date.subtract(date2, date1).toDays()).to.equal(0);
-        expect(date.subtract(date2, date1).toHours()).to.equal(0);
-        expect(date.subtract(date2, date1).toMinutes()).to.equal(0);
-        expect(date.subtract(date2, date1).toSeconds()).to.equal(0);
+        expect(date.subtract(date2, date1).toDays()).to.equal(-1 / (24 * 60 * 60 * 1000));
+        expect(date.subtract(date2, date1).toHours()).to.equal(-1 / (60 * 60 * 1000));
+        expect(date.subtract(date2, date1).toMinutes()).to.equal(-1 / (60 * 1000));
+        expect(date.subtract(date2, date1).toSeconds()).to.equal(-1 / 1000);
         expect(date.subtract(date2, date1).toMilliseconds()).to.equal(-1);
     });
 });

@@ -1,7 +1,6 @@
 # Plugins
 
-As this library is oriented toward minimalism, it may seem like a lack of functionality. We think plugin is the most realistic solution for solving such dissatisfaction. By importing the plugins, you could extend the functionality of this library, mainly the formatter and the parser.
-
+As this library is oriented toward minimalism, it may seem like a lack of functionality. We think plugin is the most realistic solution for solving such dissatisfaction. By importing the plugins, you can extend the functionality of this library, mainly the formatter and the parser.
 
 ## Usage
 
@@ -42,20 +41,54 @@ date.plugin('foobar');
 
 ## Plugin List
 
+- day-of-week
+  - It adds day of week notation to the parser.
+
 - meridiem
   - It extends `A` token.
 
+- microsecond
+  - It adds microsecond notation to the parser.
+
 - ordinal
   - It adds ordinal notation of date to the formatter.
+
+- timespan
+  - It adds `timeSpan()` function to the library.
 
 - two-digit-year
   - It adds two-digit year notation to the parser.
 
 ## Plugin Details
 
+### day-of-week
+
+It adds `dddd`, `ddd` and `dd` tokens to the parser. While these meanings are as follows, in fact they don't make sense because day of week doesn't include information to determine a date:
+
+| token | meaning                  | examples of acceptable form | added or modified |
+|:------|:-------------------------|:----------------------------|:------------------|
+| dddd  | day of week (long)       | Friday, Sunday              | ✔                 |
+| ddd   | day of week (short)      | Fri, Sun                    | ✔                 |
+| dd    | day of week (very short) | Fr, Su                      | ✔                 |
+
+```javascript
+const date = require('date-and-time');
+// Import "day-of-week" plugin.
+require('date-and-time/plugin/day-of-week');
+
+// Apply "day-of-week" plugin to `date-and-time`.
+date.plugin('day-of-week');
+
+// You can write like this.
+date.parse('Thursday, March 05, 2020', 'dddd, MMMM, D YYYY');
+// You can also write like this, but it is not versatile because length of day of week are variant.
+date.parse('Thursday, March 05, 2020', '        , MMMM, D YYYY');
+date.parse('Friday, March 06, 2020', '      , MMMM, D YYYY');
+```
+
 ### meridiem
 
-It adds `AA`, `a` and `aa` token to the formatter. These meanings are as follows:
+It adds `AA`, `a` and `aa` tokens to the formatter. These meanings are as follows:
 
 | token | meaning                            | examples of output | added or modified |
 |:------|:-----------------------------------|:-------------------|:------------------|
@@ -93,15 +126,45 @@ date.parse('12:34 pm', 'hh:mm A');      // => Jan 1 1970 12:34:00
 date.parse('12:34 p.m.', 'hh:mm A');    // => Jan 1 1970 12:34:00
 ```
 
+### microsecond
+
+It adds `SSSSSS`, `SSSSS` and `SSSS` tokens to the parser. Thease meanings are as follows:
+
+| token  | meaning                       | examples of output | added or modified |
+|:-------|:------------------------------|:-------------------|:------------------|
+| SSSSSS | microsecond (high accuracy)   | 753123, 022113     | ✔                 |
+| SSSSS  | microsecond (middle accuracy) | 75312, 02211       | ✔                 |
+| SSSS   | microsecond (low accuracy)    | 7531, 0221         | ✔                 |
+| SSS    | millisecond (high accuracy)   | 753, 022           |                   |
+| SS     | millisecond (middle accuracy) | 75, 02             |                   |
+| S      | millisecond (low accuracy)    | 7, 0               |                   |
+
+```javascript
+const date = require('date-and-time');
+// Import "microsecond" plugin.
+require('date-and-time/plugin/microsecond');
+
+// Apply "microsecond" plugin to `date-and-time`.
+date.plugin('microsecond');
+
+// A date object in JavaScript supports `millisecond` (ms):
+date.parse('12:34:56.123', 'HH:mm:ss.SSS');
+
+// 4 or more digits number sometimes seen is not `millisecond`, probably `microsecond` (μs):
+date.parse('12:34:56.123456', 'HH:mm:ss.SSSSSS');
+
+// 123456µs will be rounded to 123ms.
+```
+
 ### ordinal
 
 It adds `DDD` token to the formatter. This meaning is as follows:
 
 | token | meaning                  | examples of output  | added or modified |
 |:------|:-------------------------|:--------------------|:------------------|
-| D     | date                     | 1, 2, 3, 31         |                   |
-| DD    | date with zero-padding   | 01, 02, 03, 31      |                   |
 | DDD   | ordinal notation of date | 1st, 2nd, 3rd, 31th | ✔                 |
+| DD    | date with zero-padding   | 01, 02, 03, 31      |                   |
+| D     | date                     | 1, 2, 3, 31         |                   |
 
 ```javascript
 const date = require('date-and-time');
@@ -118,6 +181,54 @@ date.format(new Date(), 'MMM DD YYYY');   // => Jan 01 2019
 // `DDD` token outputs ordinal number of date.
 date.format(new Date(), 'MMM DDD YYYY');  // => Jan 1st 2019
 ```
+
+### timespan
+
+It adds `timeSpan()` function to the library. This function is similar to the `subtract()`, but this can display a formatted elapsed time between two date objects:
+
+```javascript
+const date = require('date-and-time');
+// Import "timespan" plugin.
+require('date-and-time/plugin/timespan');
+
+// Apply "timespan" plugin to `date-and-time`.
+date.plugin('timespan');
+
+const now = new Date(2020, 2, 5, 1, 2, 3, 4);
+const new_years_day = new Date(2020, 0, 1);
+
+date.timeSpan(now, new_years_day).toDays('D HH:mm:ss.SSS'); // => '64 01:02:03.004'
+date.timeSpan(now, new_years_day).toHours('H [hours] m [minutes] s [seconds]');  // => '1537 hours 2 minutes 3 seconds'
+date.timeSpan(now, new_years_day).toMinutes('mmmmmmmmmm [minutes]');  // => '0000092222 minutes'
+```
+
+The `timeSpan()` returns an object that has some functions as with the `subtract()`:
+
+| function       | description             |
+|:---------------|:------------------------|
+| toDays         | Outputs as dates        |
+| toHours        | Outputs as hours        |
+| toMinutes      | Outputs as minutes      |
+| toSeconds      | Outputs as seconds      |
+| toMilliseconds | Outputs as milliseconds |
+
+Available tokens in those functions and their meanings are as follows:
+
+| function       | available tokens |
+|:---------------|:-----------------|
+| toDays         | D, H, m, s, S    |
+| toHours        | H, m, s, S       |
+| toMinutes      | m, s, S          |
+| toSeconds      | s, S             |
+| toMilliseconds | S                |
+
+| token | meaning     |
+|:------|:------------|
+| D     | date        |
+| H     | 24-hour     |
+| m     | minute      |
+| s     | second      |
+| S     | millisecond |
 
 ### two-digit-year
 
