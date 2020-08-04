@@ -7,7 +7,9 @@
     'use strict';
 
     var exec = function (date) {
-        date.locale('cs', {
+        var code = 'cs';
+
+        date.locale(code, {
             res: {
                 MMMM: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
                 MMM: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
@@ -16,10 +18,13 @@
                 dd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so']
             }
         });
+        return code;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

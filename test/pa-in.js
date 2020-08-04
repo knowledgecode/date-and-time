@@ -21,13 +21,11 @@
             'ਸ਼ਾਮ', 'ਸ਼ਾਮ', 'ਸ਼ਾਮ',   // 17 - 19
             'ਰਾਤ', 'ਰਾਤ', 'ਰਾਤ', 'ਰਾਤ'];    // 20 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/pa-in');
-    }
+    var locale = typeof require === 'function' ? require('../locale/pa-in') : 'pa-in';
 
     describe('format with "pa-in"', function () {
         before(function () {
-            date.locale('pa-in');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -73,13 +71,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "pa-in"', function () {
         before(function () {
-            date.locale('pa-in');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -107,7 +105,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

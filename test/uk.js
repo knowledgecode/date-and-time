@@ -24,13 +24,11 @@
             'дня', 'дня', 'дня', 'дня', 'дня',   // 12 - 16
             'вечора', 'вечора', 'вечора', 'вечора', 'вечора', 'вечора', 'вечора']; // 17 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/uk');
-    }
+    var locale = typeof require === 'function' ? require('../locale/uk') : 'uk';
 
     describe('format with "uk"', function () {
         before(function () {
-            date.locale('uk');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -83,13 +81,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "uk"', function () {
         before(function () {
-            date.locale('uk');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -112,7 +110,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

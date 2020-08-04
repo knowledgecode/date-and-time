@@ -21,13 +21,11 @@
         A = ['πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ', 'πμ',
             'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ', 'μμ'];
 
-    if (typeof require === 'function') {
-        require('../locale/el');
-    }
+    var locale = typeof require === 'function' ? require('../locale/el') : 'el';
 
     describe('format with "el"', function () {
         before(function () {
-            date.locale('el');
+            date.locale(locale);
         });
 
         forEach(MMMM.nominative, function (m, i) {
@@ -98,13 +96,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "el"', function () {
         before(function () {
-            date.locale('el');
+            date.locale(locale);
         });
 
         forEach(MMMM.nominative, function (m, i) {
@@ -133,7 +131,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

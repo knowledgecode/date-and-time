@@ -2,7 +2,9 @@
     'use strict';
 
     var exec = function (date) {
-        date.plugin('meridiem', {
+        var name = 'meridiem';
+
+        date.plugin(name, {
             res: {
                 A: ['AM', 'PM', 'A.M.', 'P.M.', 'am', 'pm', 'a.m.', 'p.m.']
             },
@@ -28,10 +30,13 @@
                 }
             }
         });
+        return name;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

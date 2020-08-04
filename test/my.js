@@ -16,13 +16,11 @@
         ddd = ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'ကြာ', 'သော', 'နေ'],
         dd = ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'ကြာ', 'သော', 'နေ'];
 
-    if (typeof require === 'function') {
-        require('../locale/my');
-    }
+    var locale = typeof require === 'function' ? require('../locale/my') : 'my';
 
     describe('format with "my"', function () {
         before(function () {
-            date.locale('my');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -62,13 +60,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "my"', function () {
         before(function () {
-            date.locale('my');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -90,7 +88,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

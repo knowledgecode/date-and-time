@@ -18,13 +18,11 @@
         A = ['Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags', 'Uhr nachmittags',    // 0 - 11
             'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens', 'Uhr morgens'];    // 12 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/de');
-    }
+    var locale = typeof require === 'function' ? require('../locale/de') : 'de';
 
     describe('format with "de"', function () {
         before(function () {
-            date.locale('de');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -65,13 +63,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "de"', function () {
         before(function () {
-            date.locale('de');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -94,7 +92,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

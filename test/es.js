@@ -19,13 +19,11 @@
             'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde',    // 12 - 18
             'de la noche', 'de la noche', 'de la noche', 'de la noche', 'de la noche'];     // 19 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/es');
-    }
+    var locale = typeof require === 'function' ? require('../locale/es') : 'es';
 
     describe('format with "es"', function () {
         before(function () {
-            date.locale('es');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -66,13 +64,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "es"', function () {
         before(function () {
-            date.locale('es');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -95,7 +93,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

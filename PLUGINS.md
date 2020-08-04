@@ -4,39 +4,69 @@ As this library is oriented toward minimalism, it may seem like a lack of functi
 
 ## Usage
 
-- Node.js:
+To support `ES Modules` in the next version, the importing method has changed and then the old method has been deprecated.
+
+- CommonJS:
 
 ```javascript
 const date = require('date-and-time');
-// Import a plugin "foobar".
-require('date-and-time/plugin/foobar');
+// Import the plugin "foobar".
+const foobar = require('date-and-time/plugin/foobar');
 
 // Apply the plugin to "date-and-time".
-date.plugin('foobar');
+date.plugin(foobar);
 ```
 
-- With a transpiler:
+- ES Modules (with transpile):
 
 ```javascript
 import date from 'date-and-time';
-// Import a plugin "foobar".
-import 'date-and-time/plugin/foobar';
+// Import the plugin "foobar".
+import foobar from 'date-and-time/plugin/foobar';
 
 // Apply the plugin to "date-and-time".
-date.plugin('foobar');
+date.plugin(foobar);
 ```
 
-- The browser:
+- Older browser:
+
+When in older browser, pass the plugin name as before. (no changes)
 
 ```html
 <script src="/path/to/date-and-time.min.js"></script>
-<!-- Import a plugin "foobar". -->
+<!-- Import the plugin "foobar". -->
 <script src="/path/to/plugin/foobar.js"></script>
 
 <script>
 // Apply the plugin to "date-and-time".
 date.plugin('foobar');
 </script>
+```
+
+### FYI
+
+The following (old) methods are deprecated. In the next version it won't be able to use them.
+
+- CommonJS:
+
+```javascript
+const date = require('date-and-time');
+// Import the plugin "foobar".
+require('date-and-time/plugin/foobar');
+
+// Apply the plugin to "date-and-time".
+date.plugin('foobar');
+```
+
+- ES Modules (with transpile):
+
+```javascript
+import date from 'date-and-time';
+// Import the plugin "foobar".
+import 'date-and-time/plugin/foobar';
+
+// Apply the plugin to "date-and-time".
+date.plugin('foobar');
 ```
 
 ## Plugin List
@@ -74,10 +104,10 @@ It adds `dddd`, `ddd` and `dd` tokens to the parser. While these meanings are as
 ```javascript
 const date = require('date-and-time');
 // Import "day-of-week" plugin.
-require('date-and-time/plugin/day-of-week');
+const day_of_week = require('date-and-time/plugin/day-of-week');
 
 // Apply "day-of-week" plugin to `date-and-time`.
-date.plugin('day-of-week');
+date.plugin(day_of_week);
 
 // You can write like this.
 date.parse('Thursday, March 05, 2020', 'dddd, MMMM, D YYYY');
@@ -106,10 +136,10 @@ It also extends `A` token of the parser as follows:
 ```javascript
 const date = require('date-and-time');
 // Import "meridiem" plugin.
-require('date-and-time/plugin/meridiem');
+const meridiem = require('date-and-time/plugin/meridiem');
 
 // Apply "medidiem" plugin to `date-and-time`.
-date.plugin('meridiem');
+date.plugin(meridiem);
 
 // This is default behavior of the formatter.
 date.format(new Date(), 'hh:mm A');     // => '12:34 PM'
@@ -142,10 +172,10 @@ It adds `SSSSSS`, `SSSSS` and `SSSS` tokens to the parser. Thease meanings are a
 ```javascript
 const date = require('date-and-time');
 // Import "microsecond" plugin.
-require('date-and-time/plugin/microsecond');
+const microsecond = require('date-and-time/plugin/microsecond');
 
 // Apply "microsecond" plugin to `date-and-time`.
-date.plugin('microsecond');
+date.plugin(microsecond);
 
 // A date object in JavaScript supports `millisecond` (ms):
 date.parse('12:34:56.123', 'HH:mm:ss.SSS');
@@ -169,10 +199,10 @@ It adds `DDD` token to the formatter. This meaning is as follows:
 ```javascript
 const date = require('date-and-time');
 // Import "ordinal" plugin.
-require('date-and-time/plugin/ordinal');
+const ordinal = require('date-and-time/plugin/ordinal');
 
 // Apply "ordinal" plugin to `date-and-time`.
-date.plugin('ordinal');
+date.plugin(ordinal);
 
 // These are default behavior of the formatter.
 date.format(new Date(), 'MMM D YYYY');    // => Jan 1 2019
@@ -189,10 +219,10 @@ It adds `timeSpan()` function to the library. This function is similar to the `s
 ```javascript
 const date = require('date-and-time');
 // Import "timespan" plugin.
-require('date-and-time/plugin/timespan');
+const timespan = require('date-and-time/plugin/timespan');
 
 // Apply "timespan" plugin to `date-and-time`.
-date.plugin('timespan');
+date.plugin(timespan);
 
 const now = new Date(2020, 2, 5, 1, 2, 3, 4);
 const new_years_day = new Date(2020, 0, 1);
@@ -245,14 +275,14 @@ It adds `YY` token to the parser and also changes behavior of `Y` token. These m
 ```javascript
 const date = require('date-and-time');
 // Import "two-digit-year" plugin.
-require('date-and-time/plugin/two-digit-year');
+const two_digit_year = require('date-and-time/plugin/two-digit-year');
 
 // These are default behavior of the parser.
 date.parse('Dec 25 69', 'MMM D YY');      // => Invalid Date
 date.parse('Dec 25 70', 'MMM D Y');       // => 70 AD (ancient times)
 
 // Apply "two-digit-year" plugin to `date-and-time`.
-date.plugin('two-digit-year');
+date.plugin(two_digit_year);
 
 // These convert the year 69 or earlier to 2000s, the year 70 or later to 1900s.
 date.parse('Dec 25 69', 'MMM D YY');      // => Dec 25 2069

@@ -4,13 +4,15 @@
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time');
 
+    var plugin = 'microsecond';
+
     if (typeof require === 'function') {
-        require('../plugin/microsecond');
+        plugin = require('../plugin/microsecond');
     }
 
     describe('microsecond', function () {
         before(function () {
-            date.plugin('microsecond');
+            date.plugin(plugin);
         });
 
         it('SSSS', function () {

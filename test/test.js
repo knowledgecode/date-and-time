@@ -1300,6 +1300,24 @@
         });
     });
 
+    describe('transform', function () {
+        it('D/M/YYYY => M/D/YYYY', function () {
+            expect(date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY')).to.eql('8/3/2020');
+        });
+        it('HH:mm => hh:mm A', function () {
+            expect(date.transform('13:05', 'HH:mm', 'hh:mm A')).to.eql('01:05 PM');
+        });
+        it('HH:mm => hh:mm A, output as UTC', function () {
+            var utc = date.format(new Date(2020, 7, 3, 13, 5), 'hh:mm A', true);
+            expect(date.transform('13:05', 'HH:mm', 'hh:mm A', true)).to.eql(utc);
+        });
+        it('D/M/YYYY => M/D/YYYY, with compile', function () {
+            var arg1 = date.compile('D/M/YYYY');
+            var arg2 = date.compile('M/D/YYYY');
+            expect(date.transform('3/8/2020', arg1, arg2)).to.eql('8/3/2020');
+        });
+    });
+
     describe('addition', function () {
         it('add a year', function () {
             var date1 = new Date(1969, 11, 31, 23, 59, 59, 999);

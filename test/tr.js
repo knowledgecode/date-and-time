@@ -16,13 +16,11 @@
         ddd = ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
         dd = ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'];
 
-    if (typeof require === 'function') {
-        require('../locale/tr');
-    }
+    var locale = typeof require === 'function' ? require('../locale/tr') : 'tr';
 
     describe('format with "tr"', function () {
         before(function () {
-            date.locale('tr');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -57,13 +55,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "tr"', function () {
         before(function () {
-            date.locale('tr');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -80,7 +78,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

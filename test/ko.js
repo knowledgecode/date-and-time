@@ -18,13 +18,11 @@
         A = ['오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전',    // 0 - 11
             '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후'];    // 12 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/ko');
-    }
+    var locale = typeof require === 'function' ? require('../locale/ko') : 'ko';
 
     describe('format with "ko"', function () {
         before(function () {
-            date.locale('ko');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -65,13 +63,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "ko"', function () {
         before(function () {
-            date.locale('ko');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -94,7 +92,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

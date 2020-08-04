@@ -64,12 +64,16 @@
                 }
             };
         };
+        var name = 'timespan';
 
-        date.plugin('timespan', { extender: { timeSpan: timeSpan } });
+        date.plugin(name, { extender: { timeSpan: timeSpan } });
+        return name;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

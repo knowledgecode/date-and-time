@@ -20,13 +20,11 @@
             'sore', 'sore', 'sore', 'sore', // 15 - 18
             'malam', 'malam', 'malam', 'malam', 'malam'];   // 19 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/id');
-    }
+    var locale = typeof require === 'function' ? require('../locale/id') : 'id';
 
     describe('format with "id"', function () {
         before(function () {
-            date.locale('id');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -67,13 +65,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "id"', function () {
         before(function () {
-            date.locale('id');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -96,7 +94,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

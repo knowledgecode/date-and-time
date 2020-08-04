@@ -2,7 +2,9 @@
     'use strict';
 
     var exec = function (date) {
-        date.plugin('ordinal', {
+        var name = 'ordinal';
+
+        date.plugin(name, {
             formatter: {
                 DDD: function (d) {
                     var day = d.getDate();
@@ -24,10 +26,13 @@
                 }
             }
         });
+        return name;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

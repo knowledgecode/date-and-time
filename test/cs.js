@@ -16,13 +16,11 @@
         ddd = ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
         dd = ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'];
 
-    if (typeof require === 'function') {
-        require('../locale/cs');
-    }
+    var locale = typeof require === 'function' ? require('../locale/cs') : 'cs';
 
     describe('format with "cs"', function () {
         before(function () {
-            date.locale('cs');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -57,13 +55,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "cs"', function () {
         before(function () {
-            date.locale('cs');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -80,7 +78,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

@@ -4,13 +4,15 @@
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time');
 
+    var plugin = 'day-of-week';
+
     if (typeof require === 'function') {
-        require('../plugin/day-of-week');
+        plugin = require('../plugin/day-of-week');
     }
 
     describe('day of week', function () {
         before(function () {
-            date.plugin('day-of-week');
+            date.plugin(plugin);
         });
 
         it('dd', function () {

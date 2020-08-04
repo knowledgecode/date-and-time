@@ -7,7 +7,9 @@
     'use strict';
 
     var exec = function (date) {
-        date.locale('sr', {
+        var code = 'sr';
+
+        date.locale(code, {
             res: {
                 MMMM: ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'],
                 MMM: ['jan.', 'feb.', 'mar.', 'apr.', 'maj', 'jun', 'jul', 'avg.', 'sep.', 'okt.', 'nov.', 'dec.'],
@@ -16,10 +18,13 @@
                 dd: ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su']
             }
         });
+        return code;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

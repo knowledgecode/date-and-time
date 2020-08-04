@@ -4,13 +4,15 @@
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time');
 
+    var plugin = 'two-digit-year';
+
     if (typeof require === 'function') {
-        require('../plugin/two-digit-year.js');
+        plugin = require('../plugin/two-digit-year');
     }
 
-    date.plugin('two-digit-year');
+    date.plugin(plugin);
 
-    describe('compile', function () {
+    describe('compile (two-digit-year)', function () {
         it('YY', function () {
             var obj = ['YY', 'YY'];
             expect(date.compile('YY')).to.eql(obj);
@@ -21,7 +23,7 @@
         });
     });
 
-    describe('preparse', function () {
+    describe('preparse (two-digit-year)', function () {
         it('YY-1', function () {
             var dt = { Y: 2000, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 2, _length: 2, _match: 1 };
             expect(date.preparse('00', 'YY')).to.eql(dt);
@@ -80,7 +82,7 @@
         });
     });
 
-    describe('parse', function () {
+    describe('parse (two-digit-year)', function () {
         it('YY-1', function () {
             var now = new Date(2000, 0, 1);
             expect(date.parse('00', 'YY')).to.eql(now);

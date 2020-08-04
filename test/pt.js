@@ -20,13 +20,11 @@
             'da tarde', 'da tarde', 'da tarde', 'da tarde', 'da tarde', 'da tarde', 'da tarde',     // 12 - 18
             'da noite', 'da noite', 'da noite', 'da noite', 'da noite'];    // 19 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/pt');
-    }
+    var locale = typeof require === 'function' ? require('../locale/pt') : 'pt';
 
     describe('format with "pt"', function () {
         before(function () {
-            date.locale('pt');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -67,13 +65,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "pt"', function () {
         before(function () {
-            date.locale('pt');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -96,7 +94,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
