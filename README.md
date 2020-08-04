@@ -32,6 +32,24 @@ npm install date-and-time --save
 
 ## Recent Changes
 
+- 0.14.0
+  - **Feature Freeze**
+
+    We decided to freeze the feature with this version (except the following). The next will be 1.0.0.
+
+  - To support `ES Modules` (without transpile) in the next version, the importing method has changed in the `locale()` and the `plugin()`. As this version you will see the warning message if using the old method. See [LOCALE.md](./LOCALE.md) and [PLUGINS.md](./PLUGINS.md) for details.
+
+  - Added `transform()` function to transform the format of a date string. When changing the format, in the past you would convert the date string to a date object with the `parse()`, and then format it with the `format()` again, but you can now do this with a single function.
+
+  ```javascript
+  // 3/8/2020 => 8/3/2020
+  date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
+
+  // in the past
+  const today = date.parse('3/8/2020', 'D/M/YYYY');
+  date.format(today, 'M/D/YYYY');   // => '8/3/2020'
+  ```
+
 - 0.13.0
   - The `format()` now supports a compiled formatString.
 
@@ -98,31 +116,6 @@ npm install date-and-time --save
     | AA    | meridiem (uppercase with ellipsis) | A.M., P.M. |         |
     | a     | meridiem (lowercase)               | am, pm     |         |
     | aa    | meridiem (lowercase with ellipsis) | a.m., p.m. |         |
-
-- 0.11.0
-  - Added `compile()` function that precompiling a date-time string for the parser. If you need to process many date-time string with one format, you can get results faster than before by precompiling the format string with this function.
-
-  ```javascript
-  // We have passed a string format at the 2nd parameter each time when calling the parse() function.
-  date.parse('Mar 22 2019 2:54:21 PM', 'MMM D YYYY h:m:s A');
-  date.parse('Jul 27 2019 4:15:24 AM', 'MMM D YYYY h:m:s A');
-  date.parse('Dec 25 2019 3:51:11 AM', 'MMM D YYYY h:m:s A');
-
-  // You can precompile the string format.
-  const pattern = date.compile('MMM D YYYY h:m:s A');
-
-  // The parse() will be able to finish faster than passing the format string each time.
-  date.parse('Mar 22 2019 2:54:21 PM', pattern);
-  date.parse('Jul 27 2019 4:15:24 AM', pattern);
-  date.parse('Dec 25 2019 3:51:11 AM', pattern);
-  ```
-
-  ```javascript
-  const pattern = date.compile('MMM D YYYY h:m:s A');
-
-  // The isValid() will also too.
-  date.isValid('Mar 22 2019 2:54:21 PM', pattern);
-  ```
 
 ## Usage
 
@@ -429,6 +422,25 @@ date.isValid('29-02-2015', 'DD-MM-YYYY');                   // => false
 ```javascript
 const result = date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
 date.isValid(result);   // => true
+```
+
+### transform(dateString, arg1, arg2[, utc])
+
+- Transformation of date string.
+  - @param {**string**} dateString - a date string
+  - @param {**string|Array.\<string\>**} arg1 - the format string of the date string or the compiled object
+  - @param {**string|Array.\<string\>**} arg2 - the transformed format string or the compiled object
+  - @param {**boolean**} [utc] - output as UTC
+  - @returns {**string**} a formatted string
+
+This function transforms the format of a date string. The 2nd parameter, `arg1`, is the format string of it. Available token list is equal to the `parse()`'s. The 3rd parameter, `arg2`, is the transformed format string. Available token list is equal to the `format()`'s.
+
+```javascript
+// 3/8/2020 => 8/3/2020
+date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
+
+// 13:05 => 01:05 PM
+date.transform('13:05', 'HH:mm', 'hh:mm A');
 ```
 
 ### addYears(dateObj, years)
