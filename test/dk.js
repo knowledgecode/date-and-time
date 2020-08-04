@@ -16,13 +16,11 @@
         ddd = ['søn', 'man', 'tir', 'ons', 'tors', 'fre', 'lør'],
         dd = ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'];
 
-    if (typeof require === 'function') {
-        require('../locale/dk');
-    }
+    var locale = typeof require === 'function' ? require('../locale/dk') : 'dk';
 
     describe('format with "dk"', function () {
         before(function () {
-            date.locale('dk');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -57,13 +55,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "dk"', function () {
         before(function () {
-            date.locale('dk');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -80,7 +78,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

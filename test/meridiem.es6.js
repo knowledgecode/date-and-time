@@ -1,6 +1,6 @@
 import expect from 'expect.js';
 import date from '../date-and-time';
-import '../plugin/meridiem';
+import meridiem from '../plugin/meridiem';
 
 const A = ['AM', 'PM'],
     AA = ['A.M.', 'P.M.'],
@@ -9,7 +9,7 @@ const A = ['AM', 'PM'],
 
 describe('extended meridiem', () => {
     before(() => {
-        date.plugin('meridiem');
+        date.plugin(meridiem);
     });
 
     it('A, ante meridiem', () => {

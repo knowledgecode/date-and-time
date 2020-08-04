@@ -16,13 +16,11 @@
         ddd = ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'],
         dd = ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'];
 
-    if (typeof require === 'function') {
-        require('../locale/ro');
-    }
+    var locale = typeof require === 'function' ? require('../locale/ro') : 'ro';
 
     describe('format with "ro"', function () {
         before(function () {
-            date.locale('ro');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -57,13 +55,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "ro"', function () {
         before(function () {
-            date.locale('ro');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -80,7 +78,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

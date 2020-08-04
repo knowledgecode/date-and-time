@@ -7,7 +7,9 @@
     'use strict';
 
     var exec = function (date) {
-        date.locale('es', {
+        var code = 'es';
+
+        date.locale(code, {
             res: {
                 MMMM: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
                 MMM: ['ene.', 'feb.', 'mar.', 'abr.', 'may.', 'jun.', 'jul.', 'ago.', 'sep.', 'oct.', 'nov.', 'dic.'],
@@ -36,10 +38,13 @@
                 }
             }
         });
+        return code;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

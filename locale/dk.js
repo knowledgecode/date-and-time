@@ -7,6 +7,8 @@
     'use strict';
 
     var exec = function (date) {
+        var code = 'dk';
+
         date.locale('dk', {
             res: {
                 MMMM: ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'],
@@ -16,10 +18,13 @@
                 dd: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø']
             }
         });
+        return code;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

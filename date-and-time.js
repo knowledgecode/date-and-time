@@ -242,6 +242,18 @@
     };
 
     /**
+     * transformation of date string
+     * @param {string} dateString - a date string
+     * @param {string|Array.<string>} arg1 - the format string of the date string or the compiled object
+     * @param {string|Array.<string>} arg2 - the transformed format string or the compiled object
+     * @param {boolean} [utc] - output as UTC
+     * @returns {string} a formatted string
+     */
+    date.transform = function (dateString, arg1, arg2, utc) {
+        return date.format(date.parse(dateString, arg1), arg2, utc);
+    };
+
+    /**
      * adding years
      * @param {Date} dateObj - a date object
      * @param {number} years - number of years to add
@@ -366,14 +378,19 @@
 
     /**
      * change locale or setting a new locale definition
-     * @param {string} [code] - language code
+     * @param {Function|string} [code] - locale function | language code
      * @param {Object} [locale] - locale definition
      * @returns {string} current language code
      */
     date.locale = function (code, locale) {
         if (locale) {
             customize(code, { res: _res, formatter: _formatter, parser: _parser }, locale);
+        } else if (typeof code === 'function') {
+            lang = code(date);
         } else if (code) {
+            if (global && !global.date) {
+                console.warn('This method of changing the locale is deprecated. See documentation for details.');
+            }
             lang = code;
         }
         return lang;
@@ -399,14 +416,21 @@
 
     /**
      * plugin import or definition
-     * @param {string} name - plugin name
+     * @param {Function|string} plugin - plugin function | plugin name
      * @param {Object} [extension] - locale extension
      * @returns {void}
      */
-    date.plugin = function (name, extension) {
-        plugins[name] = plugins[name] || extension;
-        if (!extension && plugins[name]) {
-            date.extend(plugins[name]);
+    date.plugin = function (plugin, extension) {
+        if (typeof plugin === 'function') {
+            date.extend(plugins[plugin(date)]);
+        } else {
+            plugins[plugin] = plugins[plugin] || extension;
+            if (!extension && plugins[plugin]) {
+                date.extend(plugins[plugin]);
+                if (global && !global.date) {
+                    console.warn('This method of applying plugins is deprecated. See documentation for details.');
+                }
+            }
         }
     };
 

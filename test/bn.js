@@ -21,13 +21,11 @@
             'বিকাল', 'বিকাল', 'বিকাল',    // 17 - 19
             'রাত', 'রাত', 'রাত', 'রাত'];    // 20 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/bn');
-    }
+    var locale = typeof require === 'function' ? require('../locale/bn') : 'bn';
 
     describe('format with "bn"', function () {
         before(function () {
-            date.locale('bn');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -68,13 +66,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "bn"', function () {
         before(function () {
-            date.locale('bn');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -97,7 +95,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

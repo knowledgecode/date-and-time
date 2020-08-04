@@ -19,13 +19,11 @@
         ddd = ['zo.', 'ma.', 'di.', 'wo.', 'do.', 'vr.', 'za.'],
         dd = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
 
-    if (typeof require === 'function') {
-        require('../locale/nl');
-    }
+    var locale = typeof require === 'function' ? require('../locale/nl') : 'nl';
 
     describe('format with "nl"', function () {
         before(function () {
-            date.locale('nl');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -66,13 +64,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "nl"', function () {
         before(function () {
-            date.locale('nl');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -95,7 +93,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

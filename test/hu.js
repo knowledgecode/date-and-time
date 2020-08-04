@@ -18,13 +18,11 @@
         A = ['de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de', 'de',
             'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du', 'du'];
 
-    if (typeof require === 'function') {
-        require('../locale/hu');
-    }
+    var locale = typeof require === 'function' ? require('../locale/hu') : 'hu';
 
     describe('format with "hu"', function () {
         before(function () {
-            date.locale('hu');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -65,13 +63,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "hu"', function () {
         before(function () {
-            date.locale('hu');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -94,7 +92,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

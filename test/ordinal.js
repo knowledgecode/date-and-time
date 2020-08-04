@@ -4,13 +4,15 @@
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time');
 
+    var plugin = 'ordinal';
+
     if (typeof require === 'function') {
-        require('../plugin/ordinal');
+        plugin = require('../plugin/ordinal');
     }
 
     describe('ordinal number', function () {
         before(function () {
-            date.plugin('ordinal');
+            date.plugin(plugin);
         });
 
         it('Jan. XX, 2019', function () {

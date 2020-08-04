@@ -7,7 +7,9 @@
     'use strict';
 
     var exec = function (date) {
-        date.locale('hi', {
+        var code = 'hi';
+
+        date.locale(code, {
             res: {
                 MMMM: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 'अक्टूबर', 'नवम्बर', 'दिसम्बर'],
                 MMM: ['जन.', 'फ़र.', 'मार्च', 'अप्रै.', 'मई', 'जून', 'जुल.', 'अग.', 'सित.', 'अक्टू.', 'नव.', 'दिस.'],
@@ -44,10 +46,13 @@
                 }
             }
         });
+        return code;
     };
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         (module.paths || []).push('./');
+        module.exports = exec;
+        // This line will be removed in the next version.
         exec(require('date-and-time'));
     } else if (typeof define === 'function' && define.amd) {
         define(['date-and-time'], exec);

@@ -18,13 +18,11 @@
         A = ['ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص', 'ص',    // 00 - 11
             'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م', 'م'];    // 12 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/ar');
-    }
+    var locale = typeof require === 'function' ? require('../locale/ar') : 'ar';
 
     describe('format with "ar"', function () {
         before(function () {
-            date.locale('ar');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -70,13 +68,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "ar"', function () {
         before(function () {
-            date.locale('ar');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -104,7 +102,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

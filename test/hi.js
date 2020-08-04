@@ -21,13 +21,11 @@
             'शाम', 'शाम', 'शाम',   // 17 - 19
             'रात', 'रात', 'रात', 'रात'];    // 20 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/hi');
-    }
+    var locale = typeof require === 'function' ? require('../locale/hi') : 'hi';
 
     describe('format with "hi"', function () {
         before(function () {
-            date.locale('hi');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -68,13 +66,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "hi"', function () {
         before(function () {
-            date.locale('hi');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -97,7 +95,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

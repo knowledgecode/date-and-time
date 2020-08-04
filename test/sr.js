@@ -16,13 +16,11 @@
         ddd = ['ned.', 'pon.', 'uto.', 'sre.', 'čet.', 'pet.', 'sub.'],
         dd = ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su'];
 
-    if (typeof require === 'function') {
-        require('../locale/sr');
-    }
+    var locale = typeof require === 'function' ? require('../locale/sr') : 'sr';
 
     describe('format with "sr"', function () {
         before(function () {
-            date.locale('sr');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -57,13 +55,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "sr"', function () {
         before(function () {
-            date.locale('sr');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -80,7 +78,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

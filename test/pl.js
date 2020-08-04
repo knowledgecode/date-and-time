@@ -19,13 +19,11 @@
         ddd = ['nie', 'pon', 'wt', 'śr', 'czw', 'pt', 'sb'],
         dd = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'];
 
-    if (typeof require === 'function') {
-        require('../locale/pl');
-    }
+    var locale = typeof require === 'function' ? require('../locale/pl') : 'pl';
 
     describe('format with "pl"', function () {
         before(function () {
-            date.locale('pl');
+            date.locale(locale);
         });
 
         forEach(MMMM.nominative, function (m, i) {
@@ -66,13 +64,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "pl"', function () {
         before(function () {
-            date.locale('pl');
+            date.locale(locale);
         });
 
         forEach(MMMM.nominative, function (m, i) {
@@ -95,7 +93,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

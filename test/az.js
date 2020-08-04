@@ -20,13 +20,11 @@
             'gündüz', 'gündüz', 'gündüz', 'gündüz', 'gündüz', // 12 - 16
             'axşam', 'axşam', 'axşam', 'axşam', 'axşam', 'axşam', 'axşam']; // 17 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/az');
-    }
+    var locale = typeof require === 'function' ? require('../locale/az') : 'az';
 
     describe('format with "az"', function () {
         before(function () {
-            date.locale('az');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -67,13 +65,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "az"', function () {
         before(function () {
-            date.locale('az');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -96,7 +94,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

@@ -16,13 +16,11 @@
         ddd = ['Якш', 'Душ', 'Сеш', 'Чор', 'Пай', 'Жум', 'Шан'],
         dd = ['Як', 'Ду', 'Се', 'Чо', 'Па', 'Жу', 'Ша'];
 
-    if (typeof require === 'function') {
-        require('../locale/uz');
-    }
+    var locale = typeof require === 'function' ? require('../locale/uz') : 'uz';
 
     describe('format with "uz"', function () {
         before(function () {
-            date.locale('uz');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -57,13 +55,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "uz"', function () {
         before(function () {
-            date.locale('uz');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -80,7 +78,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

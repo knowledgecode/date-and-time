@@ -1078,6 +1078,24 @@ describe('validation', () => {
     });
 });
 
+describe('transform', () => {
+    it('D/M/YYYY => M/D/YYYY', () => {
+        expect(date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY')).to.eql('8/3/2020');
+    });
+    it('HH:mm => hh:mm A', () => {
+        expect(date.transform('13:05', 'HH:mm', 'hh:mm A')).to.eql('01:05 PM');
+    });
+    it('HH:mm => hh:mm A, output as UTC', () => {
+        const utc = date.format(new Date(2020, 7, 3, 13, 5), 'hh:mm A', true);
+        expect(date.transform('13:05', 'HH:mm', 'hh:mm A', true)).to.eql(utc);
+    });
+    it('D/M/YYYY => M/D/YYYY, with compile', () => {
+        const arg1 = date.compile('D/M/YYYY');
+        const arg2 = date.compile('M/D/YYYY');
+        expect(date.transform('3/8/2020', arg1, arg2)).to.eql('8/3/2020');
+    });
+});
+
 describe('leap year', () => {
     it('2012-2-29 It is valid.', () => {
         expect(date.isLeapYear(new Date(2012, 0, 1).getFullYear())).to.be(true);

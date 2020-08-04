@@ -21,13 +21,11 @@
             '下午', '下午', '下午', '下午', '下午', '下午',     // 12:30 - 17
             '晚上', '晚上', '晚上', '晚上', '晚上', '晚上'];    // 18 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/zh-tw');
-    }
+    var locale = typeof require === 'function' ? require('../locale/zh-tw') : 'zh-tw';
 
     describe('format with "zh-tw"', function () {
         before(function () {
-            date.locale('zh-tw');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -68,13 +66,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "zh-tw"', function () {
         before(function () {
-            date.locale('zh-tw');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -97,7 +95,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

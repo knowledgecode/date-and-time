@@ -18,13 +18,11 @@
         A = ['ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง', 'ก่อนเที่ยง',    // 0 - 11
             'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง', 'หลังเที่ยง'];    // 12 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/th');
-    }
+    var locale = typeof require === 'function' ? require('../locale/th') : 'th';
 
     describe('format with "th"', function () {
         before(function () {
-            date.locale('th');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -65,13 +63,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "th"', function () {
         before(function () {
-            date.locale('th');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -94,7 +92,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

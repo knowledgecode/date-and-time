@@ -18,13 +18,11 @@
         A = ['午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前', '午前',    // 0 - 11
             '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後', '午後'];    // 12 - 23
 
-    if (typeof require === 'function') {
-        require('../locale/ja');
-    }
+    var locale = typeof require === 'function' ? require('../locale/ja') : 'ja';
 
     describe('format with "ja"', function () {
         before(function () {
-            date.locale('ja');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -89,13 +87,13 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 
     describe('parse with "ja"', function () {
         before(function () {
-            date.locale('ja');
+            date.locale(locale);
         });
 
         forEach(MMMM, function (m, i) {
@@ -118,7 +116,7 @@
         });
 
         after(function () {
-            date.locale('en');
+            date.locale(typeof require === 'function' ? require('../locale/en') : 'en');
         });
     });
 

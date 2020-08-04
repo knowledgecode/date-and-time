@@ -4,13 +4,15 @@
     var expect = global.expect || require('expect.js'),
         date = global.date || require('../date-and-time');
 
+    var plugin = 'timespan';
+
     if (typeof require === 'function') {
-        require('../plugin/timespan');
+        plugin = require('../plugin/timespan');
     }
 
     describe('timespan', function () {
         before(function () {
-            date.plugin('timespan');
+            date.plugin(plugin);
         });
 
         it('toMilliseconds, S', function () {

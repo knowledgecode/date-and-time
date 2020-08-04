@@ -8,13 +8,15 @@
         a = ['am', 'pm'],
         aa = ['a.m.', 'p.m.'];
 
+    var plugin = 'meridiem';
+
     if (typeof require === 'function') {
-        require('../plugin/meridiem');
+        plugin = require('../plugin/meridiem');
     }
 
     describe('extended meridiem', function () {
         before(function () {
-            date.plugin('meridiem');
+            date.plugin(plugin);
         });
 
         it('A, ante meridiem', function () {
