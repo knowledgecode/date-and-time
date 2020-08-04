@@ -1,7 +1,7 @@
 {
   "name": "date-and-time",
   "description": "A Minimalist DateTime utility for Node.js and the browser",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "main": "date-and-time.js",
   "moduleType": [
     "amd",
