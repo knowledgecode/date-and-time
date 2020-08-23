@@ -945,12 +945,24 @@
             var dt = { Y: 2015, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 4, _length: 21, _match: 1 };
             expect(date.preparse('2015-12-31 23:59:59.9', 'YYYY?M?D H?m?s?S')).to.eql(dt);
         });
+        it('YYYY-MM-DD HH:mm:ssZ', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 0, Z: 0, _index: 19, _length: 20, _match: 6 };
+            expect(date.preparse('2015-12-31 23:59:59K', 'YYYY-MM-DD HH:mm:ss[Z]')).to.eql(dt);
+        });
         it('[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S', function () {
             var dt = { Y: 2015, M: 12, D: 31, H: 23, A: 0, h: 0, m: 59, s: 59, S: 900, Z: 0, _index: 22, _length: 22, _match: 7 };
             expect(date.preparse('Y2015M12D31H23m59s59S9', '[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S')).to.eql(dt);
         });
+        it('[Y]YYYY[M]M[D]D[H]H[m]m[s]s[S]S', function () {
+            var dt = { Y: 2015, M: 12, D: 31, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 22, _length: 22, _match: 3 };
+            expect(date.preparse('Y2015M12D31H23m59s59S9', '[Y]YYYY[M]M[D]D...')).to.eql(dt);
+        });
         it('[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]', function () {
             var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 36, _length: 36, _match: 0 };
+            expect(date.preparse('[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S', '[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]')).to.eql(dt);
+        });
+        it('[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]', function () {
+            var dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 36, _match: 0 };
             expect(date.preparse('[Y]2015[M]12[D]31[H]23[m]59[s]59[S]9', '[[Y]YYYY[M]MM[D]DD[H]HH[m]mm[s]ss[S]S]')).to.eql(dt);
         });
         it('                 ', function () {
