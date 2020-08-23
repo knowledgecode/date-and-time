@@ -32,6 +32,9 @@ npm install date-and-time --save
 
 ## Recent Changes
 
+- 0.14.1
+  - Fixed a bug characters inside square brackets `[]` are not validated.
+
 - 0.14.0
   - **Feature Freeze**
 
@@ -39,13 +42,13 @@ npm install date-and-time --save
 
   - To support `ES Modules` (without transpile) in the next version, the importing method has changed in the `locale()` and the `plugin()`. As this version you will see the warning message if using the old method. See [LOCALE.md](./LOCALE.md) and [PLUGINS.md](./PLUGINS.md) for details.
 
-  - Added `transform()` function to transform the format of a date string. When changing the format, in the past you would convert the date string to a date object with the `parse()`, and then format it with the `format()` again, but you can now do this with a single function.
+  - Added `transform()` function to transform the format of a date string. When changing the format, previously you would convert the date string to a date object with the `parse()`, and then format it with the `format()` again, but you can now do this with a single function.
 
   ```javascript
   // 3/8/2020 => 8/3/2020
   date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
 
-  // in the past
+  // previously
   const today = date.parse('3/8/2020', 'D/M/YYYY');
   date.format(today, 'M/D/YYYY');   // => '8/3/2020'
   ```
@@ -104,18 +107,6 @@ npm install date-and-time --save
   ```
 
   - Added `microsecond` plugin for the parser. Microsecond is not supported by date objects so that it is rounded `millisecond` at the inside. See [PLUGINS.md](./PLUGINS.md) for details.
-
-- 0.12.0
-  - The parser now supports `Z` token to parse timezone offset.
-  - (**Breaking Change**) **Excleded `YY` token from the parser**, added it as `two-digit-year` plugin. See [PLUGINS.md](./PLUGINS.md) for details.
-  - (**Breaking Change**) Decided to **change the default behavior of `A` token** to fix the non-intuitive definition. Sepcifically, in the `format()` it now outputs `AM` / `PM` instead of `a.m.` / `p.m.`, and in the `parse()` it recognizes `AM` / `PM` only. Other `A` tokens are supported as `meridiem` plugin.
-
-    | token | new meaning                        | example    | default |
-    |:------|:-----------------------------------|:-----------|:--------|
-    | A     | meridiem (uppercase)               | AM, PM     | ✔️       |
-    | AA    | meridiem (uppercase with ellipsis) | A.M., P.M. |         |
-    | a     | meridiem (lowercase)               | am, pm     |         |
-    | aa    | meridiem (lowercase with ellipsis) | a.m., p.m. |         |
 
 ## Usage
 
@@ -328,9 +319,9 @@ date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
 date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
 ```
 
-#### NOTE 6. Comments
+#### NOTE 6. Token disablement
 
-String in parenthese `[...]` in the `formatString` will be ignored as comments:
+Use square brackets `[]` if a date-time string includes some token characters. Tokens inside square brackets in the `formatString` will be interpreted as normal characters:
 
 ```javascript
 date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Date
