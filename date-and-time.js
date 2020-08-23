@@ -173,7 +173,7 @@
     date.preparse = function (dateString, arg) {
         var pattern = typeof arg === 'string' ? date.compile(arg) : arg,
             dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 },
-            parser = locales[lang].parser, offset = 0;
+            comment = /\[(.*)]/, parser = locales[lang].parser, offset = 0;
 
         dateString = parser.pre(dateString);
         for (var i = 1, len = pattern.length, token, result; i < len; i++) {
@@ -188,7 +188,7 @@
                 dt._match++;
             } else if (token === dateString.charAt(offset) || token === ' ') {
                 offset++;
-            } else if (/\[.*]/.test(token)) {
+            } else if (comment.test(token) && !dateString.slice(offset).indexOf(comment.exec(token)[1])) {
                 offset += token.length - 2;
             } else if (token === '...') {
                 offset = dateString.length;
