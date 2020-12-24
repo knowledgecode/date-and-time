@@ -32,6 +32,9 @@ npm install date-and-time --save
 
 ## Recent Changes
 
+- 0.14.2
+  - Fixed regular expression denial of service (ReDoS) vulnerability.
+
 - 0.14.1
   - Fixed a bug characters inside square brackets `[]` are not validated.
 
@@ -52,61 +55,6 @@ npm install date-and-time --save
   const today = date.parse('3/8/2020', 'D/M/YYYY');
   date.format(today, 'M/D/YYYY');   // => '8/3/2020'
   ```
-
-- 0.13.0
-  - The `format()` now supports a compiled formatString.
-
-  ```javascript
-  const pattern = date.compile('MMM D YYYY');
-
-  date.format(new Date(2020, 2, 3), pattern); // => Mar 3 2020
-  date.format(new Date(2020, 3, 4), pattern); // => Apr 4 2020
-  date.format(new Date(2020, 4, 5), pattern); // => May 5 2020
-  ```
-
-  - The `parse()` now supports `...` (ellipsis) token. The `preparse()` and the `isValid()` are too.
-
-  ```javascript
-  // Cannot write like this even if you want to get only a date part.
-  date.parse('Mar 05 2020 10:42:29 GMT-0800', 'MMM D YYYY');  // => Invalid Date
-
-  // Previously, it was necessary to adjust the length of the format string by appending white spaces of the same length as a part to ignore.
-  date.parse('Mar 05 2020 10:42:29 GMT-0800', 'MMM D YYYY                  ');
-
-  // Can write simply like this using the ellipsis token.
-  date.parse('Mar 05 2020 10:42:29 GMT-0800', 'MMM D YYYY...');
-  ```
-
-  - Added `day-of-week` plugin for the parser. However this is a dummy, not effective at all. See [PLUGINS.md](./PLUGINS.md) for details.
-
-  ```javascript
-  // If a date string has day of week at the head, cannot parse it unless remove that part from it or fill white spaces that part of the format string.
-  date.parse('Thu Mar 05 2020 10:42:29 GMT-0800', '    MMM D YYYY...');
-
-  // This plugin provides `dd`, `ddd` and `dddd` tokens for such a case. However they are not effective at all because day of week has not information to identify a date.
-  date.parse('Thu Mar 05 2020 10:42:29 GMT-0800', 'ddd MMM D YYYY...');
-  ```
-
-  - (**Breaking Change**) The `subtract()` now returns a **REAL** number. Previously, it returned values with truncated decimals.
-
-  ```javascript
-  const now = new Date(2020, 2, 5, 1, 2, 3, 4);
-  const new_years_day = new Date(2020, 0, 1);
-
-  date.subtract(now, new_years_day).toDays(); // => 64.04309032407407
-  ```
-
-  - Added `timespan` plugin. This plugin provides `timeSpan()` function to display a formatted elapsed time. This will might be integrated with the `subtract()`. See [PLUGINS.md](./PLUGINS.md) for details.
-
-  ```javascript
-  const now = new Date(2020, 2, 5, 1, 2, 3, 4);
-  const new_years_day = new Date(2020, 0, 1);
-
-  date.timeSpan(now, new_years_day).toDays('D HH:mm:ss.SSS'); // => '64 01:02:03.004'
-  date.timeSpan(now, new_years_day).toHours('H [hours] m [minutes] s [seconds]');  // => '1537 hours 2 minutes 3 seconds'
-  ```
-
-  - Added `microsecond` plugin for the parser. Microsecond is not supported by date objects so that it is rounded `millisecond` at the inside. See [PLUGINS.md](./PLUGINS.md) for details.
 
 ## Usage
 
