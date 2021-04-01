@@ -1,12 +1,16 @@
-/**
- * @preserve date-and-time.js locale configuration
- * @preserve Vietnamese (vi)
- * @preserve It is using moment.js locale configuration as a reference.
- */
-(function (global) {
-    'use strict';
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.date = global.date || {}, global.date.locale = global.date.locale || {}, global.date.locale.vi = factory()));
+}(this, (function () { 'use strict';
 
-    var exec = function (date) {
+    /**
+     * @preserve date-and-time.js locale configuration
+     * @preserve Vietnamese (vi)
+     * @preserve It is using moment.js locale configuration as a reference.
+     */
+
+    var vi = function (date) {
         var code = 'vi';
 
         date.locale(code, {
@@ -22,15 +26,6 @@
         return code;
     };
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        (module.paths || []).push('./');
-        module.exports = exec;
-        // This line will be removed in the next version.
-        exec(require('date-and-time'));
-    } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], exec);
-    } else {
-        exec(global.date);
-    }
+    return vi;
 
-}(this));
+})));

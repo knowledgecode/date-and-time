@@ -1,8 +1,12 @@
-/**
- * @preserve date-and-time.js (c) KNOWLEDGECODE | MIT
- */
-(function (global) {
-    'use strict';
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.date = factory());
+}(this, (function () { 'use strict';
+
+    /**
+     * @preserve date-and-time (c) KNOWLEDGECODE | MIT
+     */
 
     var date = {},
         locales = {},
@@ -41,7 +45,10 @@
             dddd: function (d/*, formatString*/) { return this.res.dddd[d.getDay()]; },
             ddd: function (d/*, formatString*/) { return this.res.ddd[d.getDay()]; },
             dd: function (d/*, formatString*/) { return this.res.dd[d.getDay()]; },
-            Z: function (d/*, formatString*/) { return d.utc ? '+0000' : /[\+-]\d{4}/.exec(d.toTimeString())[0]; },
+            Z: function (d/*, formatString*/) {
+                var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
+                return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
+            },
             post: function (str) { return str; }
         },
         _parser = {
@@ -131,7 +138,7 @@
         };
 
     /**
-     * compiling a format string
+     * Compiling a format string
      * @param {string} formatString - a format string
      * @returns {Array.<string>} a compiled object
      */
@@ -145,9 +152,9 @@
     };
 
     /**
-     * formatting a date
+     * Formatting a Date and Time
      * @param {Date} dateObj - a Date object
-     * @param {string|Array.<string>} arg - a format string or a compiled object
+     * @param {string|Array.<string>} arg - a format string or its compiled object
      * @param {boolean} [utc] - output as UTC
      * @returns {string} a formatted string
      */
@@ -165,9 +172,9 @@
     };
 
     /**
-     * pre-parsing a date string
+     * Pre-parsing a Date and Time string
      * @param {string} dateString - a date string
-     * @param {string|Array.<string>} arg - a format string or a compiled object
+     * @param {string|Array.<string>} arg - a format string or its compiled object
      * @returns {Object} a date structure
      */
     date.preparse = function (dateString, arg) {
@@ -204,9 +211,9 @@
     };
 
     /**
-     * validation
+     * Validation
      * @param {Object|string} arg1 - a date structure or a date string
-     * @param {string|Array.<string>} [arg2] - a format string or a compiled object
+     * @param {string|Array.<string>} [arg2] - a format string or its compiled object
      * @returns {boolean} whether the date string is a valid date
      */
     date.isValid = function (arg1, arg2) {
@@ -222,9 +229,9 @@
     };
 
     /**
-     * parsing a date string
+     * Parsing a Date and Time string
      * @param {string} dateString - a date string
-     * @param {string|Array.<string>} arg - a format string or a compiled object
+     * @param {string|Array.<string>} arg - a format string or its compiled object
      * @param {boolean} [utc] - input as UTC
      * @returns {Date} a constructed date
      */
@@ -242,10 +249,10 @@
     };
 
     /**
-     * transformation of date string
+     * Transforming a Date and Time string
      * @param {string} dateString - a date string
-     * @param {string|Array.<string>} arg1 - the format string of the date string or the compiled object
-     * @param {string|Array.<string>} arg2 - the transformed format string or the compiled object
+     * @param {string|Array.<string>} arg1 - a format string or its compiled object
+     * @param {string|Array.<string>} arg2 - a transformed format string or its compiled object
      * @param {boolean} [utc] - output as UTC
      * @returns {string} a formatted string
      */
@@ -254,7 +261,7 @@
     };
 
     /**
-     * adding years
+     * Adding years
      * @param {Date} dateObj - a date object
      * @param {number} years - number of years to add
      * @returns {Date} a date after adding the value
@@ -264,7 +271,7 @@
     };
 
     /**
-     * adding months
+     * Adding months
      * @param {Date} dateObj - a date object
      * @param {number} months - number of months to add
      * @returns {Date} a date after adding the value
@@ -277,7 +284,7 @@
     };
 
     /**
-     * adding days
+     * Adding days
      * @param {Date} dateObj - a date object
      * @param {number} days - number of days to add
      * @returns {Date} a date after adding the value
@@ -290,7 +297,7 @@
     };
 
     /**
-     * adding hours
+     * Adding hours
      * @param {Date} dateObj - a date object
      * @param {number} hours - number of hours to add
      * @returns {Date} a date after adding the value
@@ -300,7 +307,7 @@
     };
 
     /**
-     * adding minutes
+     * Adding minutes
      * @param {Date} dateObj - a date object
      * @param {number} minutes - number of minutes to add
      * @returns {Date} a date after adding the value
@@ -310,7 +317,7 @@
     };
 
     /**
-     * adding seconds
+     * Adding seconds
      * @param {Date} dateObj - a date object
      * @param {number} seconds - number of seconds to add
      * @returns {Date} a date after adding the value
@@ -320,7 +327,7 @@
     };
 
     /**
-     * adding milliseconds
+     * Adding milliseconds
      * @param {Date} dateObj - a date object
      * @param {number} milliseconds - number of milliseconds to add
      * @returns {Date} a date after adding the value
@@ -330,7 +337,7 @@
     };
 
     /**
-     * subtracting
+     * Subtracting two dates
      * @param {Date} date1 - a Date object
      * @param {Date} date2 - a Date object
      * @returns {Object} a result object subtracting date2 from date1
@@ -358,47 +365,42 @@
     };
 
     /**
-     * leap year
+     * Whether year is leap year
      * @param {number} y - year
-     * @returns {boolean} whether the year is a leap year
+     * @returns {boolean} whether year is leap year
      */
     date.isLeapYear = function (y) {
         return (!(y % 4) && !!(y % 100)) || !(y % 400);
     };
 
     /**
-     * comparison of two dates
+     * Comparison of two dates
      * @param {Date} date1 - a Date object
      * @param {Date} date2 - a Date object
-     * @returns {boolean} whether the dates are the same day (times are ignored)
+     * @returns {boolean} whether the two dates are the same day (time is ignored)
      */
     date.isSameDay = function (date1, date2) {
         return date1.toDateString() === date2.toDateString();
     };
 
     /**
-     * change locale or setting a new locale definition
-     * @param {Function|string} [code] - locale function | language code
+     * Changing the locale or defining new locales
+     * @param {Function|string} [code] - locale installer | language code
      * @param {Object} [locale] - locale definition
      * @returns {string} current language code
      */
     date.locale = function (code, locale) {
         if (locale) {
             customize(code, { res: _res, formatter: _formatter, parser: _parser }, locale);
-        } else if (typeof code === 'function') {
-            lang = code(date);
-        } else if (code) {
-            if (global && !global.date) {
-                console.warn('This method of changing the locale is deprecated. See documentation for details.');
-            }
-            lang = code;
+        } else {
+            lang = (typeof code === 'function' ? code : date.locale[code] || function () {})(date) || lang;
         }
         return lang;
     };
 
     /**
-     * locale extension
-     * @param {Object} extension - locale extension
+     * Feature extension
+     * @param {Object} extension - extension object
      * @returns {void}
      */
     date.extend = function (extension) {
@@ -415,36 +417,24 @@
     };
 
     /**
-     * plugin import or definition
-     * @param {Function|string} plugin - plugin function | plugin name
-     * @param {Object} [extension] - locale extension
+     * Importing or defining plugins
+     * @param {Function|string} name - plugin installer | plugin name
+     * @param {Object} [plugin] - plugin object
      * @returns {void}
      */
-    date.plugin = function (plugin, extension) {
-        if (typeof plugin === 'function') {
-            date.extend(plugins[plugin(date)]);
-        } else {
-            plugins[plugin] = plugins[plugin] || extension;
-            if (!extension && plugins[plugin]) {
-                date.extend(plugins[plugin]);
-                if (global && !global.date) {
-                    console.warn('This method of applying plugins is deprecated. See documentation for details.');
-                }
+    date.plugin = function (name, plugin) {
+        if (plugin) {
+            if (!plugins[name]) {
+                date.extend((plugins[name] = plugin));
             }
+        } else {
+            (typeof name === 'function' ? name : date.plugin[name] || function () {})(date);
         }
     };
 
     // Create default locale (English)
     date.locale(lang, {});
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        module.exports = date;
-    } else if (typeof define === 'function' && define.amd) {
-        define([], function () {
-            return date;
-        });
-    } else {
-        global.date = date;
-    }
+    return date;
 
-}(this));
+})));

@@ -1,15 +1,19 @@
-/**
- * @preserve date-and-time.js locale configuration
- * @preserve German (de)
- * @preserve It is using moment.js locale configuration as a reference.
- */
-(function (global) {
-    'use strict';
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.date = global.date || {}, global.date.locale = global.date.locale || {}, global.date.locale.de = factory()));
+}(this, (function () { 'use strict';
 
-    var exec = function (date) {
+    /**
+     * @preserve date-and-time.js locale configuration
+     * @preserve German (de)
+     * @preserve It is using moment.js locale configuration as a reference.
+     */
+
+    var de = function (date) {
         var code = 'de';
 
-        date.locale('de', {
+        date.locale(code, {
             res: {
                 MMMM: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
                 MMM: ['Jan.', 'Febr.', 'Mrz.', 'Apr.', 'Mai', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'],
@@ -22,15 +26,6 @@
         return code;
     };
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        (module.paths || []).push('./');
-        module.exports = exec;
-        // This line will be removed in the next version.
-        exec(require('date-and-time'));
-    } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], exec);
-    } else {
-        exec(global.date);
-    }
+    return de;
 
-}(this));
+})));

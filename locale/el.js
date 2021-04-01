@@ -1,15 +1,19 @@
-/**
- * @preserve date-and-time.js locale configuration
- * @preserve Greek (el)
- * @preserve It is using moment.js locale configuration as a reference.
- */
-(function (global) {
-    'use strict';
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.date = global.date || {}, global.date.locale = global.date.locale || {}, global.date.locale.el = factory()));
+}(this, (function () { 'use strict';
 
-    var exec = function (date) {
+    /**
+     * @preserve date-and-time.js locale configuration
+     * @preserve Greek (el)
+     * @preserve It is using moment.js locale configuration as a reference.
+     */
+
+    var el = function (date) {
         var code = 'el';
 
-        date.locale('el', {
+        date.locale(code, {
             res: {
                 MMMM_nominative: ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος'],
                 MMMM_genitive: ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου'],
@@ -41,15 +45,6 @@
         return code;
     };
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        (module.paths || []).push('./');
-        module.exports = exec;
-        // This line will be removed in the next version.
-        exec(require('date-and-time'));
-    } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], exec);
-    } else {
-        exec(global.date);
-    }
+    return el;
 
-}(this));
+})));

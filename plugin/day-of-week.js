@@ -1,7 +1,15 @@
-(function (global) {
-    'use strict';
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.date = global.date || {}, global.date.plugin = global.date.plugin || {}, global.date.plugin['day-of-week'] = factory()));
+}(this, (function () { 'use strict';
 
-    var exec = function (date) {
+    /**
+     * @preserve date-and-time.js plugin
+     * @preserve day-of-week
+     */
+
+    var plugin = function (date) {
         var name = 'day-of-week';
 
         date.plugin(name, {
@@ -14,15 +22,6 @@
         return name;
     };
 
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        (module.paths || []).push('./');
-        module.exports = exec;
-        // This line will be removed in the next version.
-        exec(require('date-and-time'));
-    } else if (typeof define === 'function' && define.amd) {
-        define(['date-and-time'], exec);
-    } else {
-        exec(global.date);
-    }
+    return plugin;
 
-}(this));
+})));

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+    <title>Mocha Tests</title>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/expect.js/index.js"></script>
+    <script>
+      mocha.setup({ checkLeaks: true, ui: 'bdd' });
+    </script>
+    <script src="../date-and-time.js"></script>
+    <!-- Plugin - day-of-week -->
+    <script src="../plugin/day-of-week.js"></script>
+    <script src="plugin/day-of-week.js"></script>
+    <!-- Plugin - meridiem -->
+    <script src="../plugin/meridiem.js"></script>
+    <script src="plugin/meridiem.js"></script>
+    <!-- Plugin - microsecond -->
+    <script src="../plugin/microsecond.js"></script>
+    <script src="plugin/microsecond.js"></script>
+    <!-- Plugin - ordinal -->
+    <script src="../plugin/ordinal.js"></script>
+    <script src="plugin/ordinal.js"></script>
+    <!-- Plugin - timespan -->
+    <script src="../plugin/timespan.js"></script>
+    <script src="plugin/timespan.js"></script>
+    <!-- Plugin - two-digit-year -->
+    <script src="../plugin/two-digit-year.js"></script>
+    <script src="plugin/two-digit-year.js"></script>
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>

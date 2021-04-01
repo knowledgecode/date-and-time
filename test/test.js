@@ -1320,7 +1320,8 @@
             expect(date.transform('13:05', 'HH:mm', 'hh:mm A')).to.eql('01:05 PM');
         });
         it('HH:mm => hh:mm A, output as UTC', function () {
-            var utc = date.format(new Date(2020, 7, 3, 13, 5), 'hh:mm A', true);
+            // This test may fail if you run it in a time zone with daylight saving time.
+            var utc = date.format(new Date(2020, 3, 1, 13, 5), 'hh:mm A', true);
             expect(date.transform('13:05', 'HH:mm', 'hh:mm A', true)).to.eql(utc);
         });
         it('D/M/YYYY => M/D/YYYY, with compile', function () {
