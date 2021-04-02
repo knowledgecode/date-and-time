@@ -59,4 +59,4 @@ for (let i = 0; i < cnt; i++) {
 }
 
 const bench4 = Date.now() - start;
-console.log(`parse() with compile(): ${bench2}ms (${Math.round(bench4 / bench3 * 100)}%)`);
+console.log(`parse() with compile(): ${bench4}ms (${Math.round(bench4 / bench3 * 100)}%)`);
