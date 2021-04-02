@@ -2,11 +2,11 @@
 
 [![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
 
-This library is a minimalist collection of functions for manipulating JS date and time. It's tiny, simple, easy to learn.
+This JS library is just a collection of functions for manipulating date and time. It's small, simple, and easy to learn.
 
 ## Why
 
-JS modules nowadays are getting more huge and complex, and there are also many dependencies. Trying to keep each module simple and small is meaningful.
+Nowadays, JS modules have become huge, complex, and have many dependencies. We think it makes sense to try to keep each module simple and small. Especially for modules that are at the bottom of the dependency chain, such as those dealing with date and time.
 
 ## Features
 
@@ -18,19 +18,16 @@ JS modules nowadays are getting more huge and complex, and there are also many d
 
 ## Install
 
-- via npm:
-
 ```shell
-npm install date-and-time --save
-```
-
-- local:
-
-```html
-<script src="/path/to/date-and-time.min.js"></script>
+npm i date-and-time
 ```
 
 ## Recent Changes
+
+- 1.0.0
+  - **First stable release!**
+  - ES Modules support.
+  - Added Kinyarwanda support.
 
 - 0.14.2
   - Fixed regular expression denial of service (ReDoS) vulnerability.
@@ -38,53 +35,103 @@ npm install date-and-time --save
 - 0.14.1
   - Fixed a bug characters inside square brackets `[]` are not validated.
 
-- 0.14.0
-  - **Feature Freeze**
-
-    We decided to freeze the feature with this version (except the following). The next will be 1.0.0.
-
-  - To support `ES Modules` (without transpile) in the next version, the importing method has changed in the `locale()` and the `plugin()`. As this version you will see the warning message if using the old method. See [LOCALE.md](./LOCALE.md) and [PLUGINS.md](./PLUGINS.md) for details.
-
-  - Added `transform()` function to transform the format of a date string. When changing the format, previously you would convert the date string to a date object with the `parse()`, and then format it with the `format()` again, but you can now do this with a single function.
-
-  ```javascript
-  // 3/8/2020 => 8/3/2020
-  date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
-
-  // previously
-  const today = date.parse('3/8/2020', 'D/M/YYYY');
-  date.format(today, 'M/D/YYYY');   // => '8/3/2020'
-  ```
-
 ## Usage
 
-- Node.js:
-
-```javascript
-const date = require('date-and-time');
-```
-
-- With a transpiler:
+- ES Modules:
 
 ```javascript
 import date from 'date-and-time';
 ```
 
-- The browser:
+- CommonJS:
 
 ```javascript
-window.date;    // global object
+const date = require('date-and-time');
 ```
+
+- ES Modules for the browser:
+
+```html
+<script type="module">
+import date from '/path/to/date-and-time.es.min.js';
+</script>
+```
+
+- Older browser:
+
+```html
+<script src="/path/to/date-and-time.min.js"></script>
+```
+
+### NOTE
+
+- If you want to use ES Modules in Node.js without a transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
 
 ## API
 
+- [format](#formatdateObj-formatString-utc)
+  - Formatting a Date and Time (Date -> String)
+
+- [parse](#parsedateString-arg-utc)
+  - Parsing a Date and Time string (String -> Date)
+
+- [compile](#compileformatString)
+  - Compiling a format string
+
+- [preparse](#preparsedateString-arg)
+  - Pre-parsing a Date and Time string
+
+- [isValid](#isValidarg1-arg2)
+  - Validation
+
+- [transform](#transformdateString-arg1-arg2-utc)
+  - Transforming a Date and Time string (String -> String)
+
+- [addYears](#addYearsdateObj-years)
+  - Adding years
+
+- [addMonths](#addMonthsdateObj-months)
+  - Adding months
+
+- [addDays](#addDaysdateObj-days)
+  - Adding days
+
+- [addHours](#addHoursdateObj-hours)
+  - Adding hours
+
+- [addMinutes](#addMinutesdateObj-minutes)
+  - Adding minutes
+
+- [addSeconds](#addSecondsdateObj-seconds)
+  - Adding seconds
+
+- [addMilliseconds](#addMillisecondsdateObj-milliseconds)
+  - Adding milliseconds
+
+- [subtract](#subtractdate1-date2)
+  - Subtracting two dates
+
+- [isLeapYear](#isLeapYeary)
+  - Whether year is leap year
+
+- [isSameDay](#isSameDaydate1-date2)
+  - Comparison of two dates
+
+- [locale](#localecode-locale)
+  - Changing the locale or defining new locales
+
+- [extend](#extendextension)
+  - Feature extension
+
+- [plugin](#pluginname-plugin)
+  - Importing or defining plugins
+
 ### format(dateObj, formatString[, utc])
 
-- Formatting a date.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**string|Array.\<string\>**} arg - a format string or a compiled object
-  - @param {**boolean**} [utc] - output as UTC
-  - @returns {**string**} a formatted string
+- @param {**Date**} dateObj - a Date object
+- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
+- @param {**boolean**} [utc] - output as UTC
+- @returns {**string**} a formatted string
 
 ```javascript
 const now = new Date();
@@ -160,11 +207,10 @@ You can also define your own tokens. See [EXTEND.md](./EXTEND.md) for details.
 
 ### parse(dateString, arg[, utc])
 
-- Parsing a date string.
-  - @param {**string**} dateString - a date string
-  - @param {**string|Array.\<string\>**} arg - a format string or a compiled object
-  - @param {**boolean**} [utc] - input as UTC
-  - @returns {**Date**} a constructed date
+- @param {string} dateString - a date string
+- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
+- @param {**boolean**} [utc] - input as UTC
+- @returns {**Date**} a constructed date
 
 ```javascript
 date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan 2 2015 23:14:05 GMT-0800
@@ -289,7 +335,7 @@ date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan 2 2015 00:
 
 #### NOTE 8. Ellipsis
 
-The parser supports `...` (ellipse) token. The above example can also be written like this:
+The parser supports `...` (ellipse) token. The above example can be also written like this:
 
 ```javascript
 date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');   // => Jan 2 2015 00:00:00 GMT-0800
@@ -297,9 +343,10 @@ date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');   // => Jan 2 2015 00:00:00 
 
 ### compile(formatString)
 
-- Compiling a format string for the parser.
-  - @param {**string**} formatString - a format string
-  - @returns {**Array.\<string\>**} a compiled object
+- @param {**string**} formatString - a format string
+- @returns {**Array.\<string\>**} a compiled object
+
+If you are going to execute the `format()`, the `parse()` or the `isValid()` so many times with one string format, recommended to precompile and reuse it for performance.
 
 ```javascript
   const pattern = date.compile('MMM D YYYY h:m:s A');
@@ -311,14 +358,11 @@ date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');   // => Jan 2 2015 00:00:00 
   date.format(new Date(), pattern); // => Mar 16 2020 6:24:56 PM
 ```
 
-If you are going to call the `format()`, the `parse()` or the `isValid()` many times with one string format, recommended to precompile and reuse it for performance.
-
 ### preparse(dateString, arg)
 
-- Pre-parsing a date string.
-  - @param {**string**} dateString - a date string
-  - @param {**string|Array.\<string\>**} arg - a format string or a compiled object
-  - @returns {**Object**} a date structure
+- @param {**string**} dateString - a date string
+- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
+- @returns {**Object**} a date structure
 
 This function takes exactly the same parameters with the `parse()`, but returns a date structure as follows unlike that:
 
@@ -346,10 +390,9 @@ This date structure provides a parsing result. You will be able to tell from it 
 
 ### isValid(arg1[, arg2])
 
-- Validation.
-  - @param {**Object|string**} arg1 - a date structure or a date string
-  - @param {**string|Array.\<string\>**} [arg2] - a format string or a compiled object
-  - @returns {**boolean**} whether the date string is a valid date
+- @param {**Object|string**} arg1 - a date structure or a date string
+- @param {**string|Array.\<string\>**} [arg2] - a format string or its compiled object
+- @returns {**boolean**} whether the date string is a valid date
 
 This function takes either exactly the same parameters with the `parse()` or a date structure which the `preparse()` returns, evaluates the validity of them.
 
@@ -365,12 +408,11 @@ date.isValid(result);   // => true
 
 ### transform(dateString, arg1, arg2[, utc])
 
-- Transformation of date string.
-  - @param {**string**} dateString - a date string
-  - @param {**string|Array.\<string\>**} arg1 - the format string of the date string or the compiled object
-  - @param {**string|Array.\<string\>**} arg2 - the transformed format string or the compiled object
-  - @param {**boolean**} [utc] - output as UTC
-  - @returns {**string**} a formatted string
+- @param {**string**} dateString - a date string
+- @param {**string|Array.\<string\>**} arg1 - a format string or its compiled object
+- @param {**string|Array.\<string\>**} arg2 - a transformed format string or its compiled object
+- @param {**boolean**} [utc] - output as UTC
+- @returns {**string**} a formatted string
 
 This function transforms the format of a date string. The 2nd parameter, `arg1`, is the format string of it. Available token list is equal to the `parse()`'s. The 3rd parameter, `arg2`, is the transformed format string. Available token list is equal to the `format()`'s.
 
@@ -384,10 +426,9 @@ date.transform('13:05', 'HH:mm', 'hh:mm A');
 
 ### addYears(dateObj, years)
 
-- Adding years.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} years - number of years to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} years - number of years to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -396,10 +437,9 @@ const next_year = date.addYears(now, 1);
 
 ### addMonths(dateObj, months)
 
-- Adding months.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} months - number of months to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} months - number of months to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -408,10 +448,9 @@ const next_month = date.addMonths(now, 1);
 
 ### addDays(dateObj, days)
 
-- Adding days.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} days - number of days to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} days - number of days to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -420,10 +459,9 @@ const yesterday = date.addDays(now, -1);
 
 ### addHours(dateObj, hours)
 
-- Adding hours.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} hours - number of hours to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} hours - number of hours to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -432,10 +470,9 @@ const an_hour_ago = date.addHours(now, -1);
 
 ### addMinutes(dateObj, minutes)
 
-- Adding minutes.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} minutes - number of minutes to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} minutes - number of minutes to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -444,10 +481,9 @@ const two_minutes_later = date.addMinutes(now, 2);
 
 ### addSeconds(dateObj, seconds)
 
-- Adding seconds.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} seconds - number of seconds to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} seconds - number of seconds to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -456,10 +492,9 @@ const three_seconds_ago = date.addSeconds(now, -3);
 
 ### addMilliseconds(dateObj, milliseconds)
 
-- Adding milliseconds.
-  - @param {**Date**} dateObj - a Date object
-  - @param {**number**} milliseconds - number of milliseconds to add
-  - @returns {**Date**} a date after adding the value
+- @param {**Date**} dateObj - a Date object
+- @param {**number**} milliseconds - number of milliseconds to add
+- @returns {**Date**} a date after adding the value
 
 ```javascript
 const now = new Date();
@@ -468,10 +503,9 @@ const a_millisecond_later = date.addMilliseconds(now, 1);
 
 ### subtract(date1, date2)
 
-- Subtracting.
-  - @param {**Date**} date1 - a Date object
-  - @param {**Date**} date2 - a Date object
-  - @returns {**Object**} a result object subtracting date2 from date1
+- @param {**Date**} date1 - a Date object
+- @param {**Date**} date2 - a Date object
+- @returns {**Object**} a result object subtracting date2 from date1
 
 ```javascript
 const today = new Date(2015, 0, 2);
@@ -486,9 +520,8 @@ date.subtract(today, yesterday).toMilliseconds();   // => 86400000
 
 ### isLeapYear(y)
 
-- Leap year.
-  - @param {**number**} y - year
-  - @returns {**boolean**} whether the year is a leap year
+- @param {**number**} y - year
+- @returns {**boolean**} whether year is leap year
 
 ```javascript
 date.isLeapYear(2015);  // => false
@@ -497,10 +530,9 @@ date.isLeapYear(2012);  // => true
 
 ### isSameDay(date1, date2)
 
-- Comparison of two dates.
-  - @param {**Date**} date1 - a Date object
-  - @param {**Date**} date2 - a Date object
-  - @returns {**boolean**} whether the dates are the same day (times are ignored)
+- @param {**Date**} date1 - a Date object
+- @param {**Date**} date2 - a Date object
+- @returns {**boolean**} whether the two dates are the same day (time is ignored)
 
 ```javascript
 const date1 = new Date(2017, 0, 2, 0);          // Jan 2 2017 00:00:00
@@ -512,41 +544,40 @@ date.isSameDay(date1, date3);   // => false
 
 ### locale([code[, locale]])
 
-- Change locale or setting a new locale definition.
-  - @param {**string**} [code] - language code
-  - @param {**Object**} [locale] - locale definition
-  - @returns {**string**} current language code
+- @param {**Function|string**} [code] - locale installer | language code
+- @param {**Object**} [locale] - locale definition
+- @returns {**string**} current language code
 
-It returns a current language code if called without any parameters.
+It returns the current language code if called without any parameters.
 
 ```javascript
 date.locale();  // => "en"
 ```
 
-To switch to any other language, call it with a language code.
+To switch to any other language, call it with a locale installer or a language code.
 
 ```javascript
-date.locale('es');  // Switch to Spanish
+import es from 'date-and-time/locale/es';
+
+date.locale(es);  // Switch to Spanish
 ```
 
 See [LOCALE.md](./LOCALE.md) for details.
 
 ### extend(extension)
 
-- Locale extension.
-  - @param {**Object**} extension - locale definition
-  - @returns {**void**}
+- @param {**Object**} extension - extension object
+- @returns {**void**}
 
-Extend a current locale. See [EXTEND.md](./EXTEND.md) for details.
+It extends the formatter and the parser of the current locale. See [EXTEND.md](./EXTEND.md) for details.
 
-### plugin(name[, extension])
+### plugin(name[, plugin])
 
-- Plugin import or definition.
-  - @param {**string**} name - plugin name
-  - @param {**Object**} [extension] - locale definition
-  - @returns {**void**}
+- @param {**Function|string**} name - plugin installer | plugin name
+- @param {**Object**} [plugin] - plugin object
+- @returns {**void**}
 
-Plugin is a named locale definition defined with the `extend()`. See [PLUGINS.md](./PLUGINS.md) for details.
+Plugin is a named extension object. By installing predefined plugins, you can easily extend the formatter and the parser of the current locale. See [PLUGINS.md](./PLUGINS.md) for details.
 
 ## Browser Support
 
