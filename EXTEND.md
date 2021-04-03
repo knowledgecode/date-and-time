@@ -1,6 +1,6 @@
 # Extension
 
-By using `extend()`, you could add your own tokens or modify behavior of existing tokens. This is equivalent to define a new plugin without name.
+The easiest way to extend the default formatter and parser is to use plugins, but if the existing plugins do not meet your requirements, you can extend them yourself.
 
 ## Token
 
