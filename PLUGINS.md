@@ -1,92 +1,79 @@
 # Plugins
 
-As this library is oriented toward minimalism, it may seem like a lack of functionality. We think plugin is the most realistic solution for solving such dissatisfaction. By importing the plugins, you can extend the functionality of this library, mainly the formatter and the parser.
+This library is oriented towards minimalism, so it may appear to be lacking in features. Plugin is the most realistic solution to such dissatisfaction. By importing plugins, you can extend the functionality of this library, mainly formatter and parser.
 
 ## Usage
 
-To support `ES Modules` in the next version, the importing method has changed and then the old method has been deprecated.
+- ES Modules:
+
+```javascript
+import date from 'date-and-time';
+// Import the plugin named "foobar".
+import foobar from 'date-and-time/plugin/foobar';
+
+// Apply the "foobar" to the library.
+date.plugin(foobar);
+```
 
 - CommonJS:
 
 ```javascript
 const date = require('date-and-time');
-// Import the plugin "foobar".
+// Import the plugin named "foobar".
 const foobar = require('date-and-time/plugin/foobar');
 
-// Apply the plugin to "date-and-time".
+// Apply the "foobar" to the library.
 date.plugin(foobar);
 ```
 
-- ES Modules (with transpile):
+- ES Modules for the browser:
 
-```javascript
-import date from 'date-and-time';
-// Import the plugin "foobar".
-import foobar from 'date-and-time/plugin/foobar';
+```html
+<script type="module">
+import date from '/path/to/date-and-time.es.min.js';
+// Import the plugin named "foobar".
+import foobar from '/path/to/date-and-time/plugin/foobar.es.js';
 
-// Apply the plugin to "date-and-time".
+// Apply the "foobar" to the library.
 date.plugin(foobar);
+</script>
 ```
 
 - Older browser:
 
-When in older browser, pass the plugin name as before. (no changes)
-
 ```html
 <script src="/path/to/date-and-time.min.js"></script>
-<!-- Import the plugin "foobar". -->
+<!-- Import the plugin named "foobar". -->
 <script src="/path/to/plugin/foobar.js"></script>
 
 <script>
-// Apply the plugin to "date-and-time".
+// Apply the "foobar" to the library.
 date.plugin('foobar');
 </script>
 ```
 
-### FYI
+### NOTE
 
-The following (old) methods are deprecated. In the next version it won't be able to use them.
-
-- CommonJS:
-
-```javascript
-const date = require('date-and-time');
-// Import the plugin "foobar".
-require('date-and-time/plugin/foobar');
-
-// Apply the plugin to "date-and-time".
-date.plugin('foobar');
-```
-
-- ES Modules (with transpile):
-
-```javascript
-import date from 'date-and-time';
-// Import the plugin "foobar".
-import 'date-and-time/plugin/foobar';
-
-// Apply the plugin to "date-and-time".
-date.plugin('foobar');
-```
+- If you want to use ES Modules in Node.js without a transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
 
 ## Plugin List
 
-- day-of-week
+- [day-of-week](#day-of-week)
   - It adds day of week notation to the parser.
 
-- meridiem
+- [meridiem](#meridiem)
   - It extends `A` token.
 
-- microsecond
+- [microsecond](#microsecond)
   - It adds microsecond notation to the parser.
 
-- ordinal
+- [ordinal](#ordinal)
   - It adds ordinal notation of date to the formatter.
 
-- timespan
+- [timespan](#timespan)
   - It adds `timeSpan()` function to the library.
 
-- two-digit-year
+- [two-digit-year](#two-digit-year)
   - It adds two-digit year notation to the parser.
 
 ## Plugin Details
@@ -103,10 +90,10 @@ It adds `dddd`, `ddd` and `dd` tokens to the parser. While these meanings are as
 
 ```javascript
 const date = require('date-and-time');
-// Import "day-of-week" plugin.
+// Import "day-of-week" plugin as a named "day_of_week".
 const day_of_week = require('date-and-time/plugin/day-of-week');
 
-// Apply "day-of-week" plugin to `date-and-time`.
+// Apply the "day_of_week" plugin to the library.
 date.plugin(day_of_week);
 
 // You can write like this.
@@ -138,7 +125,7 @@ const date = require('date-and-time');
 // Import "meridiem" plugin.
 const meridiem = require('date-and-time/plugin/meridiem');
 
-// Apply "medidiem" plugin to `date-and-time`.
+// Apply "medidiem" plugin to the library.
 date.plugin(meridiem);
 
 // This is default behavior of the formatter.
@@ -174,7 +161,7 @@ const date = require('date-and-time');
 // Import "microsecond" plugin.
 const microsecond = require('date-and-time/plugin/microsecond');
 
-// Apply "microsecond" plugin to `date-and-time`.
+// Apply "microsecond" plugin to the library.
 date.plugin(microsecond);
 
 // A date object in JavaScript supports `millisecond` (ms):
@@ -201,7 +188,7 @@ const date = require('date-and-time');
 // Import "ordinal" plugin.
 const ordinal = require('date-and-time/plugin/ordinal');
 
-// Apply "ordinal" plugin to `date-and-time`.
+// Apply "ordinal" plugin to the library.
 date.plugin(ordinal);
 
 // These are default behavior of the formatter.
@@ -221,7 +208,7 @@ const date = require('date-and-time');
 // Import "timespan" plugin.
 const timespan = require('date-and-time/plugin/timespan');
 
-// Apply "timespan" plugin to `date-and-time`.
+// Apply "timespan" plugin to the library.
 date.plugin(timespan);
 
 const now = new Date(2020, 2, 5, 1, 2, 3, 4);
@@ -274,14 +261,14 @@ It adds `YY` token to the parser and also changes behavior of `Y` token. These m
 
 ```javascript
 const date = require('date-and-time');
-// Import "two-digit-year" plugin.
+// Import "two-digit-year" plugin as a named "two_digit_year".
 const two_digit_year = require('date-and-time/plugin/two-digit-year');
 
 // These are default behavior of the parser.
 date.parse('Dec 25 69', 'MMM D YY');      // => Invalid Date
 date.parse('Dec 25 70', 'MMM D Y');       // => 70 AD (ancient times)
 
-// Apply "two-digit-year" plugin to `date-and-time`.
+// Apply the "two_digit_year" plugin to the library.
 date.plugin(two_digit_year);
 
 // These convert the year 69 or earlier to 2000s, the year 70 or later to 1900s.
