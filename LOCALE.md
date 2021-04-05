@@ -1,10 +1,18 @@
 # Locale
 
-The `format()` outputs month, day of week, and meridiem (am / pm) in English, and the `parse()` assumes the passed date string is in English. Here it describes how to use other languages in these functions.
+By default, `format()` outputs month, day of week, and meridiem (AM / PM) in English, and functions such as `parse()` assume that a passed date time string is in English. Here it describes how to use other languages in these functions.
 
 ## Usage
 
-To support `ES Modules` in the next version, the locale switching method has changed and then the old method has been deprecated.
+- ES Modules:
+
+```javascript
+import date from 'date-and-time';
+import es from 'date-and-time/locale/es';
+
+date.locale(es);    // Spanish
+date.format(new Date(), 'dddd D MMMM'); // => 'lunes 11 enero
+```
 
 - CommonJS:
 
@@ -16,19 +24,19 @@ date.locale(fr);    // French
 date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
 ```
 
-- ES Modules (with transpile):
+- ES Modules for the browser:
 
-```javascript
-import date from 'date-and-time';
-import it from 'date-and-time/locale/it';
+```html
+<script type="module">
+import date from '/path/to/date-and-time.es.min.js';
+import it from '/path/to/date-and-time/locale/it.es.js';
 
 date.locale(it);    // Italian
 date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
+</script>
 ```
 
 - Older browser:
-
-When in older browser, pass the locale string as before. (no changes)
 
 ```html
 <script src="/path/to/date-and-time.min.js"></script>
@@ -42,38 +50,14 @@ date.format(new Date(), 'MMMD日dddd');  // => '1月11日星期一'
 
 ### NOTE
 
-- You have to import (or require) in advance the all locale modules that you are going to switch to.
+- If you want to use ES Modules in Node.js without a transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
 - The locale will be actually switched after executing the `locale()`.
-- You can also change the locale back to English by loading the `en` module:
+- You can also change the locale back to English by importing `en` locale:
 
 ```javascript
 import en from 'date-and-time/locale/en';
 
 date.locale(en);
-```
-
-### FYI
-
-The following (old) methods are deprecated. In the next version it won't be able to use them.
-
-- CommonJS:
-
-```javascript
-const date = require('date-and-time');
-require('date-and-time/locale/fr');
-
-date.locale('fr');  // French
-date.format(new Date(), 'dddd D MMMM'); // => 'lundi 11 janvier'
-```
-
-- ES Modules (with transpile):
-
-```javascript
-import date from 'date-and-time';
-import 'date-and-time/locale/it';
-
-date.locale('it');  // Italian
-date.format(new Date(), 'dddd D MMMM'); // => 'Lunedì 11 gennaio'
 ```
 
 ## Supported locale List
