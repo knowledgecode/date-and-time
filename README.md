@@ -24,6 +24,9 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 1.0.1
+  - Updated dev dependencies to resolve vulnerability.
+
 - 1.0.0
   - **First stable release!**
   - ES Modules support.
@@ -31,9 +34,6 @@ npm i date-and-time
 
 - 0.14.2
   - Fixed regular expression denial of service (ReDoS) vulnerability.
-
-- 0.14.1
-  - Fixed a bug characters inside square brackets `[]` are not validated.
 
 ## Usage
 
@@ -63,58 +63,58 @@ import date from '/path/to/date-and-time.es.min.js';
 <script src="/path/to/date-and-time.min.js"></script>
 ```
 
-### NOTE
+### Note
 
 - If you want to use ES Modules in Node.js without a transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
 
 ## API
 
-- [format](#formatdateObj-formatString-utc)
+- [format](#formatdateobj-formatstring-utc)
   - Formatting a Date and Time (Date -> String)
 
-- [parse](#parsedateString-arg-utc)
+- [parse](#parsedatestring-arg-utc)
   - Parsing a Date and Time string (String -> Date)
 
-- [compile](#compileformatString)
+- [compile](#compileformatstring)
   - Compiling a format string
 
-- [preparse](#preparsedateString-arg)
+- [preparse](#preparsedatestring-arg)
   - Pre-parsing a Date and Time string
 
-- [isValid](#isValidarg1-arg2)
+- [isValid](#isvalidarg1-arg2)
   - Validation
 
-- [transform](#transformdateString-arg1-arg2-utc)
+- [transform](#transformdatestring-arg1-arg2-utc)
   - Transforming a Date and Time string (String -> String)
 
-- [addYears](#addYearsdateObj-years)
+- [addYears](#addyearsdateobj-years)
   - Adding years
 
-- [addMonths](#addMonthsdateObj-months)
+- [addMonths](#addmonthsdateobj-months)
   - Adding months
 
-- [addDays](#addDaysdateObj-days)
+- [addDays](#adddaysdateobj-days)
   - Adding days
 
-- [addHours](#addHoursdateObj-hours)
+- [addHours](#addhoursdateobj-hours)
   - Adding hours
 
-- [addMinutes](#addMinutesdateObj-minutes)
+- [addMinutes](#addminutesdateobj-minutes)
   - Adding minutes
 
-- [addSeconds](#addSecondsdateObj-seconds)
+- [addSeconds](#addsecondsdateobj-seconds)
   - Adding seconds
 
-- [addMilliseconds](#addMillisecondsdateObj-milliseconds)
+- [addMilliseconds](#addmillisecondsdateobj-milliseconds)
   - Adding milliseconds
 
 - [subtract](#subtractdate1-date2)
   - Subtracting two dates
 
-- [isLeapYear](#isLeapYeary)
+- [isLeapYear](#isleapyeary)
   - Whether year is leap year
 
-- [isSameDay](#isSameDaydate1-date2)
+- [isSameDay](#issamedaydate1-date2)
   - Comparison of two dates
 
 - [locale](#localecode-locale)
@@ -183,7 +183,7 @@ You can also use the following tokens by importing plugins. See [PLUGINS.md](./P
 | a     | meridiem (lowercase)                 | am, pm             |
 | aa    | meridiem (lowercase with ellipsis)   | a.m., p.m.         |
 
-#### NOTE 1. Comments
+#### Note 1. Comments
 
 String in parenthese `[...]` in the `formatString` will be ignored as comments:
 
@@ -192,7 +192,7 @@ date.format(new Date(), 'DD-[MM]-YYYY');    // => '02-MM-2015'
 date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 ```
 
-#### NOTE 2. Output as UTC
+#### Note 2. Output as UTC
 
 This function usually outputs a local date-time string. Set to true the `utc` option (the 3rd parameter) if you would like to get a UTC date-time string.
 
@@ -201,7 +201,7 @@ date.format(new Date(), 'hh:mm A [GMT]Z');          // => '11:14 PM GMT-0800'
 date.format(new Date(), 'hh:mm A [GMT]Z', true);    // => '07:14 AM GMT+0000'
 ```
 
-#### NOTE 3. More Tokens
+#### Note 3. More Tokens
 
 You can also define your own tokens. See [EXTEND.md](./EXTEND.md) for details.
 
@@ -262,7 +262,7 @@ You can also use the following tokens by importing plugins. See [PLUGINS.md](./P
 | SSSSS  | microsecond (middle accuracy)        | 12345, 00001                           |
 | SSSS   | microsecond (low accuracy)           | 1234, 0001                             |
 
-#### NOTE 1. Invalid Date
+#### Note 1. Invalid Date
 
 If the function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
 
@@ -274,7 +274,7 @@ if (isNaN(today)) {
 }
 ```
 
-#### NOTE 2. Input as UTC
+#### Note 2. Input as UTC
 
 This function usually assumes the `dateString` is a local date-time. Set to true the `utc` option (the 3rd parameter) if it is a UTC date-time.
 
@@ -283,7 +283,7 @@ date.parse('11:14:05 PM', 'hh:mm:ss A');          // => Jan 1 1970 23:14:05 GMT-
 date.parse('11:14:05 PM', 'hh:mm:ss A', true);    // => Jan 1 1970 23:14:05 GMT+0000 (Jan 1 1970 15:14:05 GMT-0800)
 ```
 
-#### NOTE 3. Default Date Time
+#### Note 3. Default Date Time
 
 Default date is `January 1, 1970`, time is `00:00:00.000`. Values not passed will be complemented with them:
 
@@ -292,7 +292,7 @@ date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
 date.parse('Feb 2000', 'MMM YYYY');         // => Feb 1 2000 00:00:00 GMT-0800
 ```
 
-#### NOTE 4. Max Date / Min Date
+#### Note 4. Max Date / Min Date
 
 Parsable maximum date is `December 31, 9999`, minimum date is `January 1, 0001`.
 
@@ -304,7 +304,7 @@ date.parse('Jan 1 0001', 'MMM D YYYY');     // => Jan 1 0001 00:00:00 GMT-0800
 date.parse('Jan 1 0000', 'MMM D YYYY');     // => Invalid Date
 ```
 
-#### NOTE 5. 12-hour notation and Meridiem
+#### Note 5. 12-hour notation and Meridiem
 
 If use `hh` or `h` (12-hour) token, use together `A` (meridiem) token to get the right value.
 
@@ -313,7 +313,7 @@ date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
 date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
 ```
 
-#### NOTE 6. Token disablement
+#### Note 6. Token disablement
 
 Use square brackets `[]` if a date-time string includes some token characters. Tokens inside square brackets in the `formatString` will be interpreted as normal characters:
 
@@ -322,9 +322,9 @@ date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Da
 date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan 1 1970 12:34:00 GMT-0800
 ```
 
-#### NOTE 7. Wildcard
+#### Note 7. Wildcard
 
-A white space works as a wildcard token. This token is not interpret into anything. This means it can be ignored a specific variable string. For example, when you would like to ignore a time part from a date string, you can write as follows:
+A white space works as a wildcard token. This token is not interpreted into anything. This means it can be ignored a specific variable string. For example, when you would like to ignore a time part from a date string, you can write as follows:
 
 ```javascript
 // This will be an error.
@@ -333,9 +333,9 @@ date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD');            // => Invalid Date
 date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan 2 2015 00:00:00 GMT-0800
 ```
 
-#### NOTE 8. Ellipsis
+#### Note 8. Ellipsis
 
-The parser supports `...` (ellipse) token. The above example can be also written like this:
+The parser supports `...` (ellipsis) token. The above example can be also written like this:
 
 ```javascript
 date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');   // => Jan 2 2015 00:00:00 GMT-0800
