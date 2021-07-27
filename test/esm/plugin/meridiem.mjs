@@ -45,19 +45,19 @@ describe('meridiem', () => {
     });
     it('parse a.m.', () => {
         const now = new Date(1970, 0, 1, 0, 34);
-        expect(date.parse('00:34 a.m.', 'hh:mm A')).to.eql(now);
+        expect(date.parse('00:34 a.m.', 'hh:mm aa')).to.eql(now);
     });
     it('parse p.m.', () => {
         const now = new Date(1970, 0, 1, 12, 34);
-        expect(date.parse('00:34 p.m.', 'hh:mm A')).to.eql(now);
+        expect(date.parse('00:34 p.m.', 'hh:mm aa')).to.eql(now);
     });
     it('parse A.M.', () => {
         const now = new Date(1970, 0, 1, 0, 34);
-        expect(date.parse('00:34 A.M.', 'hh:mm A')).to.eql(now);
+        expect(date.parse('00:34 A.M.', 'hh:mm AA')).to.eql(now);
     });
     it('parse P.M.', () => {
         const now = new Date(1970, 0, 1, 12, 34);
-        expect(date.parse('00:34 P.M.', 'hh:mm A')).to.eql(now);
+        expect(date.parse('00:34 P.M.', 'hh:mm AA')).to.eql(now);
     });
     it('parse AM', () => {
         const now = new Date(1970, 0, 1, 0, 34);
@@ -69,10 +69,10 @@ describe('meridiem', () => {
     });
     it('parse am', () => {
         const now = new Date(1970, 0, 1, 0, 34);
-        expect(date.parse('00:34 am', 'hh:mm A')).to.eql(now);
+        expect(date.parse('00:34 am', 'hh:mm a')).to.eql(now);
     });
     it('parse pm', () => {
         const now = new Date(1970, 0, 1, 12, 34);
-        expect(date.parse('00:34 pm', 'hh:mm A')).to.eql(now);
+        expect(date.parse('00:34 pm', 'hh:mm a')).to.eql(now);
     });
 });

@@ -10,8 +10,9 @@
      * @preserve This is a dummy module.
      */
 
-    var en = function () {
+    var en = function (date) {
         var code = 'en';
+
         return code;
     };
 

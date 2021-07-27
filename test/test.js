@@ -1835,7 +1835,20 @@
         });
         it('changing default meridiem', function () {
             date.extend({ res: { A: ['am', 'pm'] } });
-            expect(date.format(new Date(2012, 0, 1, 12), 'h A')).to.equal('12 pm');
+            expect(date.format(new Date(2012, 0, 1, 12), 'h A')).to.not.equal('12 pm');
+        });
+        it('extending default meridiem', function () {
+            date.extend({
+                res: {
+                    a: ['am', 'pm']
+                },
+                formatter: {
+                    a: function (d) {
+                        return this.res.a[d.getHours() > 11 | 0];
+                    }
+                }
+            });
+            expect(date.format(new Date(2012, 0, 1, 12), 'h a')).to.equal('12 pm');
         });
     });
 

@@ -9,8 +9,10 @@ var el = function (date) {
 
     date.locale(code, {
         res: {
-            MMMM_nominative: ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος'],
-            MMMM_genitive: ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου'],
+            MMMM: [
+                ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος'],
+                ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου']
+            ],
             MMM: ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μαϊ', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'],
             dddd: ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'],
             ddd: ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ'],
@@ -19,7 +21,7 @@ var el = function (date) {
         },
         formatter: {
             MMMM: function (d, formatString) {
-                return this.res['MMMM_' + (/D.*MMMM/.test(formatString) ? 'genitive' : 'nominative')][d.getMonth()];
+                return this.res.MMMM[/D.*MMMM/.test(formatString) | 0][d.getMonth()];
             },
             hh: function (d) {
                 return ('0' + d.getHours() % 12).slice(-2);
@@ -30,7 +32,7 @@ var el = function (date) {
         },
         parser: {
             MMMM: function (str, formatString) {
-                var result = this.find(this.res['MMMM_' + (/D.*MMMM/.test(formatString) ? 'genitive' : 'nominative')], str);
+                var result = this.find(this.res.MMMM[/D.*MMMM/.test(formatString) | 0], str);
                 result.value++;
                 return result;
             }

@@ -8,8 +8,7 @@
      * @preserve date-and-time (c) KNOWLEDGECODE | MIT
      */
 
-    var date = {},
-        locales = {},
+    var locales = {},
         plugins = {},
         lang = 'en',
         _res = {
@@ -46,10 +45,11 @@
             ddd: function (d/*, formatString*/) { return this.res.ddd[d.getDay()]; },
             dd: function (d/*, formatString*/) { return this.res.dd[d.getDay()]; },
             Z: function (d/*, formatString*/) {
-                var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
-                return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
+                var offset = d.getTimezoneOffset() / 0.6 | 0;
+                return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - (offset % 100 * 0.4 | 0))).slice(-4);
             },
-            post: function (str) { return str; }
+            post: function (str) { return str; },
+            res: _res
         },
         _parser = {
             YYYY: function (str/*, formatString */) { return this.exec(/^\d{4}/, str); },
@@ -110,39 +110,37 @@
                 }
                 return { value: index, length: length };
             },
-            pre: function (str) { return str; }
+            pre: function (str) { return str; },
+            res: _res
         },
-        customize = function (code, base, locale) {
-            var extend = function (proto, props, res) {
-                    var Locale = function (r) {
-                        if (r) { this.res = r; }
-                    };
+        extend = function (base, props, override, res) {
+            var obj = {}, key;
 
-                    Locale.prototype = proto;
-                    Locale.prototype.constructor = Locale;
-
-                    var newLocale = new Locale(res),
-                        value;
-
-                    for (var key in props || {}) {
-                        value = props[key];
-                        newLocale[key] = value.slice ? value.slice() : value;
-                    }
-                    return newLocale;
-                },
-                loc = { res: extend(base.res, locale.res) };
-
-            loc.formatter = extend(base.formatter, locale.formatter, loc.res);
-            loc.parser = extend(base.parser, locale.parser, loc.res);
-            locales[code] = loc;
+            for (key in base) {
+                obj[key] = base[key];
+            }
+            for (key in props || {}) {
+                if (!(!!override ^ !!obj[key])) {
+                    obj[key] = props[key];
+                }
+            }
+            if (res) {
+                obj.res = res;
+            }
+            return obj;
         };
+
+    var proto = {
+        _formatter: _formatter,
+        _parser: _parser
+    };
 
     /**
      * Compiling a format string
      * @param {string} formatString - a format string
      * @returns {Array.<string>} a compiled object
      */
-    date.compile = function (formatString) {
+    proto.compile = function (formatString) {
         var re = /\[([^\[\]]|\[[^\[\]]*])*]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
 
         while ((keys = re.exec(formatString))) {
@@ -158,12 +156,13 @@
      * @param {boolean} [utc] - output as UTC
      * @returns {string} a formatted string
      */
-    date.format = function (dateObj, arg, utc) {
-        var pattern = typeof arg === 'string' ? date.compile(arg) : arg,
-            d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
-            formatter = locales[lang].formatter, str = '';
+    proto.format = function (dateObj, arg, utc) {
+        var pattern = typeof arg === 'string' ? this.compile(arg) : arg,
+            offset = dateObj.getTimezoneOffset(),
+            d = this.addMinutes(dateObj, utc ? offset : 0),
+            formatter = this._formatter, str = '';
 
-        d.utc = utc || false;
+        d.getTimezoneOffset = function () { return utc ? 0 : offset; };
         for (var i = 1, len = pattern.length, token; i < len; i++) {
             token = pattern[i];
             str += formatter[token] ? formatter.post(formatter[token](d, pattern[0])) : token.replace(/\[(.*)]/, '$1');
@@ -177,10 +176,10 @@
      * @param {string|Array.<string>} arg - a format string or its compiled object
      * @returns {Object} a date structure
      */
-    date.preparse = function (dateString, arg) {
-        var pattern = typeof arg === 'string' ? date.compile(arg) : arg,
+    proto.preparse = function (dateString, arg) {
+        var pattern = typeof arg === 'string' ? this.compile(arg) : arg,
             dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 },
-            comment = /\[(.*)]/, parser = locales[lang].parser, offset = 0;
+            comment = /\[(.*)]/, parser = this._parser, offset = 0;
 
         dateString = parser.pre(dateString);
         for (var i = 1, len = pattern.length, token, result; i < len; i++) {
@@ -191,7 +190,7 @@
                     break;
                 }
                 offset += result.length;
-                dt[token.charAt(0)] = result.value;
+                dt[result.token || token.charAt(0)] = result.value;
                 dt._match++;
             } else if (token === dateString.charAt(offset) || token === ' ') {
                 offset++;
@@ -211,34 +210,16 @@
     };
 
     /**
-     * Validation
-     * @param {Object|string} arg1 - a date structure or a date string
-     * @param {string|Array.<string>} [arg2] - a format string or its compiled object
-     * @returns {boolean} whether the date string is a valid date
-     */
-    date.isValid = function (arg1, arg2) {
-        var dt = typeof arg1 === 'string' ? date.preparse(arg1, arg2) : arg1,
-            last = [31, 28 + date.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
-
-        return !(
-            dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
-            dt.Y < 1 || dt.Y > 9999 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
-            dt.H < 0 || dt.H > 23 || dt.m < 0 || dt.m > 59 || dt.s < 0 || dt.s > 59 || dt.S < 0 || dt.S > 999 ||
-            dt.Z < -720 || dt.Z > 840
-        );
-    };
-
-    /**
      * Parsing a Date and Time string
      * @param {string} dateString - a date string
      * @param {string|Array.<string>} arg - a format string or its compiled object
      * @param {boolean} [utc] - input as UTC
      * @returns {Date} a constructed date
      */
-    date.parse = function (dateString, arg, utc) {
-        var dt = date.preparse(dateString, arg);
+    proto.parse = function (dateString, arg, utc) {
+        var dt = this.preparse(dateString, arg);
 
-        if (date.isValid(dt)) {
+        if (this.isValid(dt)) {
             dt.M -= dt.Y < 100 ? 22801 : 1; // 22801 = 1900 * 12 + 1
             if (utc || dt.Z) {
                 return new Date(Date.UTC(dt.Y, dt.M, dt.D, dt.H, dt.m + dt.Z, dt.s, dt.S));
@@ -249,6 +230,24 @@
     };
 
     /**
+     * Validation
+     * @param {Object|string} arg1 - a date structure or a date string
+     * @param {string|Array.<string>} [arg2] - a format string or its compiled object
+     * @returns {boolean} whether the date string is a valid date
+     */
+    proto.isValid = function (arg1, arg2) {
+        var dt = typeof arg1 === 'string' ? this.preparse(arg1, arg2) : arg1,
+            last = [31, 28 + this.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
+
+        return !(
+            dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
+            dt.Y < 1 || dt.Y > 9999 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
+            dt.H < 0 || dt.H > 23 || dt.m < 0 || dt.m > 59 || dt.s < 0 || dt.s > 59 || dt.S < 0 || dt.S > 999 ||
+            dt.Z < -720 || dt.Z > 840
+        );
+    };
+
+    /**
      * Transforming a Date and Time string
      * @param {string} dateString - a date string
      * @param {string|Array.<string>} arg1 - a format string or its compiled object
@@ -256,8 +255,8 @@
      * @param {boolean} [utc] - output as UTC
      * @returns {string} a formatted string
      */
-    date.transform = function (dateString, arg1, arg2, utc) {
-        return date.format(date.parse(dateString, arg1), arg2, utc);
+    proto.transform = function (dateString, arg1, arg2, utc) {
+        return this.format(this.parse(dateString, arg1), arg2, utc);
     };
 
     /**
@@ -266,8 +265,8 @@
      * @param {number} years - number of years to add
      * @returns {Date} a date after adding the value
      */
-    date.addYears = function (dateObj, years) {
-        return date.addMonths(dateObj, years * 12);
+    proto.addYears = function (dateObj, years) {
+        return this.addMonths(dateObj, years * 12);
     };
 
     /**
@@ -276,7 +275,7 @@
      * @param {number} months - number of months to add
      * @returns {Date} a date after adding the value
      */
-    date.addMonths = function (dateObj, months) {
+    proto.addMonths = function (dateObj, months) {
         var d = new Date(dateObj.getTime());
 
         d.setMonth(d.getMonth() + months);
@@ -289,7 +288,7 @@
      * @param {number} days - number of days to add
      * @returns {Date} a date after adding the value
      */
-    date.addDays = function (dateObj, days) {
+    proto.addDays = function (dateObj, days) {
         var d = new Date(dateObj.getTime());
 
         d.setDate(d.getDate() + days);
@@ -302,8 +301,8 @@
      * @param {number} hours - number of hours to add
      * @returns {Date} a date after adding the value
      */
-    date.addHours = function (dateObj, hours) {
-        return date.addMinutes(dateObj, hours * 60);
+    proto.addHours = function (dateObj, hours) {
+        return this.addMinutes(dateObj, hours * 60);
     };
 
     /**
@@ -312,8 +311,8 @@
      * @param {number} minutes - number of minutes to add
      * @returns {Date} a date after adding the value
      */
-    date.addMinutes = function (dateObj, minutes) {
-        return date.addSeconds(dateObj, minutes * 60);
+    proto.addMinutes = function (dateObj, minutes) {
+        return this.addSeconds(dateObj, minutes * 60);
     };
 
     /**
@@ -322,8 +321,8 @@
      * @param {number} seconds - number of seconds to add
      * @returns {Date} a date after adding the value
      */
-    date.addSeconds = function (dateObj, seconds) {
-        return date.addMilliseconds(dateObj, seconds * 1000);
+    proto.addSeconds = function (dateObj, seconds) {
+        return this.addMilliseconds(dateObj, seconds * 1000);
     };
 
     /**
@@ -332,7 +331,7 @@
      * @param {number} milliseconds - number of milliseconds to add
      * @returns {Date} a date after adding the value
      */
-    date.addMilliseconds = function (dateObj, milliseconds) {
+    proto.addMilliseconds = function (dateObj, milliseconds) {
         return new Date(dateObj.getTime() + milliseconds);
     };
 
@@ -342,7 +341,7 @@
      * @param {Date} date2 - a Date object
      * @returns {Object} a result object subtracting date2 from date1
      */
-    date.subtract = function (date1, date2) {
+    proto.subtract = function (date1, date2) {
         var delta = date1.getTime() - date2.getTime();
 
         return {
@@ -369,7 +368,7 @@
      * @param {number} y - year
      * @returns {boolean} whether year is leap year
      */
-    date.isLeapYear = function (y) {
+    proto.isLeapYear = function (y) {
         return (!(y % 4) && !!(y % 100)) || !(y % 400);
     };
 
@@ -379,22 +378,61 @@
      * @param {Date} date2 - a Date object
      * @returns {boolean} whether the two dates are the same day (time is ignored)
      */
-    date.isSameDay = function (date1, date2) {
+    proto.isSameDay = function (date1, date2) {
         return date1.toDateString() === date2.toDateString();
     };
 
     /**
-     * Changing the locale or defining new locales
-     * @param {Function|string} [code] - locale installer | language code
-     * @param {Object} [locale] - locale definition
+     * Defining new locale
+     * @param {string} code - language code
+     * @param {Function} locale - locale installer
      * @returns {string} current language code
      */
-    date.locale = function (code, locale) {
-        if (locale) {
-            customize(code, { res: _res, formatter: _formatter, parser: _parser }, locale);
-        } else {
-            lang = (typeof code === 'function' ? code : date.locale[code] || function () {})(date) || lang;
+    proto.locale = function (code, locale) {
+        if (!locales[code]) {
+            locales[code] = locale;
         }
+    };
+
+    /**
+     * Defining new plugin
+     * @param {string} name - plugin name
+     * @param {Function} plugin - plugin installer
+     * @returns {void}
+     */
+    proto.plugin = function (name, plugin) {
+        if (!plugins[name]) {
+            plugins[name] = plugin;
+        }
+    };
+
+    var date = extend(proto);
+
+    /**
+     * Changing locale
+     * @param {Function|string} [locale] - locale object | language code
+     * @returns {string} current language code
+     */
+    date.locale = function (locale) {
+        var install = typeof locale === 'function' ? locale : date.locale[locale];
+
+        if (!install) {
+            return lang;
+        }
+        lang = install(proto);
+
+        var extension = locales[lang] || {};
+        var res = extend(_res, extension.res, true);
+        var formatter = extend(_formatter, extension.formatter, true, res);
+        var parser = extend(_parser, extension.parser, true, res);
+
+        date._formatter = formatter;
+        date._parser = parser;
+
+        for (var plugin in plugins) {
+            date.extend(plugins[plugin]);
+        }
+
         return lang;
     };
 
@@ -404,36 +442,31 @@
      * @returns {void}
      */
     date.extend = function (extension) {
+        var res = extend(date._parser.res, extension.res);
         var extender = extension.extender || {};
+
+        date._formatter = extend(date._formatter, extension.formatter, false, res);
+        date._parser = extend(date._parser, extension.parser, false, res);
 
         for (var key in extender) {
             if (!date[key]) {
                 date[key] = extender[key];
             }
         }
-        if (extension.formatter || extension.parser || extension.res) {
-            customize(lang, locales[lang], extension);
-        }
     };
 
     /**
-     * Importing or defining plugins
-     * @param {Function|string} name - plugin installer | plugin name
-     * @param {Object} [plugin] - plugin object
+     * Importing plugin
+     * @param {Function|string} plugin - plugin object | plugin name
      * @returns {void}
      */
-    date.plugin = function (name, plugin) {
-        if (plugin) {
-            if (!plugins[name]) {
-                date.extend((plugins[name] = plugin));
-            }
-        } else {
-            (typeof name === 'function' ? name : date.plugin[name] || function () {})(date);
+    date.plugin = function (plugin) {
+        var install = typeof plugin === 'function' ? plugin : date.plugin[plugin];
+
+        if (install) {
+            date.extend(plugins[install(proto)] || {});
         }
     };
-
-    // Create default locale (English)
-    date.locale(lang, {});
 
     return date;
 

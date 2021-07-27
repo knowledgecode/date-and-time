@@ -53,19 +53,19 @@
         });
         it('parse a.m.', function () {
             var now = new Date(1970, 0, 1, 0, 34);
-            expect(date.parse('00:34 a.m.', 'hh:mm A')).to.eql(now);
+            expect(date.parse('00:34 a.m.', 'hh:mm aa')).to.eql(now);
         });
         it('parse p.m.', function () {
             var now = new Date(1970, 0, 1, 12, 34);
-            expect(date.parse('00:34 p.m.', 'hh:mm A')).to.eql(now);
+            expect(date.parse('00:34 p.m.', 'hh:mm aa')).to.eql(now);
         });
         it('parse A.M.', function () {
             var now = new Date(1970, 0, 1, 0, 34);
-            expect(date.parse('00:34 A.M.', 'hh:mm A')).to.eql(now);
+            expect(date.parse('00:34 A.M.', 'hh:mm AA')).to.eql(now);
         });
         it('parse P.M.', function () {
             var now = new Date(1970, 0, 1, 12, 34);
-            expect(date.parse('00:34 P.M.', 'hh:mm A')).to.eql(now);
+            expect(date.parse('00:34 P.M.', 'hh:mm AA')).to.eql(now);
         });
         it('parse AM', function () {
             var now = new Date(1970, 0, 1, 0, 34);
@@ -77,11 +77,11 @@
         });
         it('parse am', function () {
             var now = new Date(1970, 0, 1, 0, 34);
-            expect(date.parse('00:34 am', 'hh:mm A')).to.eql(now);
+            expect(date.parse('00:34 am', 'hh:mm a')).to.eql(now);
         });
         it('parse pm', function () {
             var now = new Date(1970, 0, 1, 12, 34);
-            expect(date.parse('00:34 pm', 'hh:mm A')).to.eql(now);
+            expect(date.parse('00:34 pm', 'hh:mm a')).to.eql(now);
         });
     });
 

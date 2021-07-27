@@ -16,20 +16,22 @@
         date.locale(code, {
             res: {
                 MMMM: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
-                MMM_withdots: ['jan.', 'feb.', 'mrt.', 'apr.', 'mei', 'jun.', 'jul.', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'],
-                MMM_withoutdots: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+                MMM: [
+                    ['jan.', 'feb.', 'mrt.', 'apr.', 'mei', 'jun.', 'jul.', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'],
+                    ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
+                ],
                 dddd: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
                 ddd: ['zo.', 'ma.', 'di.', 'wo.', 'do.', 'vr.', 'za.'],
                 dd: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za']
             },
             formatter: {
                 MMM: function (d, formatString) {
-                    return this.res['MMM_' + (/-MMM-/.test(formatString) ? 'withoutdots' : 'withdots')][d.getMonth()];
+                    return this.res.MMM[/-MMM-/.test(formatString) | 0][d.getMonth()];
                 }
             },
             parser: {
                 MMM: function (str, formatString) {
-                    var result = this.find(this.res['MMM_' + (/-MMM-/.test(formatString) ? 'withoutdots' : 'withdots')], str);
+                    var result = this.find(this.res.MMM[/-MMM-/.test(formatString) | 0], str);
                     result.value++;
                     return result;
                 }

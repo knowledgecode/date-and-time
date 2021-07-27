@@ -15,8 +15,10 @@
 
         date.locale(code, {
             res: {
-                MMMM_nominative: ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'],
-                MMMM_subjective: ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'],
+                MMMM: [
+                    ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'],
+                    ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia']
+                ],
                 MMM: ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'],
                 dddd: ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'],
                 ddd: ['nie', 'pon', 'wt', 'śr', 'czw', 'pt', 'sb'],
@@ -24,12 +26,12 @@
             },
             formatter: {
                 MMMM: function (d, formatString) {
-                    return this.res['MMMM_' + (/D MMMM/.test(formatString) ? 'subjective' : 'nominative')][d.getMonth()];
+                    return this.res.MMMM[/D MMMM/.test(formatString) | 0][d.getMonth()];
                 }
             },
             parser: {
                 MMMM: function (str, formatString) {
-                    var result = this.find(this.res['MMMM_' + (/D MMMM/.test(formatString) ? 'subjective' : 'nominative')], str);
+                    var result = this.find(this.res.MMMM[/D MMMM/.test(formatString) | 0], str);
                     result.value++;
                     return result;
                 }
