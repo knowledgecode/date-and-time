@@ -46,6 +46,9 @@ mocha test/plugin/ordinal.js
 mocha test/plugin/timespan.js
 mocha test/plugin/two-digit-year.js
 
+# Combination (Node CJS)
+mocha test/combination.js
+
 # Locales (Node ESM)
 mocha test/esm/locale/ar.mjs
 mocha test/esm/locale/az.mjs
@@ -89,6 +92,9 @@ mocha test/esm/plugin/ordinal.mjs
 mocha test/esm/plugin/timespan.mjs
 mocha test/esm/plugin/two-digit-year.mjs
 
+# Combination (Node ESM)
+mocha test/esm/combination.mjs
+
 # Core (browser)
 mocha-headless-chrome -f test/test.html
 
@@ -98,10 +104,17 @@ mocha-headless-chrome -f test/locale.html
 # Plugins (browser IIFE)
 mocha-headless-chrome -f test/plugin.html
 
+# Combination (browser IIFE)
+mocha-headless-chrome -f test/combination.html
+
 # Locales (browser ESM)
 # mocha-headless-chrome -f http://localhost:8080/test/esm/locale.html
 # ES modules only work with the http(s) protocol, so you need a local http server to test it.
 
 # Plugins (browser ESM)
 # mocha-headless-chrome -f http://localhost:8080/test/esm/plugin.html
+# ES modules only work with the http(s) protocol, so you need a local http server to test it.
+
+# Combination (browser ESM)
+# mocha-headless-chrome -f http://localhost:8080/test/esm/combination.html
 # ES modules only work with the http(s) protocol, so you need a local http server to test it.
