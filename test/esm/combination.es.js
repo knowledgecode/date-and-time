@@ -10,6 +10,7 @@ import meridiem from '../../../esm/plugin/meridiem.es.js';
 import microsecond from '../../../esm/plugin/microsecond.es.js';
 import ordinal from '../../../esm/plugin/ordinal.es.js';
 import timespan from '../../../esm/plugin/timespan.es.js';
+import timezone from '../../../esm/plugin/timezone.es.js';
 import two_digit_year from '../../../esm/plugin/two-digit-year.es.js';
 
 describe('locale change, then revert, format', () => {
@@ -970,6 +971,7 @@ describe('multiple plugins install, format', () => {
         date.plugin(microsecond);
         date.plugin(ordinal);
         date.plugin(timespan);
+        date.plugin(timezone);
         date.plugin(two_digit_year);
     });
 
@@ -1738,6 +1740,180 @@ describe('multiple locale change and multiple pluginss', () => {
         const to = new Date(2019, 0, 0, 0, 33, 55, 789);
         expect(date.timeSpan(to, from).toDays('[DD HH:mm:ss.SSS]')).to.equal('DD HH:mm:ss.SSS');
     });
+
+    // timezone
+
+    it('formatTZ UTC-8', () => {
+        // 2021-03-14T09:59:59.999Z => March 14 2021 1:59:59.999
+        const dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+        const formatString = 'MMMM DD YYYY H:mm:ss.SSS [UTC]Z';
+        const tz = 'America/Los_Angeles';     // UTC-8
+
+        expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 1:59:59.999 UTC-0800');
+    });
+    it('formatTZ UTC-7 (Start of DST)', () => {
+        // 2021-03-14T10:00:00.000Z => March 14 2021 3:00:00.000
+        const dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
+        const formatString = 'MMMM D YYYY H:mm:ss.SSS [UTC]Z';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+
+        expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 3:00:00.000 UTC-0700');
+    });
+    it('formatTZ UTC-7 (End of DST)', () => {
+        // 2021-11-07T08:59:59.999Z => November 7 2021 1:59:59.999
+        const dateObj = new Date(Date.UTC(2021, 10, 7, 8, 59, 59, 999));
+        const formatString = 'MMMM D YYYY H:mm:ss.SSS [UTC]Z';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+
+        expect(date.formatTZ(dateObj, formatString, tz)).to.equal('November 7 2021 1:59:59.999 UTC-0700');
+    });
+    it('formatTZ UTC-8', () => {
+        // 2021-11-07T09:00:00.000Z => November 7 2021 1:00:00.000
+        const dateObj = new Date(Date.UTC(2021, 10, 7, 9, 0, 0, 0));
+        const formatString = 'MMMM D YYYY H:mm:ss.SSS [UTC]Z';
+        const tz = 'America/Los_Angeles';     // UTC-8
+
+        expect(date.formatTZ(dateObj, formatString, tz)).to.equal('November 7 2021 1:00:00.000 UTC-0800');
+    });
+    it('formatTZ UTC+9', () => {
+        // 2021-03-14T09:59:59.999Z => March 14 2021 18:59:59.999
+        const dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+        const formatString = 'MMMM DD YYYY H:mm:ss.SSS [UTC]Z';
+        const tz = 'Asia/Tokyo';              // UTC+9
+
+        expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 18:59:59.999 UTC+0900');
+    });
+
+    it('parseTZ UTC-8', () => {
+        // Mar 14 2021 1:59:59.999 => 2021-03-14T09:59:59.999Z
+        const dateString = 'Mar 14 2021 1:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-8
+        const dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ Failure1', () => {
+        // Mar 14 2021 2:00:00.000 => NaN
+        const dateString = 'Mar 14 2021 2:00:00.000';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';
+
+        expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+    });
+    it('parseTZ Failure2', () => {
+        // Mar 14 2021 2:59:59.999 => NaN
+        const dateString = 'Mar 14 2021 2:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';
+
+        expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+    });
+    it('parseTZ UTC-7 (Start of DST)', () => {
+        // Mar 14 2021 3:00:00.000 => 2021-03-14T10:00:00.000Z
+        const dateString = 'Mar 14 2021 3:00:00.000';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+        const dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC-7 (End of DST)', () => {
+        // Nov 7 2021 1:59:59.999 => 2021-11-07T08:59:59.999Z
+        const dateString = 'Nov 7 2021 1:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+        const dateObj = new Date(Date.UTC(2021, 10, 7, 8, 59, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC-8 with Z', () => {
+        // Nov 7 2021 1:59:59.999 => 2021-11-07T09:59:59.999Z
+        const dateString = 'Nov 7 2021 1:59:59.999 -0800';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS Z';
+        const tz = 'America/Los_Angeles';     // UTC-8
+        const dateObj = new Date(Date.UTC(2021, 10, 7, 9, 59, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC-8', () => {
+        // Nov 7 2021 2:00:00.000 => 2021-11-07T10:00:00.000Z
+        const dateString = 'Nov 7 2021 2:00:00.000';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-8
+        const dateObj = new Date(Date.UTC(2021, 10, 7, 10, 0, 0, 0));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC+9.5', () => {
+        // Oct 3 2021 1:59:59.999 => 2021-10-02T16:29:59.999Z
+        const dateString = 'Oct 3 2021 1:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'Australia/Adelaide';      // UTC+9.5
+        const dateObj = new Date(Date.UTC(2021, 9, 2, 16, 29, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ Failure1', () => {
+        // Oct 3 2021 2:00:00.000 => NaN
+        const dateString = 'Oct 3 2021 2:00:00.000';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'Australia/Adelaide';
+
+        expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+    });
+    it('parseTZ Failure2', () => {
+        // Oct 3 2021 2:59:59.999 => NaN
+        const dateString = 'Oct 3 2021 2:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'Australia/Adelaide';
+
+        expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+    });
+    it('parseTZ UTC+10.5 (Start of DST)', () => {
+        // Oct 3 2021 3:00:00.000 => 2021-10-02T16:30:00.000Z
+        const dateString = 'Oct 3 2021 3:00:00.000';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'Australia/Adelaide';      // UTC+10.5 DST
+        const dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC+10.5 (End of DST)', () => {
+        // Apr 4 2021 2:59:59.999 => 2021-04-03T16:29:59.999Z
+        const dateString = 'Apr 4 2021 2:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'Australia/Adelaide';      // UTC+10.5 DST
+        const dateObj = new Date(Date.UTC(2021, 3, 3, 16, 29, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC+9.5 with Z', () => {
+        // Apr 4 2021 2:59:59.999 => 2021-04-03T17:29:59.999Z
+        const dateString = 'Apr 4 2021 2:59:59.999 +0930';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS Z';
+        const tz = 'Australia/Adelaide';      // UTC+9.5
+        const dateObj = new Date(Date.UTC(2021, 3, 3, 17, 29, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('parseTZ UTC+9.5', () => {
+        // Apr 4 2021 3:00:00.000 => 2021-04-03T17:30:00.000Z
+        const dateString = 'Apr 4 2021 3:00:00.000';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'Australia/Adelaide';      // UTC+9.5
+        const dateObj = new Date(Date.UTC(2021, 3, 3, 17, 30, 0, 0));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+
+
+
+
+
+
+
+
 
     // two-digit-year
 

@@ -45,6 +45,7 @@ mocha test/plugin/microsecond.js
 mocha test/plugin/ordinal.js
 mocha test/plugin/timespan.js
 mocha test/plugin/two-digit-year.js
+mocha test/plugin/timezone.js
 
 # Combination (Node CJS)
 mocha test/combination.js
@@ -91,6 +92,7 @@ mocha test/esm/plugin/microsecond.mjs
 mocha test/esm/plugin/ordinal.mjs
 mocha test/esm/plugin/timespan.mjs
 mocha test/esm/plugin/two-digit-year.mjs
+mocha test/esm/plugin/timezone.mjs
 
 # Combination (Node ESM)
 mocha test/esm/combination.mjs

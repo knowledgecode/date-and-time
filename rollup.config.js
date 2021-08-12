@@ -322,6 +322,14 @@ export default [
         ]
     },
     {
+        input: 'src/plugin/timezone.js',
+        output: [
+            { file: 'esm/plugin/timezone.es.js', format: 'es' },
+            { file: 'esm/plugin/timezone.mjs', format: 'es' },
+            { file: 'plugin/timezone.js', format: 'umd', name: 'date.plugin.timezone', esModule: false }
+        ]
+    },
+    {
         input: 'src/plugin/two-digit-year.js',
         output: [
             { file: 'esm/plugin/two-digit-year.es.js', format: 'es' },
