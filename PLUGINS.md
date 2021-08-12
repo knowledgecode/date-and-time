@@ -1,6 +1,8 @@
 # Plugins
 
-This library is oriented towards minimalism, so it may appear to be lacking in features. Plugin is the most realistic solution to such dissatisfaction. By importing plugins, you can extend the functionality of this library, mainly formatter and parser.
+This library is oriented towards minimalism, so it may seem to some developers to be lacking in features. Plugin is the most realistic solution to such dissatisfaction. By importing plugins, you can extend the functionality of this library, mainly a formatter and a parser.
+
+*The formatter is used in `format()`, etc., the parser is used in `parse()`, `preparse()`, `isValid()`, etc.*
 
 ## Usage
 
@@ -52,41 +54,50 @@ date.plugin('foobar');
 </script>
 ```
 
-### NOTE
+### Note
 
 - If you want to use ES Modules in Node.js without a transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
 
 ## Plugin List
 
 - [day-of-week](#day-of-week)
-  - It adds day of week notation to the parser.
+  - It adds *"dummy"* tokens for `day of week` to the parser.
 
 - [meridiem](#meridiem)
-  - It extends `A` token.
+  - It adds various notations for `AM PM`.
 
 - [microsecond](#microsecond)
-  - It adds microsecond notation to the parser.
+  - It adds tokens for microsecond to the parser.
 
 - [ordinal](#ordinal)
   - It adds ordinal notation of date to the formatter.
 
 - [timespan](#timespan)
-  - It adds `timeSpan()` function to the library.
+  - It adds `timeSpan()` function that calculates the difference of two dates to the library.
+
+- [timezone](#timezone)
+  - It adds `formatTZ()` and `parseTZ()` functions that support `IANA time zone names` to the library.
 
 - [two-digit-year](#two-digit-year)
   - It adds two-digit year notation to the parser.
 
-## Plugin Details
+---
 
 ### day-of-week
 
-It adds `dddd`, `ddd` and `dd` tokens to the parser. While these meanings are as follows, in fact they don't make sense because day of week doesn't include information to determine a date:
+It adds tokens for `day of week` to the parser. Although `day of week` is not significant information for the parser to identify a date, these tokens are sometimes useful. For example, when a string to be parsed contains a day of week, and you just want to skip it.
 
-| token | meaning                  | examples of acceptable form | added or modified |
-|:------|:-------------------------|:----------------------------|:------------------|
-| dddd  | day of week (long)       | Friday, Sunday              | ✔                 |
-| ddd   | day of week (short)      | Fri, Sun                    | ✔                 |
-| dd    | day of week (very short) | Fr, Su                      | ✔                 |
+**formatter:**
+
+There is no change.
+
+**parser:**
+
+| token | meaning    | acceptable examples |
+|:------|:-----------|:--------------------|
+| dddd  | long       | Friday, Sunday      |
+| ddd   | short      | Fri, Sun            |
+| dd    | very short | Fr, Su              |
 
 ```javascript
 const date = require('date-and-time');
@@ -103,22 +114,27 @@ date.parse('Thursday, March 05, 2020', '        , MMMM, D YYYY');
 date.parse('Friday, March 06, 2020', '      , MMMM, D YYYY');
 ```
 
+---
+
 ### meridiem
 
-It adds `AA`, `a` and `aa` tokens to the formatter. These meanings are as follows:
+It adds various notations for AM PM.
 
-| token | meaning                            | examples of output | added or modified |
-|:------|:-----------------------------------|:-------------------|:------------------|
-| A     | meridiem (uppercase)               | AM, PM             |                   |
-| AA    | meridiem (uppercase with ellipsis) | A.M., P.M.         | ✔                 |
-| a     | meridiem (lowercase)               | am, pm             | ✔                 |
-| aa    | meridiem (lowercase with ellipsis) | a.m., p.m.         | ✔                 |
+**formatter:**
 
-It also extends `A` token of the parser as follows:
+| token | meaning                 | output examples |
+|:------|:------------------------|:----------------|
+| AA    | uppercase with ellipsis | A.M., P.M.      |
+| a     | lowercase               | am, pm          |
+| aa    | lowercase with ellipsis | a.m., p.m.      |
 
-| token | meaning                          | examples of acceptable form            | added or modified |
-|:------|:---------------------------------|:---------------------------------------|:------------------|
-| A     | all the above notations          | AM, PM, A.M., P.M., am, pm, a.m., p.m. | ✔                 |
+**parser:**
+
+| token | meaning                 | acceptable examples |
+|:------|:------------------------|:--------------------|
+| AA    | uppercase with ellipsis | A.M., P.M.          |
+| a     | lowercase               | am, pm              |
+| aa    | lowercase with ellipsis | a.m., p.m.          |
 
 ```javascript
 const date = require('date-and-time');
@@ -136,25 +152,34 @@ date.format(new Date(), 'hh:mm AA');    // => '12:34 P.M.'
 date.format(new Date(), 'hh:mm a');     // => '12:34 pm'
 date.format(new Date(), 'hh:mm aa');    // => '12:34 p.m.'
 
-// The parser will be acceptable all the above notations with only `A` token.
+// This is default behavior of the parser.
 date.parse('12:34 PM', 'hh:mm A');      // => Jan 1 1970 12:34:00
-date.parse('12:34 P.M.', 'hh:mm A');    // => Jan 1 1970 12:34:00
-date.parse('12:34 pm', 'hh:mm A');      // => Jan 1 1970 12:34:00
-date.parse('12:34 p.m.', 'hh:mm A');    // => Jan 1 1970 12:34:00
+
+// These are added tokens to the parser.
+date.parse('12:34 P.M.', 'hh:mm AA');   // => Jan 1 1970 12:34:00
+date.parse('12:34 pm', 'hh:mm a');      // => Jan 1 1970 12:34:00
+date.parse('12:34 p.m.', 'hh:mm aa');   // => Jan 1 1970 12:34:00
 ```
+
+This plugin has a **breaking change**. In previous versions, the `A` token for the parser could parse various notations for AM PM, but in the new version, it can only parse `AM` and `PM`. For other notations, a dedicated token is now provided for each.
+
+---
 
 ### microsecond
 
-It adds `SSSSSS`, `SSSSS` and `SSSS` tokens to the parser. Thease meanings are as follows:
+It adds tokens for microsecond to the parser. If a time string to be parsed contains microsecond, these tokens are useful. In JS, however, it is not supported microsecond accuracy, a parsed value is rounded to millisecond accuracy.
 
-| token  | meaning                       | examples of output | added or modified |
-|:-------|:------------------------------|:-------------------|:------------------|
-| SSSSSS | microsecond (high accuracy)   | 753123, 022113     | ✔                 |
-| SSSSS  | microsecond (middle accuracy) | 75312, 02211       | ✔                 |
-| SSSS   | microsecond (low accuracy)    | 7531, 0221         | ✔                 |
-| SSS    | millisecond (high accuracy)   | 753, 022           |                   |
-| SS     | millisecond (middle accuracy) | 75, 02             |                   |
-| S      | millisecond (low accuracy)    | 7, 0               |                   |
+**formatter:**
+
+There is no change.
+
+**parser:**
+
+| token  | meaning         | acceptable examples |
+|:-------|:----------------|:--------------------|
+| SSSSSS | high accuracy   | 753123, 022113      |
+| SSSSS  | middle accuracy | 75312, 02211        |
+| SSSS   | low accuracy    | 7531, 0221          |
 
 ```javascript
 const date = require('date-and-time');
@@ -164,7 +189,7 @@ const microsecond = require('date-and-time/plugin/microsecond');
 // Apply "microsecond" plugin to the library.
 date.plugin(microsecond);
 
-// A date object in JavaScript supports `millisecond` (ms):
+// A date object in JavaScript supports `millisecond` (ms) like this:
 date.parse('12:34:56.123', 'HH:mm:ss.SSS');
 
 // 4 or more digits number sometimes seen is not `millisecond`, probably `microsecond` (μs):
@@ -173,15 +198,21 @@ date.parse('12:34:56.123456', 'HH:mm:ss.SSSSSS');
 // 123456µs will be rounded to 123ms.
 ```
 
+---
+
 ### ordinal
 
-It adds `DDD` token to the formatter. This meaning is as follows:
+It adds `DDD` token that output ordinal notation of date to the formatter.
 
-| token | meaning                  | examples of output  | added or modified |
-|:------|:-------------------------|:--------------------|:------------------|
-| DDD   | ordinal notation of date | 1st, 2nd, 3rd, 31th | ✔                 |
-| DD    | date with zero-padding   | 01, 02, 03, 31      |                   |
-| D     | date                     | 1, 2, 3, 31         |                   |
+**formatter:**
+
+| token | meaning                  | output examples     |
+|:------|:-------------------------|:--------------------|
+| DDD   | ordinal notation of date | 1st, 2nd, 3rd, 31th |
+
+**parser:**
+
+There is no change.
 
 ```javascript
 const date = require('date-and-time');
@@ -199,9 +230,17 @@ date.format(new Date(), 'MMM DD YYYY');   // => Jan 01 2019
 date.format(new Date(), 'MMM DDD YYYY');  // => Jan 1st 2019
 ```
 
+---
+
 ### timespan
 
-It adds `timeSpan()` function to the library. This function is similar to the `subtract()`, but this can display a formatted elapsed time between two date objects:
+It adds `timeSpan()` function that calculates the difference of two dates to the library. This function is similar to `subtract()`, the difference is that it can format the calculation results.
+
+#### timeSpan(date1, date2)
+
+- @param {**Date**} date1 - a Date object
+- @param {**Date**} date2 - a Date object
+- @returns {**Object**} a result object subtracting date2 from date1
 
 ```javascript
 const date = require('date-and-time');
@@ -219,7 +258,7 @@ date.timeSpan(now, new_years_day).toHours('H [hours] m [minutes] s [seconds]'); 
 date.timeSpan(now, new_years_day).toMinutes('mmmmmmmmmm [minutes]');  // => '0000092222 minutes'
 ```
 
-The `timeSpan()` returns an object that has some functions as with the `subtract()`:
+Like `subtract()`, `timeSpan()` returns an object with functions like this:
 
 | function       | description             |
 |:---------------|:------------------------|
@@ -229,7 +268,7 @@ The `timeSpan()` returns an object that has some functions as with the `subtract
 | toSeconds      | Outputs as seconds      |
 | toMilliseconds | Outputs as milliseconds |
 
-Available tokens in those functions and their meanings are as follows:
+In these functions can be available some tokens to format the calculation result. Here are the tokens and their meanings:
 
 | function       | available tokens |
 |:---------------|:-----------------|
@@ -247,36 +286,119 @@ Available tokens in those functions and their meanings are as follows:
 | s     | second      |
 | S     | millisecond |
 
+---
+
+### timezone
+
+It adds `formatTZ()` and `parseTZ()` functions that support `IANA time zone names` (`America/Los_Angeles`, `Asia/Tokyo`, and so on) to the library.
+
+#### formatTZ(dateObj, arg[, timeZone])
+
+- @param {**Date**} dateObj - a Date object
+- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
+- @param {**string**} [timeZone] - output as this time zone
+- @returns {**string**} a formatted string
+
+The `formatTZ()` is upward compatible with `format()`. Tokens available here are the same as for the `format()`.  If the `timeZone` is omitted, it output the date string with local time zone.
+
+#### parseTZ(dateString, arg[, timeZone])
+
+- @param {**string**} dateString - a date string
+- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
+- @param {**string**} [timeZone] - input as this time zone
+- @returns {**Date**} a constructed date
+
+The `parseTZ()` is upward compatible with `parse()`. Tokens available here are the same as for the `parse()`. If the `timeZone` is omitted, the time zone of the date string is assumed to be local time zone.
+
+```javascript
+const date = require('date-and-time');
+// Import "timezone" plugin.
+const timezone = require('date-and-time/plugin/timezone');
+
+// Apply "timezone" plugin to the library.
+date.plugin(timezone);
+
+const d1 = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999)); // 2021-03-14T09:59:59.999Z
+date.formatTZ(d1, 'MMMM DD YYYY H:mm:ss.SSS [UTC]Z', 'America/Los_Angeles'); // March 14 2021 1:59:59.999 UTC-0800
+
+const d2 = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));  // 2021-03-14T10:00:00.000Z
+date.formatTZ(d2, 'MMMM DD YYYY H:mm:ss.SSS [UTC]Z', 'America/Los_Angeles'); // March 14 2021 3:00:00.000 UTC-0700
+
+// Parses the date string assuming that the time zone is "Pacific/Honolulu" (UTC-1000).
+date.parseTZ('Sep 25 2021 4:00:00', 'MMM D YYYY H:mm:ss', 'Pacific/Honolulu');  // 2021-09-25T14:00:00.000Z
+
+// Parses the date string assuming that the time zone is "Europe/London" (UTC+0100).
+date.parseTZ('Sep 25 2021 4:00:00', 'MMM D YYYY H:mm:ss', 'Europe/London');  // 2021-09-25T03:00:00.000Z
+```
+
+#### Caveats
+
+- This plugin uses the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) object to parse `IANA time zone names`. Note that if you use this plugin in older browsers, this may **NOT** be supported there. At least it does not work  in IE.
+- If you don't need to use `IANA time zone names`, you should not use this plugin for performance reasons. The `format()` and the `parse()` are enough.
+
+#### Start of DST (Daylight Saving Time)
+
+For example, in the US, when local standard time is about to reach Sunday, 14 March 2021, `02:00:00` clocks are turned `forward` 1 hour to Sunday, 14 March 2021, `03:00:00` local daylight time instead. Thus, there is no `02:00:00` to `02:59:59` on 14 March 2021. In such edge cases, the `parseTZ()` will parse like this:
+
+```javascript
+date.parseTZ('Mar 14 2021 1:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T09:59:59Z
+date.parseTZ('Mar 14 2021 2:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => NaN
+date.parseTZ('Mar 14 2021 2:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => NaN
+date.parseTZ('Mar 14 2021 3:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T10:00:00Z
+```
+
+#### End of DST
+
+Also, when local daylight time is about to reach Sunday, 7 November 2021, `02:00:00` clocks are turned `backward` 1 hour to Sunday, 7 November 2021, `01:00:00` local standard time instead. Thus, `01:00:00` to `01:59:59` on November 7 2021 is repeated twice. Since there are two possible times between them, DST or not, the `parseTZ()` assumes that the time is former to make the result unique:
+
+```javascript
+// The parseTZ() assumes that this time is DST.
+date.parseTZ('Nov 7 2021 1:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles');  // => 2021-11-07T08:59:59Z
+// This time is already PST.
+date.parseTZ('Nov 7 2021 2:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles');  // => 2021-11-07T10:00:00Z
+```
+
+At the first example above, if you want the parser to parse the time as PST (Pacific Standard Time), use the `parse()` with a time offset instead:
+
+```javascript
+date.parse('Nov 7 2021 1:59:59 -0800', 'MMM D YYYY H:mm:ss Z'); // => 2021-11-07T09:59:59Z
+```
+
+---
+
 ### two-digit-year
 
-It adds `YY` token to the parser and also changes behavior of `Y` token. These meanings are as follows:
+It adds `YY` token to the parser. This token will convert the year 69 or earlier to 2000s, the year 70 or later to 1900s. In brief:
 
-| token | meaning                             | examples of acceptable form | added or modified |
-|:------|:------------------------------------|:----------------------------|:------------------|
-| YYYY  | four-digit year                     | 2019, 0123, 0001            |                   |
-| YY    | two-digit year                      | 90, 00, 08, 19              | ✔                 |
-| Y     | two-digit year without zero-padding | 90, 0, 8, 19                | ✔                 |
+| examples                | result |
+|:------------------------|:-------|
+| 00, 01, 02, ..., 68, 69 | 2000s  |
+| 70, 71, 72, ..., 98, 99 | 1900s  |
 
-`YY` and `Y` token will convert the year 69 or earlier to 2000s, the year 70 or later to 1900s. By this change, `Y` token will no longer acceptable the year 100 or later, so use `YYYY` token instead if necessary.
+**formatter:**
+
+There is no change.
+
+**parser:**
+
+| token | meaning        | acceptable examples |
+|:------|:---------------|:--------------------|
+| YY    | two-digit year | 90, 00, 08, 19      |
 
 ```javascript
 const date = require('date-and-time');
 // Import "two-digit-year" plugin as a named "two_digit_year".
 const two_digit_year = require('date-and-time/plugin/two-digit-year');
 
-// These are default behavior of the parser.
+// This is the default behavior of the parser.
 date.parse('Dec 25 69', 'MMM D YY');      // => Invalid Date
-date.parse('Dec 25 70', 'MMM D Y');       // => 70 AD (ancient times)
 
 // Apply the "two_digit_year" plugin to the library.
 date.plugin(two_digit_year);
 
-// These convert the year 69 or earlier to 2000s, the year 70 or later to 1900s.
+// The `YY` token convert the year 69 or earlier to 2000s, the year 70 or later to 1900s.
 date.parse('Dec 25 69', 'MMM D YY');      // => Dec 25 2069
-date.parse('Dec 25 70', 'MMM D Y');       // => Dec 25 1970
-
-// `Y` token will no longer acceptable the year 100 or later.
-date.parse('Dec 25 2019', 'MMM D Y');     // => Invalid Date
-// Use `YYYY` token instead if necessary.
-date.parse('Dec 25 2019', 'MMM D YYYY');  // => Dec 25 2019
+date.parse('Dec 25 70', 'MMM D YY');      // => Dec 25 1970
 ```
+
+This plugin has a **breaking change**. In previous versions, this plugin overrode the default behavior of the `Y` token, but this has been obsolete.
