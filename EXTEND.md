@@ -23,12 +23,26 @@ Tokens in this library have the following rules:
 'Eee'         // Not good
 ```
 
-- To the parser, it is not able to add token of new alphabet.
+- Only tokens consisting of the following alphabets can be added to the parser.
 
 ```javascript
-'EEE'         // This is not able to add because `E` is not an existing token in the parser.
-'YYY'         // This is OK because `Y` token is existing in the parser.
-'SSS'         // This is modifying, not adding. Because exactly the same token is existing.
+'Y'           // Year
+'M'           // Month
+'D'           // Day
+'H'           // 24-hour
+'A'           // AM PM
+'h'           // 12-hour
+'s'           // Second
+'S'           // Millisecond
+'Z'           // Timezone offset
+```
+
+- Existing tokens cannot be overwritten.
+
+```javascript
+'YYY'         // This is OK because the same token does not exists.
+'SSS'         // This cannot be added because the exact same token exists.
+'EEE'         // This is OK for the formatter, but cannot be added to the parser.
 ```
 
 ## Examples
@@ -61,12 +75,12 @@ date.extend({
 
 ### Example 2
 
-In the parser, modify `MMM` token to ignore case:
+Add `MMMMM` token to the parser. This token ignores case:
 
 ```javascript
-date.parse('Dec 25 2019', 'MMM DD YYYY'); // => December 25, 2019
-date.parse('dec 25 2019', 'MMM DD YYYY'); // => December 25, 2019
-date.parse('DEC 25 2019', 'MMM DD YYYY'); // => December 25, 2019
+date.parse('Dec 25 2019', 'MMMMM DD YYYY'); // => December 25, 2019
+date.parse('dec 25 2019', 'MMMMM DD YYYY'); // => December 25, 2019
+date.parse('DEC 25 2019', 'MMMMM DD YYYY'); // => December 25, 2019
 ```
 
 Source code example is here:
@@ -76,7 +90,7 @@ const date = require('date-and-time');
 
 date.extend({
   parser: {
-    MMM: function (str) {
+    MMMMM: function (str) {
       const mmm = this.res.MMM.map(m => m.toLowerCase());
       const result = this.find(mmm, str.toLowerCase());
       result.value++;
@@ -86,4 +100,4 @@ date.extend({
 });
 ```
 
-Modifying the parser may be a bit difficult. Refer to the library source code to grasp the default behavior.
+Extending the parser may be a bit difficult. Refer to the library source code to grasp the default behavior.
