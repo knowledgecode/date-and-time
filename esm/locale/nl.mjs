@@ -34,4 +34,4 @@ var nl = function (date) {
     return code;
 };
 
-export default nl;
+export { nl as default };

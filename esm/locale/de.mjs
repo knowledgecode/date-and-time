@@ -20,4 +20,4 @@ var de = function (date) {
     return code;
 };
 
-export default de;
+export { de as default };

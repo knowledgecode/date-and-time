@@ -43,4 +43,4 @@ var jv = function (date) {
     return code;
 };
 
-export default jv;
+export { jv as default };

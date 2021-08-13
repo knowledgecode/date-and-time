@@ -19,4 +19,4 @@ var sr = function (date) {
     return code;
 };
 
-export default sr;
+export { sr as default };

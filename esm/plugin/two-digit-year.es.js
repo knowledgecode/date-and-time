@@ -18,4 +18,4 @@ var plugin = function (date) {
     return name;
 };
 
-export default plugin;
+export { plugin as default };

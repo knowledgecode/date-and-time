@@ -41,4 +41,4 @@ var az = function (date) {
     return code;
 };
 
-export default az;
+export { az as default };

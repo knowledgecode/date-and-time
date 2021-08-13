@@ -43,4 +43,4 @@ var id = function (date) {
     return code;
 };
 
-export default id;
+export { id as default };

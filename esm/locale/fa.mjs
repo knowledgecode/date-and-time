@@ -36,4 +36,4 @@ var fa = function (date) {
     return code;
 };
 
-export default fa;
+export { fa as default };

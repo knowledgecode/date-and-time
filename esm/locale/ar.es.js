@@ -36,4 +36,4 @@ var ar = function (date) {
     return code;
 };
 
-export default ar;
+export { ar as default };

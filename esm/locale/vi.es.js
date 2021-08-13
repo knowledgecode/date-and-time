@@ -20,4 +20,4 @@ var vi = function (date) {
     return code;
 };
 
-export default vi;
+export { vi as default };

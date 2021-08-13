@@ -19,4 +19,4 @@ var cs = function (date) {
     return code;
 };
 
-export default cs;
+export { cs as default };

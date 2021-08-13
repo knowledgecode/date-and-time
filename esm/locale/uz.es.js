@@ -19,4 +19,4 @@ var uz = function (date) {
     return code;
 };
 
-export default uz;
+export { uz as default };

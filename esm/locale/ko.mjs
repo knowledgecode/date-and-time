@@ -20,4 +20,4 @@ var ko = function (date) {
     return code;
 };
 
-export default ko;
+export { ko as default };

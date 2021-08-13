@@ -35,4 +35,4 @@ var my = function (date) {
     return code;
 };
 
-export default my;
+export { my as default };

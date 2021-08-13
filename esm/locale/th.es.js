@@ -20,4 +20,4 @@ var th = function (date) {
     return code;
 };
 
-export default th;
+export { th as default };

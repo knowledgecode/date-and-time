@@ -19,4 +19,4 @@ var tr = function (date) {
     return code;
 };
 
-export default tr;
+export { tr as default };

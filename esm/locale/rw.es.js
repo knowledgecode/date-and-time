@@ -19,4 +19,4 @@ var rw = function (date) {
     return code;
 };
 
-export default rw;
+export { rw as default };

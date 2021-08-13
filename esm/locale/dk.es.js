@@ -19,4 +19,4 @@ var dk = function (date) {
     return code;
 };
 
-export default dk;
+export { dk as default };

@@ -47,4 +47,4 @@ var bn = function (date) {
     return code;
 };
 
-export default bn;
+export { bn as default };

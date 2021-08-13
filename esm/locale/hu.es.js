@@ -20,4 +20,4 @@ var hu = function (date) {
     return code;
 };
 
-export default hu;
+export { hu as default };

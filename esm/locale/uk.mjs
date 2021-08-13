@@ -54,4 +54,4 @@ var uk = function (date) {
     return code;
 };
 
-export default uk;
+export { uk as default };

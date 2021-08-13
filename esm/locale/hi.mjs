@@ -47,4 +47,4 @@ var hi = function (date) {
     return code;
 };
 
-export default hi;
+export { hi as default };

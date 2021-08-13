@@ -10,4 +10,4 @@ var en = function (date) {
     return code;
 };
 
-export default en;
+export { en as default };

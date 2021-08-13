@@ -43,4 +43,4 @@ var zh_tw = function (date) {
     return code;
 };
 
-export default zh_tw;
+export { zh_tw as default };

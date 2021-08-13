@@ -20,4 +20,4 @@ var fr = function (date) {
     return code;
 };
 
-export default fr;
+export { fr as default };

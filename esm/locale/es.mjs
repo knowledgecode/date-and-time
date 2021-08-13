@@ -39,4 +39,4 @@ var es = function (date) {
     return code;
 };
 
-export default es;
+export { es as default };

@@ -28,4 +28,4 @@ var ja = function (date) {
     return code;
 };
 
-export default ja;
+export { ja as default };

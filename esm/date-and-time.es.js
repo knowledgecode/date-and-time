@@ -462,4 +462,4 @@ date.plugin = function (plugin) {
     }
 };
 
-export default date;
+export { date as default };

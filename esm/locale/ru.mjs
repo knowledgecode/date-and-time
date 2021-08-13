@@ -41,4 +41,4 @@ var ru = function (date) {
     return code;
 };
 
-export default ru;
+export { ru as default };

@@ -41,4 +41,4 @@ var pt = function (date) {
     return code;
 };
 
-export default pt;
+export { pt as default };

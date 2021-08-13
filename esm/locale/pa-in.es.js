@@ -59,4 +59,4 @@ var pa_in = function (date) {
     return code;
 };
 
-export default pa_in;
+export { pa_in as default };

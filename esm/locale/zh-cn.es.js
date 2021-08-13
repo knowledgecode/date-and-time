@@ -45,4 +45,4 @@ var zh_cn = function (date) {
     return code;
 };
 
-export default zh_cn;
+export { zh_cn as default };
