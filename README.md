@@ -24,6 +24,11 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.0.0
+  - Fixed a conflict when importing multiple plugins and locales.
+  - **Breaking Changes!** Due to the above fix, the specifications of plugin, locale, and extension have been changed. The `meridiem` plugin and the `two-digit-year` plugin are now partially incompatible with previous ones. See [here](./PLUGINS.md) for details. Also the `extend()` function has changed. If you are using it, check [here](./EXTEND.md) for any impact. The locales are still compatible.
+  - Added `timezone` plugin. You can now use the IANA timezone name to output a datetime string or input a date object. See [PLUGINS.md](./PLUGINS.md) for details.
+
 - 1.0.1
   - Updated dev dependencies to resolve vulnerability.
 
@@ -31,9 +36,6 @@ npm i date-and-time
   - **First stable release!**
   - ES Modules support.
   - Added Kinyarwanda support.
-
-- 0.14.2
-  - Fixed regular expression denial of service (ReDoS) vulnerability.
 
 ## Usage
 
@@ -69,7 +71,7 @@ import date from '/path/to/date-and-time.es.min.js';
 
 ## API
 
-- [format](#formatdateobj-formatstring-utc)
+- [format](#formatdateobj-arg-utc)
   - Formatting a Date and Time (Date -> String)
 
 - [parse](#parsedatestring-arg-utc)
@@ -126,7 +128,7 @@ import date from '/path/to/date-and-time.es.min.js';
 - [plugin](#pluginname-plugin)
   - Importing or defining plugins
 
-### format(dateObj, formatString[, utc])
+### format(dateObj, arg[, utc])
 
 - @param {**Date**} dateObj - a Date object
 - @param {**string|Array.\<string\>**} arg - a format string or its compiled object
@@ -207,7 +209,7 @@ You can also define your own tokens. See [EXTEND.md](./EXTEND.md) for details.
 
 ### parse(dateString, arg[, utc])
 
-- @param {string} dateString - a date string
+- @param {**string**} dateString - a date string
 - @param {**string|Array.\<string\>**} arg - a format string or its compiled object
 - @param {**boolean**} [utc] - input as UTC
 - @returns {**Date**} a constructed date
@@ -224,43 +226,44 @@ date.parse('Feb 29 2017', 'MMM D YYYY');                    // => Invalid Date
 
 Available tokens and their meanings are as follows:
 
-| token  | meaning                              | examples of acceptable form            |
-|:-------|:-------------------------------------|:---------------------------------------|
-| YYYY   | four-digit year                      | 0999, 2015                             |
-| Y      | four-digit year without zero-padding | 2, 44, 88, 2015                        |
-| MMMM   | month name (long)                    | January, December                      |
-| MMM    | month name (short)                   | Jan, Dec                               |
-| MM     | month with zero-padding              | 01, 12                                 |
-| M      | month                                | 1, 12                                  |
-| DD     | date with zero-padding               | 02, 31                                 |
-| D      | date                                 | 2, 31                                  |
-| HH     | 24-hour with zero-padding            | 23, 08                                 |
-| H      | 24-hour                              | 23, 8                                  |
-| hh     | 12-hour with zero-padding            | 11, 08                                 |
-| h      | 12-hour                              | 11, 8                                  |
-| A      | meridiem (uppercase)                 | AM, PM                                 |
-| mm     | minute with zero-padding             | 14, 07                                 |
-| m      | minute                               | 14, 7                                  |
-| ss     | second with zero-padding             | 05, 10                                 |
-| s      | second                               | 5, 10                                  |
-| SSS    | millisecond (high accuracy)          | 753, 022                               |
-| SS     | millisecond (middle accuracy)        | 75, 02                                 |
-| S      | millisecond (low accuracy)           | 7, 0                                   |
-| Z      | timezone offset                      | +0100, -0800                           |
+| token  | meaning                              | examples of acceptable form |
+|:-------|:-------------------------------------|:----------------------------|
+| YYYY   | four-digit year                      | 0999, 2015                  |
+| Y      | four-digit year without zero-padding | 2, 44, 88, 2015             |
+| MMMM   | month name (long)                    | January, December           |
+| MMM    | month name (short)                   | Jan, Dec                    |
+| MM     | month with zero-padding              | 01, 12                      |
+| M      | month                                | 1, 12                       |
+| DD     | date with zero-padding               | 02, 31                      |
+| D      | date                                 | 2, 31                       |
+| HH     | 24-hour with zero-padding            | 23, 08                      |
+| H      | 24-hour                              | 23, 8                       |
+| hh     | 12-hour with zero-padding            | 11, 08                      |
+| h      | 12-hour                              | 11, 8                       |
+| A      | meridiem (uppercase)                 | AM, PM                      |
+| mm     | minute with zero-padding             | 14, 07                      |
+| m      | minute                               | 14, 7                       |
+| ss     | second with zero-padding             | 05, 10                      |
+| s      | second                               | 5, 10                       |
+| SSS    | millisecond (high accuracy)          | 753, 022                    |
+| SS     | millisecond (middle accuracy)        | 75, 02                      |
+| S      | millisecond (low accuracy)           | 7, 0                        |
+| Z      | timezone offset                      | +0100, -0800                |
 
 You can also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
 
-| token  | meaning                              | examples of acceptable form            |
-|:-------|:-------------------------------------|:---------------------------------------|
-| YY     | two-digit year                       | 90, 00, 08, 19                         |
-| Y      | two-digit year without zero-padding  | 90, 0, 8, 19                           |
-| A      | meridiem                             | AM, PM, A.M., P.M., am, pm, a.m., p.m. |
-| dddd   | day of week (long)                   | Friday, Sunday                         |
-| ddd    | day of week (short)                  | Fri, Sun                               |
-| dd     | day of week (very short)             | Fr, Su                                 |
-| SSSSSS | microsecond (high accuracy)          | 123456, 000001                         |
-| SSSSS  | microsecond (middle accuracy)        | 12345, 00001                           |
-| SSSS   | microsecond (low accuracy)           | 1234, 0001                             |
+| token  | meaning                              | examples of acceptable form |
+|:-------|:-------------------------------------|:----------------------------|
+| YY     | two-digit year                       | 90, 00, 08, 19              |
+| AA     | meridiem (uppercase with ellipsis)   | A.M., P.M.                  |
+| a      | meridiem (lowercase)                 | am, pm                      |
+| aa     | meridiem (lowercase with ellipsis)   | a.m., p.m.                  |
+| dddd   | day of week (long)                   | Friday, Sunday              |
+| ddd    | day of week (short)                  | Fri, Sun                    |
+| dd     | day of week (very short)             | Fr, Su                      |
+| SSSSSS | microsecond (high accuracy)          | 123456, 000001              |
+| SSSSS  | microsecond (middle accuracy)        | 12345, 00001                |
+| SSSS   | microsecond (low accuracy)           | 1234, 0001                  |
 
 #### Note 1. Invalid Date
 
@@ -569,7 +572,7 @@ See [LOCALE.md](./LOCALE.md) for details.
 - @param {**Object**} extension - extension object
 - @returns {**void**}
 
-It extends the formatter and the parser of the current locale. See [EXTEND.md](./EXTEND.md) for details.
+It extends this library. See [EXTEND.md](./EXTEND.md) for details.
 
 ### plugin(name[, plugin])
 
@@ -577,7 +580,7 @@ It extends the formatter and the parser of the current locale. See [EXTEND.md](.
 - @param {**Object**} [plugin] - plugin object
 - @returns {**void**}
 
-Plugin is a named extension object. By installing predefined plugins, you can easily extend the formatter and the parser of the current locale. See [PLUGINS.md](./PLUGINS.md) for details.
+Plugin is a named extension object. By installing predefined plugins, you can easily extend this library. See [PLUGINS.md](./PLUGINS.md) for details.
 
 ## Browser Support
 
