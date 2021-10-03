@@ -3,7 +3,7 @@
  * @preserve timezone
  */
 
-var plugin = function (date) {
+var plugin = function (date, localized_date) {
     var options = {
         year: 'numeric', month: 'numeric', day: 'numeric',
         hour: 'numeric', minute: 'numeric', second: 'numeric'
@@ -19,7 +19,7 @@ var plugin = function (date) {
         var dateObj3 = date.addMilliseconds(dateObj2, dateObj.getMilliseconds());
 
         dateObj3.getTimezoneOffset = function () { return (utcObj.getTime() - dateObj2.getTime()) / 60000 | 0; };
-        return date.format(dateObj3, arg);
+        return localized_date.format(dateObj3, arg);
     };
     var adjustments = [
         -60, -30, -20,
@@ -28,7 +28,7 @@ var plugin = function (date) {
     ];
     var parseTZ = function (dateString, arg, timeZone) {
         var pattern2 = typeof arg === 'string' ? date.compile(arg) : arg;
-        var dateObj = date.parse(dateString, pattern2, true);
+        var dateObj = localized_date.parse(dateString, pattern2, true);
 
         for (var i = 1, len = pattern2.length; i < len; i++) {
             if (pattern2[i].indexOf('Z') === 0) {
@@ -43,7 +43,7 @@ var plugin = function (date) {
             dateObj.getMilliseconds()
         );
         var offset = dateObj.getTime() - dateObj2.getTime();
-        var dateString2 = date.transform(dateString, pattern2, pattern);
+        var dateString2 = date.format(localized_date.parse(dateString, pattern2), pattern);
 
         var comparer = function (d) {
             return dateString2 === dateTimeFormat.format(d);

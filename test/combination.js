@@ -1473,6 +1473,7 @@
             date.plugin(microsecond);
             date.plugin(ordinal);
             date.plugin(timespan);
+            date.plugin(timezone);
             date.plugin(two_digit_year);
         });
 
@@ -1823,6 +1824,7 @@
             date.plugin(microsecond);
             date.plugin(ordinal);
             date.plugin(timespan);
+            date.plugin(timezone);
             date.plugin(two_digit_year);
         });
 
@@ -1854,7 +1856,7 @@
 
     A = ['AM', 'PM'];
 
-    describe('multiple locale change and multiple pluginss', function () {
+    describe('multiple locale change and multiple plugins', function () {
         before(function () {
             date.locale(es);
             date.plugin(day_of_week);
@@ -1862,6 +1864,7 @@
             date.plugin(microsecond);
             date.plugin(ordinal);
             date.plugin(timespan);
+            date.plugin(timezone);
             date.plugin(two_digit_year);
             date.locale(en);
         });
@@ -2364,6 +2367,199 @@
         it('YY-6', function () {
             var now = new Date(1999, 0, 1);
             expect(date.parse('99', 'YY')).to.eql(now);
+        });
+    });
+
+    describe('appling locale change to plugins', function () {
+        before(function () {
+            date.locale(es);
+            date.plugin(day_of_week);
+            date.plugin(timezone);
+        });
+
+        // day of week
+
+        it('dd', function () {
+            var now = new Date(1970, 0, 1, 0, 0, 0, 0);
+            expect(date.parse('ju', 'dd')).to.eql(now);
+        });
+        it('ddd', function () {
+            var now = new Date(1970, 0, 1, 0, 0, 0, 0);
+            expect(date.parse('jue.', 'ddd')).to.eql(now);
+        });
+        it('dddd', function () {
+            var now = new Date(1970, 0, 1, 0, 0, 0, 0);
+            expect(date.parse('jueves', 'dddd')).to.eql(now);
+        });
+
+        // timezone
+
+        it('formatTZ UTC-8', function () {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY H:mm:ss.SSS [UTC]Z';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('marzo 14 2021 1:59:59.999 UTC-0800');
+        });
+        it('formatTZ UTC-7 (Start of DST)', function () {
+            // 2021-03-14T10:00:00.000Z => March 14 2021 3:00:00.000
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS [UTC]Z';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('marzo 14 2021 3:00:00.000 UTC-0700');
+        });
+        it('formatTZ UTC-7 (End of DST)', function () {
+            // 2021-11-07T08:59:59.999Z => November 7 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 8, 59, 59, 999));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS [UTC]Z';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('noviembre 7 2021 1:59:59.999 UTC-0700');
+        });
+        it('formatTZ UTC-8', function () {
+            // 2021-11-07T09:00:00.000Z => November 7 2021 1:00:00.000
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 9, 0, 0, 0));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS [UTC]Z';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('noviembre 7 2021 1:00:00.000 UTC-0800');
+        });
+        it('formatTZ UTC+9', function () {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 18:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY H:mm:ss.SSS [UTC]Z';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('marzo 14 2021 18:59:59.999 UTC+0900');
+        });
+
+        it('parseTZ UTC-8', function () {
+            // Mar 14 2021 1:59:59.999 => 2021-03-14T09:59:59.999Z
+            var dateString = 'mar. 14 2021 1:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'America/Los_Angeles';     // UTC-8
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ Failure1', function () {
+            // Mar 14 2021 2:00:00.000 => NaN
+            var dateString = 'mar. 14 2021 2:00:00.000';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+        });
+        it('parseTZ Failure2', function () {
+            // Mar 14 2021 2:59:59.999 => NaN
+            var dateString = 'mar. 14 2021 2:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+        });
+        it('parseTZ UTC-7 (Start of DST)', function () {
+            // Mar 14 2021 3:00:00.000 => 2021-03-14T10:00:00.000Z
+            var dateString = 'mar. 14 2021 3:00:00.000';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC-7 (End of DST)', function () {
+            // Nov 7 2021 1:59:59.999 => 2021-11-07T08:59:59.999Z
+            var dateString = 'nov. 7 2021 1:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 8, 59, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC-8 with Z', function () {
+            // Nov 7 2021 1:59:59.999 => 2021-11-07T09:59:59.999Z
+            var dateString = 'nov. 7 2021 1:59:59.999 -0800';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS Z';
+            var tz = 'America/Los_Angeles';     // UTC-8
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 9, 59, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC-8', function () {
+            // Nov 7 2021 2:00:00.000 => 2021-11-07T10:00:00.000Z
+            var dateString = 'nov. 7 2021 2:00:00.000';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'America/Los_Angeles';     // UTC-8
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 10, 0, 0, 0));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC+9.5', function () {
+            // Oct 3 2021 1:59:59.999 => 2021-10-02T16:29:59.999Z
+            var dateString = 'oct. 3 2021 1:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'Australia/Adelaide';      // UTC+9.5
+            var dateObj = new Date(Date.UTC(2021, 9, 2, 16, 29, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ Failure1', function () {
+            // Oct 3 2021 2:00:00.000 => NaN
+            var dateString = 'oct. 3 2021 2:00:00.000';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'Australia/Adelaide';
+
+            expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+        });
+        it('parseTZ Failure2', function () {
+            // Oct 3 2021 2:59:59.999 => NaN
+            var dateString = 'oct. 3 2021 2:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'Australia/Adelaide';
+
+            expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+        });
+        it('parseTZ UTC+10.5 (Start of DST)', function () {
+            // Oct 3 2021 3:00:00.000 => 2021-10-02T16:30:00.000Z
+            var dateString = 'oct. 3 2021 3:00:00.000';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'Australia/Adelaide';      // UTC+10.5 DST
+            var dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC+10.5 (End of DST)', function () {
+            // Apr 4 2021 2:59:59.999 => 2021-04-03T16:29:59.999Z
+            var dateString = 'abr. 4 2021 2:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'Australia/Adelaide';      // UTC+10.5 DST
+            var dateObj = new Date(Date.UTC(2021, 3, 3, 16, 29, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC+9.5 with Z', function () {
+            // Apr 4 2021 2:59:59.999 => 2021-04-03T17:29:59.999Z
+            var dateString = 'abr. 4 2021 2:59:59.999 +0930';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS Z';
+            var tz = 'Australia/Adelaide';      // UTC+9.5
+            var dateObj = new Date(Date.UTC(2021, 3, 3, 17, 29, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+        it('parseTZ UTC+9.5', function () {
+            // Apr 4 2021 3:00:00.000 => 2021-04-03T17:30:00.000Z
+            var dateString = 'abr. 4 2021 3:00:00.000';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'Australia/Adelaide';      // UTC+9.5
+            var dateObj = new Date(Date.UTC(2021, 3, 3, 17, 30, 0, 0));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+
+        after(function () {
+            date.locale(en);
         });
     });
 

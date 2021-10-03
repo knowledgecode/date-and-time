@@ -101,3 +101,7 @@ date.extend({
 ```
 
 Extending the parser may be a bit difficult. Refer to the library source code to grasp the default behavior.
+
+## Caveats
+
+Note that switching locales or applying plugins after extending the library will be cleared all extensions. In such cases, you need to extend the library again.
