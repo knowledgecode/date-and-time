@@ -2,7 +2,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.date = factory());
-}(this, (function () { 'use strict';
+})(this, (function () { 'use strict';
 
     /**
      * @preserve date-and-time (c) KNOWLEDGECODE | MIT
@@ -406,6 +406,7 @@
         }
     };
 
+    var localized_proto = extend(proto);
     var date = extend(proto);
 
     /**
@@ -426,8 +427,8 @@
         var formatter = extend(_formatter, extension.formatter, true, res);
         var parser = extend(_parser, extension.parser, true, res);
 
-        date._formatter = formatter;
-        date._parser = parser;
+        date._formatter = localized_proto._formatter = formatter;
+        date._parser = localized_proto._parser = parser;
 
         for (var plugin in plugins) {
             date.extend(plugins[plugin]);
@@ -464,10 +465,10 @@
         var install = typeof plugin === 'function' ? plugin : date.plugin[plugin];
 
         if (install) {
-            date.extend(plugins[install(proto)] || {});
+            date.extend(plugins[install(proto, localized_proto)] || {});
         }
     };
 
     return date;
 
-})));
+}));
