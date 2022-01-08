@@ -30,6 +30,7 @@ mocha test/locale/ro.js
 mocha test/locale/ru.js
 mocha test/locale/rw.js
 mocha test/locale/sr.js
+mocha test/locale/sv.js
 mocha test/locale/th.js
 mocha test/locale/tr.js
 mocha test/locale/uk.js
@@ -77,6 +78,7 @@ mocha test/esm/locale/ro.mjs
 mocha test/esm/locale/ru.mjs
 mocha test/esm/locale/rw.mjs
 mocha test/esm/locale/sr.mjs
+mocha test/esm/locale/sv.mjs
 mocha test/esm/locale/th.mjs
 mocha test/esm/locale/tr.mjs
 mocha test/esm/locale/uk.mjs

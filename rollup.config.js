@@ -226,6 +226,14 @@ export default [
         ]
     },
     {
+        input: 'src/locale/sv.js',
+        output: [
+            { file: 'esm/locale/sv.es.js', format: 'es' },
+            { file: 'esm/locale/sv.mjs', format: 'es' },
+            { file: 'locale/sv.js', format: 'umd', name: 'date.locale.sv', esModule: false }
+        ]
+    },
+    {
         input: 'src/locale/th.js',
         output: [
             { file: 'esm/locale/th.es.js', format: 'es' },
