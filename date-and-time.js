@@ -128,12 +128,13 @@
                 obj.res = res;
             }
             return obj;
-        };
-
-    var proto = {
-        _formatter: _formatter,
-        _parser: _parser
-    };
+        },
+        proto = {
+            _formatter: _formatter,
+            _parser: _parser
+        },
+        localized_proto,
+        date;
 
     /**
      * Compiling a format string
@@ -157,10 +158,10 @@
      * @returns {string} a formatted string
      */
     proto.format = function (dateObj, arg, utc) {
-        var pattern = typeof arg === 'string' ? this.compile(arg) : arg,
+        var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
             offset = dateObj.getTimezoneOffset(),
-            d = this.addMinutes(dateObj, utc ? offset : 0),
-            formatter = this._formatter, str = '';
+            d = ctx.addMinutes(dateObj, utc ? offset : 0),
+            formatter = ctx._formatter, str = '';
 
         d.getTimezoneOffset = function () { return utc ? 0 : offset; };
         for (var i = 1, len = pattern.length, token; i < len; i++) {
@@ -177,9 +178,9 @@
      * @returns {Object} a date structure
      */
     proto.preparse = function (dateString, arg) {
-        var pattern = typeof arg === 'string' ? this.compile(arg) : arg,
+        var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
             dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 },
-            comment = /\[(.*)]/, parser = this._parser, offset = 0;
+            comment = /\[(.*)]/, parser = ctx._parser, offset = 0;
 
         dateString = parser.pre(dateString);
         for (var i = 1, len = pattern.length, token, result; i < len; i++) {
@@ -217,9 +218,9 @@
      * @returns {Date} a constructed date
      */
     proto.parse = function (dateString, arg, utc) {
-        var dt = this.preparse(dateString, arg);
+        var ctx = this || date, dt = ctx.preparse(dateString, arg);
 
-        if (this.isValid(dt)) {
+        if (ctx.isValid(dt)) {
             dt.M -= dt.Y < 100 ? 22801 : 1; // 22801 = 1900 * 12 + 1
             if (utc || dt.Z) {
                 return new Date(Date.UTC(dt.Y, dt.M, dt.D, dt.H, dt.m + dt.Z, dt.s, dt.S));
@@ -236,8 +237,8 @@
      * @returns {boolean} whether the date string is a valid date
      */
     proto.isValid = function (arg1, arg2) {
-        var dt = typeof arg1 === 'string' ? this.preparse(arg1, arg2) : arg1,
-            last = [31, 28 + this.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
+        var ctx = this || date, dt = typeof arg1 === 'string' ? ctx.preparse(arg1, arg2) : arg1,
+            last = [31, 28 + ctx.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
 
         return !(
             dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
@@ -256,7 +257,8 @@
      * @returns {string} a formatted string
      */
     proto.transform = function (dateString, arg1, arg2, utc) {
-        return this.format(this.parse(dateString, arg1), arg2, utc);
+        const ctx = this || date;
+        return ctx.format(ctx.parse(dateString, arg1), arg2, utc);
     };
 
     /**
@@ -266,7 +268,7 @@
      * @returns {Date} a date after adding the value
      */
     proto.addYears = function (dateObj, years) {
-        return this.addMonths(dateObj, years * 12);
+        return (this || date).addMonths(dateObj, years * 12);
     };
 
     /**
@@ -302,7 +304,7 @@
      * @returns {Date} a date after adding the value
      */
     proto.addHours = function (dateObj, hours) {
-        return this.addMinutes(dateObj, hours * 60);
+        return (this || date).addMinutes(dateObj, hours * 60);
     };
 
     /**
@@ -312,7 +314,7 @@
      * @returns {Date} a date after adding the value
      */
     proto.addMinutes = function (dateObj, minutes) {
-        return this.addSeconds(dateObj, minutes * 60);
+        return (this || date).addSeconds(dateObj, minutes * 60);
     };
 
     /**
@@ -322,7 +324,7 @@
      * @returns {Date} a date after adding the value
      */
     proto.addSeconds = function (dateObj, seconds) {
-        return this.addMilliseconds(dateObj, seconds * 1000);
+        return (this || date).addMilliseconds(dateObj, seconds * 1000);
     };
 
     /**
@@ -406,8 +408,8 @@
         }
     };
 
-    var localized_proto = extend(proto);
-    var date = extend(proto);
+    localized_proto = extend(proto);
+    date = extend(proto);
 
     /**
      * Changing locale
@@ -469,6 +471,8 @@
         }
     };
 
-    return date;
+    var date$1 = date;
+
+    return date$1;
 
 }));

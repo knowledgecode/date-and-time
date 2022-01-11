@@ -24,6 +24,20 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.1.0
+  - Fixed an issue that the lib's functions assigned to variables using ES6 destructuring assignment cause an error.
+
+  ```javascript
+  // Destructuring assignment
+  const { format, parse } = require('date-and-time');
+
+  // These used to be errors in 2.0.x.
+  format(new Date(), 'MMM DD YYYY');
+  parse('Jan 11 2022', 'MMM DD YYYY');
+  ```
+
+  - Added Swedish support.
+
 - 2.0.1
   - Fixed a bug that the timezone plugin does not support changing locales.
 
