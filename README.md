@@ -24,6 +24,9 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.1.1
+  - Updated dev dependencies to resolve vulnerability.
+
 - 2.1.0
   - Fixed an issue that the lib's functions assigned to variables using ES6 destructuring assignment cause an error.
 
@@ -45,9 +48,6 @@ npm i date-and-time
   - Fixed a conflict when importing multiple plugins and locales.
   - **Breaking Changes!** Due to the above fix, the specifications of plugin, locale, and extension have been changed. The `meridiem` plugin and the `two-digit-year` plugin are now partially incompatible with previous ones. See [here](./PLUGINS.md) for details. Also the `extend()` function has changed. If you are using it, check [here](./EXTEND.md) for any impact. The locales are still compatible.
   - Added `timezone` plugin. You can now use the IANA timezone name to output a datetime string or input a date object. See [PLUGINS.md](./PLUGINS.md) for details.
-
-- 1.0.1
-  - Updated dev dependencies to resolve vulnerability.
 
 ## Usage
 
