@@ -1230,18 +1230,18 @@
             expect(date.parse('2015-12-31 23:00:59.999 -0059', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SSS Z', function () {
-            var now = new Date(Date.UTC(2015, 11, 31, 23, 59, 59, 999));
-            expect(date.parse('2015-12-31 09:59:59.999 -1400', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
+            var now = new Date(Date.UTC(2015, 11, 31, 21, 59, 59, 999));
+            expect(date.parse('2015-12-31 09:59:59.999 -1200', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SSS Z', function () {
-            expect(isNaN(date.parse('2015-12-31 09:58:59.999 -1401', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
+            expect(isNaN(date.parse('2015-12-31 09:58:59.999 -1201', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
         });
         it('YYYY-M-D H:m:s.SSS Z', function () {
-            var now = new Date(Date.UTC(2015, 11, 31, 0, 0, 59, 999));
-            expect(date.parse('2015-12-31 12:00:59.999 +1200', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
+            var now = new Date(Date.UTC(2015, 11, 30, 22, 0, 59, 999));
+            expect(date.parse('2015-12-31 12:00:59.999 +1400', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SSS Z', function () {
-            expect(isNaN(date.parse('2015-12-31 12:01:59.999 +1201', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
+            expect(isNaN(date.parse('2015-12-31 12:01:59.999 +1401', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
         });
         it('MMDDHHmmssSSS', function () {
             var now = new Date(1970, 11, 31, 23, 59, 59, 999);
@@ -1737,20 +1737,20 @@
             var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 999, Z: 0, _index: 1, _length: 1, _match: 1 };
             expect(date.isValid(dt)).to.be(true);
         });
-        it('Z < -720', function () {
-            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: -721, _index: 1, _length: 1, _match: 1 };
+        it('Z < -840', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: -841, _index: 1, _length: 1, _match: 1 };
             expect(date.isValid(dt)).to.be(false);
         });
-        it('Z > -721', function () {
-            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: -720, _index: 1, _length: 1, _match: 1 };
+        it('Z > -841', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: -840, _index: 1, _length: 1, _match: 1 };
             expect(date.isValid(dt)).to.be(true);
         });
-        it('Z > 840', function () {
-            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 841, _index: 1, _length: 1, _match: 1 };
+        it('Z > 720', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 721, _index: 1, _length: 1, _match: 1 };
             expect(date.isValid(dt)).to.be(false);
         });
-        it('Z < 841', function () {
-            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 840, _index: 1, _length: 1, _match: 1 };
+        it('Z < 721', function () {
+            var dt = { Y: 1, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 720, _index: 1, _length: 1, _match: 1 };
             expect(date.isValid(dt)).to.be(true);
         });
         it('index == 0', function () {

@@ -238,7 +238,7 @@ proto.isValid = function (arg1, arg2) {
         dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
         dt.Y < 1 || dt.Y > 9999 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
         dt.H < 0 || dt.H > 23 || dt.m < 0 || dt.m > 59 || dt.s < 0 || dt.s > 59 || dt.S < 0 || dt.S > 999 ||
-        dt.Z < -720 || dt.Z > 840
+        dt.Z < -840 || dt.Z > 720
     );
 };
 
