@@ -64,13 +64,17 @@
             }
             return NaN;
         };
+        var transformTZ = function (dateString, arg1, arg2, timeZone) {
+            return formatTZ(localized_date.parse(dateString, arg1), arg2, timeZone);
+        };
 
         var name = 'timezone';
 
         date.plugin(name, {
             extender: {
                 formatTZ: formatTZ,
-                parseTZ: parseTZ
+                parseTZ: parseTZ,
+                transformTZ: transformTZ
             }
         });
         return name;
