@@ -455,6 +455,15 @@ describe('locale change, then revert, format', () => {
             utc = true;
         expect(format(now, 'Z', utc)).to.equal('+0000');
     });
+    it('"ZZ" matches "+XX:XX/-XX:XX"', () => {
+        const now = new Date(2015, 0, 1, 12, 34, 56, 789);
+        expect(date.format(now, 'ZZ')).to.match(/^[\+-]\d{2}:\d{2}$/);
+    });
+    it('"ZZ" as UTC equals to "+00:00"', () => {
+        const now = new Date(2015, 0, 1, 12, 34, 56, 789),
+            utc = true;
+        expect(date.format(now, 'ZZ', utc)).to.equal('+00:00');
+    });
     it('"ddd MMM DD YYYY HH:mm:ss" equals to "Thu Jan 01 2015 12:34:56"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
         expect(format(now, 'ddd MMM DD YYYY HH:mm:ss')).to.equal('Thu Jan 01 2015 12:34:56');
@@ -774,6 +783,28 @@ describe('locale change, then revert, parse', () => {
     it('YYYY-M-D H:m:s.SSS Z', () => {
         expect(isNaN(parse('2015-12-31 12:01:59.999 +1401', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
     });
+    it('YYYY-M-D H:m:s.SSS ZZ', () => {
+        const now = new Date(2015, 0, 1, 0, 0, 0);
+        expect(date.parse('2015-1-1 0:0:0.0 +00:00', 'YYYY-M-D H:m:s.SSS ZZ')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS ZZ', () => {
+        const now = new Date(Date.UTC(2015, 11, 31, 23, 59, 59, 999));
+        expect(date.parse('2015-12-31 23:00:59.999 -00:59', 'YYYY-M-D H:m:s.SSS ZZ')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS ZZ', () => {
+        const now = new Date(Date.UTC(2015, 11, 31, 21, 59, 59, 999));
+        expect(date.parse('2015-12-31 09:59:59.999 -12:00', 'YYYY-M-D H:m:s.SSS ZZ')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS ZZ', () => {
+        expect(isNaN(date.parse('2015-12-31 09:58:59.999 -12:01', 'YYYY-M-D H:m:s.SSS ZZ'))).to.be(true);
+    });
+    it('YYYY-M-D H:m:s.SSS ZZ', () => {
+        const now = new Date(Date.UTC(2015, 11, 30, 22, 0, 59, 999));
+        expect(date.parse('2015-12-31 12:00:59.999 +14:00', 'YYYY-M-D H:m:s.SSS ZZ')).to.eql(now);
+    });
+    it('YYYY-M-D H:m:s.SSS ZZ', () => {
+        expect(isNaN(date.parse('2015-12-31 12:01:59.999 +14:01', 'YYYY-M-D H:m:s.SSS ZZ'))).to.be(true);
+    });
     it('MMDDHHmmssSSS', () => {
         const now = new Date(1970, 11, 31, 23, 59, 59, 999);
         expect(parse('1231235959999', 'MMDDHHmmssSSS')).to.eql(now);
@@ -815,6 +846,24 @@ describe('locale change, then revert, parse', () => {
     });
     it('Z', () => {
         expect(isNaN(parse('00000', 'Z'))).to.be(true);
+    });
+    it('ZZ', () => {
+        expect(isNaN(date.parse('+00:0', 'ZZ'))).to.be(true);
+    });
+    it('ZZ', () => {
+        expect(isNaN(date.parse('+00:', 'ZZ'))).to.be(true);
+    });
+    it('ZZ', () => {
+        expect(isNaN(date.parse('+0:', 'ZZ'))).to.be(true);
+    });
+    it('ZZ', () => {
+        expect(isNaN(date.parse('0:', 'ZZ'))).to.be(true);
+    });
+    it('ZZ', () => {
+        expect(isNaN(date.parse('00:00', 'ZZ'))).to.be(true);
+    });
+    it('ZZ', () => {
+        expect(isNaN(date.parse('00:000', 'ZZ'))).to.be(true);
     });
     it('foo', () => {
         expect(isNaN(parse('20150101235959', 'foo'))).to.be(true);
@@ -1912,6 +1961,72 @@ describe('multiple locale change and multiple plugins', () => {
 
         expect(parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
     });
+    it('transformTZ EST to PST', () => {
+        const dateString1 = '2021-11-07T04:00:00.000 UTC-0500';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-8
+
+        const dateString2 = 'November 7 2021 1:00:00.000';
+
+        // 2021-11-07T04:00:00.000 UTC-0500 => November 7 2021 1:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ EST to PDT (End of DST)', () => {
+        const dateString1 = '2021-11-07T03:59:59.999 UTC-0500';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+
+        const dateString2 = 'November 7 2021 1:59:59.999';
+
+        // 2021-11-07T03:59:59.999 UTC-0500 => November 7 2021 1:59:59.999
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ EDT to PST', () => {
+        const dateString1 = '2021-03-14T05:59:59.999 UTC-0400';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-8
+
+        const dateString2 = 'March 14 2021 1:59:59.999';
+
+        // 2021-03-14T05:59:59.999 UTC-0400 => March 14 2021 1:59:59.999
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ EDT to PDT (Start of DST)', () => {
+        const dateString1 = '2021-03-14T06:00:00.000 UTC-0400';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+
+        const dateString2 = 'March 14 2021 3:00:00.000';
+
+        // 2021-03-14T06:00:00.000 UTC-0400 => March 14 2021 3:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ PST to JST', () => {
+        const dateString1 = '2021-03-14T01:59:59.999 UTC-0800';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'Asia/Tokyo';              // UTC+9
+
+        const dateString2 = 'March 14 2021 18:59:59.999';
+
+        // 2021-03-14T01:59:59.999 UTC-0800 => March 14 2021 18:59:59.999
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ PDT to JST', () => {
+        const dateString1 = '2021-03-14T03:00:00.000 UTC-0700';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'Asia/Tokyo';              // UTC+9
+
+        const dateString2 = 'March 14 2021 19:00:00.000';
+
+        // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
 
     // two-digit-year
 
@@ -2161,6 +2276,72 @@ describe('appling locale change to timezone plugins', () => {
         const dateObj = new Date(Date.UTC(2021, 3, 3, 17, 30, 0, 0));
 
         expect(parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+    it('transformTZ EST to PST', () => {
+        const dateString1 = '2021-11-07T04:00:00.000 UTC-0500';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-8
+
+        const dateString2 = 'noviembre 7 2021 1:00:00.000';
+
+        // 2021-11-07T04:00:00.000 UTC-0500 => November 7 2021 1:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ EST to PDT (End of DST)', () => {
+        const dateString1 = '2021-11-07T03:59:59.999 UTC-0500';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+
+        const dateString2 = 'noviembre 7 2021 1:59:59.999';
+
+        // 2021-11-07T03:59:59.999 UTC-0500 => November 7 2021 1:59:59.999
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ EDT to PST', () => {
+        const dateString1 = '2021-03-14T05:59:59.999 UTC-0400';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-8
+
+        const dateString2 = 'marzo 14 2021 1:59:59.999';
+
+        // 2021-03-14T05:59:59.999 UTC-0400 => March 14 2021 1:59:59.999
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ EDT to PDT (Start of DST)', () => {
+        const dateString1 = '2021-03-14T06:00:00.000 UTC-0400';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'America/Los_Angeles';     // UTC-7 DST
+
+        const dateString2 = 'marzo 14 2021 3:00:00.000';
+
+        // 2021-03-14T06:00:00.000 UTC-0400 => March 14 2021 3:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ PST to JST', () => {
+        const dateString1 = '2021-03-14T01:59:59.999 UTC-0800';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'Asia/Tokyo';              // UTC+9
+
+        const dateString2 = 'marzo 14 2021 18:59:59.999';
+
+        // 2021-03-14T01:59:59.999 UTC-0800 => March 14 2021 18:59:59.999
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
+    it('transformTZ PDT to JST', () => {
+        const dateString1 = '2021-03-14T03:00:00.000 UTC-0700';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'Asia/Tokyo';              // UTC+9
+
+        const dateString2 = 'marzo 14 2021 19:00:00.000';
+
+        // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
     });
 
     after(() => {

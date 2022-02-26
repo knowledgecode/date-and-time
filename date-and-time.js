@@ -48,6 +48,11 @@
                 var offset = d.getTimezoneOffset() / 0.6 | 0;
                 return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - (offset % 100 * 0.4 | 0))).slice(-4);
             },
+            ZZ: function (d/*, formatString*/) {
+                var offset = d.getTimezoneOffset();
+                var mod = Math.abs(offset);
+                return (offset > 0 ? '-' : '+') + ('0' + (mod / 60 | 0)).slice(-2) + ':' + ('0' + mod % 60).slice(-2);
+            },
             post: function (str) { return str; },
             res: _res
         },
@@ -92,6 +97,10 @@
                 var result = this.exec(/^[\+-]\d{2}[0-5]\d/, str);
                 result.value = (result.value / 100 | 0) * -60 - result.value % 100;
                 return result;
+            },
+            ZZ: function (str/*, formatString */) {
+                var arr = /^([\+-])(\d{2}):([0-5]\d)/.exec(str) || ['', '', '', ''];
+                return { value: 0 - ((arr[1] + arr[2] | 0) * 60 + (arr[1] + arr[3] | 0)), length: arr[0].length };
             },
             h12: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
             exec: function (re, str) {

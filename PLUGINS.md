@@ -76,7 +76,7 @@ date.plugin('foobar');
   - It adds `timeSpan()` function that calculates the difference of two dates to the library.
 
 - [timezone](#timezone)
-  - It adds `formatTZ()` and `parseTZ()` functions that support `IANA time zone names` to the library.
+  - It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zone names` to the library.
 
 - [two-digit-year](#two-digit-year)
   - It adds two-digit year notation to the parser.
@@ -290,7 +290,7 @@ In these functions can be available some tokens to format the calculation result
 
 ### timezone
 
-It adds `formatTZ()` and `parseTZ()` functions that support `IANA time zone names` (`America/Los_Angeles`, `Asia/Tokyo`, and so on) to the library.
+It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zone names` (`America/Los_Angeles`, `Asia/Tokyo`, and so on) to the library.
 
 #### formatTZ(dateObj, arg[, timeZone])
 
@@ -299,7 +299,7 @@ It adds `formatTZ()` and `parseTZ()` functions that support `IANA time zone name
 - @param {**string**} [timeZone] - output as this time zone
 - @returns {**string**} a formatted string
 
-The `formatTZ()` is upward compatible with `format()`. Tokens available here are the same as for the `format()`.  If the `timeZone` is omitted, it output the date string with local time zone.
+`formatTZ()` is upward compatible with `format()`. Tokens available for `arg` are the same as those for `format()`. If `timeZone` is omitted, this function assumes `timeZone` to be a local time zone and outputs a string. This means that the result is the same as when `format()` is used.
 
 #### parseTZ(dateString, arg[, timeZone])
 
@@ -308,7 +308,17 @@ The `formatTZ()` is upward compatible with `format()`. Tokens available here are
 - @param {**string**} [timeZone] - input as this time zone
 - @returns {**Date**} a constructed date
 
-The `parseTZ()` is upward compatible with `parse()`. Tokens available here are the same as for the `parse()`. If the `timeZone` is omitted, the time zone of the date string is assumed to be local time zone.
+`parseTZ()` is upward compatible with `parse()`. Tokens available for `arg` are the same as those for `parse()`. `timeZone` in this function is used as supplemental information. if `dateString` contains a time zone offset value (i.e. -0800, +0900), `timeZone` is not be used. If `dateString` doesn't contain a time zone offset value and `timeZone` is omitted, this function assumes `timeZone` to be a local time zone. This means that the result is the same as when `parse()` is used.
+
+#### transformTZ(dateString, arg1, arg2[, timeZone])
+
+- @param {**string**} dateString - a date string
+- @param {**string|Array.\<string\>**} arg1 - a format string or its compiled object
+- @param {**string|Array.\<string\>**} arg2 - a transformed format string or its compiled object
+- @param {**string**} [timeZone] - output as this time zone
+- @returns {**string**} a formatted string
+
+`transformTZ()` is upward compatible with `transform()`. `dateString` must itself contain a time zone offset value (i.e. -0800, +0900), otherwise this function assumes it is a local time zone. Tokens available for `arg1` are the same as those for `parse()`, also tokens available for `arg2` are the same as those for `format()`. `timeZone` is a `IANA time zone names`, which is required to output a new formatted string. If it is omitted, this function assumes `timeZone` to be a local time zone. This means that the result is the same as when `transform()` is used.
 
 ```javascript
 const date = require('date-and-time');
@@ -329,16 +339,22 @@ date.parseTZ('Sep 25 2021 4:00:00', 'MMM D YYYY H:mm:ss', 'Pacific/Honolulu');  
 
 // Parses the date string assuming that the time zone is "Europe/London" (UTC+0100).
 date.parseTZ('Sep 25 2021 4:00:00', 'MMM D YYYY H:mm:ss', 'Europe/London');  // 2021-09-25T03:00:00.000Z
+
+// Transforms the date string from EST (Eastern Standard Time) to PDT (Pacific Daylight Time).
+date.transformTZ('2021-11-07T03:59:59 UTC-0500', 'YYYY-MM-DD[T]HH:mm:ss [UTC]Z', 'MMMM D YYYY H:mm:ss UTC[Z]', 'America/Los_Angeles'); // November 7 2021 1:59:59 UTC-0700
+
+// Transforms the date string from PDT(Pacific Daylight Time) to JST (Japan Standard Time).
+date.transformTZ('2021-03-14T03:00:00 UTC-0700', 'YYYY-MM-DD[T]HH:mm:ss [UTC]Z', 'MMMM D YYYY H:mm:ss UTC[Z]', 'Asia/Tokyo');   // March 14 2021 19:00:00 UTC+0900
 ```
 
 #### Caveats
 
 - This plugin uses the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) object to parse `IANA time zone names`. Note that if you use this plugin in older browsers, this may **NOT** be supported there. At least it does not work  in IE.
-- If you don't need to use `IANA time zone names`, you should not use this plugin for performance reasons. The `format()` and the `parse()` are enough.
+- If you don't need to use `IANA time zone names`, you should not use this plugin for performance reasons. Recommended to use `format()` and `parse()`.
 
 #### Start of DST (Daylight Saving Time)
 
-For example, in the US, when local standard time is about to reach Sunday, 14 March 2021, `02:00:00` clocks are turned `forward` 1 hour to Sunday, 14 March 2021, `03:00:00` local daylight time instead. Thus, there is no `02:00:00` to `02:59:59` on 14 March 2021. In such edge cases, the `parseTZ()` will parse like this:
+For example, in the US, when local standard time is about to reach Sunday, 14 March 2021, `02:00:00` clocks are turned `forward` 1 hour to Sunday, 14 March 2021, `03:00:00` local daylight time instead. Thus there is no `02:00:00` to `02:59:59` on 14 March 2021. In such edge cases, `parseTZ()` will parse like this:
 
 ```javascript
 date.parseTZ('Mar 14 2021 1:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T09:59:59Z
@@ -349,16 +365,16 @@ date.parseTZ('Mar 14 2021 3:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles')
 
 #### End of DST
 
-Also, when local daylight time is about to reach Sunday, 7 November 2021, `02:00:00` clocks are turned `backward` 1 hour to Sunday, 7 November 2021, `01:00:00` local standard time instead. Thus, `01:00:00` to `01:59:59` on November 7 2021 is repeated twice. Since there are two possible times between them, DST or not, the `parseTZ()` assumes that the time is former to make the result unique:
+Also, when local daylight time is about to reach Sunday, 7 November 2021, `02:00:00` clocks are turned `backward` 1 hour to Sunday, 7 November 2021, `01:00:00` local standard time instead. Thus `01:00:00` to `01:59:59` on November 7 2021 is repeated twice. Since there are two possible times here, `parseTZ()` assumes that the time is the former (DST) in order to make the result unique:
 
 ```javascript
-// The parseTZ() assumes that this time is DST.
+// This time is DST or PST? The parseTZ() always assumes that it is DST.
 date.parseTZ('Nov 7 2021 1:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles');  // => 2021-11-07T08:59:59Z
 // This time is already PST.
 date.parseTZ('Nov 7 2021 2:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles');  // => 2021-11-07T10:00:00Z
 ```
 
-At the first example above, if you want the parser to parse the time as PST (Pacific Standard Time), use the `parse()` with a time offset instead:
+In the first example above, if you want `parseTZ()` to parse the time as PST, you need to pass a date string containing the time zone offset value. In this case, it is better to use `parse()` instead:
 
 ```javascript
 date.parse('Nov 7 2021 1:59:59 -0800', 'MMM D YYYY H:mm:ss Z'); // => 2021-11-07T09:59:59Z

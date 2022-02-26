@@ -24,25 +24,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.2.0
+  - Added `tranformTZ()` to `timezone` plugin. See [PLUGINS.md](./PLUGINS.md) for details.
+  - Added `ZZ` token to supports time zone values like `-08:00` `+09:00` to `format()` and `parse()`.
+
 - 2.1.2
-  - Fixed an issue that the lib's validation logic would condider an error when a timezone offset value of a datetime string was greater then +12 hours.
+  - Fixed an issue that the lib's validation logic would consider an error when a time zone offset value of a date-time string was greater than +12 hours.
 
 - 2.1.1
   - Updated dev dependencies to resolve vulnerability.
-
-- 2.1.0
-  - Fixed an issue that the lib's functions assigned to variables using ES6 destructuring assignment cause an error.
-
-  ```javascript
-  // Destructuring assignment
-  const { format, parse } = require('date-and-time');
-
-  // These used to be errors in 2.0.x.
-  format(new Date(), 'MMM DD YYYY');
-  parse('Jan 11 2022', 'MMM DD YYYY');
-  ```
-
-  - Added Swedish support.
 
 ## Usage
 
@@ -181,7 +171,8 @@ Available tokens and their meanings are as follows:
 | SSS   | millisecond (high accuracy)          | 753, 022           |
 | SS    | millisecond (middle accuracy)        | 75, 02             |
 | S     | millisecond (low accuracy)           | 7, 0               |
-| Z     | timezone offset                      | +0100, -0800       |
+| Z     | time zone offset value               | +0100, -0800       |
+| ZZ    | time zone offset value with colon    | +01:00, -08:00     |
 
 You can also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
 
@@ -255,7 +246,8 @@ Available tokens and their meanings are as follows:
 | SSS    | millisecond (high accuracy)          | 753, 022                    |
 | SS     | millisecond (middle accuracy)        | 75, 02                      |
 | S      | millisecond (low accuracy)           | 7, 0                        |
-| Z      | timezone offset                      | +0100, -0800                |
+| Z      | time zone offset value               | +0100, -0800                |
+| ZZ     | time zone offset value with colon    | +01:00, -08:00              |
 
 You can also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
 
@@ -286,7 +278,7 @@ if (isNaN(today)) {
 
 #### Note 2. Input as UTC
 
-This function usually assumes the `dateString` is a local date-time. Set to true the `utc` option (the 3rd parameter) if it is a UTC date-time.
+This function assumes the `dateString` is a local date-time unless it contains a time zone offset value. Set to true the `utc` option (the 3rd parameter) if it is a UTC date-time.
 
 ```javascript
 date.parse('11:14:05 PM', 'hh:mm:ss A');          // => Jan 1 1970 23:14:05 GMT-0800
