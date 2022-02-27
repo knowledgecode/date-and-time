@@ -227,11 +227,12 @@
      * @returns {Date} a constructed date
      */
     proto.parse = function (dateString, arg, utc) {
-        var ctx = this || date, dt = ctx.preparse(dateString, arg);
+        var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
+            dt = ctx.preparse(dateString, pattern);
 
         if (ctx.isValid(dt)) {
             dt.M -= dt.Y < 100 ? 22801 : 1; // 22801 = 1900 * 12 + 1
-            if (utc || dt.Z) {
+            if (utc || ~ctx._parser.find(pattern, 'ZZ').value) {
                 return new Date(Date.UTC(dt.Y, dt.M, dt.D, dt.H, dt.m + dt.Z, dt.s, dt.S));
             }
             return new Date(dt.Y, dt.M, dt.D, dt.H, dt.m, dt.s, dt.S);

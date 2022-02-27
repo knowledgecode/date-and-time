@@ -24,15 +24,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.2.1
+  - Fixed an issue where `parse()` would treat a date-time string containing a UTC time zone (i.e. +0000) as a local time zone when parsing it.
+
 - 2.2.0
   - Added `tranformTZ()` to `timezone` plugin. See [PLUGINS.md](./PLUGINS.md) for details.
-  - Added `ZZ` token to supports time zone values like `-08:00` `+09:00` to `format()` and `parse()`.
+  - Added `ZZ` token to support time zone values with colon like `-08:00` `+09:00` to `format()` and `parse()`.
 
 - 2.1.2
-  - Fixed an issue that the lib's validation logic would consider an error when a time zone offset value of a date-time string was greater than +12 hours.
-
-- 2.1.1
-  - Updated dev dependencies to resolve vulnerability.
+  - Fixed an issue where the lib's validation logic would consider an error when a time zone offset value of a date-time string was greater than +12 hours.
 
 ## Usage
 

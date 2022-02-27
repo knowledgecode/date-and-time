@@ -258,4 +258,16 @@ describe('timezone', () => {
         // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
         expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
     });
+
+    it('transformTZ UTC to JST', () => {
+        const dateString1 = '2021-03-14T03:00:00.000 UTC+0000';
+        const formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        const formatString2 = 'MMMM D YYYY H:mm:ss.SSS';
+        const tz = 'Asia/Tokyo';              // UTC+9
+
+        const dateString2 = 'March 14 2021 12:00:00.000';
+
+        // 2021-03-14T03:00:00.000 UTC+0000 => March 14 2021 12:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+    });
 });
