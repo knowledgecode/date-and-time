@@ -30,10 +30,8 @@ var plugin = function (date, localized_date) {
         var pattern2 = typeof arg === 'string' ? date.compile(arg) : arg;
         var dateObj = localized_date.parse(dateString, pattern2, true);
 
-        for (var i = 1, len = pattern2.length; i < len; i++) {
-            if (pattern2[i].indexOf('Z') === 0) {
-                return dateObj;
-            }
+        if (~date._parser.find(pattern2, 'ZZ').value) {
+            return dateObj;
         }
 
         options.timeZone = timeZone;

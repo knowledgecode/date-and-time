@@ -1239,7 +1239,7 @@
             expect(isNaN(date.parse('2015-0-0 24:60:61.0', 'YYYY-M-D H:m:s.S'))).to.be(true);
         });
         it('YYYY-M-D H:m:s.SSS Z', function () {
-            var now = new Date(2015, 0, 1, 0, 0, 0);
+            var now = new Date(Date.UTC(2015, 0, 1, 0, 0, 0));
             expect(date.parse('2015-1-1 0:0:0.0 +0000', 'YYYY-M-D H:m:s.SSS Z')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SSS Z', function () {
@@ -1261,7 +1261,7 @@
             expect(isNaN(date.parse('2015-12-31 12:01:59.999 +1401', 'YYYY-M-D H:m:s.SSS Z'))).to.be(true);
         });
         it('YYYY-M-D H:m:s.SSS ZZ', function () {
-            var now = new Date(2015, 0, 1, 0, 0, 0);
+            var now = new Date(Date.UTC(2015, 0, 1, 0, 0, 0));
             expect(date.parse('2015-1-1 0:0:0.0 +00:00', 'YYYY-M-D H:m:s.SSS ZZ')).to.eql(now);
         });
         it('YYYY-M-D H:m:s.SSS ZZ', function () {
