@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A Minimalist DateTime utility for Node.js and the browser",
   "main": "date-and-time.js",
   "module": "esm/date-and-time.es.js",
