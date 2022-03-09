@@ -54,7 +54,7 @@ var plugin = function (date, localized_date) {
                 return d;
             }
         }
-        return NaN;
+        return new Date(NaN);
     };
     var transformTZ = function (dateString, arg1, arg2, timeZone) {
         return formatTZ(localized_date.parse(dateString, arg1), arg2, timeZone);
