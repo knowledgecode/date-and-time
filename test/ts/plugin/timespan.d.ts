@@ -1,0 +1,1 @@
+../../../plugin/timespan.d.ts

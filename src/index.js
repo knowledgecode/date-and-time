@@ -140,9 +140,9 @@ var locales = {},
     date;
 
 /**
- * Compiling a format string
- * @param {string} formatString - a format string
- * @returns {Array.<string>} a compiled object
+ * Compiling format strings
+ * @param {string} formatString - A format string
+ * @returns {Array.<string>} A compiled object
  */
 proto.compile = function (formatString) {
     var re = /\[([^\[\]]|\[[^\[\]]*])*]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
@@ -154,11 +154,11 @@ proto.compile = function (formatString) {
 };
 
 /**
- * Formatting a Date and Time
- * @param {Date} dateObj - a Date object
- * @param {string|Array.<string>} arg - a format string or its compiled object
- * @param {boolean} [utc] - output as UTC
- * @returns {string} a formatted string
+ * Formatting date and time objects (Date -> String)
+ * @param {Date} dateObj - A Date object
+ * @param {string|Array.<string>} arg - A format string or its compiled object
+ * @param {boolean} [utc] - Output as UTC
+ * @returns {string} A formatted string
  */
 proto.format = function (dateObj, arg, utc) {
     var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
@@ -175,10 +175,11 @@ proto.format = function (dateObj, arg, utc) {
 };
 
 /**
- * Pre-parsing a Date and Time string
- * @param {string} dateString - a date string
- * @param {string|Array.<string>} arg - a format string or its compiled object
- * @returns {Object} a date structure
+ * Pre-parsing date and time strings
+ * @param {string} dateString - A date and time string
+ * @param {string|Array.<string>} arg - A format string or its compiled object
+ * @param {boolean} [utc] - Input as UTC
+ * @returns {Object} A pre-parsed result object
  */
 proto.preparse = function (dateString, arg) {
     var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
@@ -214,11 +215,11 @@ proto.preparse = function (dateString, arg) {
 };
 
 /**
- * Parsing a Date and Time string
- * @param {string} dateString - a date string
- * @param {string|Array.<string>} arg - a format string or its compiled object
- * @param {boolean} [utc] - input as UTC
- * @returns {Date} a constructed date
+ * Parsing of date and time string (String -> Date)
+ * @param {string} dateString - A date-time string
+ * @param {string|Array.<string>} arg - A format string or its compiled object
+ * @param {boolean} [utc] - Input as UTC
+ * @returns {Date} A Date object
  */
 proto.parse = function (dateString, arg, utc) {
     var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
@@ -235,10 +236,10 @@ proto.parse = function (dateString, arg, utc) {
 };
 
 /**
- * Validation
- * @param {Object|string} arg1 - a date structure or a date string
- * @param {string|Array.<string>} [arg2] - a format string or its compiled object
- * @returns {boolean} whether the date string is a valid date
+ * Date and time string validation
+ * @param {Object|string} arg1 - A pre-parsed result object or a date and time string
+ * @param {string|Array.<string>} [arg2] - A format string or its compiled object
+ * @returns {boolean} Whether the date and time string is a valid date and time
  */
 proto.isValid = function (arg1, arg2) {
     var ctx = this || date, dt = typeof arg1 === 'string' ? ctx.preparse(arg1, arg2) : arg1,
@@ -253,12 +254,12 @@ proto.isValid = function (arg1, arg2) {
 };
 
 /**
- * Transforming a Date and Time string
- * @param {string} dateString - a date string
- * @param {string|Array.<string>} arg1 - a format string or its compiled object
- * @param {string|Array.<string>} arg2 - a transformed format string or its compiled object
- * @param {boolean} [utc] - output as UTC
- * @returns {string} a formatted string
+ * Format transformation of date and time string (String -> String)
+ * @param {string} dateString - A date and time string
+ * @param {string|Array.<string>} arg1 - A format string or its compiled object before transformation
+ * @param {string|Array.<string>} arg2 - A format string or its compiled object after transformation
+ * @param {boolean} [utc] - Output as UTC
+ * @returns {string} A formatted string
  */
 proto.transform = function (dateString, arg1, arg2, utc) {
     const ctx = this || date;
@@ -267,9 +268,9 @@ proto.transform = function (dateString, arg1, arg2, utc) {
 
 /**
  * Adding years
- * @param {Date} dateObj - a date object
- * @param {number} years - number of years to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} years - Number of years to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addYears = function (dateObj, years) {
     return (this || date).addMonths(dateObj, years * 12);
@@ -277,9 +278,9 @@ proto.addYears = function (dateObj, years) {
 
 /**
  * Adding months
- * @param {Date} dateObj - a date object
- * @param {number} months - number of months to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} months - Number of months to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addMonths = function (dateObj, months) {
     var d = new Date(dateObj.getTime());
@@ -290,9 +291,9 @@ proto.addMonths = function (dateObj, months) {
 
 /**
  * Adding days
- * @param {Date} dateObj - a date object
- * @param {number} days - number of days to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} days - Number of days to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addDays = function (dateObj, days) {
     var d = new Date(dateObj.getTime());
@@ -303,9 +304,9 @@ proto.addDays = function (dateObj, days) {
 
 /**
  * Adding hours
- * @param {Date} dateObj - a date object
- * @param {number} hours - number of hours to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} hours - Number of hours to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addHours = function (dateObj, hours) {
     return (this || date).addMinutes(dateObj, hours * 60);
@@ -313,9 +314,9 @@ proto.addHours = function (dateObj, hours) {
 
 /**
  * Adding minutes
- * @param {Date} dateObj - a date object
- * @param {number} minutes - number of minutes to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} minutes - Number of minutes to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addMinutes = function (dateObj, minutes) {
     return (this || date).addSeconds(dateObj, minutes * 60);
@@ -323,9 +324,9 @@ proto.addMinutes = function (dateObj, minutes) {
 
 /**
  * Adding seconds
- * @param {Date} dateObj - a date object
- * @param {number} seconds - number of seconds to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} seconds - Number of seconds to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addSeconds = function (dateObj, seconds) {
     return (this || date).addMilliseconds(dateObj, seconds * 1000);
@@ -333,19 +334,19 @@ proto.addSeconds = function (dateObj, seconds) {
 
 /**
  * Adding milliseconds
- * @param {Date} dateObj - a date object
- * @param {number} milliseconds - number of milliseconds to add
- * @returns {Date} a date after adding the value
+ * @param {Date} dateObj - A Date object
+ * @param {number} milliseconds - Number of milliseconds to add
+ * @returns {Date} The Date object after adding the value
  */
 proto.addMilliseconds = function (dateObj, milliseconds) {
     return new Date(dateObj.getTime() + milliseconds);
 };
 
 /**
- * Subtracting two dates
- * @param {Date} date1 - a Date object
- * @param {Date} date2 - a Date object
- * @returns {Object} a result object subtracting date2 from date1
+ * Subtracting two dates (date1 - date2)
+ * @param {Date} date1 - A Date object
+ * @param {Date} date2 - A Date object
+ * @returns {Object} The result object of subtracting date2 from date1
  */
 proto.subtract = function (date1, date2) {
     var delta = date1.getTime() - date2.getTime();
@@ -370,9 +371,9 @@ proto.subtract = function (date1, date2) {
 };
 
 /**
- * Whether year is leap year
- * @param {number} y - year
- * @returns {boolean} whether year is leap year
+ * Whether a year is a leap year
+ * @param {number} y - A year to check
+ * @returns {boolean} Whether the year is a leap year
  */
 proto.isLeapYear = function (y) {
     return (!(y % 4) && !!(y % 100)) || !(y % 400);
@@ -380,19 +381,19 @@ proto.isLeapYear = function (y) {
 
 /**
  * Comparison of two dates
- * @param {Date} date1 - a Date object
- * @param {Date} date2 - a Date object
- * @returns {boolean} whether the two dates are the same day (time is ignored)
+ * @param {Date} date1 - A Date object
+ * @param {Date} date2 - A Date object
+ * @returns {boolean} Whether the two dates are the same day (time is ignored)
  */
 proto.isSameDay = function (date1, date2) {
     return date1.toDateString() === date2.toDateString();
 };
 
 /**
- * Defining new locale
- * @param {string} code - language code
- * @param {Function} locale - locale installer
- * @returns {string} current language code
+ * Definition of new locale
+ * @param {string} code - A language code
+ * @param {Function} locale - A locale installer
+ * @returns {void}
  */
 proto.locale = function (code, locale) {
     if (!locales[code]) {
@@ -401,9 +402,9 @@ proto.locale = function (code, locale) {
 };
 
 /**
- * Defining new plugin
- * @param {string} name - plugin name
- * @param {Function} plugin - plugin installer
+ * Definition of new plugin
+ * @param {string} name - A plugin name
+ * @param {Function} plugin - A plugin installer
  * @returns {void}
  */
 proto.plugin = function (name, plugin) {
@@ -416,9 +417,9 @@ localized_proto = extend(proto);
 date = extend(proto);
 
 /**
- * Changing locale
- * @param {Function|string} [locale] - locale object | language code
- * @returns {string} current language code
+ * Changing locales
+ * @param {Function|string} [locale] - A locale installer or language code
+ * @returns {string} The current language code
  */
 date.locale = function (locale) {
     var install = typeof locale === 'function' ? locale : date.locale[locale];
@@ -444,8 +445,8 @@ date.locale = function (locale) {
 };
 
 /**
- * Feature extension
- * @param {Object} extension - extension object
+ * Functional extension
+ * @param {Object} extension - An extension object
  * @returns {void}
  */
 date.extend = function (extension) {
@@ -463,8 +464,8 @@ date.extend = function (extension) {
 };
 
 /**
- * Importing plugin
- * @param {Function|string} plugin - plugin object | plugin name
+ * Importing plugins
+ * @param {Function|string} plugin - A plugin installer or plugin name
  * @returns {void}
  */
 date.plugin = function (plugin) {
