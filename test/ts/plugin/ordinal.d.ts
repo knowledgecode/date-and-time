@@ -1,0 +1,1 @@
+../../../plugin/ordinal.d.ts

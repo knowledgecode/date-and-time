@@ -1,6 +1,6 @@
 # Plugins
 
-This library is oriented towards minimalism, so it may seem to some developers to be lacking in features. Plugin is the most realistic solution to such dissatisfaction. By importing plugins, you can extend the functionality of this library, mainly a formatter and a parser.
+This library is oriented towards minimalism, so it may seem to some developers to be lacking in features. The plugin is the most realistic solution to such dissatisfaction. By importing plugins, you can extend the functionality of this library, primarily the formatter and parser.
 
 *The formatter is used in `format()`, etc., the parser is used in `parse()`, `preparse()`, `isValid()`, etc.*
 
@@ -238,9 +238,9 @@ It adds `timeSpan()` function that calculates the difference of two dates to the
 
 #### timeSpan(date1, date2)
 
-- @param {**Date**} date1 - a Date object
-- @param {**Date**} date2 - a Date object
-- @returns {**Object**} a result object subtracting date2 from date1
+- @param {**Date**} date1 - A Date object
+- @param {**Date**} date2 - A Date object
+- @returns {**Object**} The result object of subtracting date2 from date1
 
 ```javascript
 const date = require('date-and-time');
@@ -262,11 +262,11 @@ Like `subtract()`, `timeSpan()` returns an object with functions like this:
 
 | function       | description             |
 |:---------------|:------------------------|
-| toDays         | Outputs as dates        |
-| toHours        | Outputs as hours        |
-| toMinutes      | Outputs as minutes      |
-| toSeconds      | Outputs as seconds      |
-| toMilliseconds | Outputs as milliseconds |
+| toDays         | Outputs in dates        |
+| toHours        | Outputs in hours        |
+| toMinutes      | Outputs in minutes      |
+| toSeconds      | Outputs in seconds      |
+| toMilliseconds | Outputs in milliseconds |
 
 In these functions can be available some tokens to format the calculation result. Here are the tokens and their meanings:
 
@@ -294,29 +294,29 @@ It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zo
 
 #### formatTZ(dateObj, arg[, timeZone])
 
-- @param {**Date**} dateObj - a Date object
-- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
-- @param {**string**} [timeZone] - output as this time zone
-- @returns {**string**} a formatted string
+- @param {**Date**} dateObj - A Date object
+- @param {**string|Array.\<string\>**} arg - A format string or its compiled object
+- @param {**string**} [timeZone] - Output as this time zone
+- @returns {**string**} A formatted string
 
 `formatTZ()` is upward compatible with `format()`. Tokens available for `arg` are the same as those for `format()`. If `timeZone` is omitted, this function assumes `timeZone` to be a local time zone and outputs a string. This means that the result is the same as when `format()` is used.
 
 #### parseTZ(dateString, arg[, timeZone])
 
-- @param {**string**} dateString - a date string
-- @param {**string|Array.\<string\>**} arg - a format string or its compiled object
-- @param {**string**} [timeZone] - input as this time zone
-- @returns {**Date**} a constructed date
+- @param {**string**} dateString - A date and time string
+- @param {**string|Array.\<string\>**} arg - A format string or its compiled object
+- @param {**string**} [timeZone] - Input as this time zone
+- @returns {**Date**} A Date object
 
 `parseTZ()` is upward compatible with `parse()`. Tokens available for `arg` are the same as those for `parse()`. `timeZone` in this function is used as supplemental information. if `dateString` contains a time zone offset value (i.e. -0800, +0900), `timeZone` is not be used. If `dateString` doesn't contain a time zone offset value and `timeZone` is omitted, this function assumes `timeZone` to be a local time zone. This means that the result is the same as when `parse()` is used.
 
 #### transformTZ(dateString, arg1, arg2[, timeZone])
 
-- @param {**string**} dateString - a date string
-- @param {**string|Array.\<string\>**} arg1 - a format string or its compiled object
-- @param {**string|Array.\<string\>**} arg2 - a transformed format string or its compiled object
-- @param {**string**} [timeZone] - output as this time zone
-- @returns {**string**} a formatted string
+- @param {**string**} dateString - A date and time string
+- @param {**string|Array.\<string\>**} arg1 - A format string before transformation or its compiled object
+- @param {**string|Array.\<string\>**} arg2 - A format string after transformation or its compiled object
+- @param {**string**} [timeZone] - Output as this time zone
+- @returns {**string**} A formatted string
 
 `transformTZ()` is upward compatible with `transform()`. `dateString` must itself contain a time zone offset value (i.e. -0800, +0900), otherwise this function assumes it is a local time zone. Tokens available for `arg1` are the same as those for `parse()`, also tokens available for `arg2` are the same as those for `format()`. `timeZone` is a `IANA time zone names`, which is required to output a new formatted string. If it is omitted, this function assumes `timeZone` to be a local time zone. This means that the result is the same as when `transform()` is used.
 

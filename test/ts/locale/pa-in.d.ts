@@ -1,0 +1,1 @@
+../../../locale/pa-in.d.ts
