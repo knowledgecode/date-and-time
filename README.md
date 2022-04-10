@@ -24,6 +24,9 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.3.1
+  - Updated dev dependencies to resolve vulnerabilities.
+
 - 2.3.0
   - TypeScript support.
   - Fixed an issue where `parseTZ()` in timezone plugin could return `NaN` instead of `Invalid Date` if parsing failed.
