@@ -24,6 +24,9 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.4.0
+  - Support for testing in Jest.
+
 - 2.3.1
   - Updated dev dependencies to resolve vulnerabilities.
 
@@ -33,10 +36,6 @@ npm i date-and-time
 
 - 2.2.1
   - Fixed an issue where `parse()` would treat a date and time string containing a UTC time zone (i.e. +0000) as a local time zone when parsing.
-
-- 2.2.0
-  - Added `tranformTZ()` to `timezone` plugin. See [PLUGINS.md](./PLUGINS.md) for details.
-  - Added `ZZ` token to support time zone values with colon like `-08:00` `+09:00` to `format()` and `parse()`.
 
 ## Usage
 
