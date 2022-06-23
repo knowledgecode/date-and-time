@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "A Minimalist DateTime utility for Node.js and the browser",
   "main": "date-and-time.js",
   "module": "esm/date-and-time.es.js",
@@ -8,17 +8,26 @@
   "unpkg": "date-and-time.min.js",
   "exports": {
     ".": {
-      "browser": "./esm/date-and-time.es.js",
+      "browser": {
+        "import": "./esm/date-and-time.es.js",
+        "require": "./date-and-time.js"
+      },
       "import": "./esm/date-and-time.mjs",
       "require": "./date-and-time.js"
     },
     "./locale/*": {
-      "browser": "./esm/locale/*.es.js",
+      "browser": {
+        "import": "./esm/locale/*.es.js",
+        "require": "./locale/*.js"
+      },
       "import": "./esm/locale/*.mjs",
       "require": "./locale/*.js"
     },
     "./plugin/*": {
-      "browser": "./esm/plugin/*.es.js",
+      "browser": {
+        "import": "./esm/plugin/*.es.js",
+        "require": "./plugin/*.js"
+      },
       "import": "./esm/plugin/*.mjs",
       "require": "./plugin/*.js"
     }
@@ -48,9 +57,9 @@
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.27.0",
     "expect.js": "^0.3.1",
-    "mocha": "^9.2.2",
+    "mocha": "^10.0.0",
     "mocha-headless-chrome": "^4.0.0",
-    "rollup": "^2.70.1",
-    "tsd": "^0.20.0"
+    "rollup": "^2.75.7",
+    "tsd": "^0.21.0"
   }
 }
