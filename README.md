@@ -24,6 +24,9 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.4.1
+  - Fixed the previous Jest support.
+
 - 2.4.0
   - Support for testing in Jest.
 
@@ -33,9 +36,6 @@ npm i date-and-time
 - 2.3.0
   - TypeScript support.
   - Fixed an issue where `parseTZ()` in timezone plugin could return `NaN` instead of `Invalid Date` if parsing failed.
-
-- 2.2.1
-  - Fixed an issue where `parse()` would treat a date and time string containing a UTC time zone (i.e. +0000) as a local time zone when parsing.
 
 ## Usage
 
