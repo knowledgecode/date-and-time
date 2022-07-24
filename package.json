@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "A Minimalist DateTime utility for Node.js and the browser",
   "main": "date-and-time.js",
   "module": "esm/date-and-time.es.js",
@@ -8,28 +8,19 @@
   "unpkg": "date-and-time.min.js",
   "exports": {
     ".": {
-      "browser": {
-        "import": "./esm/date-and-time.es.js",
-        "require": "./date-and-time.js"
-      },
       "import": "./esm/date-and-time.mjs",
-      "require": "./date-and-time.js"
+      "require": "./date-and-time.js",
+      "browser": "./esm/date-and-time.es.js"
     },
     "./locale/*": {
-      "browser": {
-        "import": "./esm/locale/*.es.js",
-        "require": "./locale/*.js"
-      },
       "import": "./esm/locale/*.mjs",
-      "require": "./locale/*.js"
+      "require": "./locale/*.js",
+      "browser": "./esm/locale/*.es.js"
     },
     "./plugin/*": {
-      "browser": {
-        "import": "./esm/plugin/*.es.js",
-        "require": "./plugin/*.js"
-      },
       "import": "./esm/plugin/*.mjs",
-      "require": "./plugin/*.js"
+      "require": "./plugin/*.js",
+      "browser": "./esm/plugin/*.es.js"
     }
   },
   "scripts": {
@@ -59,7 +50,7 @@
     "expect.js": "^0.3.1",
     "mocha": "^10.0.0",
     "mocha-headless-chrome": "^4.0.0",
-    "rollup": "^2.75.7",
+    "rollup": "^2.77.0",
     "tsd": "^0.21.0"
   }
 }
