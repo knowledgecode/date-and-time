@@ -276,7 +276,7 @@ If the function fails to parse, it will return `Invalid Date`. Notice that the `
 ```javascript
 const today = date.parse('Jam 1 2017', 'MMM D YYYY');
 
-if (isNaN(today)) {
+if (isNaN(today.getTime())) {
     // Failure
 }
 ```
