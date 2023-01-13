@@ -1,4 +1,4 @@
-import compiler from '@ampproject/rollup-plugin-closure-compiler';
+import terser from '@rollup/plugin-terser';
 
 export default [
     {
@@ -351,6 +351,6 @@ export default [
             { file: 'esm/date-and-time.es.min.js', format: 'es' },
             { file: 'date-and-time.min.js', format: 'umd', name: 'date', esModule: false }
         ],
-        plugins: [compiler()]
+        plugins: [terser()]
     }
 ];

@@ -14,6 +14,7 @@ Nowadays, JS modules have become huge, complex, and have many dependencies. We t
 - Extensible. Plugin system support.
 - Multi language support.
 - Universal / Isomorphic. Works wherever.
+- TypeScript support.
 - Older browser support. Even works on IE6. :)
 
 ## Install
@@ -24,18 +25,14 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.4.2
+  - Fixed an issue where the timezone plugin stopped working due to Node.js timezone update.
+
 - 2.4.1
   - Fixed the previous Jest support.
 
 - 2.4.0
   - Support for testing in Jest.
-
-- 2.3.1
-  - Updated dev dependencies to resolve vulnerabilities.
-
-- 2.3.0
-  - TypeScript support.
-  - Fixed an issue where `parseTZ()` in timezone plugin could return `NaN` instead of `Invalid Date` if parsing failed.
 
 ## Usage
 

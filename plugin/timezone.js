@@ -50,7 +50,7 @@
             var dateString2 = date.format(localized_date.parse(dateString, pattern2), pattern);
 
             var comparer = function (d) {
-                return dateString2 === dateTimeFormat.format(d);
+                return dateString2 === dateTimeFormat.format(d).replace(/[\u202f]/, ' ');
             };
 
             // Trying to adjust for daylight saving time.
