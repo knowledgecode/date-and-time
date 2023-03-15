@@ -285,7 +285,7 @@ proto.addYears = function (dateObj, years) {
 proto.addMonths = function (dateObj, months) {
     var d = new Date(dateObj.getTime());
 
-    d.setMonth(d.getMonth() + months);
+    d.setUTCMonth(d.getUTCMonth() + months);
     return d;
 };
 
@@ -298,7 +298,7 @@ proto.addMonths = function (dateObj, months) {
 proto.addDays = function (dateObj, days) {
     var d = new Date(dateObj.getTime());
 
-    d.setDate(d.getDate() + days);
+    d.setUTCDate(d.getUTCDate() + days);
     return d;
 };
 
