@@ -13,7 +13,7 @@ Nowadays, JS modules have become huge, complex, and have many dependencies. We t
 - Minimalist. Approximately 2k. (minified and gzipped)
 - Extensible. Plugin system support.
 - Multi language support.
-- Universal / Isomorphic. Works wherever.
+- Universal / Isomorphic. Works anywhere.
 - TypeScript support.
 - Older browser support. Even works on IE6. :)
 
@@ -25,14 +25,14 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 2.4.3
+  - Fixed an issue where using the `addMonths` function in regions with daylight saving time would return incorrect results.
+
 - 2.4.2
   - Fixed an issue where the timezone plugin stopped working due to Node.js timezone update.
 
 - 2.4.1
   - Fixed the previous Jest support.
-
-- 2.4.0
-  - Support for testing in Jest.
 
 ## Usage
 
