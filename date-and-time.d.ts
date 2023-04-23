@@ -154,57 +154,64 @@ export function transform(dateString: string, compiledObj1: string[], compiledOb
  * Adding years
  * @param dateObj - A Date object
  * @param years - Number of years to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addYears(dateObj: Date, years: number): Date;
+export function addYears(dateObj: Date, years: number, utc?: boolean): Date;
 
 /**
  * Adding months
  * @param dateObj - A Date object
  * @param months - Number of months to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addMonths(dateObj: Date, months: number): Date;
+export function addMonths(dateObj: Date, months: number, utc?: boolean): Date;
 
 /**
  * Adding days
  * @param dateObj - A Date object
  * @param days - Number of days to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addDays(dateObj: Date, days: number): Date;
+export function addDays(dateObj: Date, days: number, utc?: boolean): Date;
 
 /**
  * Adding hours
  * @param dateObj - A Date object
  * @param hours - Number of hours to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addHours(dateObj: Date, hours: number): Date;
+export function addHours(dateObj: Date, hours: number, utc?: boolean): Date;
 
 /**
  * Adding minutes
  * @param dateObj - A Date object
  * @param minutes - Number of minutes to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addMinutes(dateObj: Date, minutes: number): Date;
+export function addMinutes(dateObj: Date, minutes: number, utc?: boolean): Date;
 
 /**
  * Adding seconds
  * @param dateObj - A Date object
  * @param seconds - Number of seconds to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addSeconds(dateObj: Date, seconds: number): Date;
+export function addSeconds(dateObj: Date, seconds: number, utc?: boolean): Date;
 
 /**
  * Adding milliseconds
  * @param dateObj - A Date object
  * @param milliseconds - Number of milliseconds to add
+ * @param [utc] - Calculates as UTC
  * @returns The Date object after adding the value
  */
-export function addMilliseconds(dateObj: Date, milliseconds: number): Date;
+export function addMilliseconds(dateObj: Date, milliseconds: number, utc?: boolean): Date;
 
 /** Subtraction result object */
 export type SubtractResult = {

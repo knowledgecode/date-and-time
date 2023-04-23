@@ -1,3 +1,5 @@
+process.env.TZ = 'UTC';
+
 (function (global) {
     'use strict';
 
@@ -1377,7 +1379,6 @@
             expect(date.transform('13:05', 'HH:mm', 'hh:mm A')).to.eql('01:05 PM');
         });
         it('HH:mm => hh:mm A, output as UTC', function () {
-            // This test may fail if you run it in a time zone with daylight saving time.
             var utc = date.format(new Date(2020, 3, 1, 13, 5), 'hh:mm A', true);
             expect(date.transform('13:05', 'HH:mm', 'hh:mm A', true)).to.eql(utc);
         });
@@ -1392,72 +1393,72 @@
         it('add a year', function () {
             var date1 = new Date(1969, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(1970, 11, 31, 23, 59, 59, 999);
-            expect(date.addYears(date1, 1)).to.eql(date2);
+            expect(date.addYears(date1, 1, true)).to.eql(date2);
         });
         it('subtract a year', function () {
             var date1 = new Date(1970, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(1969, 11, 31, 23, 59, 59, 999);
-            expect(date.addYears(date1, -1)).to.eql(date2);
+            expect(date.addYears(date1, -1, true)).to.eql(date2);
         });
         it('add a month', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 12, 31, 23, 59, 59, 999);
-            expect(date.addMonths(date1, 1)).to.eql(date2);
+            expect(date.addMonths(date1, 1, true)).to.eql(date2);
         });
         it('subtract a month', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 10, 31, 23, 59, 59, 999);
-            expect(date.addMonths(date1, -1)).to.eql(date2);
+            expect(date.addMonths(date1, -1, true)).to.eql(date2);
         });
         it('add a day', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 32, 23, 59, 59, 999);
-            expect(date.addDays(date1, 1)).to.eql(date2);
+            expect(date.addDays(date1, 1, true)).to.eql(date2);
         });
         it('subtract a day', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 30, 23, 59, 59, 999);
-            expect(date.addDays(date1, -1)).to.eql(date2);
+            expect(date.addDays(date1, -1, true)).to.eql(date2);
         });
         it('add an hour', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 24, 59, 59, 999);
-            expect(date.addHours(date1, 1)).to.eql(date2);
+            expect(date.addHours(date1, 1, true)).to.eql(date2);
         });
         it('subtract an hour', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 22, 59, 59, 999);
-            expect(date.addHours(date1, -1)).to.eql(date2);
+            expect(date.addHours(date1, -1, true)).to.eql(date2);
         });
         it('add a minute', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 23, 60, 59, 999);
-            expect(date.addMinutes(date1, 1)).to.eql(date2);
+            expect(date.addMinutes(date1, 1, true)).to.eql(date2);
         });
         it('subtract a minute', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 23, 58, 59, 999);
-            expect(date.addMinutes(date1, -1)).to.eql(date2);
+            expect(date.addMinutes(date1, -1, true)).to.eql(date2);
         });
         it('add a second', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 23, 59, 60, 999);
-            expect(date.addSeconds(date1, 1)).to.eql(date2);
+            expect(date.addSeconds(date1, 1, true)).to.eql(date2);
         });
         it('subtract a second', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 23, 59, 58, 999);
-            expect(date.addSeconds(date1, -1)).to.eql(date2);
+            expect(date.addSeconds(date1, -1, true)).to.eql(date2);
         });
         it('add a millisecond', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 23, 59, 59, 1000);
-            expect(date.addMilliseconds(date1, 1)).to.eql(date2);
+            expect(date.addMilliseconds(date1, 1, true)).to.eql(date2);
         });
         it('subtract a millisecond', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(2014, 11, 31, 23, 59, 59, 998);
-            expect(date.addMilliseconds(date1, -1)).to.eql(date2);
+            expect(date.addMilliseconds(date1, -1, true)).to.eql(date2);
         });
     });
 

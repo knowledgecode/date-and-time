@@ -25,14 +25,14 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.0.0
+  - **Breaking Changes!** Added `utc` option to the 3rd parameter of `addYears()`, `addMonths()`, `addDays()`, `addHours()`, `addMinutes()`, `addSeconds()` and `addMilliseconds()`. If you use these functions in timezones with daylight savings time, you may get different results depending on the 3rd parameter.
+
 - 2.4.3
-  - Fixed an issue where using the `addMonths` function in regions with daylight saving time would return incorrect results.
+  - Fixed an issue where using `addMonths()` in timezones with daylight saving time returned incorrect results.
 
 - 2.4.2
   - Fixed an issue where the timezone plugin stopped working due to Node.js timezone update.
-
-- 2.4.1
-  - Fixed the previous Jest support.
 
 ## Usage
 
@@ -428,10 +428,11 @@ date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
 date.transform('13:05', 'HH:mm', 'hh:mm A');
 ```
 
-### addYears(dateObj, years)
+### addYears(dateObj, years[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} years - Number of years to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -443,6 +444,7 @@ const next_year = date.addYears(now, 1);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} months - Number of months to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -454,6 +456,7 @@ const next_month = date.addMonths(now, 1);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} days - Number of days to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -465,6 +468,7 @@ const yesterday = date.addDays(now, -1);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} hours - Number of hours to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -476,6 +480,7 @@ const an_hour_ago = date.addHours(now, -1);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} minutes - Number of minutes to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -487,6 +492,7 @@ const two_minutes_later = date.addMinutes(now, 2);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} seconds - Number of seconds to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -498,6 +504,7 @@ const three_seconds_ago = date.addSeconds(now, -3);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} milliseconds - Number of milliseconds to add
+- @param {**boolean**} [utc] - Calculates as UTC
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
