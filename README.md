@@ -440,7 +440,7 @@ const now = new Date();
 const next_year = date.addYears(now, 1);
 ```
 
-### addMonths(dateObj, months)
+### addMonths(dateObj, months[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} months - Number of months to add
@@ -452,7 +452,7 @@ const now = new Date();
 const next_month = date.addMonths(now, 1);
 ```
 
-### addDays(dateObj, days)
+### addDays(dateObj, days[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} days - Number of days to add
@@ -464,7 +464,7 @@ const now = new Date();
 const yesterday = date.addDays(now, -1);
 ```
 
-### addHours(dateObj, hours)
+### addHours(dateObj, hours[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} hours - Number of hours to add
@@ -476,7 +476,7 @@ const now = new Date();
 const an_hour_ago = date.addHours(now, -1);
 ```
 
-### addMinutes(dateObj, minutes)
+### addMinutes(dateObj, minutes[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} minutes - Number of minutes to add
@@ -488,7 +488,7 @@ const now = new Date();
 const two_minutes_later = date.addMinutes(now, 2);
 ```
 
-### addSeconds(dateObj, seconds)
+### addSeconds(dateObj, seconds[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} seconds - Number of seconds to add
@@ -500,7 +500,7 @@ const now = new Date();
 const three_seconds_ago = date.addSeconds(now, -3);
 ```
 
-### addMilliseconds(dateObj, milliseconds)
+### addMilliseconds(dateObj, milliseconds[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} milliseconds - Number of milliseconds to add
