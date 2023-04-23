@@ -88,25 +88,25 @@ import date from '/path/to/date-and-time.es.min.js';
 - [transform](#transformdatestring-arg1-arg2-utc)
   - Format transformation of date and time strings (String -> String)
 
-- [addYears](#addyearsdateobj-years)
+- [addYears](#addyearsdateobj-years-utc)
   - Adding years
 
-- [addMonths](#addmonthsdateobj-months)
+- [addMonths](#addmonthsdateobj-months-utc)
   - Adding months
 
-- [addDays](#adddaysdateobj-days)
+- [addDays](#adddaysdateobj-days-utc)
   - Adding days
 
-- [addHours](#addhoursdateobj-hours)
+- [addHours](#addhoursdateobj-hours-utc)
   - Adding hours
 
-- [addMinutes](#addminutesdateobj-minutes)
+- [addMinutes](#addminutesdateobj-minutes-utc)
   - Adding minutes
 
-- [addSeconds](#addsecondsdateobj-seconds)
+- [addSeconds](#addsecondsdateobj-seconds-utc)
   - Adding seconds
 
-- [addMilliseconds](#addmillisecondsdateobj-milliseconds)
+- [addMilliseconds](#addmillisecondsdateobj-milliseconds-utc)
   - Adding milliseconds
 
 - [subtract](#subtractdate1-date2)
