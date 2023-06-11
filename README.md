@@ -25,14 +25,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.0.1
+  - Fixed calculation of last day of month in `addYears()` and `addMonths()`.
+  - Fixed lint errors.
+
 - 3.0.0
   - **Breaking Changes!** Added `utc` option to the 3rd parameter of `addYears()`, `addMonths()`, `addDays()`, `addHours()`, `addMinutes()`, `addSeconds()` and `addMilliseconds()`. If you use these functions in timezones with daylight savings time, you may get different results depending on the 3rd parameter.
 
 - 2.4.3
   - Fixed an issue where using `addMonths()` in timezones with daylight saving time returned incorrect results.
-
-- 2.4.2
-  - Fixed an issue where the timezone plugin stopped working due to Node.js timezone update.
 
 ## Usage
 
@@ -432,31 +433,51 @@ date.transform('13:05', 'HH:mm', 'hh:mm A');
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} years - Number of years to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
+
+Adds years to the date object.
 
 ```javascript
 const now = new Date();
 const next_year = date.addYears(now, 1);
 ```
 
+Exceptional behavior of the calculation for the last day of the month:
+
+```javascript
+const now = new Date(Date.UTC(2020, 1, 29));                // => Feb 29 2020
+const next_year = date.addYears(now, 1, true);              // => Feb 28 2021
+const next_next_year = date.addYears(next_year, 1, true);   // => Feb 28 2022
+```
+
 ### addMonths(dateObj, months[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} months - Number of months to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
+
+Adds months to the date object.
 
 ```javascript
 const now = new Date();
 const next_month = date.addMonths(now, 1);
 ```
 
+Exceptional behavior of the calculation for the last day of the month:
+
+```javascript
+const now = new Date(Date.UTC(2023, 0, 31));                    // => Jan 31 2023
+const next_month = date.addMonths(now, 1, true);                // => Feb 28 2023
+const next_next_month = date.addMonths(next_month, 1, true);    // => Mar 28 2023
+```
+
 ### addDays(dateObj, days[, utc])
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} days - Number of days to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -468,7 +489,7 @@ const yesterday = date.addDays(now, -1);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} hours - Number of hours to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -480,7 +501,7 @@ const an_hour_ago = date.addHours(now, -1);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} minutes - Number of minutes to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -492,7 +513,7 @@ const two_minutes_later = date.addMinutes(now, 2);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} seconds - Number of seconds to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
@@ -504,7 +525,7 @@ const three_seconds_ago = date.addSeconds(now, -3);
 
 - @param {**Date**} dateObj - A Date object
 - @param {**number**} milliseconds - Number of milliseconds to add
-- @param {**boolean**} [utc] - Calculates as UTC
+- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
 - @returns {**Date**} The Date object after adding the value
 
 ```javascript
