@@ -14,9 +14,21 @@ process.env.TZ = 'America/Los_Angeles';
             var utc = false;
             expect(date.addYears(date1, 1, utc)).to.eql(date2);
         });
+        it('add a year at the end of the month', function () {
+            var date1 = new Date(2020, 1, 29, 3);
+            var date2 = new Date(2021, 1, 28, 3);
+            var utc = false;
+            expect(date.addYears(date1, 1, utc)).to.eql(date2);
+        });
         it('subtract a year', function () {
             var date1 = new Date(2021, 2, 14, 3);
             var date2 = new Date(2020, 2, 14, 3);
+            var utc = false;
+            expect(date.addYears(date1, -1, utc)).to.eql(date2);
+        });
+        it('subtract a year at the end of the month', function () {
+            var date1 = new Date(2024, 1, 29, 3);
+            var date2 = new Date(2023, 1, 28, 3);
             var utc = false;
             expect(date.addYears(date1, -1, utc)).to.eql(date2);
         });
@@ -26,9 +38,21 @@ process.env.TZ = 'America/Los_Angeles';
             var utc = false;
             expect(date.addMonths(date1, 1, utc)).to.eql(date2);
         });
+        it('add a month at the end of the month', function () {
+            var date1 = new Date(2023, 0, 31, 3);
+            var date2 = new Date(2023, 1, 28, 3);
+            var utc = false;
+            expect(date.addMonths(date1, 1, utc)).to.eql(date2);
+        });
         it('subtract a month', function () {
             var date1 = new Date(2021, 2, 14, 3);
             var date2 = new Date(2021, 1, 14, 3);
+            var utc = false;
+            expect(date.addMonths(date1, -1, utc)).to.eql(date2);
+        });
+        it('subtract a month at the end of the month', function () {
+            var date1 = new Date(2023, 2, 31, 3);
+            var date2 = new Date(2023, 1, 28, 3);
             var utc = false;
             expect(date.addMonths(date1, -1, utc)).to.eql(date2);
         });
@@ -101,9 +125,21 @@ process.env.TZ = 'America/Los_Angeles';
             var utc = true;
             expect(date.addYears(date1, 1, utc)).to.eql(date2);
         });
+        it('add a year at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2020, 1, 29, 9));
+            var date2 = new Date(Date.UTC(2021, 1, 28, 9));
+            var utc = true;
+            expect(date.addYears(date1, 1, utc)).to.eql(date2);
+        });
         it('subtract a year', function () {
             var date1 = new Date(Date.UTC(2021, 2, 14, 10));
             var date2 = new Date(Date.UTC(2020, 2, 14, 10));
+            var utc = true;
+            expect(date.addYears(date1, -1, utc)).to.eql(date2);
+        });
+        it('subtract a year at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2024, 1, 29, 9));
+            var date2 = new Date(Date.UTC(2023, 1, 28, 9));
             var utc = true;
             expect(date.addYears(date1, -1, utc)).to.eql(date2);
         });
@@ -113,9 +149,21 @@ process.env.TZ = 'America/Los_Angeles';
             var utc = true;
             expect(date.addMonths(date1, 1, utc)).to.eql(date2);
         });
+        it('add a month at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2023, 0, 31, 9));
+            var date2 = new Date(Date.UTC(2023, 1, 28, 9));
+            var utc = true;
+            expect(date.addMonths(date1, 1, utc)).to.eql(date2);
+        });
         it('subtract a month', function () {
             var date1 = new Date(Date.UTC(2021, 2, 14, 10));
             var date2 = new Date(Date.UTC(2021, 1, 14, 10));
+            var utc = true;
+            expect(date.addMonths(date1, -1, utc)).to.eql(date2);
+        });
+        it('subtract a month at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2023, 2, 31, 10));
+            var date2 = new Date(Date.UTC(2023, 1, 28, 10));
             var utc = true;
             expect(date.addMonths(date1, -1, utc)).to.eql(date2);
         });

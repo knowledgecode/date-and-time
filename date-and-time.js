@@ -94,12 +94,12 @@
                 return result;
             },
             Z: function (str/*, formatString */) {
-                var result = this.exec(/^[\+-]\d{2}[0-5]\d/, str);
+                var result = this.exec(/^[+-]\d{2}[0-5]\d/, str);
                 result.value = (result.value / 100 | 0) * -60 - result.value % 100;
                 return result;
             },
             ZZ: function (str/*, formatString */) {
-                var arr = /^([\+-])(\d{2}):([0-5]\d)/.exec(str) || ['', '', '', ''];
+                var arr = /^([+-])(\d{2}):([0-5]\d)/.exec(str) || ['', '', '', ''];
                 return { value: 0 - ((arr[1] + arr[2] | 0) * 60 + (arr[1] + arr[3] | 0)), length: arr[0].length };
             },
             h12: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
@@ -151,7 +151,7 @@
      * @returns {Array.<string>} A compiled object
      */
     proto.compile = function (formatString) {
-        var re = /\[([^\[\]]|\[[^\[\]]*])*]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
+        var re = /\[([^[\]]|\[[^[\]]*])*]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
 
         while ((keys = re.exec(formatString))) {
             pattern[pattern.length] = keys[0];
@@ -214,7 +214,7 @@
                 break;
             }
         }
-        dt.H = dt.H || parser.h12(dt.h, dt.A);
+        dt.H ||= dt.H || parser.h12(dt.h, dt.A);
         dt._index = offset;
         dt._length = dateString.length;
         return dt;
@@ -295,8 +295,14 @@
 
         if (utc) {
             d.setUTCMonth(d.getUTCMonth() + months);
+            if (d.getUTCDate() < dateObj.getUTCDate()) {
+                return (this || date).addDays(d, -d.getUTCDate(), utc);
+            }
         } else {
             d.setMonth(d.getMonth() + months);
+            if (d.getDate() < dateObj.getDate()) {
+                return (this || date).addDays(d, -d.getDate(), utc);
+            }
         }
         return d;
     };
