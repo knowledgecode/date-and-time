@@ -1395,19 +1395,39 @@ process.env.TZ = 'UTC';
             var date2 = new Date(1970, 11, 31, 23, 59, 59, 999);
             expect(date.addYears(date1, 1, true)).to.eql(date2);
         });
+        it('add a year at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2020, 1, 29));
+            var date2 = new Date(Date.UTC(2021, 1, 28));
+            expect(date.addYears(date1, 1, true)).to.eql(date2);
+        });
         it('subtract a year', function () {
             var date1 = new Date(1970, 11, 31, 23, 59, 59, 999);
             var date2 = new Date(1969, 11, 31, 23, 59, 59, 999);
             expect(date.addYears(date1, -1, true)).to.eql(date2);
         });
+        it('subtract a year at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2024, 1, 29));
+            var date2 = new Date(Date.UTC(2023, 1, 28));
+            expect(date.addYears(date1, -1, true)).to.eql(date2);
+        });
         it('add a month', function () {
-            var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
-            var date2 = new Date(2014, 12, 31, 23, 59, 59, 999);
+            var date1 = new Date(2014, 10, 30, 23, 59, 59, 999);
+            var date2 = new Date(2014, 11, 30, 23, 59, 59, 999);
+            expect(date.addMonths(date1, 1, true)).to.eql(date2);
+        });
+        it('add a month at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2023, 0, 31));
+            var date2 = new Date(Date.UTC(2023, 1, 28));
             expect(date.addMonths(date1, 1, true)).to.eql(date2);
         });
         it('subtract a month', function () {
             var date1 = new Date(2014, 11, 31, 23, 59, 59, 999);
-            var date2 = new Date(2014, 10, 31, 23, 59, 59, 999);
+            var date2 = new Date(2014, 10, 30, 23, 59, 59, 999);
+            expect(date.addMonths(date1, -1, true)).to.eql(date2);
+        });
+        it('subtract a month at the end of the month', function () {
+            var date1 = new Date(Date.UTC(2023, 2, 31));
+            var date2 = new Date(Date.UTC(2023, 1, 28));
             expect(date.addMonths(date1, -1, true)).to.eql(date2);
         });
         it('add a day', function () {

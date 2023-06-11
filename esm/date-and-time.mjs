@@ -289,8 +289,14 @@ proto.addMonths = function (dateObj, months, utc) {
 
     if (utc) {
         d.setUTCMonth(d.getUTCMonth() + months);
+        if (d.getUTCDate() < dateObj.getUTCDate()) {
+            return (this || date).addDays(d, -d.getUTCDate(), utc);
+        }
     } else {
         d.setMonth(d.getMonth() + months);
+        if (d.getDate() < dateObj.getDate()) {
+            return (this || date).addDays(d, -d.getDate(), utc);
+        }
     }
     return d;
 };
