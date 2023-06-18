@@ -208,7 +208,7 @@ proto.preparse = function (dateString, arg) {
             break;
         }
     }
-    dt.H ||= dt.H || parser.h12(dt.h, dt.A);
+    dt.H = dt.H || parser.h12(dt.h, dt.A);
     dt._index = offset;
     dt._length = dateString.length;
     return dt;
