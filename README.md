@@ -25,15 +25,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.0.2
+  - Dropped the use of the logical OR assignment operator to support older environments.
+
 - 3.0.1
   - Fixed calculation of last day of month in `addYears()` and `addMonths()`.
   - Fixed lint errors.
 
 - 3.0.0
   - **Breaking Changes!** Added `utc` option to the 3rd parameter of `addYears()`, `addMonths()`, `addDays()`, `addHours()`, `addMinutes()`, `addSeconds()` and `addMilliseconds()`. If you use these functions in timezones with daylight savings time, you may get different results depending on the 3rd parameter.
-
-- 2.4.3
-  - Fixed an issue where using `addMonths()` in timezones with daylight saving time returned incorrect results.
 
 ## Usage
 
