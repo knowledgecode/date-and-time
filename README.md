@@ -1,6 +1,6 @@
 # date-and-time
 
-[![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)  
+[![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)
 
 This JS library is just a collection of functions for manipulating date and time. It's small, simple, and easy to learn.
 
@@ -24,6 +24,9 @@ npm i date-and-time
 ```
 
 ## Recent Changes
+
+- 3.0.3
+  - Fixed TypeScript types exports in `package.json`.
 
 - 3.0.2
   - Dropped the use of the logical OR assignment operator to support older environments.
