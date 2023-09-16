@@ -35,9 +35,6 @@ npm i date-and-time
   - Fixed calculation of last day of month in `addYears()` and `addMonths()`.
   - Fixed lint errors.
 
-- 3.0.0
-  - **Breaking Changes!** Added `utc` option to the 3rd parameter of `addYears()`, `addMonths()`, `addDays()`, `addHours()`, `addMinutes()`, `addSeconds()` and `addMilliseconds()`. If you use these functions in timezones with daylight savings time, you may get different results depending on the 3rd parameter.
-
 ## Usage
 
 - ES Modules:
