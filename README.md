@@ -6,7 +6,7 @@ This JS library is just a collection of functions for manipulating date and time
 
 ## Why
 
-Nowadays, JS modules have become huge, complex, and have many dependencies. We think it makes sense to try to keep each module simple and small. Especially for modules that are at the bottom of the dependency chain, such as those dealing with date and time.
+Nowadays, JS modules have become larger, more complex, and dependent on many other modules. It is important to strive for simplicity and smallness, especially for modules that are at the bottom of the dependency chain, such as those that handle date and time.
 
 ## Features
 
@@ -25,15 +25,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.1.0
+  - Improved accuracy of `parseTZ()` in `timezone` plugin.
+  - Organized some test modules.
+
 - 3.0.3
   - Fixed TypeScript types exports in `package.json`.
 
 - 3.0.2
   - Dropped the use of the logical OR assignment operator to support older environments.
-
-- 3.0.1
-  - Fixed calculation of last day of month in `addYears()` and `addMonths()`.
-  - Fixed lint errors.
 
 ## Usage
 
