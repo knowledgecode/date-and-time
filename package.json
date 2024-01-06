@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "A Minimalist DateTime utility for Node.js and the browser",
   "main": "date-and-time.js",
   "module": "esm/date-and-time.es.js",
@@ -49,10 +49,10 @@
   },
   "homepage": "https://github.com/knowledgecode/date-and-time",
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "expect.js": "^0.3.1",
     "mocha": "^10.2.0",
-    "rollup": "^3.29.2",
-    "tsd": "^0.29.0"
+    "rollup": "^4.9.4",
+    "tsd": "^0.30.3"
   }
 }
