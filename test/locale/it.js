@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -18,7 +19,7 @@
         A = ['di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina', 'di mattina',    // 0 - 11
             'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio', 'di pomerrigio'];    // 12 - 23
 
-    var locale = typeof require === 'function' ? require('../../locale/it') : 'it';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/it') : 'it';
 
     describe('format with "it"', function () {
         before(function () {

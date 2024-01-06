@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import meridiem from '../../../esm/plugin/meridiem.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import meridiem from 'date-and-time/plugin/meridiem';
 
 import expect from 'expect.js';
 

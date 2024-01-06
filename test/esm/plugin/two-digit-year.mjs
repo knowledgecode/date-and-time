@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import two_digit_year from '../../../esm/plugin/two-digit-year.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import two_digit_year from 'date-and-time/plugin/two-digit-year';
 
 import expect from 'expect.js';
 

@@ -1,18 +1,19 @@
-import date from '../../esm/date-and-time.mjs';
+/*global describe, before, it, after */
+import date from 'date-and-time';
 // Destructuring assignment
 const { compile, format, parse, preparse, extend, locale, plugin } = date;
 
-import en from '../../esm/locale/en.mjs';
-import es from '../../esm/locale/es.mjs';
-import ja from '../../esm/locale/ja.mjs';
+import en from 'date-and-time/locale/en';
+import es from 'date-and-time/locale/es';
+import ja from 'date-and-time/locale/ja';
 
-import day_of_week from '../../esm/plugin/day-of-week.mjs';
-import meridiem from '../../esm/plugin/meridiem.mjs';
-import microsecond from '../../esm/plugin/microsecond.mjs';
-import ordinal from '../../esm/plugin/ordinal.mjs';
-import timespan from '../../esm/plugin/timespan.mjs';
-import timezone from '../../esm/plugin/timezone.mjs';
-import two_digit_year from '../../esm/plugin/two-digit-year.mjs';
+import day_of_week from 'date-and-time/plugin/day-of-week';
+import meridiem from 'date-and-time/plugin/meridiem';
+import microsecond from 'date-and-time/plugin/microsecond';
+import ordinal from 'date-and-time/plugin/ordinal';
+import timespan from 'date-and-time/plugin/timespan';
+import timezone from 'date-and-time/plugin/timezone';
+import two_digit_year from 'date-and-time/plugin/two-digit-year';
 
 import expect from 'expect.js';
 
@@ -449,7 +450,7 @@ describe('locale change, then revert, format', () => {
     });
     it('"Z" matches "+XXXX/-XXXX"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
-        expect(format(now, 'Z')).to.match(/^[\+-]\d{4}$/);
+        expect(format(now, 'Z')).to.match(/^[+-]\d{4}$/);
     });
     it('"Z" as UTC equals to "+0000"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789),
@@ -458,7 +459,7 @@ describe('locale change, then revert, format', () => {
     });
     it('"ZZ" matches "+XX:XX/-XX:XX"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
-        expect(date.format(now, 'ZZ')).to.match(/^[\+-]\d{2}:\d{2}$/);
+        expect(date.format(now, 'ZZ')).to.match(/^[+-]\d{2}:\d{2}$/);
     });
     it('"ZZ" as UTC equals to "+00:00"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789),
@@ -1453,7 +1454,7 @@ describe('multiple plugins install, format', () => {
     });
     it('"Z" matches "+XXXX/-XXXX"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789);
-        expect(format(now, 'Z')).to.match(/^[\+-]\d{4}$/);
+        expect(format(now, 'Z')).to.match(/^[+-]\d{4}$/);
     });
     it('"Z" as UTC equals to "+0000"', () => {
         const now = new Date(2015, 0, 1, 12, 34, 56, 789),

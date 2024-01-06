@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import day_of_week from '../../../esm/plugin/day-of-week.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import day_of_week from 'date-and-time/plugin/day-of-week';
 
 import expect from 'expect.js';
 

@@ -1,6 +1,7 @@
-import date from '../../../esm/date-and-time.mjs';
-import en from '../../../esm/locale/en.mjs';
-import bn from '../../../esm/locale/bn.mjs';
+/*global describe, before, it, after */
+import date from 'date-and-time';
+import en from 'date-and-time/locale/en';
+import bn from 'date-and-time/locale/bn';
 
 import expect from 'expect.js';
 

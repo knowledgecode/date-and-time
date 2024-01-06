@@ -1,8 +1,9 @@
+/*global describe, before, it */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         A = ['AM', 'PM'],
         AA = ['A.M.', 'P.M.'],
         a = ['am', 'pm'],
@@ -11,7 +12,7 @@
     var plugin = 'meridiem';
 
     if (typeof require === 'function') {
-        plugin = require('../../plugin/meridiem');
+        plugin = require('date-and-time/plugin/meridiem');
     }
 
     describe('meridiem', function () {

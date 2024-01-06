@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import timezone from '../../../esm/plugin/timezone.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import timezone from 'date-and-time/plugin/timezone';
 
 import expect from 'expect.js';
 
@@ -49,6 +50,16 @@ describe('timezone', () => {
         const tz = 'Asia/Tokyo';              // UTC+9
 
         expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 18:59:59.999 UTC+0900');
+    });
+
+    it('parseTZ UTC', () => {
+        // Mar 14 2021 1:59:59.999 => 2021-03-14T01:59:59.999Z
+        const dateString = 'Mar 14 2021 1:59:59.999';
+        const formatString = 'MMM D YYYY H:mm:ss.SSS';
+        const tz = 'UTC';
+        const dateObj = new Date(Date.UTC(2021, 2, 14, 1, 59, 59, 999));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
     });
 
     it('parseTZ UTC-8', () => {

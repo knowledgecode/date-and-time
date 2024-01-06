@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -20,7 +21,7 @@
             'gündüz', 'gündüz', 'gündüz', 'gündüz', 'gündüz', // 12 - 16
             'axşam', 'axşam', 'axşam', 'axşam', 'axşam', 'axşam', 'axşam']; // 17 - 23
 
-    var locale = typeof require === 'function' ? require('../../locale/az') : 'az';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/az') : 'az';
 
     describe('format with "az"', function () {
         before(function () {

@@ -1,13 +1,14 @@
+/*global describe, it */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time');
+        date = global.date || require('date-and-time');
 
     var plugin = 'two-digit-year';
 
     if (typeof require === 'function') {
-        plugin = require('../../plugin/two-digit-year');
+        plugin = require('date-and-time/plugin/two-digit-year');
     }
 
     date.plugin(plugin);

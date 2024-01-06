@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import microsecond from '../../../esm/plugin/microsecond.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import microsecond from 'date-and-time/plugin/microsecond';
 
 import expect from 'expect.js';
 
