@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -18,7 +19,7 @@
         A = ['오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전', '오전',    // 0 - 11
             '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후', '오후'];    // 12 - 23
 
-    var locale = typeof require === 'function' ? require('../../locale/ko') : 'ko';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/ko') : 'ko';
 
     describe('format with "ko"', function () {
         before(function () {

@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -21,7 +22,7 @@
             'ਸ਼ਾਮ', 'ਸ਼ਾਮ', 'ਸ਼ਾਮ',   // 17 - 19
             'ਰਾਤ', 'ਰਾਤ', 'ਰਾਤ', 'ਰਾਤ'];    // 20 - 23
 
-    var locale = typeof require === 'function' ? require('../../locale/pa-in') : 'pa-in';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/pa-in') : 'pa-in';
 
     describe('format with "pa-in"', function () {
         before(function () {

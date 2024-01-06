@@ -1,13 +1,14 @@
+/*global describe, before, it */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time');
+        date = global.date || require('date-and-time');
 
     var plugin = 'microsecond';
 
     if (typeof require === 'function') {
-        plugin = require('../../plugin/microsecond');
+        plugin = require('date-and-time/plugin/microsecond');
     }
 
     describe('microsecond', function () {

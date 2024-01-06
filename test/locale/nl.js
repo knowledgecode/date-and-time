@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -19,7 +20,7 @@
         ddd = ['zo.', 'ma.', 'di.', 'wo.', 'do.', 'vr.', 'za.'],
         dd = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
 
-    var locale = typeof require === 'function' ? require('../../locale/nl') : 'nl';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/nl') : 'nl';
 
     describe('format with "nl"', function () {
         before(function () {

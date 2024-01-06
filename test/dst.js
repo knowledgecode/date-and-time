@@ -5,7 +5,7 @@ process.env.TZ = 'America/Los_Angeles';
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../date-and-time');
+        date = global.date || require('date-and-time');
 
     describe('addition', function () {
         it('add a year', function () {

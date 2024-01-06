@@ -1,10 +1,11 @@
+/*global describe, it */
 process.env.TZ = 'UTC';
 
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../date-and-time');
+        date = global.date || require('date-and-time');
 
     describe('format', function () {
         it('"YYYY" equals to "0001"', function () {
@@ -434,7 +435,7 @@ process.env.TZ = 'UTC';
         });
         it('"Z" matches "+XXXX/-XXXX"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789);
-            expect(date.format(now, 'Z')).to.match(/^[\+-]\d{4}$/);
+            expect(date.format(now, 'Z')).to.match(/^[+-]\d{4}$/);
         });
         it('"Z" as UTC equals to "+0000"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789),
@@ -443,7 +444,7 @@ process.env.TZ = 'UTC';
         });
         it('"ZZ" matches "+XX:XX/-XX:XX"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789);
-            expect(date.format(now, 'ZZ')).to.match(/^[\+-]\d{2}:\d{2}$/);
+            expect(date.format(now, 'ZZ')).to.match(/^[+-]\d{2}:\d{2}$/);
         });
         it('"ZZ" as UTC equals to "+00:00"', function () {
             var now = new Date(2015, 0, 1, 12, 34, 56, 789),

@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -18,7 +19,7 @@
         A = ['sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa', 'sa',    // 0 - 11
             'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch', 'ch'];    // 12 - 23
 
-    var locale = typeof require === 'function' ? require('../../locale/vi') : 'vi';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/vi') : 'vi';
 
     describe('format with "vi"', function () {
         before(function () {

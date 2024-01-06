@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import ordinal from '../../../esm/plugin/ordinal.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import ordinal from 'date-and-time/plugin/ordinal';
 
 import expect from 'expect.js';
 

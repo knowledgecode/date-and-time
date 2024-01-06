@@ -1,5 +1,6 @@
-import date from '../../../esm/date-and-time.mjs';
-import timespan from '../../../esm/plugin/timespan.mjs';
+/*global describe, before, it */
+import date from 'date-and-time';
+import timespan from 'date-and-time/plugin/timespan';
 
 import expect from 'expect.js';
 

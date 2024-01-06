@@ -1,8 +1,9 @@
+/*global describe, before, it, after */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time'),
+        date = global.date || require('date-and-time'),
         forEach = function (array, fn) {
             for (var i = 0, len = array.length; i < len; i++) {
                 if (fn(array[i], i) === 0) {
@@ -22,7 +23,7 @@
             '下午', '下午', '下午', '下午', '下午', '下午',     // 12:30 - 17
             '晚上', '晚上', '晚上', '晚上', '晚上', '晚上'];    // 18 - 23
 
-    var locale = typeof require === 'function' ? require('../../locale/zh-cn') : 'zh-cn';
+    var locale = typeof require === 'function' ? require('date-and-time/locale/zh-cn') : 'zh-cn';
 
     describe('format with "zh-cn"', function () {
         before(function () {

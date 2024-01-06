@@ -1,13 +1,14 @@
+/*global describe, before, it */
 (function (global) {
     'use strict';
 
     var expect = global.expect || require('expect.js'),
-        date = global.date || require('../../date-and-time');
+        date = global.date || require('date-and-time');
 
     var plugin = 'timezone';
 
     if (typeof require === 'function') {
-        plugin = require('../../plugin/timezone');
+        plugin = require('date-and-time/plugin/timezone');
     }
 
     describe('timezone', function () {
@@ -58,6 +59,16 @@
             var tz = 'Asia/Tokyo';              // UTC+9
 
             expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 18:59:59.999 UTC+0900');
+        });
+
+        it('parseTZ UTC', function () {
+            // Mar 14 2021 1:59:59.999 => 2021-03-14T01:59:59.999Z
+            var dateString = 'Mar 14 2021 1:59:59.999';
+            var formatString = 'MMM D YYYY H:mm:ss.SSS';
+            var tz = 'UTC';
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 1, 59, 59, 999));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
         });
 
         it('parseTZ UTC-8', function () {
