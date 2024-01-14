@@ -162,11 +162,25 @@ proto.compile = function (formatString) {
  */
 proto.format = function (dateObj, arg, utc) {
     var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
-        offset = dateObj.getTimezoneOffset(),
-        d = ctx.addMinutes(dateObj, utc ? offset : 0),
+        d = (function () {
+            if (utc) {
+                var u = new Date(dateObj.getTime());
+
+                u.getFullYear = u.getUTCFullYear;
+                u.getMonth = u.getUTCMonth;
+                u.getDate = u.getUTCDate;
+                u.getHours = u.getUTCHours;
+                u.getMinutes = u.getUTCMinutes;
+                u.getSeconds = u.getUTCSeconds;
+                u.getMilliseconds = u.getUTCMilliseconds;
+                u.getDay = u.getUTCDay;
+                u.getTimezoneOffset = function () { return 0; };
+                return u;
+            }
+            return dateObj;
+        }()),
         formatter = ctx._formatter, str = '';
 
-    d.getTimezoneOffset = function () { return utc ? 0 : offset; };
     for (var i = 1, len = pattern.length, token; i < len; i++) {
         token = pattern[i];
         str += formatter[token] ? formatter.post(formatter[token](d, pattern[0])) : token.replace(/\[(.*)]/, '$1');
@@ -208,7 +222,7 @@ proto.preparse = function (dateString, arg) {
             break;
         }
     }
-    dt.H = dt.H || parser.h12(dt.h, dt.A);
+    dt.H = dt.H || parser.h12(dt.h, dt.A);  // eslint-disable-line logical-assignment-operators
     dt._index = offset;
     dt._length = dateString.length;
     return dt;
