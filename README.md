@@ -25,15 +25,16 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.1.1
+  - Fixed an issue where `format()` could output incorrect UTC times in locales with daylight savings time.
+  - Refactored `formatTZ()` of `timezone` plugin.
+
 - 3.1.0
   - Improved accuracy of `parseTZ()` in `timezone` plugin.
   - Organized some test modules.
 
 - 3.0.3
   - Fixed TypeScript types exports in `package.json`.
-
-- 3.0.2
-  - Dropped the use of the logical OR assignment operator to support older environments.
 
 ## Usage
 

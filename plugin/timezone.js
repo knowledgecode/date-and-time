@@ -464,14 +464,15 @@
         var formatTZ = function (dateObj, arg, timeZone) {
             options.timeZone = 'UTC';
             var utcObj = date.parse(new Intl.DateTimeFormat('en-US', options).format(dateObj), pattern);
+            utcObj.setMilliseconds(dateObj.getMilliseconds());
 
             options.timeZone = timeZone;
             var dateObj2 = date.parse(new Intl.DateTimeFormat('en-US', options).format(dateObj), pattern);
+            dateObj2.setMilliseconds(dateObj.getMilliseconds());
 
-            var dateObj3 = date.addMilliseconds(dateObj2, dateObj.getMilliseconds());
+            dateObj2.getTimezoneOffset = function () { return (utcObj.getTime() - dateObj2.getTime()) / 60000 | 0; };
 
-            dateObj3.getTimezoneOffset = function () { return (utcObj.getTime() - dateObj2.getTime()) / 60000 | 0; };
-            return localized_date.format(dateObj3, arg);
+            return localized_date.format(dateObj2, arg);
         };
         var parseTZ = function (dateString, arg, timeZone) {
             var pattern2 = typeof arg === 'string' ? date.compile(arg) : arg;
