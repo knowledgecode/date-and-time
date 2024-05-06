@@ -25,6 +25,9 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.2.0
+  - Refactored `compile()`, `format()`, and `preparse()` slightly improved performance.
+
 - 3.1.1
   - Fixed an issue where `format()` could output incorrect UTC times in locales with daylight savings time.
   - Refactored `formatTZ()` of `timezone` plugin.
@@ -32,9 +35,6 @@ npm i date-and-time
 - 3.1.0
   - Improved accuracy of `parseTZ()` in `timezone` plugin.
   - Organized some test modules.
-
-- 3.0.3
-  - Fixed TypeScript types exports in `package.json`.
 
 ## Usage
 
@@ -189,7 +189,7 @@ You can also use the following tokens by importing plugins. See [PLUGINS.md](./P
 
 #### Note 1. Comments
 
-String in parenthese `[...]` in the `formatString` will be ignored as comments:
+Parts of the given format string enclosed in square brackets are considered comments and are output as is, regardless of whether they are tokens or not.
 
 ```javascript
 date.format(new Date(), 'DD-[MM]-YYYY');    // => '02-MM-2015'
@@ -198,7 +198,7 @@ date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
 
 #### Note 2. Output as UTC
 
-This function usually outputs a local date and time string. Set to true the `utc` option (the 3rd parameter) if you would like to get a UTC date and time string.
+This function outputs the date and time in the local time zone of the execution environment by default. If you want to output in UTC, set the UTC option (the third argument) to true. To output in any other time zone, you will need [a plugin](./PLUGINS.md).
 
 ```javascript
 date.format(new Date(), 'hh:mm A [GMT]Z');          // => '11:14 PM GMT-0800'
@@ -270,7 +270,7 @@ You can also use the following tokens by importing plugins. See [PLUGINS.md](./P
 
 #### Note 1. Invalid Date
 
-If the function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
+If this function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
 
 ```javascript
 const today = date.parse('Jam 1 2017', 'MMM D YYYY');
@@ -282,7 +282,7 @@ if (isNaN(today.getTime())) {
 
 #### Note 2. Input as UTC
 
-This function assumes the `dateString` is a local datea and time unless it contains a time zone offset value. Set to true the `utc` option (the 3rd parameter) if it is a UTC date and time.
+This function uses the local time zone offset value of the execution environment by default if the given string does not contain a time zone offset value. To make it use UTC instead, set the UTC option (the third argument) to true. If you want it to use any other time zone, you will need [a plugin](./PLUGINS.md).
 
 ```javascript
 date.parse('11:14:05 PM', 'hh:mm:ss A');          // => Jan 1 1970 23:14:05 GMT-0800
@@ -319,9 +319,9 @@ date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
 date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
 ```
 
-#### Note 6. Token disablement
+#### Note 6. Token invalidation
 
-Use square brackets `[]` if a datea and time string includes some token characters. Tokens inside square brackets in the `formatString` will be interpreted as normal characters:
+Any part of the given format string that you do not want to be recognized as a token should be enclosed in square brackets. They are considered comments and will not be parsed.
 
 ```javascript
 date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Date
@@ -330,7 +330,7 @@ date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan 1 1970
 
 #### Note 7. Wildcard
 
-A white space works as a wildcard token. This token is not interpreted into anything. This means it can be ignored a specific variable string. For example, when you would like to ignore a time part from a date string, you can write as follows:
+Whitespace acts as a wildcard token. This token will not parse the corresponding parts of the date and time strings. This behavior is similar to enclosing part of a format string in square brackets (Token invalidation), but with the flexibility that the contents do not have to match, as long as the number of characters in the corresponding parts match.
 
 ```javascript
 // This will be an error.
@@ -341,7 +341,7 @@ date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan 2 2015 00:
 
 #### Note 8. Ellipsis
 
-The parser supports `...` (ellipsis) token. The above example can be also written like this:
+`...` token ignores subsequent corresponding date and time strings. Use this token only at the end of a format string. The above example can be also written like this:
 
 ```javascript
 date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');   // => Jan 2 2015 00:00:00 GMT-0800

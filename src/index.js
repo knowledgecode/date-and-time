@@ -145,12 +145,7 @@ var locales = {},
  * @returns {Array.<string>} A compiled object
  */
 proto.compile = function (formatString) {
-    var re = /\[([^[\]]|\[[^[\]]*])*]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
-
-    while ((keys = re.exec(formatString))) {
-        pattern[pattern.length] = keys[0];
-    }
-    return pattern;
+    return [formatString].concat(formatString.match(/\[(?:[^[\]]|\[[^[\]]*])*]|([A-Za-z])\1*|\.{3}|./g) || []);
 };
 
 /**
@@ -162,6 +157,7 @@ proto.compile = function (formatString) {
  */
 proto.format = function (dateObj, arg, utc) {
     var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
+        formatter = ctx._formatter,
         d = (function () {
             if (utc) {
                 var u = new Date(dateObj.getTime());
@@ -179,11 +175,11 @@ proto.format = function (dateObj, arg, utc) {
             }
             return dateObj;
         }()),
-        formatter = ctx._formatter, str = '';
+        comment = /^\[(.*)\]$/, str = '';
 
     for (var i = 1, len = pattern.length, token; i < len; i++) {
         token = pattern[i];
-        str += formatter[token] ? formatter.post(formatter[token](d, pattern[0])) : token.replace(/\[(.*)]/, '$1');
+        str += formatter[token] ? formatter.post(formatter[token](d, pattern[0])) : token.replace(comment, '$1');
     }
     return str;
 };
@@ -197,33 +193,35 @@ proto.format = function (dateObj, arg, utc) {
  */
 proto.preparse = function (dateString, arg) {
     var ctx = this || date, pattern = typeof arg === 'string' ? ctx.compile(arg) : arg,
+        parser = ctx._parser,
         dt = { Y: 1970, M: 1, D: 1, H: 0, A: 0, h: 0, m: 0, s: 0, S: 0, Z: 0, _index: 0, _length: 0, _match: 0 },
-        comment = /\[(.*)]/, parser = ctx._parser, offset = 0;
+        wildcard = ' ', comment = /^\[(.*)\]$/, ellipsis = '...';
 
     dateString = parser.pre(dateString);
-    for (var i = 1, len = pattern.length, token, result; i < len; i++) {
+    for (var i = 1, len = pattern.length, token, str, result; i < len; i++) {
         token = pattern[i];
+        str = dateString.slice(dt._index);
+
         if (parser[token]) {
-            result = parser[token](dateString.slice(offset), pattern[0]);
+            result = parser[token](str, pattern[0]);
             if (!result.length) {
-                break;
+              break;
             }
-            offset += result.length;
             dt[result.token || token.charAt(0)] = result.value;
+            dt._index += result.length;
             dt._match++;
-        } else if (token === dateString.charAt(offset) || token === ' ') {
-            offset++;
-        } else if (comment.test(token) && !dateString.slice(offset).indexOf(comment.exec(token)[1])) {
-            offset += token.length - 2;
-        } else if (token === '...') {
-            offset = dateString.length;
+        } else if (token === str.charAt(0) || token === wildcard) {
+            dt._index++;
+        } else if (comment.test(token) && !str.indexOf(token.replace(comment, '$1'))) {
+            dt._index += token.length - 2;
+        } else if (token === ellipsis) {
+            dt._index = dateString.length;
             break;
         } else {
             break;
         }
     }
-    dt.H = dt.H || parser.h12(dt.h, dt.A);  // eslint-disable-line logical-assignment-operators
-    dt._index = offset;
+    dt.H = dt.H || parser.h12(dt.h, dt.A);
     dt._length = dateString.length;
     return dt;
 };
