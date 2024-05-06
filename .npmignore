@@ -1,6 +1,6 @@
 .*
 benchmark
-rollup.config.js
+rollup.config.mjs
 src
 test
 test.sh
