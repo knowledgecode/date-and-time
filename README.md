@@ -25,16 +25,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.3.0
+  - Refactored `format()`, `isValid()`, and `preparse()`, further improved performance.
+
 - 3.2.0
-  - Refactored `compile()`, `format()`, and `preparse()` slightly improved performance.
+  - Refactored `compile()`, `format()`, and `preparse()`, slightly improved performance.
 
 - 3.1.1
   - Fixed an issue where `format()` could output incorrect UTC times in locales with daylight savings time.
   - Refactored `formatTZ()` of `timezone` plugin.
-
-- 3.1.0
-  - Improved accuracy of `parseTZ()` in `timezone` plugin.
-  - Organized some test modules.
 
 ## Usage
 
