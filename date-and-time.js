@@ -185,7 +185,9 @@
 
         for (var i = 1, len = pattern.length, token; i < len; i++) {
             token = pattern[i];
-            str += formatter[token] ? formatter.post(formatter[token](d, pattern[0])) : token.replace(comment, '$1');
+            str += formatter[token]
+                ? formatter.post(formatter[token](d, pattern[0]))
+                : comment.test(token) ? token.replace(comment, '$1') : token;
         }
         return str;
     };
@@ -206,7 +208,7 @@
         dateString = parser.pre(dateString);
         for (var i = 1, len = pattern.length, token, str, result; i < len; i++) {
             token = pattern[i];
-            str = dateString.slice(dt._index);
+            str = dateString.substring(dt._index);
 
             if (parser[token]) {
                 result = parser[token](str, pattern[0]);
@@ -260,14 +262,13 @@
      * @returns {boolean} Whether the date and time string is a valid date and time
      */
     proto.isValid = function (arg1, arg2) {
-        var ctx = this || date, dt = typeof arg1 === 'string' ? ctx.preparse(arg1, arg2) : arg1,
-            last = [31, 28 + ctx.isLeapYear(dt.Y) | 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][dt.M - 1];
+        var ctx = this || date, dt = typeof arg1 === 'string' ? ctx.preparse(arg1, arg2) : arg1;
 
         return !(
-            dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1 ||
-            dt.Y < 1 || dt.Y > 9999 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last ||
-            dt.H < 0 || dt.H > 23 || dt.m < 0 || dt.m > 59 || dt.s < 0 || dt.s > 59 || dt.S < 0 || dt.S > 999 ||
-            dt.Z < -840 || dt.Z > 720
+            dt._index < 1 || dt._length < 1 || dt._index - dt._length || dt._match < 1
+            || dt.Y < 1 || dt.Y > 9999 || dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D >  new Date(dt.Y, dt.M, 0).getDate()
+            || dt.H < 0 || dt.H > 23 || dt.m < 0 || dt.m > 59 || dt.s < 0 || dt.s > 59 || dt.S < 0 || dt.S > 999
+            || dt.Z < -840 || dt.Z > 720
         );
     };
 
