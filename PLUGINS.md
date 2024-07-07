@@ -380,6 +380,45 @@ In the first example above, if you want `parseTZ()` to parse the time as PST, yo
 date.parse('Nov 7 2021 1:59:59 -0800', 'MMM D YYYY H:mm:ss Z'); // => 2021-11-07T09:59:59Z
 ```
 
+#### Token Extension
+
+This plugin also adds tokens for time zone name to the formatter.
+
+**formatter:**
+
+| token | meaning                     | output examples       |
+|:------|:----------------------------|:----------------------|
+| z     | time zone name abbreviation | PST, EST              |
+| zz    | time zone name              | Pacific Standard Time |
+
+The `z` and `zz` are lowercase. Also, currently it does not support output other than English.
+
+**parser:**
+
+There is no change.
+
+```javascript
+const date = require('date-and-time');
+// Import "timezone" plugin.
+const timezone = require('date-and-time/plugin/timezone');
+
+// Apply "timezone" plugin to the library.
+date.plugin(timezone);
+
+const d1 = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+date.format(d1, 'MMMM DD YYYY H:mm:ss.SSS zz');
+// March 14 2021 1:59:59.999 Pacific Standard Time
+
+date.format(d1, 'MMMM DD YYYY H:mm:ss.SSS zz', true);
+// March 14 2021 9:59:59.999 Coordinated Universal Time
+
+date.formatTZ(d1, 'MMMM DD YYYY H:mm:ss.SSS z', 'Asia/Tokyo');
+// March 14 2021 18:59:59.999 JST
+
+// Transforms the date string from EST (Eastern Standard Time) to PDT (Pacific Daylight Time).
+date.transform('2021-11-07T03:59:59 UTC-0500', 'YYYY-MM-DD[T]HH:mm:ss [UTC]Z', 'MMMM D YYYY H:mm:ss z');
+// November 7 2021 1:59:59 PDT
+```
 ---
 
 ### two-digit-year
