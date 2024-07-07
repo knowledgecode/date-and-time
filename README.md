@@ -25,15 +25,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.4.0
+  - Added `zz` (time zone name) and `z` (time zone name abbreviation) tokens to the `timezone` plugin.
+  - Fixed an issue where token extensions by other plugins were not reflected in functions provided by the `timezone` plugin.
+
 - 3.3.0
   - Refactored `format()`, `isValid()`, and `preparse()`, further improved performance.
 
 - 3.2.0
   - Refactored `compile()`, `format()`, and `preparse()`, slightly improved performance.
-
-- 3.1.1
-  - Fixed an issue where `format()` could output incorrect UTC times in locales with daylight savings time.
-  - Refactored `formatTZ()` of `timezone` plugin.
 
 ## Usage
 
@@ -179,12 +179,14 @@ Available tokens and their meanings are as follows:
 
 You can also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
 
-| token | meaning                              | examples of output |
-|:------|:-------------------------------------|:-------------------|
-| DDD   | ordinal notation of date             | 1st, 2nd, 3rd      |
-| AA    | meridiem (uppercase with ellipsis)   | A.M., P.M.         |
-| a     | meridiem (lowercase)                 | am, pm             |
-| aa    | meridiem (lowercase with ellipsis)   | a.m., p.m.         |
+| token | meaning                              | examples of output    |
+|:------|:-------------------------------------|:----------------------|
+| DDD   | ordinal notation of date             | 1st, 2nd, 3rd         |
+| AA    | meridiem (uppercase with ellipsis)   | A.M., P.M.            |
+| a     | meridiem (lowercase)                 | am, pm                |
+| aa    | meridiem (lowercase with ellipsis)   | a.m., p.m.            |
+| z     | time zone name abbreviation          | PST, EST              |
+| zz    | time zone name                       | Pacific Standard Time |
 
 #### Note 1. Comments
 
