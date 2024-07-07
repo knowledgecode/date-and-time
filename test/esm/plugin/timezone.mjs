@@ -281,4 +281,364 @@ describe('timezone', () => {
         // 2021-03-14T03:00:00.000 UTC+0000 => March 14 2021 12:00:00.000
         expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
     });
+
+    describe('additional tokens', () => {
+        it('formatTZ PST', () => {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 1:59:59.999 PST');
+        });
+
+        it('formatTZ PDT (Start of DST)', () => {
+            // 2021-03-14T10:00:00.000Z => March 14 2021 3:00:00.000
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 3:00:00.000 PDT');
+        });
+
+        it('formatTZ PDT (End of DST)', () => {
+            // 2021-11-07T08:59:59.999Z => November 7 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 8, 59, 59, 999));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('November 7 2021 1:59:59.999 PDT');
+        });
+
+        it('formatTZ PST', () => {
+            // 2021-11-07T09:00:00.000Z => November 7 2021 1:00:00.000
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 9, 0, 0, 0));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('November 7 2021 1:00:00.000 PST');
+        });
+
+        it('formatTZ JST', () => {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 18:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY H:mm:ss.SSS z';
+            var tz = 'Asia/Tokyo';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 18:59:59.999 JST');
+        });
+
+        it('formatTZ Pacific Standard Time', () => {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 1:59:59.999 Pacific Standard Time');
+        });
+
+        it('formatTZ Pacific Daylight Time (Start of DST)', () => {
+            // 2021-03-14T10:00:00.000Z => March 14 2021 3:00:00.000
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 3:00:00.000 Pacific Daylight Time');
+        });
+
+        it('formatTZ Pacific Daylight Time (End of DST)', () => {
+            // 2021-11-07T08:59:59.999Z => November 7 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 8, 59, 59, 999));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('November 7 2021 1:59:59.999 Pacific Daylight Time');
+        });
+
+        it('formatTZ Pacific Standard Time', () => {
+            // 2021-11-07T09:00:00.000Z => November 7 2021 1:00:00.000
+            var dateObj = new Date(Date.UTC(2021, 10, 7, 9, 0, 0, 0));
+            var formatString = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('November 7 2021 1:00:00.000 Pacific Standard Time');
+        });
+
+        it('formatTZ Japan Standard Time', () => {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 18:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY H:mm:ss.SSS zz';
+            var tz = 'Asia/Tokyo';
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 18:59:59.999 Japan Standard Time');
+        });
+
+        it('transformTZ EST to PST', () => {
+            var dateString1 = '2021-11-07T04:00:00.000 UTC-0500';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            var dateString2 = 'November 7 2021 1:00:00.000 PST';
+
+            // 2021-11-07T04:00:00.000 UTC-0500 => November 7 2021 1:00:00.000 PST
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EST to PDT (End of DST)', () => {
+            var dateString1 = '2021-11-07T03:59:59.999 UTC-0500';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+
+            var dateString2 = 'November 7 2021 1:59:59.999 PDT';
+
+            // 2021-11-07T03:59:59.999 UTC-0500 => November 7 2021 1:59:59.999
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EDT to PST', () => {
+            var dateString1 = '2021-03-14T05:59:59.999 UTC-0400';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            var dateString2 = 'March 14 2021 1:59:59.999 PST';
+
+            // 2021-03-14T05:59:59.999 UTC-0400 => March 14 2021 1:59:59.999
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EDT to PDT (Start of DST)', () => {
+            var dateString1 = '2021-03-14T06:00:00.000 UTC-0400';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+
+            var dateString2 = 'March 14 2021 3:00:00.000 PDT';
+
+            // 2021-03-14T06:00:00.000 UTC-0400 => March 14 2021 3:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ PST to JST', () => {
+            var dateString1 = '2021-03-14T01:59:59.999 UTC-0800';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 18:59:59.999 JST';
+
+            // 2021-03-14T01:59:59.999 UTC-0800 => March 14 2021 18:59:59.999
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ PDT to JST', () => {
+            var dateString1 = '2021-03-14T03:00:00.000 UTC-0700';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 19:00:00.000 JST';
+
+            // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ UTC to JST', () => {
+            var dateString1 = '2021-03-14T03:00:00.000 UTC+0000';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS z';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 12:00:00.000 JST';
+
+            // 2021-03-14T03:00:00.000 UTC+0000 => March 14 2021 12:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EST to Pacific Standard Time', () => {
+            var dateString1 = '2021-11-07T04:00:00.000 UTC-0500';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            var dateString2 = 'November 7 2021 1:00:00.000 Pacific Standard Time';
+
+            // 2021-11-07T04:00:00.000 UTC-0500 => November 7 2021 1:00:00.000 PST
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EST to Pacific Daylight Time (End of DST)', () => {
+            var dateString1 = '2021-11-07T03:59:59.999 UTC-0500';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+
+            var dateString2 = 'November 7 2021 1:59:59.999 Pacific Daylight Time';
+
+            // 2021-11-07T03:59:59.999 UTC-0500 => November 7 2021 1:59:59.999
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EDT to Pacific Standard Time', () => {
+            var dateString1 = '2021-03-14T05:59:59.999 UTC-0400';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            var dateString2 = 'March 14 2021 1:59:59.999 Pacific Standard Time';
+
+            // 2021-03-14T05:59:59.999 UTC-0400 => March 14 2021 1:59:59.999
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ EDT to Pacific Daylight Time (Start of DST)', () => {
+            var dateString1 = '2021-03-14T06:00:00.000 UTC-0400';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'America/Los_Angeles';     // UTC-7 DST
+
+            var dateString2 = 'March 14 2021 3:00:00.000 Pacific Daylight Time';
+
+            // 2021-03-14T06:00:00.000 UTC-0400 => March 14 2021 3:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ PST to Japan Standard Time', () => {
+            var dateString1 = '2021-03-14T01:59:59.999 UTC-0800';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 18:59:59.999 Japan Standard Time';
+
+            // 2021-03-14T01:59:59.999 UTC-0800 => March 14 2021 18:59:59.999
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ PDT to Japan Standard Time', () => {
+            var dateString1 = '2021-03-14T03:00:00.000 UTC-0700';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 19:00:00.000 Japan Standard Time';
+
+            // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+
+        it('transformTZ UTC to Japan Standard Time', () => {
+            var dateString1 = '2021-03-14T03:00:00.000 UTC+0000';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY H:mm:ss.SSS zz';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 12:00:00.000 Japan Standard Time';
+
+            // 2021-03-14T03:00:00.000 UTC+0000 => March 14 2021 12:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
+        });
+    });
+
+    describe('format', () => {
+        before(() => {
+            process.env.TZ = 'America/Los_Angeles';
+        });
+
+        it('"z" equals to "PST"', () => {
+            // Before the start of daylight saving time
+            var now = new Date(2024, 2, 10, 1, 59, 59, 999);
+            expect(date.format(now, 'z')).to.equal('PST');
+        });
+
+        it('"z" equals to "PDT"', () => {
+            // Daylight saving time started
+            var now = new Date(2024, 2, 10, 2, 0, 0, 0);
+            expect(date.format(now, 'z')).to.equal('PDT');
+        });
+
+        it('"z" equals to "PDT"', () => {
+            // Before the end of daylight saving time
+            var now = new Date(2024, 10, 3, 1, 0, 0, 0);
+            expect(date.format(now, 'z')).to.equal('PDT');
+        });
+
+        it('"z" equals to "PST"', () => {
+            // Daylight saving time ends
+            var now = new Date(2024, 10, 3, 2, 0, 0, 0);
+            expect(date.format(now, 'z')).to.equal('PST');
+        });
+
+        it('"zz" equals to "Pacific Standard Time"', () => {
+            // Before the start of daylight saving time
+            var now = new Date(2024, 2, 10, 1, 59, 59, 999);
+            expect(date.format(now, 'zz')).to.equal('Pacific Standard Time');
+        });
+
+        it('"zz" equals to "Pacific Daylight Time"', () => {
+            // Daylight saving time started
+            var now = new Date(2024, 2, 10, 2, 0, 0, 0);
+            expect(date.format(now, 'zz')).to.equal('Pacific Daylight Time');
+        });
+
+        it('"zz" equals to "Pacific Daylight Time"', () => {
+            // Before the end of daylight saving time
+            var now = new Date(2024, 10, 3, 1, 0, 0, 0);
+            expect(date.format(now, 'zz')).to.equal('Pacific Daylight Time');
+        });
+
+        it('"zz" equals to "Pacific Standard Time"', () => {
+            // Daylight saving time ends
+            var now = new Date(2024, 10, 3, 2, 0, 0, 0);
+            expect(date.format(now, 'zz')).to.equal('Pacific Standard Time');
+        });
+    });
+
+    describe('transform', () => {
+        before(() => {
+            process.env.TZ = 'America/Los_Angeles';
+        });
+
+        it('"z" equals to "PST"', () => {
+            // Before the start of daylight saving time
+            expect(date.transform('10 March 2024, 01:59:59.999', 'D MMMM YYYY, HH:mm:ss.SSS', 'z')).to.equal('PST');
+        });
+
+        it('"z" equals to "PDT"', () => {
+            // Daylight saving time started
+            expect(date.transform('10 March 2024, 02:00:00.000', 'D MMMM YYYY, HH:mm:ss.SSS', 'z')).to.equal('PDT');
+        });
+
+        it('"z" equals to "PDT"', () => {
+            // Before the end of daylight saving time
+            expect(date.transform('3 November 2024, 01:00:00.000', 'D MMMM YYYY, HH:mm:ss.SSS', 'z')).to.equal('PDT');
+        });
+
+        it('"z" equals to "PST"', () => {
+            // Daylight saving time ends
+            expect(date.transform('3 November 2024, 02:00:00.000', 'D MMMM YYYY, HH:mm:ss.SSS', 'z')).to.equal('PST');
+        });
+
+        it('"zz" equals to "Pacific Standard Time"', () => {
+            // Before the start of daylight saving time
+            expect(date.transform('10 March 2024, 01:59:59.999', 'D MMMM YYYY, HH:mm:ss.SSS', 'zz')).to.equal('Pacific Standard Time');
+        });
+
+        it('"zz" equals to "Pacific Daylight Time"', () => {
+            // Daylight saving time started
+            expect(date.transform('10 March 2024, 02:00:00.000', 'D MMMM YYYY, HH:mm:ss.SSS', 'zz')).to.equal('Pacific Daylight Time');
+        });
+
+        it('"zz" equals to "Pacific Daylight Time"', () => {
+            // Before the end of daylight saving time
+            expect(date.transform('3 November 2024, 01:00:00.000', 'D MMMM YYYY, HH:mm:ss.SSS', 'zz')).to.equal('Pacific Daylight Time');
+        });
+
+        it('"zz" equals to "Pacific Standard Time"', () => {
+            // Daylight saving time ends
+            expect(date.transform('3 November 2024, 02:00:00.000', 'D MMMM YYYY, HH:mm:ss.SSS', 'zz')).to.equal('Pacific Standard Time');
+        });
+    });
 });
