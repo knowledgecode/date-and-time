@@ -4,11 +4,11 @@
 
     var expect = global.expect || require('expect.js'),
         date = global.date || require('date-and-time'),
-        en = typeof require === 'function' ? require('../locale/en') : 'en',
-        es = typeof require === 'function' ? require('../locale/es') : 'es',
-        ja = typeof require === 'function' ? require('../locale/ja') : 'ja';
+        en = typeof require === 'function' ? require('date-and-time/locale/en') : 'en',
+        es = typeof require === 'function' ? require('date-and-time/locale/es') : 'es',
+        ja = typeof require === 'function' ? require('date-and-time/locale/ja') : 'ja';
 
-    describe('locale change, then revert, format', function () {
+    describe('Change locale and revert, then format', function () {
         before(function () {
             date.locale(ja);
             date.locale(en);
@@ -499,7 +499,7 @@
         });
     });
 
-    describe('locale change, then revert, parse', function () {
+    describe('Change locale and revert, then parse', function () {
         before(function () {
             date.locale(ja);
             date.locale(en);
@@ -889,7 +889,7 @@
         });
     });
 
-    describe('locale change, then revert, extend', function () {
+    describe('Change locale and revert, then extend', function () {
         before(function () {
             date.locale(ja);
             date.locale(en);
@@ -937,7 +937,7 @@
             'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde',    // 12 - 18
             'de la noche', 'de la noche', 'de la noche', 'de la noche', 'de la noche'];     // 19 - 23
 
-    describe('locale change to ja, then change to es, format', function () {
+    describe('Change the local to ja, then es, then format', function () {
         before(function () {
             date.locale(ja);
             date.locale(es);
@@ -985,7 +985,7 @@
         });
     });
 
-    describe('locale change to ja, then change to es, parse', function () {
+    describe('Change the locale to ja, then es, then parse', function () {
         before(function () {
             date.locale(ja);
             date.locale(es);
@@ -1024,16 +1024,16 @@
     var two_digit_year = 'two-digit-year';
 
     if (typeof require === 'function') {
-        day_of_week = require('../plugin/day-of-week');
-        meridiem = require('../plugin/meridiem');
-        microsecond = require('../plugin/microsecond');
-        ordinal = require('../plugin/ordinal');
-        timespan = require('../plugin/timespan');
-        timezone = require('../plugin/timezone');
-        two_digit_year = require('../plugin/two-digit-year');
+        day_of_week = require('date-and-time/plugin/day-of-week');
+        meridiem = require('date-and-time/plugin/meridiem');
+        microsecond = require('date-and-time/plugin/microsecond');
+        ordinal = require('date-and-time/plugin/ordinal');
+        timespan = require('date-and-time/plugin/timespan');
+        timezone = require('date-and-time/plugin/timezone');
+        two_digit_year = require('date-and-time/plugin/two-digit-year');
     }
 
-    describe('multiple plugins install, format', function () {
+    describe('Install multiple plugins, then format', function () {
         before(function () {
             date.plugin(day_of_week);
             date.plugin(meridiem);
@@ -1525,7 +1525,7 @@
         });
     });
 
-    describe('multiple plugins install, parse', function () {
+    describe('Install multiple plugins, then parse', function () {
         before(function () {
             date.plugin(day_of_week);
             date.plugin(meridiem);
@@ -1916,7 +1916,7 @@
         });
     });
 
-    describe('multiple plugins install, extend', function () {
+    describe('Install multiple plugins, then extend', function () {
         before(function () {
             date.plugin(day_of_week);
             date.plugin(meridiem);
@@ -1955,7 +1955,7 @@
 
     A = ['AM', 'PM'];
 
-    describe('multiple locale change and multiple plugins', function () {
+    describe('Multiple locale changes and multiple plugin installations', function () {
         before(function () {
             date.locale(es);
             date.plugin(day_of_week);
@@ -2535,7 +2535,7 @@
         });
     });
 
-    describe('appling locale change to plugins', function () {
+    describe('Applying locale changes to plugins', function () {
         before(function () {
             date.locale(es);
             date.plugin(day_of_week);
@@ -2791,6 +2791,44 @@
 
         after(function () {
             date.locale(en);
+        });
+    });
+
+    describe('Applying other plugins to formatTZ, parseTZ and transformTZ', function () {
+        before(function () {
+            date.plugin(meridiem);
+            date.plugin(timezone);
+        });
+
+        it('formatTZ UTC-8', function () {
+            // 2021-03-14T09:59:59.999Z => March 14 2021 1:59:59.999
+            var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+            var formatString = 'MMMM DD YYYY h:mm:ss.SSS AA [UTC]Z';
+            var tz = 'America/Los_Angeles';     // UTC-8
+
+            expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 1:59:59.999 A.M. UTC-0800');
+        });
+
+        it('parseTZ UTC+10.5 (Start of DST)', function () {
+            // Oct 3 2021 3:00:00.000 => 2021-10-02T16:30:00.000Z
+            var dateString = 'Oct 3 2021 3:00:00.000 A.M.';
+            var formatString = 'MMM D YYYY h:mm:ss.SSS AA';
+            var tz = 'Australia/Adelaide';      // UTC+10.5 DST
+            var dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
+
+            expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+        });
+
+        it('transformTZ PDT to JST', function () {
+            var dateString1 = '2021-03-14T03:00:00.000 UTC-0700';
+            var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+            var formatString2 = 'MMMM D YYYY h:mm:ss.SSS AA';
+            var tz = 'Asia/Tokyo';              // UTC+9
+
+            var dateString2 = 'March 14 2021 7:00:00.000 P.M.';
+
+            // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
+            expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
         });
     });
 

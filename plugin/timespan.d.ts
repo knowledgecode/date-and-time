@@ -21,4 +21,4 @@ declare module '../date-and-time' {
     export function timeSpan(date1: Date, date2: Date): TimeSpanResult;
 }
 
-export default function (date: unknown, localized_date?: unknown): string;
+export default function (proto: unknown, date?: unknown): string;
