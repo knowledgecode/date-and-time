@@ -17,7 +17,7 @@ import two_digit_year from 'date-and-time/plugin/two-digit-year';
 
 import expect from 'expect.js';
 
-describe('locale change, then revert, format', () => {
+describe('Change locale and revert, then format', () => {
     before(() => {
         locale(ja);
         locale(en);
@@ -508,7 +508,7 @@ describe('locale change, then revert, format', () => {
     });
 });
 
-describe('locale change, then revert, parse', () => {
+describe('Change locale and revert, then parse', () => {
     before(() => {
         locale(ja);
         locale(en);
@@ -898,7 +898,7 @@ describe('locale change, then revert, parse', () => {
     });
 });
 
-describe('locale change, then revert, extend', () => {
+describe('Change locale and revert, then extend', () => {
     before(() => {
         locale(ja);
         locale(en);
@@ -939,7 +939,7 @@ const es_A = ['de la mañana', 'de la mañana', 'de la mañana', 'de la mañana'
     'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde', 'de la tarde',    // 12 - 18
     'de la noche', 'de la noche', 'de la noche', 'de la noche', 'de la noche'];     // 19 - 23
 
-describe('locale change to ja, then change to es, format', () => {
+describe('Change the local to ja, then es, then format', () => {
     before(() => {
         locale(ja);
         locale(es);
@@ -987,7 +987,7 @@ describe('locale change to ja, then change to es, format', () => {
     });
 });
 
-describe('locale change to ja, then change to es, parse', () => {
+describe('Change the locale to ja, then es, then parse', () => {
     before(() => {
         locale(ja);
         locale(es);
@@ -1017,7 +1017,7 @@ describe('locale change to ja, then change to es, parse', () => {
     });
 });
 
-describe('multiple plugins install, format', () => {
+describe('Install multiple plugins, then format', () => {
     before(() => {
         plugin(day_of_week);
         plugin(meridiem);
@@ -1499,7 +1499,7 @@ describe('multiple plugins install, format', () => {
     });
 });
 
-describe('multiple locale change and multiple plugins', () => {
+describe('Install multiple plugins, then parse', () => {
     let timeSpan, formatTZ, parseTZ;
 
     before(() => {
@@ -2088,7 +2088,7 @@ describe('multiple locale change and multiple plugins', () => {
     });
 });
 
-describe('appling locale change to timezone plugins', () => {
+describe('Applying locale changes to plugins', () => {
     let formatTZ, parseTZ;
 
     before(() => {
@@ -2348,5 +2348,43 @@ describe('appling locale change to timezone plugins', () => {
 
     after(() => {
         locale(en);
+    });
+});
+
+describe('Applying other plugins to formatTZ, parseTZ and transformTZ', () => {
+    before(() => {
+        date.plugin(meridiem);
+        date.plugin(timezone);
+    });
+
+    it('formatTZ UTC-8', () => {
+        // 2021-03-14T09:59:59.999Z => March 14 2021 1:59:59.999
+        var dateObj = new Date(Date.UTC(2021, 2, 14, 9, 59, 59, 999));
+        var formatString = 'MMMM DD YYYY h:mm:ss.SSS AA [UTC]Z';
+        var tz = 'America/Los_Angeles';     // UTC-8
+
+        expect(date.formatTZ(dateObj, formatString, tz)).to.equal('March 14 2021 1:59:59.999 A.M. UTC-0800');
+    });
+
+    it('parseTZ UTC+10.5 (Start of DST)', () => {
+        // Oct 3 2021 3:00:00.000 => 2021-10-02T16:30:00.000Z
+        var dateString = 'Oct 3 2021 3:00:00.000 A.M.';
+        var formatString = 'MMM D YYYY h:mm:ss.SSS AA';
+        var tz = 'Australia/Adelaide';      // UTC+10.5 DST
+        var dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
+
+        expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
+    });
+
+    it('transformTZ PDT to JST', () => {
+        var dateString1 = '2021-03-14T03:00:00.000 UTC-0700';
+        var formatString1 = 'YYYY-MM-DD[T]HH:mm:ss.SSS [UTC]Z';
+        var formatString2 = 'MMMM D YYYY h:mm:ss.SSS AA';
+        var tz = 'Asia/Tokyo';              // UTC+9
+
+        var dateString2 = 'March 14 2021 7:00:00.000 P.M.';
+
+        // 2021-03-14T03:00:00.000 UTC-0700 => March 14 2021 19:00:00.000
+        expect(date.transformTZ(dateString1, formatString1, formatString2, tz)).to.equal(dateString2);
     });
 });

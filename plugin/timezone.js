@@ -9,12 +9,7 @@
      * @preserve timezone
      */
 
-    var plugin = function (date, localized_date) {
-        var options = {
-            year: 'numeric', month: 'numeric', day: 'numeric',
-            hour: 'numeric', minute: 'numeric', second: 'numeric'
-        };
-        var pattern = date.compile('M/D/Y, h:mm:ss A');
+    var plugin = function (proto, date) {
         var timeZones = {
             africa: {
                 abidjan: [0, -968],
@@ -461,41 +456,173 @@
                 wallis: [43200, 41524]
             }
         };
+        var timeZoneNames = {
+            'Acre Standard Time': 'ACT', 'Acre Summer Time': 'ACST', 'Afghanistan Time': 'AFT',
+            'Alaska Daylight Time': 'AKDT', 'Alaska Standard Time': 'AKST', 'Almaty Standard Time': 'ALMT',
+            'Almaty Summer Time': 'ALMST', 'Amazon Standard Time': 'AMT', 'Amazon Summer Time': 'AMST',
+            'Anadyr Standard Time': 'ANAT', 'Anadyr Summer Time': 'ANAST', 'Apia Daylight Time': 'WSDT',
+            'Apia Standard Time': 'WSST', 'Aqtau Standard Time': 'AQTT', 'Aqtau Summer Time': 'AQTT',
+            'Aqtobe Standard Time': 'AQTT', 'Aqtobe Summer Time': 'AQST', 'Arabian Daylight Time': 'ADT',
+            'Arabian Standard Time': 'AST', 'Argentina Standard Time': 'ART', 'Argentina Summer Time': 'ARST',
+            'Armenia Standard Time': 'AMT', 'Armenia Summer Time': 'AMST', 'Atlantic Daylight Time': 'ADT',
+            'Atlantic Standard Time': 'AST', 'Australian Central Daylight Time': 'ACDT', 'Australian Central Standard Time': 'ACST',
+            'Australian Central Western Daylight Time': 'ACWDT', 'Australian Central Western Standard Time': 'ACWST', 'Australian Eastern Daylight Time': 'AEDT',
+            'Australian Eastern Standard Time': 'AEST', 'Australian Western Daylight Time': 'AWDT', 'Australian Western Standard Time': 'AWST',
+            'Azerbaijan Standard Time': 'AZT', 'Azerbaijan Summer Time': 'AZST', 'Azores Standard Time': 'AZOT',
+            'Azores Summer Time': 'AZOST', 'Bangladesh Standard Time': 'BST', 'Bangladesh Summer Time': 'BDST',
+            'Bhutan Time': 'BTT', 'Bolivia Time': 'BOT', 'Brasilia Standard Time': 'BRT',
+            'Brasilia Summer Time': 'BRST', 'British Summer Time': 'BST', 'Brunei Darussalam Time': 'BNT',
+            'Cape Verde Standard Time': 'CVT', 'Casey Time': 'CAST', 'Central Africa Time': 'CAT',
+            'Central Daylight Time': 'CDT', 'Central European Standard Time': 'CET', 'Central European Summer Time': 'CEST',
+            'Central Indonesia Time': 'WITA', 'Central Standard Time': 'CST', 'Chamorro Standard Time': 'ChST',
+            'Chatham Daylight Time': 'CHADT', 'Chatham Standard Time': 'CHAST', 'Chile Standard Time': 'CLT',
+            'Chile Summer Time': 'CLST', 'China Daylight Time': 'CDT', 'China Standard Time': 'CST',
+            'Choibalsan Standard Time': 'CHOT', 'Choibalsan Summer Time': 'CHOST', 'Christmas Island Time': 'CXT',
+            'Chuuk Time': 'CHUT', 'Cocos Islands Time': 'CCT', 'Colombia Standard Time': 'COT',
+            'Colombia Summer Time': 'COST', 'Cook Islands Half Summer Time': 'CKHST', 'Cook Islands Standard Time': 'CKT',
+            'Coordinated Universal Time': 'UTC', 'Cuba Daylight Time': 'CDT', 'Cuba Standard Time': 'CST',
+            'Davis Time': 'DAVT', 'Dumont-d’Urville Time': 'DDUT', 'East Africa Time': 'EAT',
+            'East Greenland Standard Time': 'EGST', 'East Greenland Summer Time': 'EGST', 'East Kazakhstan Time': 'ALMT',
+            'East Timor Time': 'TLT', 'Easter Island Standard Time': 'EAST', 'Easter Island Summer Time': 'EASST',
+            'Eastern Daylight Time': 'EDT', 'Eastern European Standard Time': 'EET', 'Eastern European Summer Time': 'EEST',
+            'Eastern Indonesia Time': 'WIT', 'Eastern Standard Time': 'EST', 'Ecuador Time': 'ECT',
+            'Falkland Islands Standard Time': 'FKST', 'Falkland Islands Summer Time': 'FKDT', 'Fernando de Noronha Standard Time': 'FNT',
+            'Fernando de Noronha Summer Time': 'FNST', 'Fiji Standard Time': 'FJT', 'Fiji Summer Time': 'FJST',
+            'French Guiana Time': 'GFT', 'French Southern & Antarctic Time': 'TFT', 'Further-eastern European Time': 'FET',
+            'GMT': 'GMT', 'Galapagos Time': 'GALT', 'Gambier Time': 'GAMT',
+            'Georgia Standard Time': 'GET', 'Georgia Summer Time': 'GEST', 'Gilbert Islands Time': 'GILT',
+            'Greenwich Mean Time': 'GMT', 'Guam Standard Time': 'ChST', 'Gulf Standard Time': 'GST',
+            'Guyana Time': 'GYT', 'Hawaii-Aleutian Daylight Time': 'HADT', 'Hawaii-Aleutian Standard Time': 'HAST',
+            'Hong Kong Standard Time': 'HKT', 'Hong Kong Summer Time': 'HKST', 'Hovd Standard Time': 'HOVT',
+            'Hovd Summer Time': 'HOVST', 'India Standard Time': 'IST', 'Indian Ocean Time': 'IOT',
+            'Indochina Time': 'ICT', 'Iran Daylight Time': 'IRDT', 'Iran Standard Time': 'IRST',
+            'Irish Standard Time': 'IST', 'Irkutsk Standard Time': 'IRKT', 'Irkutsk Summer Time': 'IRKST',
+            'Israel Daylight Time': 'IDT', 'Israel Standard Time': 'IST', 'Japan Standard Time': 'JST',
+            'Korean Daylight Time': 'KDT', 'Korean Standard Time': 'KST', 'Kosrae Time': 'KOST',
+            'Krasnoyarsk Standard Time': 'KRAT', 'Krasnoyarsk Summer Time': 'KRAST', 'Kyrgyzstan Time': 'KGT',
+            'Lanka Time': 'LKT', 'Line Islands Time': 'LINT', 'Lord Howe Daylight Time': 'LHDT',
+            'Lord Howe Standard Time': 'LHST', 'Macao Standard Time': 'CST', 'Macao Summer Time': 'CDST',
+            'Magadan Standard Time': 'MAGT', 'Magadan Summer Time': 'MAGST', 'Malaysia Time': 'MYT',
+            'Maldives Time': 'MVT', 'Marquesas Time': 'MART', 'Marshall Islands Time': 'MHT',
+            'Mauritius Standard Time': 'MUT', 'Mauritius Summer Time': 'MUST', 'Mawson Time': 'MAWT',
+            'Mexican Pacific Daylight Time': 'PDT', 'Mexican Pacific Standard Time': 'PST', 'Moscow Standard Time': 'MSK',
+            'Moscow Summer Time': 'MSD', 'Mountain Daylight Time': 'MDT', 'Mountain Standard Time': 'MST',
+            'Myanmar Time': 'MMT', 'Nauru Time': 'NRT', 'Nepal Time': 'NPT',
+            'New Caledonia Standard Time': 'NCT', 'New Caledonia Summer Time': 'NCST', 'New Zealand Daylight Time': 'NZDT',
+            'New Zealand Standard Time': 'NZST', 'Newfoundland Daylight Time': 'NDT', 'Newfoundland Standard Time': 'NST',
+            'Niue Time': 'NUT', 'Norfolk Island Daylight Time': 'NFDT', 'Norfolk Island Standard Time': 'NFT',
+            'North Mariana Islands Time': 'ChST', 'Novosibirsk Standard Time': 'NOVT', 'Novosibirsk Summer Time': 'NOVST',
+            'Omsk Standard Time': 'OMST', 'Omsk Summer Time': 'OMSST', 'Pacific Daylight Time': 'PDT',
+            'Pacific Standard Time': 'PST', 'Pakistan Standard Time': 'PKT', 'Pakistan Summer Time': 'PKST',
+            'Palau Time': 'PWT', 'Papua New Guinea Time': 'PGT', 'Paraguay Standard Time': 'PYST',
+            'Paraguay Summer Time': 'PYST', 'Peru Standard Time': 'PET', 'Peru Summer Time': 'PEST',
+            'Petropavlovsk-Kamchatski Standard Time': 'PETT', 'Petropavlovsk-Kamchatski Summer Time': 'PETST', 'Philippine Standard Time': 'PST',
+            'Philippine Summer Time': 'PHST', 'Phoenix Islands Time': 'PHOT', 'Pitcairn Time': 'PIT',
+            'Ponape Time': 'PONT', 'Pyongyang Time': 'KST', 'Qyzylorda Standard Time': 'QYZT',
+            'Qyzylorda Summer Time': 'QYZST', 'Rothera Time': 'ROOTT', 'Réunion Time': 'RET',
+            'Sakhalin Standard Time': 'SAKT', 'Sakhalin Summer Time': 'SAKST', 'Samara Standard Time': 'SAMT',
+            'Samara Summer Time': 'SAMST', 'Samoa Standard Time': 'SST', 'Seychelles Time': 'SCT',
+            'Singapore Standard Time': 'SGT', 'Solomon Islands Time': 'SBT', 'South Africa Standard Time': 'SAST',
+            'South Georgia Time': 'GST', 'St. Pierre & Miquelon Daylight Time': 'PMDT', 'St. Pierre & Miquelon Standard Time': 'PMST',
+            'Suriname Time': 'SRT', 'Syowa Time': 'SYOT', 'Tahiti Time': 'TAHT',
+            'Taipei Daylight Time': 'TDT', 'Taipei Standard Time': 'CST', 'Tajikistan Time': 'TJT',
+            'Tokelau Time': 'TKT', 'Tonga Standard Time': 'TOT', 'Tonga Summer Time': 'TOST',
+            'Turkmenistan Standard Time': 'TMT', 'Tuvalu Time': 'TVT', 'Ulaanbaatar Standard Time': 'ULAT',
+            'Ulaanbaatar Summer Time': 'ULAST', 'Uruguay Standard Time': 'UYT', 'Uruguay Summer Time': 'UYST',
+            'Uzbekistan Standard Time': 'UZT', 'Uzbekistan Summer Time': 'UZST', 'Vanuatu Standard Time': 'VUT',
+            'Vanuatu Summer Time': 'VUST', 'Venezuela Time': 'VET', 'Vladivostok Standard Time': 'VLAT',
+            'Vladivostok Summer Time': 'VLAST', 'Volgograd Standard Time': 'VOLT', 'Volgograd Summer Time': 'VOLST',
+            'Vostok Time': 'VOST', 'Wake Island Time': 'WAKT', 'Wallis & Futuna Time': 'WFT',
+            'West Africa Standard Time': 'WAT', 'West Africa Summer Time': 'WAST', 'West Greenland Standard Time': 'WGST',
+            'West Greenland Summer Time': 'WGST', 'West Kazakhstan Time': 'AQTT', 'Western Argentina Standard Time': 'ART',
+            'Western Argentina Summer Time': 'ARST', 'Western European Standard Time': 'WET', 'Western European Summer Time': 'WEST',
+            'Western Indonesia Time': 'WIB', 'Yakutsk Standard Time': 'YAKT', 'Yakutsk Summer Time': 'YAKST',
+            'Yekaterinburg Standard Time': 'YEKT', 'Yekaterinburg Summer Time': 'YEKST', 'Yukon Time': 'YT'
+        };
+        var options = {
+            hour12: false, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric',
+            hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3
+        };
         var formatTZ = function (dateObj, arg, timeZone) {
-            options.timeZone = 'UTC';
-            var utcObj = date.parse(new Intl.DateTimeFormat('en-US', options).format(dateObj), pattern);
-            utcObj.setMilliseconds(dateObj.getMilliseconds());
+            var parts = (function () {
+                options.timeZone = timeZone || undefined;
+                var array = new Intl.DateTimeFormat('en-US', options).formatToParts(dateObj);
+                var values = {};
 
-            options.timeZone = timeZone;
-            var dateObj2 = date.parse(new Intl.DateTimeFormat('en-US', options).format(dateObj), pattern);
-            dateObj2.setMilliseconds(dateObj.getMilliseconds());
+                for (var i = 0, len = array.length; i < len; i++) {
+                    var type = array[i].type;
+                    var value = array[i].value;
 
-            dateObj2.getTimezoneOffset = function () { return (utcObj.getTime() - dateObj2.getTime()) / 60000 | 0; };
+                    switch (type) {
+                    case 'weekday':
+                        values[type] = 'SunMonTueWedThuFriSat'.indexOf(value) / 3;
+                        break;
+                    case 'year':
+                    case 'month':
+                    case 'day':
+                    case 'hour':
+                    case 'minute':
+                    case 'second':
+                    case 'fractionalSecond':
+                        values[type] = value | 0;
+                    }
+                }
+                return values;
+            }());
 
-            return localized_date.format(dateObj2, arg);
+            return date.format({
+                getFullYear: function () { return parts.year; },
+                getMonth: function () { return parts.month - 1; },
+                getDate: function () { return parts.day; },
+                getHours: function () { return parts.hour; },
+                getMinutes: function () { return parts.minute; },
+                getSeconds: function () { return parts.second; },
+                getMilliseconds: function () { return parts.fractionalSecond; },
+                getDay: function () { return parts.weekday; },
+                getTime: function () { return dateObj.getTime(); },
+                getTimezoneOffset: function () {
+                    return (dateObj.getTime() - Date.UTC(
+                        parts.year, parts.month - (parts.year < 100 ? 1900 * 12 + 1 : 1), parts.day,
+                        parts.hour, parts.minute, parts.second, parts.fractionalSecond
+                    )) / 60000 | 0;
+                },
+                getTimezoneName: function () { return timeZone || undefined; }
+            }, arg);
         };
         var parseTZ = function (dateString, arg, timeZone) {
-            var pattern2 = typeof arg === 'string' ? date.compile(arg) : arg;
-            var dateObj = localized_date.parse(dateString, pattern2, !!timeZone);
+            var pattern = typeof arg === 'string' ? date.compile(arg) : arg;
+            var dateObj = date.parse(dateString, pattern, !!timeZone);
 
-            if (!timeZone || ~date._parser.find(pattern2, 'ZZ').value || timeZone.toLowerCase() === 'utc') {
+            var hasZ = function (array) {
+                for (var i = 1, len = array.length; i < len; i++) {
+                    if (!array[i].indexOf('Z')) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            if (!timeZone || hasZ(pattern) || timeZone.toUpperCase() === 'UTC') {
                 return dateObj;
             }
 
-            options.timeZone = timeZone;
-            var dateTimeFormat = new Intl.DateTimeFormat('en-US', options);
-            var dateString2 = date.format(dateObj, pattern, true);
-            var offset = (function () {
-                var keys = timeZone.toLowerCase().split('/');
+            var getOffset = function (timeZoneName) {
+                var keys = (timeZoneName || '').toLowerCase().split('/');
                 var value = timeZones[keys[0]] || {};
 
                 for (var i = 1, len = keys.length; i < len; i++) {
                     value = value[keys[i]] || {};
                 }
                 return Array.isArray(value) ? value : [];
-            })();
+            };
+
+            options.timeZone = 'UTC';
+            var dateString2 = new Intl.DateTimeFormat('en-US', options).format(dateObj);
+            options.timeZone = timeZone || undefined;
+            var dateTimeFormat = new Intl.DateTimeFormat('en-US', options);
+            var offset = getOffset(timeZone);
             var comparer = function (d) {
-                return dateString2 === dateTimeFormat.format(d).replace(/[\u202f]/, ' ');
+                return dateString2 === dateTimeFormat.format(d);
             };
 
             for (var j = 0, len2 = offset.length; j < len2; j++) {
@@ -507,12 +634,36 @@
             return new Date(NaN);
         };
         var transformTZ = function (dateString, arg1, arg2, timeZone) {
-            return formatTZ(localized_date.parse(dateString, arg1), arg2, timeZone);
+            return formatTZ(date.parse(dateString, arg1), arg2, timeZone);
         };
 
         var name = 'timezone';
 
-        date.plugin(name, {
+        var getName = function (d) {
+            var parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: typeof d.getTimezoneName === 'function' ? d.getTimezoneName() : undefined,
+                timeZoneName: 'long'
+            }).formatToParts(d.getTime());
+
+            for (var i = 0, len = parts.length; i < len; i++) {
+                if (parts[i].type === 'timeZoneName') {
+                    return parts[i].value;
+                }
+            }
+            return '';
+        };
+
+        proto.plugin(name, {
+            formatter: {
+                z: function (d) {
+                    var name = getName(d);
+                    return timeZoneNames[name] || '';
+                },
+                zz: function (d) {
+                    var name = getName(d);
+                    return /^GMT[+-].+$/.test(name) ? '' : name;
+                }
+            },
             extender: {
                 formatTZ: formatTZ,
                 parseTZ: parseTZ,

@@ -296,7 +296,7 @@ export type Extension = {
 export function extend(extension: Extension): void;
 
 /**  Plugin installer */
-export type Plugin = (proto: unknown, localized_proto?: unknown) => string;
+export type Plugin = (proto: unknown, date?: unknown) => string;
 
 /**
  * Importing plugins

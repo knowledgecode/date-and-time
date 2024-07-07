@@ -136,7 +136,6 @@ var locales = {},
         _formatter: _formatter,
         _parser: _parser
     },
-    localized_proto,
     date;
 
 /**
@@ -171,6 +170,7 @@ proto.format = function (dateObj, arg, utc) {
                 u.getMilliseconds = u.getUTCMilliseconds;
                 u.getDay = u.getUTCDay;
                 u.getTimezoneOffset = function () { return 0; };
+                u.getTimezoneName = function () { return 'UTC'; };
                 return u;
             }
             return dateObj;
@@ -447,7 +447,6 @@ proto.plugin = function (name, plugin) {
     }
 };
 
-localized_proto = extend(proto);
 date = extend(proto);
 
 /**
@@ -468,8 +467,8 @@ date.locale = function (locale) {
     var formatter = extend(_formatter, extension.formatter, true, res);
     var parser = extend(_parser, extension.parser, true, res);
 
-    date._formatter = localized_proto._formatter = formatter;
-    date._parser = localized_proto._parser = parser;
+    date._formatter = formatter;
+    date._parser = parser;
 
     for (var plugin in plugins) {
         date.extend(plugins[plugin]);
@@ -506,7 +505,7 @@ date.plugin = function (plugin) {
     var install = typeof plugin === 'function' ? plugin : date.plugin[plugin];
 
     if (install) {
-        date.extend(plugins[install(proto, localized_proto)] || {});
+        date.extend(plugins[install(proto, date)] || {});
     }
 };
 
