@@ -551,10 +551,12 @@ var plugin = function (proto, date) {
                 case 'weekday':
                     values[type] = 'SunMonTueWedThuFriSat'.indexOf(value) / 3;
                     break;
+                case 'hour':
+                    values[type] = value % 24;
+                    break;
                 case 'year':
                 case 'month':
                 case 'day':
-                case 'hour':
                 case 'minute':
                 case 'second':
                 case 'fractionalSecond':

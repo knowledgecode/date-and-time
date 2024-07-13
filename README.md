@@ -25,15 +25,15 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.4.1
+  - Fixed an issue where `formatTZ()` would output 0:00 as 24:00 in 24-hour format in Node.js.
+
 - 3.4.0
   - Added `zz` (time zone name) and `z` (time zone name abbreviation) tokens to the `timezone` plugin.
   - Fixed an issue where token extensions by other plugins were not reflected in functions provided by the `timezone` plugin.
 
 - 3.3.0
   - Refactored `format()`, `isValid()`, and `preparse()`, further improved performance.
-
-- 3.2.0
-  - Refactored `compile()`, `format()`, and `preparse()`, slightly improved performance.
 
 ## Usage
 
