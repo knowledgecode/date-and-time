@@ -25,15 +25,16 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.5.0
+  - Added `addYearsTZ()`, `addMonthsTZ()`, and `addDaysTZ()` to the `timezone` plugin.
+  - Revised the approach to adding time and removed the third parameter from `addHours()`, `addMinutes()`, `addSeconds()`, and `addMilliseconds()`.
+
 - 3.4.1
   - Fixed an issue where `formatTZ()` would output 0:00 as 24:00 in 24-hour format in Node.js.
 
 - 3.4.0
   - Added `zz` (time zone name) and `z` (time zone name abbreviation) tokens to the `timezone` plugin.
   - Fixed an issue where token extensions by other plugins were not reflected in functions provided by the `timezone` plugin.
-
-- 3.3.0
-  - Refactored `format()`, `isValid()`, and `preparse()`, further improved performance.
 
 ## Usage
 
@@ -98,16 +99,16 @@ import date from '/path/to/date-and-time.es.min.js';
 - [addDays](#adddaysdateobj-days-utc)
   - Adding days
 
-- [addHours](#addhoursdateobj-hours-utc)
+- [addHours](#addhoursdateobj-hours)
   - Adding hours
 
-- [addMinutes](#addminutesdateobj-minutes-utc)
+- [addMinutes](#addminutesdateobj-minutes)
   - Adding minutes
 
-- [addSeconds](#addsecondsdateobj-seconds-utc)
+- [addSeconds](#addsecondsdateobj-seconds)
   - Adding seconds
 
-- [addMilliseconds](#addmillisecondsdateobj-milliseconds-utc)
+- [addMilliseconds](#addmillisecondsdateobj-milliseconds)
   - Adding milliseconds
 
 - [subtract](#subtractdate1-date2)
@@ -434,11 +435,11 @@ date.transform('13:05', 'HH:mm', 'hh:mm A');
 ### addYears(dateObj, years[, utc])
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} years - Number of years to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} years - The number of years to add
+- @param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`
+- @returns {**Date**} The Date object after adding the specified number of years
 
-Adds years to the date object.
+Adds years to a date object. Subtraction is also possible by specifying a negative value. If the third parameter is false or omitted, this function calculates based on the system's default time zone. If you need to obtain calculation results based on a specific time zone regardless of the execution system, consider using the `addYearsTZ()`, which allows you to specify a time zone name as the third parameter. See [PLUGINS.md](./PLUGINS.md) for details.
 
 ```javascript
 const now = new Date();
@@ -456,11 +457,11 @@ const next_next_year = date.addYears(next_year, 1, true);   // => Feb 28 2022
 ### addMonths(dateObj, months[, utc])
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} months - Number of months to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} months - The number of months to add
+- @param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`
+- @returns {**Date**} The Date object after adding the specified number of months
 
-Adds months to the date object.
+Adds months to a date object. Subtraction is also possible by specifying a negative value. If the third parameter is false or omitted, this function calculates based on the system's default time zone. If you need to obtain calculation results based on a specific time zone regardless of the execution system, consider using the `addMonthsTZ()`, which allows you to specify a time zone name as the third parameter. See [PLUGINS.md](./PLUGINS.md) for details.
 
 ```javascript
 const now = new Date();
@@ -478,57 +479,67 @@ const next_next_month = date.addMonths(next_month, 1, true);    // => Mar 28 202
 ### addDays(dateObj, days[, utc])
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} days - Number of days to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} days - The number of days to add
+- @param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`
+- @returns {**Date**} The Date object after adding the specified number of days
+
+Adds days to a date object. Subtraction is also possible by specifying a negative value. If the third parameter is false or omitted, this function calculates based on the system's default time zone. If you need to obtain calculation results based on a specific time zone regardless of the execution system, consider using the `addDaysTZ()`, which allows you to specify a time zone name as the third parameter. See [PLUGINS.md](./PLUGINS.md) for details.
 
 ```javascript
 const now = new Date();
 const yesterday = date.addDays(now, -1);
 ```
 
-### addHours(dateObj, hours[, utc])
+### addHours(dateObj, hours)
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} hours - Number of hours to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} hours - The number of hours to add
+- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
+- @returns {**Date**} The Date object after adding the specified number of hours
+
+Adds hours to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
 
 ```javascript
 const now = new Date();
 const an_hour_ago = date.addHours(now, -1);
 ```
 
-### addMinutes(dateObj, minutes[, utc])
+### addMinutes(dateObj, minutes)
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} minutes - Number of minutes to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} minutes - The number of minutes to add
+- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
+- @returns {**Date**} The Date object after adding the specified number of minutes
+
+Adds minutes to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
 
 ```javascript
 const now = new Date();
 const two_minutes_later = date.addMinutes(now, 2);
 ```
 
-### addSeconds(dateObj, seconds[, utc])
+### addSeconds(dateObj, seconds)
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} seconds - Number of seconds to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} seconds - The number of seconds to add
+- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
+- @returns {**Date**} The Date object after adding the specified number of seconds
+
+Adds seconds to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
 
 ```javascript
 const now = new Date();
 const three_seconds_ago = date.addSeconds(now, -3);
 ```
 
-### addMilliseconds(dateObj, milliseconds[, utc])
+### addMilliseconds(dateObj, milliseconds)
 
 - @param {**Date**} dateObj - A Date object
-- @param {**number**} milliseconds - Number of milliseconds to add
-- @param {**boolean**} [utc] - Calculates as UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the value
+- @param {**number**} milliseconds - The number of milliseconds to add
+- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
+- @returns {**Date**} The Date object after adding the specified number of milliseconds
+
+Adds milliseconds to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
 
 ```javascript
 const now = new Date();
