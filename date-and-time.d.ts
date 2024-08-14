@@ -153,63 +153,95 @@ export function transform(dateString: string, compiledObj1: string[], compiledOb
 /**
  * Adding years
  * @param dateObj - A Date object
- * @param years - Number of years to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param years - The number of years to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of years
  */
 export function addYears(dateObj: Date, years: number, utc?: boolean): Date;
 
 /**
  * Adding months
  * @param dateObj - A Date object
- * @param months - Number of months to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param months - The number of months to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of months
  */
 export function addMonths(dateObj: Date, months: number, utc?: boolean): Date;
 
 /**
  * Adding days
  * @param dateObj - A Date object
- * @param days - Number of days to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param days - The number of days to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of days
  */
 export function addDays(dateObj: Date, days: number, utc?: boolean): Date;
 
 /**
  * Adding hours
  * @param dateObj - A Date object
- * @param hours - Number of hours to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param hours - The number of hours to add
+ * @returns The Date object after adding the specified number of hours
+ */
+export function addHours(dateObj: Date, hours: number): Date;
+
+/**
+ * @deprecated The `utc` parameter is ignored. The function always returns the same result regardless of this value.
+ * @param dateObj - A Date object
+ * @param hours - The number of hours to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of hours
  */
 export function addHours(dateObj: Date, hours: number, utc?: boolean): Date;
 
 /**
  * Adding minutes
  * @param dateObj - A Date object
- * @param minutes - Number of minutes to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param minutes - The number of minutes to add
+ * @returns The Date object after adding the specified number of minutes
+ */
+export function addMinutes(dateObj: Date, minutes: number): Date;
+
+/**
+ * @deprecated The `utc` parameter is ignored. The function always returns the same result regardless of this value.
+ * @param dateObj - A Date object
+ * @param minutes - The number of minutes to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of minutes
  */
 export function addMinutes(dateObj: Date, minutes: number, utc?: boolean): Date;
 
 /**
  * Adding seconds
  * @param dateObj - A Date object
- * @param seconds - Number of seconds to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param seconds - The number of seconds to add
+ * @returns The Date object after adding the specified number of seconds
+ */
+export function addSeconds(dateObj: Date, seconds: number): Date;
+
+/**
+ * @deprecated The `utc` parameter is ignored. The function always returns the same result regardless of this value.
+ * @param dateObj - A Date object
+ * @param seconds - The number of seconds to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of seconds
  */
 export function addSeconds(dateObj: Date, seconds: number, utc?: boolean): Date;
 
 /**
  * Adding milliseconds
  * @param dateObj - A Date object
- * @param milliseconds - Number of milliseconds to add
- * @param [utc] - Calculates as UTC
- * @returns The Date object after adding the value
+ * @param milliseconds - The number of milliseconds to add
+ * @returns The Date object after adding the specified number of milliseconds
+ */
+export function addMilliseconds(dateObj: Date, milliseconds: number): Date;
+
+/**
+ * @deprecated The `utc` parameter is ignored. The function always returns the same result regardless of this value.
+ * @param dateObj - A Date object
+ * @param milliseconds - The number of milliseconds to add
+ * @param [utc] - If true, calculates the date in UTC
+ * @returns The Date object after adding the specified number of milliseconds
  */
 export function addMilliseconds(dateObj: Date, milliseconds: number, utc?: boolean): Date;
 

@@ -97,18 +97,25 @@ expectType<string>(date.transform('1970-01-01T12:59:59.999Z', compiledObj, compi
 expectType<string>(date.transform('1970-01-01T12:59:59.999Z', compiledObj, compiledObj2, true));
 
 expectType<Date>(date.addYears(new Date(), 1));
+expectType<Date>(date.addYears(new Date(), 1, true));
 
 expectType<Date>(date.addMonths(new Date(), 1));
+expectType<Date>(date.addMonths(new Date(), 1, true));
 
 expectType<Date>(date.addDays(new Date(), 1));
+expectType<Date>(date.addDays(new Date(), 1, true));
 
 expectType<Date>(date.addHours(new Date(), 1));
+expectType<Date>(date.addHours(new Date(), 1, true));
 
 expectType<Date>(date.addMinutes(new Date(), 1));
+expectType<Date>(date.addMinutes(new Date(), 1, true));
 
 expectType<Date>(date.addSeconds(new Date(), 1));
+expectType<Date>(date.addSeconds(new Date(), 1, true));
 
 expectType<Date>(date.addMilliseconds(new Date(), 1));
+expectType<Date>(date.addMilliseconds(new Date(), 1, true));
 
 expectType<date.SubtractResult>(date.subtract(new Date(), new Date()));
 
@@ -219,10 +226,12 @@ expectType<string>(date.formatTZ(new Date(), 'YYYY-MM-DDTHH:mm:ss.SSS[Z]', 'Amer
 expectType<string>(date.formatTZ(new Date(), 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'));
 expectType<string>(date.formatTZ(new Date(), compiledObj, 'America/Los_Angeles'));
 expectType<string>(date.formatTZ(new Date(), compiledObj));
+
 expectType<Date>(date.parseTZ('1970-01-01T12:59:59.999Z', 'YYYY-MM-DDTHH:mm:ss.SSS[Z]', 'America/Los_Angeles'));
 expectType<Date>(date.parseTZ('1970-01-01T12:59:59.999Z', 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'));
 expectType<Date>(date.parseTZ('1970-01-01T12:59:59.999Z', compiledObj, 'America/Los_Angeles'));
 expectType<Date>(date.parseTZ('1970-01-01T12:59:59.999Z', compiledObj));
+
 expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', 'YYYY-MM-DDTHH:mm:ss.SSS[Z]', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'));
 expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', 'YYYY-MM-DDTHH:mm:ss.SSS[Z]', 'MMM D YYYY H:mm:ss'));
 expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', 'YYYY-MM-DDTHH:mm:ss.SSS[Z]', compiledObj2, 'America/Los_Angeles'));
@@ -231,3 +240,12 @@ expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', compiledObj, 'MM
 expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', compiledObj, 'MMM D YYYY H:mm:ss'));
 expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', compiledObj, compiledObj2, 'America/Los_Angeles'));
 expectType<string>(date.transformTZ('1970-01-01T12:59:59.999Z', compiledObj, compiledObj2));
+
+expectType<Date>(date.addYearsTZ(new Date(), 1));
+expectType<Date>(date.addYearsTZ(new Date(), 1, 'America/Los_Angeles'));
+
+expectType<Date>(date.addMonthsTZ(new Date(), 1));
+expectType<Date>(date.addMonthsTZ(new Date(), 1, 'America/Los_Angeles'));
+
+expectType<Date>(date.addDaysTZ(new Date(), 1));
+expectType<Date>(date.addDaysTZ(new Date(), 1, 'America/Los_Angeles'));

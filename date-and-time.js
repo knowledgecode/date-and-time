@@ -309,12 +309,14 @@
         if (utc) {
             d.setUTCMonth(d.getUTCMonth() + months);
             if (d.getUTCDate() < dateObj.getUTCDate()) {
-                return (this || date).addDays(d, -d.getUTCDate(), utc);
+                d.setUTCDate(0);
+                return d;
             }
         } else {
             d.setMonth(d.getMonth() + months);
             if (d.getDate() < dateObj.getDate()) {
-                return (this || date).addDays(d, -d.getDate(), utc);
+                d.setDate(0);
+                return d;
             }
         }
         return d;
@@ -328,58 +330,54 @@
      * @returns {Date} The Date object after adding the value
      */
     proto.addDays = function (dateObj, days, utc) {
-        return (this || date).addHours(dateObj, days * 24, utc);
+        var d = new Date(dateObj.getTime());
+
+        if (utc) {
+            d.setUTCDate(d.getUTCDate() + days);
+        } else {
+            d.setDate(d.getDate() + days);
+        }
+        return d;
     };
 
     /**
      * Adding hours
      * @param {Date} dateObj - A Date object
      * @param {number} hours - Number of hours to add
-     * @param {boolean} [utc] - Calculates as UTC
      * @returns {Date} The Date object after adding the value
      */
-    proto.addHours = function (dateObj, hours, utc) {
-        return (this || date).addMinutes(dateObj, hours * 60, utc);
+    proto.addHours = function (dateObj, hours) {
+        return new Date(dateObj.getTime() + hours * 60 * 60 * 1000);
     };
 
     /**
      * Adding minutes
      * @param {Date} dateObj - A Date object
      * @param {number} minutes - Number of minutes to add
-     * @param {boolean} [utc] - Calculates as UTC
      * @returns {Date} The Date object after adding the value
      */
-    proto.addMinutes = function (dateObj, minutes, utc) {
-        return (this || date).addSeconds(dateObj, minutes * 60, utc);
+    proto.addMinutes = function (dateObj, minutes) {
+        return new Date(dateObj.getTime() + minutes * 60 * 1000);
     };
 
     /**
      * Adding seconds
      * @param {Date} dateObj - A Date object
      * @param {number} seconds - Number of seconds to add
-     * @param {boolean} [utc] - Calculates as UTC
      * @returns {Date} The Date object after adding the value
      */
-    proto.addSeconds = function (dateObj, seconds, utc) {
-        return (this || date).addMilliseconds(dateObj, seconds * 1000, utc);
+    proto.addSeconds = function (dateObj, seconds) {
+        return new Date(dateObj.getTime() + seconds * 1000);
     };
 
     /**
      * Adding milliseconds
      * @param {Date} dateObj - A Date object
      * @param {number} milliseconds - Number of milliseconds to add
-     * @param {boolean} [utc] - Calculates as UTC
      * @returns {Date} The Date object after adding the value
      */
-    proto.addMilliseconds = function (dateObj, milliseconds, utc) {
-        var d = new Date(dateObj.getTime());
-
-        if (utc) {
-            d.setUTCMilliseconds(d.getUTCMilliseconds() + milliseconds);
-        } else {
-            d.setMilliseconds(d.getMilliseconds() + milliseconds);
-        }
-        return d;
+    proto.addMilliseconds = function (dateObj, milliseconds) {
+        return new Date(dateObj.getTime() + milliseconds);
     };
 
     /**
