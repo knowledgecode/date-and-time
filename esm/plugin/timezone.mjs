@@ -535,36 +535,59 @@ var plugin = function (proto, date) {
     };
     var options = {
         hour12: false, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric',
-        hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3
+        hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3,
+        timeZone: 'UTC'
+    };
+    var cache = {
+        utc: new Intl.DateTimeFormat('en-US', options)
+    };
+    var getDateTimeFormat = function (timeZone) {
+        if (timeZone) {
+            var tz = timeZone.toLowerCase();
+
+            if (!cache[tz]) {
+                options.timeZone = timeZone;
+                cache[tz] = new Intl.DateTimeFormat('en-US', options);
+            }
+            return cache[tz];
+        }
+        options.timeZone = undefined;
+        return new Intl.DateTimeFormat('en-US', options);
+    };
+    var formatToParts = function (dateTimeFormat, dateObjOrTime) {
+        var array = dateTimeFormat.formatToParts(dateObjOrTime),
+            values = {};
+
+        for (var i = 0, len = array.length; i < len; i++) {
+            var type = array[i].type,
+                value = array[i].value;
+
+            switch (type) {
+            case 'weekday':
+                values[type] = 'SunMonTueWedThuFriSat'.indexOf(value) / 3;
+                break;
+            case 'hour':
+                values[type] = value % 24;
+                break;
+            case 'year':
+            case 'month':
+            case 'day':
+            case 'minute':
+            case 'second':
+            case 'fractionalSecond':
+                values[type] = value | 0;
+            }
+        }
+        return values;
+    };
+    var getTimeFromParts = function (parts) {
+        return Date.UTC(
+            parts.year, parts.month - (parts.year < 100 ? 1900 * 12 + 1 : 1), parts.day,
+            parts.hour, parts.minute, parts.second, parts.fractionalSecond
+        );
     };
     var formatTZ = function (dateObj, arg, timeZone) {
-        var parts = (function () {
-            options.timeZone = timeZone || undefined;
-            var array = new Intl.DateTimeFormat('en-US', options).formatToParts(dateObj);
-            var values = {};
-
-            for (var i = 0, len = array.length; i < len; i++) {
-                var type = array[i].type;
-                var value = array[i].value;
-
-                switch (type) {
-                case 'weekday':
-                    values[type] = 'SunMonTueWedThuFriSat'.indexOf(value) / 3;
-                    break;
-                case 'hour':
-                    values[type] = value % 24;
-                    break;
-                case 'year':
-                case 'month':
-                case 'day':
-                case 'minute':
-                case 'second':
-                case 'fractionalSecond':
-                    values[type] = value | 0;
-                }
-            }
-            return values;
-        }());
+        var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
 
         return date.format({
             getFullYear: function () { return parts.year; },
@@ -577,18 +600,14 @@ var plugin = function (proto, date) {
             getDay: function () { return parts.weekday; },
             getTime: function () { return dateObj.getTime(); },
             getTimezoneOffset: function () {
-                return (dateObj.getTime() - Date.UTC(
-                    parts.year, parts.month - (parts.year < 100 ? 1900 * 12 + 1 : 1), parts.day,
-                    parts.hour, parts.minute, parts.second, parts.fractionalSecond
-                )) / 60000 | 0;
+                return (dateObj.getTime() - getTimeFromParts(parts)) / 60000 | 0;
             },
             getTimezoneName: function () { return timeZone || undefined; }
         }, arg);
     };
-    var parseTZ = function (dateString, arg, timeZone) {
-        var pattern = typeof arg === 'string' ? date.compile(arg) : arg;
-        var dateObj = date.parse(dateString, pattern, !!timeZone);
-
+    var parseTZ = function (arg1, arg2, timeZone) {
+        var pattern = typeof arg2 === 'string' ? date.compile(arg2) : arg2;
+        var dateObj = typeof arg1 === 'string' ? date.parse(arg1, pattern, !!timeZone) : arg1;
         var hasZ = function (array) {
             for (var i = 1, len = array.length; i < len; i++) {
                 if (!array[i].indexOf('Z')) {
@@ -612,10 +631,8 @@ var plugin = function (proto, date) {
             return Array.isArray(value) ? value : [];
         };
 
-        options.timeZone = 'UTC';
-        var dateString2 = new Intl.DateTimeFormat('en-US', options).format(dateObj);
-        options.timeZone = timeZone || undefined;
-        var dateTimeFormat = new Intl.DateTimeFormat('en-US', options);
+        var dateString2 = getDateTimeFormat('UTC').format(dateObj);
+        var dateTimeFormat = getDateTimeFormat(timeZone);
         var offset = getOffset(timeZone);
         var comparer = function (d) {
             return dateString2 === dateTimeFormat.format(d);
@@ -631,6 +648,39 @@ var plugin = function (proto, date) {
     };
     var transformTZ = function (dateString, arg1, arg2, timeZone) {
         return formatTZ(date.parse(dateString, arg1), arg2, timeZone);
+    };
+    var normalizeDateParts = function (parts, adjustEOM) {
+        var d = new Date(Date.UTC(
+            parts.year, parts.month - (parts.year < 100 ? 1900 * 12 + 1 : 1), parts.day
+        ));
+
+        if (adjustEOM && d.getUTCDate() < parts.day) {
+            d.setUTCDate(0);
+        }
+        parts.year = d.getUTCFullYear();
+        parts.month = d.getUTCMonth() + 1;
+        parts.day = d.getUTCDate();
+
+        return parts;
+    };
+    var addYearsTZ = function (dateObj, years, timeZone) {
+        return addMonthsTZ(dateObj, years * 12, timeZone);
+    };
+    var addMonthsTZ = function (dateObj, months, timeZone) {
+        var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
+
+        parts.month += months;
+        var dateObj2 = parseTZ(new Date(getTimeFromParts(normalizeDateParts(parts, true))), [], timeZone);
+
+        return isNaN(dateObj2.getTime()) ? date.addMonths(dateObj, months, true) : dateObj2;
+    };
+    var addDaysTZ = function (dateObj, days, timeZone) {
+        var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
+
+        parts.day += days;
+        var dateObj2 = parseTZ(new Date(getTimeFromParts(normalizeDateParts(parts, false))), [], timeZone);
+
+        return isNaN(dateObj2.getTime()) ? date.addDays(dateObj, days, true) : dateObj2;
     };
 
     var name = 'timezone';
@@ -663,7 +713,10 @@ var plugin = function (proto, date) {
         extender: {
             formatTZ: formatTZ,
             parseTZ: parseTZ,
-            transformTZ: transformTZ
+            transformTZ: transformTZ,
+            addYearsTZ: addYearsTZ,
+            addMonthsTZ: addMonthsTZ,
+            addDaysTZ: addDaysTZ
         }
     });
     return name;

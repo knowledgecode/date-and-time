@@ -74,6 +74,33 @@ declare module '../date-and-time' {
      * @returns A formatted string
      */
     export function transformTZ(dateString: string, compiledObj1: string[], compiledObj2: string[], timeZone?: string): string;
+
+    /**
+     * Adding years considering time zones
+     * @param dateObj - A Date object
+     * @param years - The number of years to add
+     * @param [timeZone] - The time zone to use for the calculation
+     * @returns The Date object after adding the specified number of years
+     */
+    export function addYearsTZ(dateObj: Date, years: number, timeZone?: string): Date;
+
+    /**
+     * Adding months considering time zones
+     * @param dateObj - A Date object
+     * @param months - The number of months to add
+     * @param [timeZone] - The time zone to use for the calculation
+     * @returns The Date object after adding the specified number of months
+     */
+    export function addMonthsTZ(dateObj: Date, months: number, timeZone?: string): Date;
+
+    /**
+     * Adding days considering time zones
+     * @param dateObj - A Date object
+     * @param days - The number of days to add
+     * @param [timeZone] - The time zone to use for the calculation
+     * @returns The Date object after adding the specified number of days
+     */
+    export function addDaysTZ(dateObj: Date, days: number, timeZone?: string): Date;
 }
 
 export default function (proto: unknown, date?: unknown): string;

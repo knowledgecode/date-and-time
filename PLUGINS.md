@@ -76,7 +76,7 @@ date.plugin('foobar');
   - It adds `timeSpan()` function that calculates the difference of two dates to the library.
 
 - [timezone](#timezone)
-  - It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zone names` to the library.
+  - It adds `formatTZ()`, `parseTZ()`, `transformTZ()`, `addYearsTZ()`, `addMonthsTZ()` and `addDaysTZ()` that support `IANA time zone names` to the library.
 
 - [two-digit-year](#two-digit-year)
   - It adds two-digit year notation to the parser.
@@ -290,7 +290,7 @@ In these functions can be available some tokens to format the calculation result
 
 ### timezone
 
-It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zone names` (`America/Los_Angeles`, `Asia/Tokyo`, and so on) to the library.
+It adds `formatTZ()`, `parseTZ()`, `transformTZ()`, `addYearsTZ()`, `addMonthsTZ()` and `addDaysTZ()` that support `IANA time zone names` (`America/Los_Angeles`, `Asia/Tokyo`, and so on) to the library.
 
 #### formatTZ(dateObj, arg[, timeZone])
 
@@ -299,7 +299,7 @@ It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zo
 - @param {**string**} [timeZone] - Output as this time zone
 - @returns {**string**} A formatted string
 
-`formatTZ()` is upward compatible with `format()`. Tokens available for `arg` are the same as those for `format()`. If `timeZone` is omitted, this function assumes `timeZone` to be a local time zone and outputs a string. This means that the result is the same as when `format()` is used.
+`formatTZ()` is upward compatible with `format()`. Tokens available for `arg` are the same as those for `format()`. If `timeZone` is omitted, this function assumes `timeZone` to be the local time zone and outputs a string. This means that the result is the same as when `format()` is used.
 
 #### parseTZ(dateString, arg[, timeZone])
 
@@ -308,7 +308,7 @@ It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zo
 - @param {**string**} [timeZone] - Input as this time zone
 - @returns {**Date**} A Date object
 
-`parseTZ()` is upward compatible with `parse()`. Tokens available for `arg` are the same as those for `parse()`. `timeZone` in this function is used as supplemental information. if `dateString` contains a time zone offset value (i.e. -0800, +0900), `timeZone` is not be used. If `dateString` doesn't contain a time zone offset value and `timeZone` is omitted, this function assumes `timeZone` to be a local time zone. This means that the result is the same as when `parse()` is used.
+`parseTZ()` is upward compatible with `parse()`. Tokens available for `arg` are the same as those for `parse()`. `timeZone` in this function is used as supplemental information. if `dateString` contains a time zone offset value (i.e. -0800, +0900), `timeZone` is not be used. If `dateString` doesn't contain a time zone offset value and `timeZone` is omitted, this function assumes `timeZone` to be the local time zone. This means that the result is the same as when `parse()` is used.
 
 #### transformTZ(dateString, arg1, arg2[, timeZone])
 
@@ -318,7 +318,34 @@ It adds `formatTZ()`, `parseTZ()` and `transformTZ()` that support `IANA time zo
 - @param {**string**} [timeZone] - Output as this time zone
 - @returns {**string**} A formatted string
 
-`transformTZ()` is upward compatible with `transform()`. `dateString` must itself contain a time zone offset value (i.e. -0800, +0900), otherwise this function assumes it is a local time zone. Tokens available for `arg1` are the same as those for `parse()`, also tokens available for `arg2` are the same as those for `format()`. `timeZone` is a `IANA time zone names`, which is required to output a new formatted string. If it is omitted, this function assumes `timeZone` to be a local time zone. This means that the result is the same as when `transform()` is used.
+`transformTZ()` is upward compatible with `transform()`. `dateString` must itself contain a time zone offset value (i.e. -0800, +0900), otherwise this function assumes it is the local time zone. Tokens available for `arg1` are the same as those for `parse()`, also tokens available for `arg2` are the same as those for `format()`. `timeZone` is a `IANA time zone names`, which is required to output a new formatted string. If it is omitted, this function assumes `timeZone` to be the local time zone. This means that the result is the same as when `transform()` is used.
+
+#### addYearsTZ(dateObj, years[, timeZone])
+
+- @param {**Date**} dateObj - A Date object
+- @param {**number**} years - The number of years to add
+- @param {**string**} [timeZone] - The time zone to use for the calculation
+- @returns {**Date**} The Date object after adding the specified number of years
+
+`addYearsTZ()` can calculate adding years in the specified time zone regardless of the execution environment.
+
+#### addMonthsTZ(dateObj, months[, timeZone])
+
+- @param {**Date**} dateObj - A Date object
+- @param {**number**} months - The number of months to add
+- @param {**string**} [timeZone] - The time zone to use for the calculation
+- @returns {**Date**} The Date object after adding the specified number of months
+
+`addMonthsTZ()` can calculate adding months in the specified time zone regardless of the execution environment.
+
+#### addDaysTZ(dateObj, days[, timeZone])
+
+- @param {**Date**} dateObj - A Date object
+- @param {**number**} days - The number of days to add
+- @param {**string**} [timeZone] - The time zone to use for the calculation
+- @returns {**Date**} The Date object after adding the specified number of days
+
+`addDaysTZ()` can calculate adding days in the specified time zone regardless of the execution environment.
 
 ```javascript
 const date = require('date-and-time');
