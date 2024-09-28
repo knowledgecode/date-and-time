@@ -455,7 +455,7 @@ var plugin = function (proto, date) {
         'Alaska Daylight Time': 'AKDT', 'Alaska Standard Time': 'AKST', 'Almaty Standard Time': 'ALMT',
         'Almaty Summer Time': 'ALMST', 'Amazon Standard Time': 'AMT', 'Amazon Summer Time': 'AMST',
         'Anadyr Standard Time': 'ANAT', 'Anadyr Summer Time': 'ANAST', 'Apia Daylight Time': 'WSDT',
-        'Apia Standard Time': 'WSST', 'Aqtau Standard Time': 'AQTT', 'Aqtau Summer Time': 'AQTT',
+        'Apia Standard Time': 'WSST', 'Aqtau Standard Time': 'AQTT', 'Aqtau Summer Time': 'AQTST',
         'Aqtobe Standard Time': 'AQTT', 'Aqtobe Summer Time': 'AQST', 'Arabian Daylight Time': 'ADT',
         'Arabian Standard Time': 'AST', 'Argentina Standard Time': 'ART', 'Argentina Summer Time': 'ARST',
         'Armenia Standard Time': 'AMT', 'Armenia Summer Time': 'AMST', 'Atlantic Daylight Time': 'ADT',
@@ -471,19 +471,18 @@ var plugin = function (proto, date) {
         'Central Indonesia Time': 'WITA', 'Central Standard Time': 'CST', 'Chamorro Standard Time': 'ChST',
         'Chatham Daylight Time': 'CHADT', 'Chatham Standard Time': 'CHAST', 'Chile Standard Time': 'CLT',
         'Chile Summer Time': 'CLST', 'China Daylight Time': 'CDT', 'China Standard Time': 'CST',
-        'Choibalsan Standard Time': 'CHOT', 'Choibalsan Summer Time': 'CHOST', 'Christmas Island Time': 'CXT',
-        'Chuuk Time': 'CHUT', 'Cocos Islands Time': 'CCT', 'Colombia Standard Time': 'COT',
-        'Colombia Summer Time': 'COST', 'Cook Islands Half Summer Time': 'CKHST', 'Cook Islands Standard Time': 'CKT',
-        'Coordinated Universal Time': 'UTC', 'Cuba Daylight Time': 'CDT', 'Cuba Standard Time': 'CST',
-        'Davis Time': 'DAVT', 'Dumont-d’Urville Time': 'DDUT', 'East Africa Time': 'EAT',
-        'East Greenland Standard Time': 'EGST', 'East Greenland Summer Time': 'EGST', 'East Kazakhstan Time': 'ALMT',
-        'East Timor Time': 'TLT', 'Easter Island Standard Time': 'EAST', 'Easter Island Summer Time': 'EASST',
-        'Eastern Daylight Time': 'EDT', 'Eastern European Standard Time': 'EET', 'Eastern European Summer Time': 'EEST',
-        'Eastern Indonesia Time': 'WIT', 'Eastern Standard Time': 'EST', 'Ecuador Time': 'ECT',
-        'Falkland Islands Standard Time': 'FKST', 'Falkland Islands Summer Time': 'FKDT', 'Fernando de Noronha Standard Time': 'FNT',
-        'Fernando de Noronha Summer Time': 'FNST', 'Fiji Standard Time': 'FJT', 'Fiji Summer Time': 'FJST',
-        'French Guiana Time': 'GFT', 'French Southern & Antarctic Time': 'TFT', 'Further-eastern European Time': 'FET',
-        'GMT': 'GMT', 'Galapagos Time': 'GALT', 'Gambier Time': 'GAMT',
+        'Christmas Island Time': 'CXT', 'Chuuk Time': 'CHUT', 'Cocos Islands Time': 'CCT',
+        'Colombia Standard Time': 'COT', 'Colombia Summer Time': 'COST', 'Cook Islands Half Summer Time': 'CKHST',
+        'Cook Islands Standard Time': 'CKT', 'Coordinated Universal Time': 'UTC', 'Cuba Daylight Time': 'CDT',
+        'Cuba Standard Time': 'CST', 'Davis Time': 'DAVT', 'Dumont-d’Urville Time': 'DDUT',
+        'East Africa Time': 'EAT', 'East Greenland Standard Time': 'EGT', 'East Greenland Summer Time': 'EGST',
+        'East Kazakhstan Time': 'ALMT', 'East Timor Time': 'TLT', 'Easter Island Standard Time': 'EAST',
+        'Easter Island Summer Time': 'EASST', 'Eastern Daylight Time': 'EDT', 'Eastern European Standard Time': 'EET',
+        'Eastern European Summer Time': 'EEST', 'Eastern Indonesia Time': 'WIT', 'Eastern Standard Time': 'EST',
+        'Ecuador Time': 'ECT', 'Falkland Islands Standard Time': 'FKST', 'Falkland Islands Summer Time': 'FKDT',
+        'Fernando de Noronha Standard Time': 'FNT', 'Fernando de Noronha Summer Time': 'FNST', 'Fiji Standard Time': 'FJT',
+        'Fiji Summer Time': 'FJST', 'French Guiana Time': 'GFT', 'French Southern & Antarctic Time': 'TFT',
+        'Further-eastern European Time': 'FET', 'Galapagos Time': 'GALT', 'Gambier Time': 'GAMT',
         'Georgia Standard Time': 'GET', 'Georgia Summer Time': 'GEST', 'Gilbert Islands Time': 'GILT',
         'Greenwich Mean Time': 'GMT', 'Guam Standard Time': 'ChST', 'Gulf Standard Time': 'GST',
         'Guyana Time': 'GYT', 'Hawaii-Aleutian Daylight Time': 'HADT', 'Hawaii-Aleutian Standard Time': 'HAST',
@@ -495,7 +494,7 @@ var plugin = function (proto, date) {
         'Korean Daylight Time': 'KDT', 'Korean Standard Time': 'KST', 'Kosrae Time': 'KOST',
         'Krasnoyarsk Standard Time': 'KRAT', 'Krasnoyarsk Summer Time': 'KRAST', 'Kyrgyzstan Time': 'KGT',
         'Lanka Time': 'LKT', 'Line Islands Time': 'LINT', 'Lord Howe Daylight Time': 'LHDT',
-        'Lord Howe Standard Time': 'LHST', 'Macao Standard Time': 'CST', 'Macao Summer Time': 'CDST',
+        'Lord Howe Standard Time': 'LHST', 'Macao Standard Time': 'CST', 'Macao Summer Time': 'CDT',
         'Magadan Standard Time': 'MAGT', 'Magadan Summer Time': 'MAGST', 'Malaysia Time': 'MYT',
         'Maldives Time': 'MVT', 'Marquesas Time': 'MART', 'Marshall Islands Time': 'MHT',
         'Mauritius Standard Time': 'MUT', 'Mauritius Summer Time': 'MUST', 'Mawson Time': 'MAWT',
@@ -508,7 +507,7 @@ var plugin = function (proto, date) {
         'North Mariana Islands Time': 'ChST', 'Novosibirsk Standard Time': 'NOVT', 'Novosibirsk Summer Time': 'NOVST',
         'Omsk Standard Time': 'OMST', 'Omsk Summer Time': 'OMSST', 'Pacific Daylight Time': 'PDT',
         'Pacific Standard Time': 'PST', 'Pakistan Standard Time': 'PKT', 'Pakistan Summer Time': 'PKST',
-        'Palau Time': 'PWT', 'Papua New Guinea Time': 'PGT', 'Paraguay Standard Time': 'PYST',
+        'Palau Time': 'PWT', 'Papua New Guinea Time': 'PGT', 'Paraguay Standard Time': 'PYT',
         'Paraguay Summer Time': 'PYST', 'Peru Standard Time': 'PET', 'Peru Summer Time': 'PEST',
         'Petropavlovsk-Kamchatski Standard Time': 'PETT', 'Petropavlovsk-Kamchatski Summer Time': 'PETST', 'Philippine Standard Time': 'PST',
         'Philippine Summer Time': 'PHST', 'Phoenix Islands Time': 'PHOT', 'Pitcairn Time': 'PIT',
@@ -519,7 +518,7 @@ var plugin = function (proto, date) {
         'Singapore Standard Time': 'SGT', 'Solomon Islands Time': 'SBT', 'South Africa Standard Time': 'SAST',
         'South Georgia Time': 'GST', 'St. Pierre & Miquelon Daylight Time': 'PMDT', 'St. Pierre & Miquelon Standard Time': 'PMST',
         'Suriname Time': 'SRT', 'Syowa Time': 'SYOT', 'Tahiti Time': 'TAHT',
-        'Taipei Daylight Time': 'TDT', 'Taipei Standard Time': 'CST', 'Tajikistan Time': 'TJT',
+        'Taipei Daylight Time': 'CDT', 'Taipei Standard Time': 'CST', 'Tajikistan Time': 'TJT',
         'Tokelau Time': 'TKT', 'Tonga Standard Time': 'TOT', 'Tonga Summer Time': 'TOST',
         'Turkmenistan Standard Time': 'TMT', 'Tuvalu Time': 'TVT', 'Ulaanbaatar Standard Time': 'ULAT',
         'Ulaanbaatar Summer Time': 'ULAST', 'Uruguay Standard Time': 'UYT', 'Uruguay Summer Time': 'UYST',
@@ -607,7 +606,7 @@ var plugin = function (proto, date) {
     };
     var parseTZ = function (arg1, arg2, timeZone) {
         var pattern = typeof arg2 === 'string' ? date.compile(arg2) : arg2;
-        var dateObj = typeof arg1 === 'string' ? date.parse(arg1, pattern, !!timeZone) : arg1;
+        var time = typeof arg1 === 'string' ? date.parse(arg1, pattern, !!timeZone).getTime() : arg1;
         var hasZ = function (array) {
             for (var i = 1, len = array.length; i < len; i++) {
                 if (!array[i].indexOf('Z')) {
@@ -617,8 +616,8 @@ var plugin = function (proto, date) {
             return false;
         };
 
-        if (!timeZone || hasZ(pattern) || timeZone.toUpperCase() === 'UTC') {
-            return dateObj;
+        if (!timeZone || hasZ(pattern) || timeZone.toUpperCase() === 'UTC' || isNaN(time)) {
+            return new Date(time);
         }
 
         var getOffset = function (timeZoneName) {
@@ -631,17 +630,17 @@ var plugin = function (proto, date) {
             return Array.isArray(value) ? value : [];
         };
 
-        var dateString2 = getDateTimeFormat('UTC').format(dateObj);
-        var dateTimeFormat = getDateTimeFormat(timeZone);
+        var utc = getDateTimeFormat('UTC');
+        var tz = getDateTimeFormat(timeZone);
         var offset = getOffset(timeZone);
-        var comparer = function (d) {
-            return dateString2 === dateTimeFormat.format(d);
-        };
 
-        for (var j = 0, len2 = offset.length; j < len2; j++) {
-            var d = dateObj.getTime() - offset[j] * 1000;
-            if (comparer(d)) {
-                return new Date(d);
+        for (var i = 0; i < 2; i++) {
+            var targetString = utc.format(time - i * 24 * 60 * 60 * 1000);
+
+            for (var j = 0, len = offset.length; j < len; j++) {
+                if (tz.format(time - (offset[j] + i * 24 * 60 * 60) * 1000) === targetString) {
+                    return new Date(time - offset[j] * 1000);
+                }
             }
         }
         return new Date(NaN);
@@ -670,7 +669,7 @@ var plugin = function (proto, date) {
         var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
 
         parts.month += months;
-        var dateObj2 = parseTZ(new Date(getTimeFromParts(normalizeDateParts(parts, true))), [], timeZone);
+        var dateObj2 = parseTZ(getTimeFromParts(normalizeDateParts(parts, true)), [], timeZone);
 
         return isNaN(dateObj2.getTime()) ? date.addMonths(dateObj, months, true) : dateObj2;
     };
@@ -678,7 +677,7 @@ var plugin = function (proto, date) {
         var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
 
         parts.day += days;
-        var dateObj2 = parseTZ(new Date(getTimeFromParts(normalizeDateParts(parts, false))), [], timeZone);
+        var dateObj2 = parseTZ(getTimeFromParts(normalizeDateParts(parts, false)), [], timeZone);
 
         return isNaN(dateObj2.getTime()) ? date.addDays(dateObj, days, true) : dateObj2;
     };
