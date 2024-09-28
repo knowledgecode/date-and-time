@@ -25,16 +25,16 @@ npm i date-and-time
 
 ## Recent Changes
 
+- 3.6.0
+  - In `parseTZ()`, enabled parsing of the missing hour during the transition from standard time to daylight saving time into a Date type.
+  - In `format()` with the `z` token, fixed an issue where some short time zone names were incorrect.
+
 - 3.5.0
   - Added `addYearsTZ()`, `addMonthsTZ()`, and `addDaysTZ()` to the `timezone` plugin.
   - Revised the approach to adding time and removed the third parameter from `addHours()`, `addMinutes()`, `addSeconds()`, and `addMilliseconds()`.
 
 - 3.4.1
   - Fixed an issue where `formatTZ()` would output 0:00 as 24:00 in 24-hour format in Node.js.
-
-- 3.4.0
-  - Added `zz` (time zone name) and `z` (time zone name abbreviation) tokens to the `timezone` plugin.
-  - Fixed an issue where token extensions by other plugins were not reflected in functions provided by the `timezone` plugin.
 
 ## Usage
 
@@ -69,6 +69,16 @@ import date from '/path/to/date-and-time.es.min.js';
 ### Note
 
 - If you want to use ES Modules in Node.js without the transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
+- If you are using TypeScript and having trouble building, please ensure that the following settings in the `compilerOptions` of your `tsconfig.json` are set to `true`.
+
+```json
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
+}
+```
 
 ## API
 
