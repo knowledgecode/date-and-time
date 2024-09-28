@@ -381,18 +381,20 @@ date.transformTZ('2021-03-14T03:00:00 UTC-0700', 'YYYY-MM-DD[T]HH:mm:ss [UTC]Z',
 
 #### Start of DST (Daylight Saving Time)
 
-For example, in the US, when local standard time is about to reach Sunday, 14 March 2021, `02:00:00` clocks are turned `forward` 1 hour to Sunday, 14 March 2021, `03:00:00` local daylight time instead. Thus there is no `02:00:00` to `02:59:59` on 14 March 2021. In such edge cases, `parseTZ()` will parse like this:
+For example, in the US, when local standard time is about to reach `02:00:00` on Sunday, 14 March 2021, the clocks are set `forward` by 1 hour to `03:00:00` local daylight time instead. As a result, the time from `02:00:00` to `02:59:59` on 14 March 2021 does not exist. In such edge cases, `parseTZ()` will handle the case in the following way:
 
 ```javascript
 date.parseTZ('Mar 14 2021 1:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T09:59:59Z
-date.parseTZ('Mar 14 2021 2:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => NaN
-date.parseTZ('Mar 14 2021 2:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => NaN
 date.parseTZ('Mar 14 2021 3:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T10:00:00Z
+
+// These times don't actually exist, but parseTZ() will handle as follows:
+date.parseTZ('Mar 14 2021 2:00:00', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T10:00:00Z
+date.parseTZ('Mar 14 2021 2:59:59', 'MMM D YYYY H:mm:ss', 'America/Los_Angeles'); // => 2021-03-14T10:59:59Z
 ```
 
 #### End of DST
 
-Also, when local daylight time is about to reach Sunday, 7 November 2021, `02:00:00` clocks are turned `backward` 1 hour to Sunday, 7 November 2021, `01:00:00` local standard time instead. Thus `01:00:00` to `01:59:59` on November 7 2021 is repeated twice. Since there are two possible times here, `parseTZ()` assumes that the time is the former (DST) in order to make the result unique:
+Also, when local daylight time is about to reach `02:00:00` on Sunday, 7 November 2021, the clocks are set `back` by 1 hour to `01:00:00` local standard time instead. As a result, the time from `01:00:00` to `01:59:59` on 7 November 2021 occurs twice. Because this time period happens twice, `parseTZ()` assumes that the time is the earlier one (during DST) in order to make the result unique:
 
 ```javascript
 // This time is DST or PST? The parseTZ() always assumes that it is DST.

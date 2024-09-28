@@ -84,22 +84,24 @@
                 expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
             });
 
-            it('parseTZ Failure1', function () {
-                // Mar 14 2021 2:00:00.000 => NaN
+            it('parseTZ Edge case1', function () {
+                // Mar 14 2021 2:00:00.000 => 2021-03-14T10:00:00.000Z
                 var dateString = 'Mar 14 2021 2:00:00.000';
                 var formatString = 'MMM D YYYY H:mm:ss.SSS';
                 var tz = 'America/Los_Angeles';
+                var dateObj = new Date(Date.UTC(2021, 2, 14, 10, 0, 0, 0));
 
-                expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+                expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
             });
 
-            it('parseTZ Failure2', function () {
-                // Mar 14 2021 2:59:59.999 => NaN
+            it('parseTZ Edge case2', function () {
+                // Mar 14 2021 2:59:59.999 => 2021-03-14T10:59:59.999Z
                 var dateString = 'Mar 14 2021 2:59:59.999';
                 var formatString = 'MMM D YYYY H:mm:ss.SSS';
                 var tz = 'America/Los_Angeles';
+                var dateObj = new Date(Date.UTC(2021, 2, 14, 10, 59, 59, 999));
 
-                expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+                expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
             });
 
             it('parseTZ UTC-7 (Start of DST)', function () {
@@ -152,22 +154,24 @@
                 expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
             });
 
-            it('parseTZ Failure1', function () {
-                // Oct 3 2021 2:00:00.000 => NaN
+            it('parseTZ Edge case1', function () {
+                // Oct 3 2021 2:00:00.000 => 2021-10-02T16:30:00.000Z
                 var dateString = 'Oct 3 2021 2:00:00.000';
                 var formatString = 'MMM D YYYY H:mm:ss.SSS';
                 var tz = 'Australia/Adelaide';
+                var dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
 
-                expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+                expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
             });
 
-            it('parseTZ Failure2', function () {
-                // Oct 3 2021 2:59:59.999 => NaN
+            it('parseTZ Edge case2', function () {
+                // Oct 3 2021 2:59:59.999 => 2021-10-02T17:29:59.999Z
                 var dateString = 'Oct 3 2021 2:59:59.999';
                 var formatString = 'MMM D YYYY H:mm:ss.SSS';
                 var tz = 'Australia/Adelaide';
+                var dateObj = new Date(Date.UTC(2021, 9, 2, 17, 29, 59, 999));
 
-                expect(date.parseTZ(dateString, formatString, tz)).not.to.equal(NaN);
+                expect(date.parseTZ(dateString, formatString, tz).getTime()).to.equal(dateObj.getTime());
             });
 
             it('parseTZ UTC+10.5 (Start of DST)', function () {

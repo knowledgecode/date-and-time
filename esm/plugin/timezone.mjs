@@ -606,7 +606,7 @@ var plugin = function (proto, date) {
     };
     var parseTZ = function (arg1, arg2, timeZone) {
         var pattern = typeof arg2 === 'string' ? date.compile(arg2) : arg2;
-        var dateObj = typeof arg1 === 'string' ? date.parse(arg1, pattern, !!timeZone) : arg1;
+        var time = typeof arg1 === 'string' ? date.parse(arg1, pattern, !!timeZone).getTime() : arg1;
         var hasZ = function (array) {
             for (var i = 1, len = array.length; i < len; i++) {
                 if (!array[i].indexOf('Z')) {
@@ -616,8 +616,8 @@ var plugin = function (proto, date) {
             return false;
         };
 
-        if (!timeZone || hasZ(pattern) || timeZone.toUpperCase() === 'UTC') {
-            return dateObj;
+        if (!timeZone || hasZ(pattern) || timeZone.toUpperCase() === 'UTC' || isNaN(time)) {
+            return new Date(time);
         }
 
         var getOffset = function (timeZoneName) {
@@ -630,17 +630,17 @@ var plugin = function (proto, date) {
             return Array.isArray(value) ? value : [];
         };
 
-        var dateString2 = getDateTimeFormat('UTC').format(dateObj);
-        var dateTimeFormat = getDateTimeFormat(timeZone);
+        var utc = getDateTimeFormat('UTC');
+        var tz = getDateTimeFormat(timeZone);
         var offset = getOffset(timeZone);
-        var comparer = function (d) {
-            return dateString2 === dateTimeFormat.format(d);
-        };
 
-        for (var j = 0, len2 = offset.length; j < len2; j++) {
-            var d = dateObj.getTime() - offset[j] * 1000;
-            if (comparer(d)) {
-                return new Date(d);
+        for (var i = 0; i < 2; i++) {
+            var targetString = utc.format(time - i * 24 * 60 * 60 * 1000);
+
+            for (var j = 0, len = offset.length; j < len; j++) {
+                if (tz.format(time - (offset[j] + i * 24 * 60 * 60) * 1000) === targetString) {
+                    return new Date(time - offset[j] * 1000);
+                }
             }
         }
         return new Date(NaN);
@@ -669,7 +669,7 @@ var plugin = function (proto, date) {
         var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
 
         parts.month += months;
-        var dateObj2 = parseTZ(new Date(getTimeFromParts(normalizeDateParts(parts, true))), [], timeZone);
+        var dateObj2 = parseTZ(getTimeFromParts(normalizeDateParts(parts, true)), [], timeZone);
 
         return isNaN(dateObj2.getTime()) ? date.addMonths(dateObj, months, true) : dateObj2;
     };
@@ -677,7 +677,7 @@ var plugin = function (proto, date) {
         var parts = formatToParts(getDateTimeFormat(timeZone), dateObj);
 
         parts.day += days;
-        var dateObj2 = parseTZ(new Date(getTimeFromParts(normalizeDateParts(parts, false))), [], timeZone);
+        var dateObj2 = parseTZ(getTimeFromParts(normalizeDateParts(parts, false)), [], timeZone);
 
         return isNaN(dateObj2.getTime()) ? date.addDays(dateObj, days, true) : dateObj2;
     };
