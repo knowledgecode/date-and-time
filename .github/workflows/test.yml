@@ -62,7 +62,7 @@ jobs:
       with:
         label: 'coverage'
         status: ${{ steps.coverage.outputs.pct }}%
-        color: ${{ steps.coverage.outputs.pct > 80 && 'brightgreen' || steps.coverage.outputs.pct > 60 && 'yellow' || 'red' }}
+        color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'brightgreen' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}
         path: badges/coverage.svg
         style: flat
 
