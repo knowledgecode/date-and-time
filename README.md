@@ -1,7 +1,7 @@
 # date-and-time
 
 [![CI](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml/badge.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
-[![Coverage](./badges/coverage.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
+[![Coverage](./.github/badges/coverage.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
 [![npm](https://img.shields.io/npm/v/date-and-time)](https://www.npmjs.com/package/date-and-time)
 
 The simplest and most user-friendly date and time manipulation library
