@@ -64,7 +64,6 @@ jobs:
         status: ${{ steps.coverage.outputs.pct }}%
         color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'green' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}
         path: badges/coverage.svg
-        style: flat
 
     - name: Commit coverage badge
       run: |
