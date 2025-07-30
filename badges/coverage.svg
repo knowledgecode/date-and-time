@@ -2,7 +2,7 @@
   <title>coverage: 100%</title>
   <g>
     <rect fill="#555" width="603" height="200"/>
-    <rect fill="#brightgreen" x="603" width="430" height="200"/>
+    <rect fill="#3C1" x="603" width="430" height="200"/>
   </g>
   <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
     <text x="60" y="148" textLength="503" fill="#000" opacity="0.1">coverage</text>
