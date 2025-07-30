@@ -54,14 +54,6 @@ jobs:
       run: |
         echo "pct=$(jq '.total.lines.pct' coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
 
-    - name: Debug coverage values
-      run: |
-        echo "Coverage percentage: ${{ steps.coverage.outputs.pct }}"
-        echo "fromJSON result: ${{ fromJSON(steps.coverage.outputs.pct) }}"
-        echo "Condition >= 80: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 }}"
-        echo "Condition >= 60: ${{ fromJSON(steps.coverage.outputs.pct) >= 60 }}"
-        echo "Final color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'brightgreen' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}"
-
     - name: Create badges directory
       run: mkdir -p badges
 
@@ -70,7 +62,7 @@ jobs:
       with:
         label: 'coverage'
         status: ${{ steps.coverage.outputs.pct }}%
-        color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'brightgreen' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}
+        color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'green' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}
         path: badges/coverage.svg
         style: flat
 
