@@ -54,6 +54,9 @@ jobs:
       run: |
         echo "pct=$(jq '.total.lines.pct' coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
 
+    - name: Create badges directory
+      run: mkdir -p badges
+
     - name: Generate coverage badge
       uses: emibcn/badge-action@v2.0.3
       with:
@@ -67,7 +70,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        mkdir -p badges
         git add badges/coverage.svg
         git diff --staged --quiet || git commit -m "Update coverage badge"
         git push
