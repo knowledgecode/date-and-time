@@ -52,14 +52,14 @@ jobs:
     - name: Read coverage summary
       id: coverage
       run: |
-        echo "summary=$(cat coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
+        echo "pct=$(jq '.total.lines.pct' coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
 
     - name: Generate coverage badge
       uses: emibcn/badge-action@v2.0.3
       with:
         label: 'coverage'
-        status: ${{ fromJson(steps.coverage.outputs.summary).total.lines.pct }}%
-        color: ${{ fromJson(steps.coverage.outputs.summary).total.lines.pct > 80 && 'brightgreen' || fromJson(steps.coverage.outputs.summary).total.lines.pct > 60 && 'yellow' || 'red' }}
+        status: ${{ steps.coverage.outputs.pct }}%
+        color: ${{ steps.coverage.outputs.pct > 80 && 'brightgreen' || steps.coverage.outputs.pct > 60 && 'yellow' || 'red' }}
         path: badges/coverage.svg
         style: flat
 
