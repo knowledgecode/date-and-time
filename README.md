@@ -1,10 +1,14 @@
-# date-and-time
+<div align="center">
+  <img src="https://raw.githubusercontent.com/knowledgecode/date-and-time/refs/heads/master/logo.png" alt="date-and-time" width="256">
+</div>
+
+<div align="center">
 
 [![CI](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml/badge.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
-[![Coverage](./.github/badges/coverage.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
+[![Coverage](https://raw.githubusercontent.com/knowledgecode/date-and-time/refs/heads/master/.github/badges/coverage.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
 [![npm](https://img.shields.io/npm/v/date-and-time)](https://www.npmjs.com/package/date-and-time)
 
-The simplest and most user-friendly date and time manipulation library
+</div>
 
 ## Install
 
@@ -38,11 +42,11 @@ Version `4.x` has been completely rewritten in TypeScript and some features from
 - Tree shaking is now supported
 - Supports `ES2021` and no longer supports older browsers
 
-For details, please refer to [MIGRATION.md](docs/MIGRATION.md).
+For details, please refer to [MIGRATION.md](https://github.com/knowledgecode/date-and-time/blob/master/docs/MIGRATION.md).
 
 ## API
 
-## format(dateObj, arg[, options])
+### format(dateObj, arg[, options])
 
 <details>
 <summary>Formats a Date object according to the specified format string.</summary>
@@ -111,7 +115,7 @@ The tokens available for use in the format string specified as the second argume
 | Z        | Timezone offset                             | +0100, -0800          |
 | ZZ       | Timezone offset with colon                  | +01:00, -08:00        |
 
-Additionally, by importing plugins, you can use the following tokens. For details, please refer to [PLUGINS.md](docs/PLUGINS.md).
+Additionally, by importing plugins, you can use the following tokens. For details, please refer to [PLUGINS.md](https://github.com/knowledgecode/date-and-time/blob/master/docs/PLUGINS.md).
 
 | Token    | Meaning                                     | Output Examples       |
 |:---------|:--------------------------------------------|:----------------------|
@@ -265,9 +269,9 @@ format(now, 'dddd, D [de] MMMM [de] YYYY, h:mm:ss.SSS aa [GMT]ZZ', { locale: es 
 </details>
 </details>
 
-### Notes
+#### Notes
 
-<details>
+<details open>
 <summary><strong>Comments</strong></summary>
 
 Parts of the format string enclosed in brackets are output as-is, regardless of whether they are valid tokens.
@@ -279,7 +283,7 @@ format(new Date(), '[DD-[MM]-YYYY]');   // => 'DD-[MM]-YYYY'
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Output as UTC timezone</strong></summary>
 
 To output date and time as UTC timezone, specify the string `UTC` in the `timeZone` property of `FormatterOptions`.
@@ -295,7 +299,7 @@ format(new Date(), 'hh:mm A [GMT]Z', { timeZone: 'UTC' });
 </details>
 </details>
 
-## parse(dateString, arg[, options])
+### parse(dateString, arg[, options])
 
 <details>
 <summary>Parses a date string according to the specified format.</summary>
@@ -364,7 +368,7 @@ The tokens available for use in the format string specified as the second argume
 | Z         | Timezone offset                             | +0100, -0800        |
 | ZZ        | Timezone offset with colon                  | +01:00, -08:00      |
 
-Additionally, by importing plugins, you can use the following tokens. For details, please refer to [PLUGINS.md](docs/PLUGINS.md).
+Additionally, by importing plugins, you can use the following tokens. For details, please refer to [PLUGINS.md](https://github.com/knowledgecode/date-and-time/blob/master/docs/PLUGINS.md).
 
 | Token     | Meaning                                    | Input Examples       |
 |:----------|:-------------------------------------------|:---------------------|
@@ -555,9 +559,9 @@ parse(
 </details>
 </details>
 
-### Notes
+#### Notes
 
-<details>
+<details open>
 <summary><strong>When parsing fails</strong></summary>
 
 If this function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
@@ -572,7 +576,7 @@ if (isNaN(today.getTime())) {
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Input as UTC timezone</strong></summary>
 
 If the `dateString` does not contain a timezone offset and the `timeZone` property of the third argument is not specified, this function considers the `dateString` to be in the local timezone. If you want to process a `dateString` without a timezone offset as UTC timezone, set the string `UTC` to the `timeZone` property in the third argument. Note that the timezone offset contained in the `dateString` takes precedence over the `timeZone` property of the third argument.
@@ -590,7 +594,7 @@ parse('11:14:05 PM', 'hh:mm:ss A', { timeZone: 'UTC' });
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Default Date Time</strong></summary>
 
 Default date is `January 1, 1970`, time is `00:00:00.000`. Any date/time components not specified in the input string will be filled with these default values.
@@ -605,7 +609,7 @@ parse('Feb 2000', 'MMM YYYY');
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Max Date / Min Date</strong></summary>
 
 The parsable maximum date is `December 31, 9999`, and the minimum date is `January 1, 0001`.
@@ -626,7 +630,7 @@ parse('Jan 1 0000', 'MMM D YYYY');
 
 </details>
 
-<details>
+<details open>
 <summary><strong>12-hour notation and Meridiem</strong></summary>
 
 If you use the `hh` or `h` (12-hour) token, use it together with the `A` (meridiem) token to get the correct value.
@@ -641,7 +645,7 @@ parse('11:14:05 PM', 'hh:mm:ss A');
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Token invalidation</strong></summary>
 
 Any part of the given format string that you do not want to be recognized as a token should be enclosed in square brackets. They are considered comments and will not be parsed.
@@ -656,7 +660,7 @@ parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Wildcard</strong></summary>
 
 Whitespace acts as a wildcard token. This token will skip parsing the corresponding parts of the date and time strings. This behavior is similar to enclosing part of a format string in square brackets (Token invalidation), but with the flexibility that the contents do not have to match exactly - only the character count needs to match between the format string and input string.
@@ -672,7 +676,7 @@ parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Ellipsis</strong></summary>
 
 `...` token ignores subsequent corresponding date and time strings. Use this token only at the end of a format string. The above example can also be written like this:
@@ -685,7 +689,7 @@ parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');
 </details>
 </details>
 
-## compile(formatString)
+### compile(formatString)
 
 <details>
 <summary>Compiles a format string into a tokenized array for efficient parsing and formatting.</summary>
@@ -711,7 +715,7 @@ format(new Date(), pattern);
 
 </details>
 
-## preparse(dateString, arg[, options])
+### preparse(dateString, arg[, options])
 
 <details>
 <summary>Preparses a date string according to the specified pattern.</summary>
@@ -749,7 +753,7 @@ This date structure provides a parsing result. You will be able to tell from it 
 
 </details>
 
-## isValid(dateString, arg[, options])
+### isValid(dateString, arg[, options])
 
 <details>
 <summary>Validates whether a date string is valid according to the specified format.</summary>
@@ -773,7 +777,7 @@ For details about `ParserOptions`, refer to the `parse` function section.
 
 </details>
 
-## transform(dateString, arg1, arg2[, options1[, options2]])
+### transform(dateString, arg1, arg2[, options1[, options2]])
 
 <details>
 <summary>Transforms a date string from one format to another.</summary>
@@ -821,7 +825,7 @@ For details about `ParserOptions`, refer to the `parse` function section. For de
 
 </details>
 
-## addYears(dateObj, years[, timeZone])
+### addYears(dateObj, years[, timeZone])
 
 <details>
 <summary>Adds the specified number of years to a Date object.</summary>
@@ -856,7 +860,7 @@ const back = addYears(next, -1, 'UTC');         // => Feb 28 2020 (not the origi
 
 </details>
 
-## addMonths(dateObj, months[, timeZone])
+### addMonths(dateObj, months[, timeZone])
 
 <details>
 <summary>Adds the specified number of months to a Date object.</summary>
@@ -891,7 +895,7 @@ const feb = addMonths(apr, -2, 'UTC');          // => Feb 28 2023
 
 </details>
 
-## addDays(dateObj, days[, timeZone])
+### addDays(dateObj, days[, timeZone])
 
 <details>
 <summary>Adds the specified number of days to a Date object.</summary>
@@ -918,7 +922,7 @@ addDays(now, -1, Los_Angeles);          // => Mar 10 2024 01:00:00 GMT-08:00
 
 </details>
 
-## addHours(dateObj, hours)
+### addHours(dateObj, hours)
 
 <details>
 <summary>Adds the specified number of hours to a Date object.</summary>
@@ -940,7 +944,7 @@ addHours(now, -1);                  // => Jul 23 2025 23:00:00
 
 </details>
 
-## addMinutes(dateObj, minutes)
+### addMinutes(dateObj, minutes)
 
 <details>
 <summary>Adds the specified number of minutes to a Date object.</summary>
@@ -962,7 +966,7 @@ addMinutes(now, 2);                 // => Jul 24 2025 00:02:00
 
 </details>
 
-## addSeconds(dateObj, seconds)
+### addSeconds(dateObj, seconds)
 
 <details>
 <summary>Adds the specified number of seconds to a Date object.</summary>
@@ -984,7 +988,7 @@ addSeconds(now, -3);                // => Jul 23 2025 23:59:57
 
 </details>
 
-## addMilliseconds(dateObj, milliseconds)
+### addMilliseconds(dateObj, milliseconds)
 
 <details>
 <summary>Adds the specified number of milliseconds to a Date object.</summary>
@@ -1006,7 +1010,7 @@ addMilliseconds(now, 123);          // => Jul 24 2025 00:00:00.123
 
 </details>
 
-## subtract(from, to)
+### subtract(from, to)
 
 <details>
 <summary>Calculates the difference between two dates.</summary>
@@ -1037,7 +1041,7 @@ duration.toMicroseconds().value;    // => 97445006000
 duration.toNanoseconds().value;     // => 97445006000000
 ```
 
-### Duration
+#### Duration
 
 The `Duration` object can be directly created not only as a return value of the `subtract` function, but also by passing any numeric value (milliseconds) as a constructor argument.
 
@@ -1175,13 +1179,13 @@ duration.toNanoseconds().toParts();
 
 </details>
 
-### DurationDescriptor
+#### DurationDescriptor
 
-#### value
+##### value
 
 The value of the duration in the respective unit.
 
-#### format(formatString[, numeral])
+##### format(formatString[, numeral])
 
 <details>
 <summary>Formats the duration according to the provided format string.</summary>
@@ -1210,7 +1214,7 @@ What makes the format string in `DurationDescriptor` different from others is th
 
 </details>
 
-#### toParts()
+##### toParts()
 
 <details>
 <summary>Converts the duration to an object containing the parts of the duration in the respective unit.</summary>
@@ -1229,9 +1233,9 @@ What makes the format string in `DurationDescriptor` different from others is th
 
 </details>
 
-### Notes
+#### Notes
 
-<details>
+<details open>
 <summary><strong>Negative Duration</strong></summary>
 
 When the `value` becomes negative, there are slight differences in the output results of the `format` method and the `toParts` method. In the `format` method, only the largest unit in the `DurationDescriptor`, for example, only the `D` token in the case of a `DurationDescriptor` obtained by the `toDays` method, gets a minus sign, while in the `toParts` method, all units get a minus sign.
@@ -1249,7 +1253,7 @@ duration.toDays().toParts();
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Negative Zero</strong></summary>
 
 The `format` method may output `-0`. For example, when the value of a `DurationDescriptor` obtained by the `toDays` method is a negative decimal less than 1, using the `D` token in the `format` method outputs `-0`.
@@ -1268,7 +1272,7 @@ duration.toDays().toParts();
 </details>
 </details>
 
-## isLeapYear(year)
+### isLeapYear(year)
 
 <details>
 <summary>Determines if the specified year is a leap year.</summary>
@@ -1286,7 +1290,7 @@ isLeapYear(2012);   // => true
 
 </details>
 
-## isSameDay(date1, date2)
+### isSameDay(date1, date2)
 
 <details>
 <summary>Determines if two dates represent the same calendar day.</summary>
