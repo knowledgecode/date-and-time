@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "The simplest and most user-friendly date and time manipulation library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
