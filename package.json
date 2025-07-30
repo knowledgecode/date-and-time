@@ -1,58 +1,74 @@
 {
   "name": "date-and-time",
-  "version": "3.6.0",
-  "description": "A Minimalist DateTime utility for Node.js and the browser",
-  "main": "date-and-time.js",
-  "module": "esm/date-and-time.es.js",
-  "types": "date-and-time.d.ts",
-  "unpkg": "date-and-time.min.js",
+  "version": "4.0.0",
+  "description": "The simplest and most user-friendly date and time manipulation library",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./date-and-time.d.ts",
-      "import": "./esm/date-and-time.mjs",
-      "require": "./date-and-time.js",
-      "browser": "./esm/date-and-time.es.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
-    "./locale/*": {
-      "types": "./locale/*.d.ts",
-      "import": "./esm/locale/*.mjs",
-      "require": "./locale/*.js",
-      "browser": "./esm/locale/*.es.js"
+    "./plugin": {
+      "types": "./dist/plugin.d.ts",
+      "import": "./dist/plugin.js",
+      "require": "./dist/plugin.cjs"
     },
-    "./plugin/*": {
-      "types": "./plugin/*.d.ts",
-      "import": "./esm/plugin/*.mjs",
-      "require": "./plugin/*.js",
-      "browser": "./esm/plugin/*.es.js"
+    "./locales/*": {
+      "import": "./dist/locales/*.js",
+      "require": "./dist/locales/*.cjs"
+    },
+    "./numerals/*": {
+      "import": "./dist/numerals/*.js",
+      "require": "./dist/numerals/*.cjs"
+    },
+    "./plugins/*": {
+      "types": "./dist/plugins/*.d.ts",
+      "import": "./dist/plugins/*.js",
+      "require": "./dist/plugins/*.cjs"
+    },
+    "./timezones/*": {
+      "import": "./dist/timezones/*.js",
+      "require": "./dist/timezones/*.cjs"
     }
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/",
+    "docs/"
+  ],
   "scripts": {
     "build": "rollup -c",
-    "test": "./test.sh",
-    "test:ts": "tsd ./test/ts"
+    "build-watch": "rollup -c --watch",
+    "build:ts": "rollup -c --config-ts",
+    "build:types": "rollup -c --config-types",
+    "lint": "eslint src",
+    "prepublishOnly": "npm run build",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "timezone": "tsx tools/timezone.ts",
+    "zonename": "tsx tools/zonename.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knowledgecode/date-and-time.git"
-  },
-  "keywords": [
-    "date",
-    "time",
-    "format",
-    "parse",
-    "utility"
-  ],
   "author": "KNOWLEDGECODE",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/knowledgecode/date-and-time/issues"
-  },
-  "homepage": "https://github.com/knowledgecode/date-and-time",
+  "type": "module",
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
-    "expect.js": "^0.3.1",
-    "mocha": "^10.7.3",
-    "rollup": "^4.22.5",
-    "tsd": "^0.31.2"
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/node": "^24.1.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.32.0",
+    "glob": "^11.0.3",
+    "globals": "^16.3.0",
+    "jiti": "^2.5.1",
+    "prettier": "^3.6.2",
+    "rollup": "^4.46.1",
+    "rollup-plugin-dts": "^6.2.1",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "tsx": "^4.20.3",
+    "typescript-eslint": "^8.38.0",
+    "vitest": "^3.2.4"
   }
 }

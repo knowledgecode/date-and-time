@@ -1,21 +1,10 @@
 # date-and-time
 
-[![Circle CI](https://circleci.com/gh/knowledgecode/date-and-time.svg?style=shield)](https://circleci.com/gh/knowledgecode/date-and-time)
+[![CI](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml/badge.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
+[![Coverage](./.github/badges/coverage.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
+[![npm](https://img.shields.io/npm/v/date-and-time)](https://www.npmjs.com/package/date-and-time)
 
-This JS library is just a collection of functions for manipulating date and time. It's small, simple, and easy to learn.
-
-## Why
-
-Nowadays, JS modules have become larger, more complex, and dependent on many other modules. It is important to strive for simplicity and smallness, especially for modules that are at the bottom of the dependency chain, such as those that handle date and time.
-
-## Features
-
-- Minimalist. Approximately 2k. (minified and gzipped)
-- Extensible. Plugin system support.
-- Multi language support.
-- Universal / Isomorphic. Works anywhere.
-- TypeScript support.
-- Older browser support. Even works on IE6. :)
+The simplest and most user-friendly date and time manipulation library
 
 ## Install
 
@@ -23,618 +12,1304 @@ Nowadays, JS modules have become larger, more complex, and dependent on many oth
 npm i date-and-time
 ```
 
-## Recent Changes
+- ESModules:
 
-- 3.6.0
-  - In `parseTZ()`, enabled parsing of the missing hour during the transition from standard time to daylight saving time into a Date type.
-  - In `format()` with the `z` token, fixed an issue where some short time zone names were incorrect.
+```typescript
+import { format } from 'date-and-time';
 
-- 3.5.0
-  - Added `addYearsTZ()`, `addMonthsTZ()`, and `addDaysTZ()` to the `timezone` plugin.
-  - Revised the approach to adding time and removed the third parameter from `addHours()`, `addMinutes()`, `addSeconds()`, and `addMilliseconds()`.
-
-- 3.4.1
-  - Fixed an issue where `formatTZ()` would output 0:00 as 24:00 in 24-hour format in Node.js.
-
-## Usage
-
-- ES Modules:
-
-```javascript
-import date from 'date-and-time';
+format(new Date(), 'ddd, MMM DD YYYY');
+// => Wed, Jul 09 2025
 ```
 
 - CommonJS:
 
-```javascript
-const date = require('date-and-time');
+```typescript
+const { format } = require('date-and-time');
+
+format(new Date(), 'ddd, MMM DD YYYY');
+// => Wed, Jul 09 2025
 ```
 
-- ES Modules for the browser:
+## Migration
 
-```html
-<script type="module">
-import date from '/path/to/date-and-time.es.min.js';
-</script>
-```
+Version `4.x` has been completely rewritten in TypeScript and some features from `3.x` are no longer compatible. The main changes are as follows:
 
-- Older browser:
+- The `timezone` and `timespan` plugins have been integrated into the main library
+- Tree shaking is now supported
+- Supports `ES2021` and no longer supports older browsers
 
-```html
-<script src="/path/to/date-and-time.min.js">
-// You will be able to access the global variable `date`.
-</script>
-```
-
-### Note
-
-- If you want to use ES Modules in Node.js without the transpiler, you need to add `"type": "module"` in your `package.json` or change your file extension from `.js` to `.mjs`.
-- If you are using TypeScript and having trouble building, please ensure that the following settings in the `compilerOptions` of your `tsconfig.json` are set to `true`.
-
-```json
-{
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  }
-}
-```
+For details, please refer to [MIGRATION.md](docs/MIGRATION.md).
 
 ## API
 
-- [format](#formatdateobj-arg-utc)
-  - Formatting date and time objects (Date -> String)
+## format(dateObj, arg[, options])
 
-- [parse](#parsedatestring-arg-utc)
-  - Parsing date and time strings (String -> Date)
+<details>
+<summary>Formats a Date object according to the specified format string.</summary>
 
-- [compile](#compileformatstring)
-  - Compiling format strings
+- dateObj
+  - type: `Date`
+  - The Date object to format
+- arg
+  - type: `string | CompiledObject`
+  - The format string or compiled object to match against the Date object
+- [options]
+  - type: `FormatterOptions`
+  - Optional formatter options for customization
 
-- [preparse](#preparsedatestring-arg)
-  - Pre-parsing date and time strings
+```typescript
+import { format } from 'date-and-time';
+import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
+import ja from 'date-and-time/locales/ja';
 
-- [isValid](#isvalidarg1-arg2)
-  - Date and time string validation
-
-- [transform](#transformdatestring-arg1-arg2-utc)
-  - Format transformation of date and time strings (String -> String)
-
-- [addYears](#addyearsdateobj-years-utc)
-  - Adding years
-
-- [addMonths](#addmonthsdateobj-months-utc)
-  - Adding months
-
-- [addDays](#adddaysdateobj-days-utc)
-  - Adding days
-
-- [addHours](#addhoursdateobj-hours)
-  - Adding hours
-
-- [addMinutes](#addminutesdateobj-minutes)
-  - Adding minutes
-
-- [addSeconds](#addsecondsdateobj-seconds)
-  - Adding seconds
-
-- [addMilliseconds](#addmillisecondsdateobj-milliseconds)
-  - Adding milliseconds
-
-- [subtract](#subtractdate1-date2)
-  - Subtracting two dates (date1 - date2)
-
-- [isLeapYear](#isleapyeary)
-  - Whether a year is a leap year
-
-- [isSameDay](#issamedaydate1-date2)
-  - Comparison of two dates
-
-- [locale](#localelocale)
-  - Changing locales
-
-- [extend](#extendextension)
-  - Functional extension
-
-- [plugin](#pluginplugin)
-  - Importing plugins
-
-### format(dateObj, arg[, utc])
-
-- @param {**Date**} dateObj - A Date object
-- @param {**string|Array.\<string\>**} arg - A format string or its compiled object
-- @param {**boolean**} [utc] - Output as UTC
-- @returns {**string**} A formatted string
-
-```javascript
 const now = new Date();
-date.format(now, 'YYYY/MM/DD HH:mm:ss');    // => '2015/01/02 23:14:05'
-date.format(now, 'ddd, MMM DD YYYY');       // => 'Fri, Jan 02 2015'
-date.format(now, 'hh:mm A [GMT]Z');         // => '11:14 PM GMT-0800'
-date.format(now, 'hh:mm A [GMT]Z', true);   // => '07:14 AM GMT+0000'
 
-const pattern = date.compile('ddd, MMM DD YYYY');
-date.format(now, pattern);                  // => 'Fri, Jan 02 2015'
+format(now, 'YYYY/MM/DD HH:mm:ss');
+// => 2015/01/01 23:14:05
+
+format(now, 'ddd, MMM DD YYYY');
+// => Thu, Jan 01 2015
+
+format(now, 'ddd, MMM DD YYYY hh:mm A [GMT]Z', { timeZone: 'UTC' });
+// => Fri, Jan 02 2015 07:14 AM GMT+0000
+
+format(now, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', { timeZone: Tokyo, locale: ja });
+// => 2015年1月2日金曜日 午後4:14:05 GMT+0900
 ```
 
-Available tokens and their meanings are as follows:
+The tokens available for use in the format string specified as the second argument and their meanings are as follows:
 
-| token | meaning                              | examples of output |
-|:------|:-------------------------------------|:-------------------|
-| YYYY  | four-digit year                      | 0999, 2015         |
-| YY    | two-digit year                       | 99, 01, 15         |
-| Y     | four-digit year without zero-padding | 2, 44, 888, 2015   |
-| MMMM  | month name (long)                    | January, December  |
-| MMM   | month name (short)                   | Jan, Dec           |
-| MM    | month with zero-padding              | 01, 12             |
-| M     | month                                | 1, 12              |
-| DD    | date with zero-padding               | 02, 31             |
-| D     | date                                 | 2, 31              |
-| dddd  | day of week (long)                   | Friday, Sunday     |
-| ddd   | day of week (short)                  | Fri, Sun           |
-| dd    | day of week (very short)             | Fr, Su             |
-| HH    | 24-hour with zero-padding            | 23, 08             |
-| H     | 24-hour                              | 23, 8              |
-| hh    | 12-hour with zero-padding            | 11, 08             |
-| h     | 12-hour                              | 11, 8              |
-| A     | meridiem (uppercase)                 | AM, PM             |
-| mm    | minute with zero-padding             | 14, 07             |
-| m     | minute                               | 14, 7              |
-| ss    | second with zero-padding             | 05, 10             |
-| s     | second                               | 5, 10              |
-| SSS   | millisecond (high accuracy)          | 753, 022           |
-| SS    | millisecond (middle accuracy)        | 75, 02             |
-| S     | millisecond (low accuracy)           | 7, 0               |
-| Z     | time zone offset value               | +0100, -0800       |
-| ZZ    | time zone offset value with colon    | +01:00, -08:00     |
+| Token    | Meaning                                     | Output Examples       |
+|:---------|:--------------------------------------------|:----------------------|
+| YYYY     | 4-digit year                                | 0999, 2015            |
+| YY       | 2-digit year                                | 99, 01, 15            |
+| Y        | Year without zero padding                   | 2, 44, 888, 2015      |
+| MMMM     | Full month name                             | January, December     |
+| MMM      | Short month name                            | Jan, Dec              |
+| MM       | Month                                       | 01, 12                |
+| M        | Month without zero padding                  | 1, 12                 |
+| DD       | Day                                         | 02, 31                |
+| D        | Day without zero padding                    | 2, 31                 |
+| dddd     | Full day name                               | Friday, Sunday        |
+| ddd      | Short day name                              | Fri, Sun              |
+| dd       | Very short day name                         | Fr, Su                |
+| HH       | Hour in 24-hour format                      | 23, 08                |
+| H        | Hour in 24-hour format without zero padding | 23, 8                 |
+| hh       | Hour in 12-hour format                      | 11, 08                |
+| h        | Hour in 12-hour format without zero padding | 11, 8                 |
+| A        | Uppercase AM/PM                             | AM, PM                |
+| AA       | Uppercase AM/PM (with periods)              | A.M., P.M.            |
+| a        | Lowercase AM/PM                             | am, pm                |
+| aa       | Lowercase AM/PM (with periods)              | a.m., p.m.            |
+| mm       | Minutes                                     | 14, 07                |
+| m        | Minutes without zero padding                | 14, 7                 |
+| ss       | Seconds                                     | 05, 10                |
+| s        | Seconds without zero padding                | 5, 10                 |
+| SSS      | 3-digit milliseconds                        | 753, 022              |
+| SS       | 2-digit milliseconds                        | 75, 02                |
+| S        | 1-digit milliseconds                        | 7, 0                  |
+| Z        | Timezone offset                             | +0100, -0800          |
+| ZZ       | Timezone offset with colon                  | +01:00, -08:00        |
 
-You can also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
+Additionally, by importing plugins, you can use the following tokens. For details, please refer to [PLUGINS.md](docs/PLUGINS.md).
 
-| token | meaning                              | examples of output    |
-|:------|:-------------------------------------|:----------------------|
-| DDD   | ordinal notation of date             | 1st, 2nd, 3rd         |
-| AA    | meridiem (uppercase with ellipsis)   | A.M., P.M.            |
-| a     | meridiem (lowercase)                 | am, pm                |
-| aa    | meridiem (lowercase with ellipsis)   | a.m., p.m.            |
-| z     | time zone name abbreviation          | PST, EST              |
-| zz    | time zone name                       | Pacific Standard Time |
+| Token    | Meaning                                     | Output Examples       |
+|:---------|:--------------------------------------------|:----------------------|
+| DDD      | Ordinal representation of day               | 1st, 2nd, 3rd         |
+| z        | Short timezone name                         | PST, EST              |
+| zz       | Long timezone name                          | Pacific Standard Time |
 
-#### Note 1. Comments
+The breakdown of `FormatterOptions` that can be specified as the third argument is as follows:
 
-Parts of the given format string enclosed in square brackets are considered comments and are output as is, regardless of whether they are tokens or not.
+<details>
+<summary><strong>hour12</strong></summary>
 
-```javascript
-date.format(new Date(), 'DD-[MM]-YYYY');    // => '02-MM-2015'
-date.format(new Date(), '[DD-[MM]-YYYY]');  // => 'DD-[MM]-YYYY'
+- type: `h11 | h12`
+- default: `h12`
+- The hour format to use for formatting. This is used when the hour is in 12-hour format. It can be `h11` for 11-hour format or `h12` for 12-hour format.
+
+```typescript
+format(now, 'dddd, MMMM D, YYYY [at] h:mm:ss.SSS A [GMT]ZZ', { hour12: 'h11' });
+// Wednesday, July 23, 2025 at 0:12:54.814 AM GMT-07:00
 ```
 
-#### Note 2. Output as UTC
+</details>
 
-This function outputs the date and time in the local time zone of the execution environment by default. If you want to output in UTC, set the UTC option (the third argument) to true. To output in any other time zone, you will need [a plugin](./PLUGINS.md).
+<details>
+<summary><strong>hour24</strong></summary>
 
-```javascript
-date.format(new Date(), 'hh:mm A [GMT]Z');          // => '11:14 PM GMT-0800'
-date.format(new Date(), 'hh:mm A [GMT]Z', true);    // => '07:14 AM GMT+0000'
+- type: `h23 | h24`
+- default: `h23`
+- The hour format to use for formatting. This is used when the hour is in 24-hour format. It can be `h23` for 23-hour format or `h24` for 24-hour format.
+
+```typescript
+format(now, 'dddd, MMMM D, YYYY [at] H:mm:ss.SSS [GMT]ZZ', { hour24: 'h24' });
+// => Wednesday, July 23, 2025 at 24:12:54.814 GMT-07:00
 ```
 
-#### Note 3. More Tokens
+</details>
 
-You can also define your own tokens. See [EXTEND.md](./EXTEND.md) for details.
+<details>
+<summary><strong>numeral</strong></summary>
 
-### parse(dateString, arg[, utc])
+- type: `Numeral`
+- default: `latn`
+- The numeral system to use for formatting numbers. This is an object that provides methods to encode and decode numbers in the specified numeral system.
 
-- @param {**string**} dateString - A date and time string
-- @param {**string|Array.\<string\>**} arg - A format string or its compiled object
-- @param {**boolean**} [utc] - Input as UTC
-- @returns {**Date**} A Date object
+```typescript
+import arab from 'date-and-time/numerals/arab';
 
-```javascript
-date.parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');   // => Jan 2 2015 23:14:05 GMT-0800
-date.parse('02-01-2015', 'DD-MM-YYYY');                     // => Jan 2 2015 00:00:00 GMT-0800
-date.parse('11:14:05 PM', 'hh:mm:ss A');                    // => Jan 1 1970 23:14:05 GMT-0800
-date.parse('11:14:05 PM', 'hh:mm:ss A', true);              // => Jan 1 1970 23:14:05 GMT+0000 (Jan 1 1970 15:14:05 GMT-0800)
-date.parse('23:14:05 GMT+0900', 'HH:mm:ss [GMT]Z');         // => Jan 1 1970 23:14:05 GMT+0900 (Jan 1 1970 06:14:05 GMT-0800)
-date.parse('Jam 1 2017', 'MMM D YYYY');                     // => Invalid Date
-date.parse('Feb 29 2017', 'MMM D YYYY');                    // => Invalid Date
+format(now, 'DD/MM/YYYY', { numeral: arab });
+// => ٠٨/٠٧/٢٠٢٥
 ```
 
-Available tokens and their meanings are as follows:
+Currently, the following numeral systems are supported:
 
-| token  | meaning                              | examples of acceptable form |
-|:-------|:-------------------------------------|:----------------------------|
-| YYYY   | four-digit year                      | 0999, 2015                  |
-| Y      | four-digit year without zero-padding | 2, 44, 88, 2015             |
-| MMMM   | month name (long)                    | January, December           |
-| MMM    | month name (short)                   | Jan, Dec                    |
-| MM     | month with zero-padding              | 01, 12                      |
-| M      | month                                | 1, 12                       |
-| DD     | date with zero-padding               | 02, 31                      |
-| D      | date                                 | 2, 31                       |
-| HH     | 24-hour with zero-padding            | 23, 08                      |
-| H      | 24-hour                              | 23, 8                       |
-| hh     | 12-hour with zero-padding            | 11, 08                      |
-| h      | 12-hour                              | 11, 8                       |
-| A      | meridiem (uppercase)                 | AM, PM                      |
-| mm     | minute with zero-padding             | 14, 07                      |
-| m      | minute                               | 14, 7                       |
-| ss     | second with zero-padding             | 05, 10                      |
-| s      | second                               | 5, 10                       |
-| SSS    | millisecond (high accuracy)          | 753, 022                    |
-| SS     | millisecond (middle accuracy)        | 75, 02                      |
-| S      | millisecond (low accuracy)           | 7, 0                        |
-| Z      | time zone offset value               | +0100, -0800                |
-| ZZ     | time zone offset value with colon    | +01:00, -08:00              |
+- `arab`
+- `arabext`
+- `beng`
+- `latn`
+- `mymr`
 
-You can also use the following tokens by importing plugins. See [PLUGINS.md](./PLUGINS.md) for details.
+</details>
 
-| token  | meaning                              | examples of acceptable form |
-|:-------|:-------------------------------------|:----------------------------|
-| YY     | two-digit year                       | 90, 00, 08, 19              |
-| AA     | meridiem (uppercase with ellipsis)   | A.M., P.M.                  |
-| a      | meridiem (lowercase)                 | am, pm                      |
-| aa     | meridiem (lowercase with ellipsis)   | a.m., p.m.                  |
-| dddd   | day of week (long)                   | Friday, Sunday              |
-| ddd    | day of week (short)                  | Fri, Sun                    |
-| dd     | day of week (very short)             | Fr, Su                      |
-| SSSSSS | microsecond (high accuracy)          | 123456, 000001              |
-| SSSSS  | microsecond (middle accuracy)        | 12345, 00001                |
-| SSSS   | microsecond (low accuracy)           | 1234, 0001                  |
+<details>
+<summary><strong>calendar</strong></summary>
 
-#### Note 1. Invalid Date
+- type: `buddhist | gregory`
+- default: `gregory`
+- The calendar system to use for formatting dates. This can be `buddhist` for Buddhist calendar or `gregory` for Gregorian calendar.
+
+```typescript
+format(now, 'dddd, MMMM D, YYYY', { calendar: 'buddhist' });
+// => Wednesday, July 23, 2568
+```
+
+</details>
+
+<details>
+<summary><strong>timeZone</strong></summary>
+
+- type: `TimeZone | UTC`
+- default: `undefined`
+- The time zone to use for formatting dates and times. This can be a specific time zone object or `UTC` to use Coordinated Universal Time. If not specified, it defaults to undefined, which means the local time zone will be used.
+
+```typescript
+import New_York from 'date-and-time/timezones/America/New_York';
+
+format(now, 'dddd, MMMM D, YYYY [at] H:mm:ss.SSS [GMT]ZZ', { timeZone: New_York });
+// => Wednesday, July 23, 2025 at 3:28:27.443 GMT-04:00
+```
+
+</details>
+
+<details>
+<summary><strong>locale</strong></summary>
+
+- type: `Locale`
+- default: `en`
+- The locale to use for formatting dates and times. This is an object that provides methods to get localized month names, day names, and meridiems.
+
+```typescript
+import es from 'date-and-time/locales/es';
+
+format(now, 'dddd, D [de] MMMM [de] YYYY, h:mm:ss.SSS aa [GMT]ZZ', { locale: es });
+// => miércoles, 23 de julio de 2025, 12:38:08,533 a.m. GMT-07:00
+```
+
+<details>
+<summary>Currently, the following locales are supported:</summary>
+
+- `ar` (Arabic)
+- `az` (Azerbaijani)
+- `bn` (Bengali)
+- `cs` (Czech)
+- `da` (Danish)
+- `de` (German)
+- `el` (Greek)
+- `en` (English)
+- `es` (Spanish)
+- `fa` (Persian)
+- `fi` (Finnish)
+- `fr` (French)
+- `he` (Hebrew)
+- `hi` (Hindi)
+- `hu` (Hungarian)
+- `id` (Indonesian)
+- `it` (Italian)
+- `ja` (Japanese)
+- `ko` (Korean)
+- `ms` (Malay)
+- `my` (Burmese)
+- `nl` (Dutch)
+- `no` (Norwegian)
+- `pl` (Polish)
+- `pt-BR` (Brazilian Portuguese)
+- `pt-PT` (European Portuguese)
+- `ro` (Romanian)
+- `ru` (Russian)
+- `rw` (Kinyarwanda)
+- `sr-Cyrl` (Serbian Cyrillic)
+- `sr-Latn` (Serbian Latin)
+- `sv` (Swedish)
+- `ta` (Tamil)
+- `th` (Thai)
+- `tr` (Turkish)
+- `uk` (Ukrainian)
+- `uz-Cyrl` (Uzbek Cyrillic)
+- `uz-Latn` (Uzbek Latin)
+- `vi` (Vietnamese)
+- `zh-Hans` (Simplified Chinese)
+- `zh-Hant` (Traditional Chinese)
+
+</details>
+</details>
+
+### Notes
+
+<details>
+<summary><strong>Comments</strong></summary>
+
+Parts of the format string enclosed in brackets are output as-is, regardless of whether they are valid tokens.
+
+```typescript
+format(new Date(), 'DD-[MM]-YYYY');     // => '02-MM-2015'
+format(new Date(), '[DD-[MM]-YYYY]');   // => 'DD-[MM]-YYYY'
+```
+
+</details>
+
+<details>
+<summary><strong>Output as UTC timezone</strong></summary>
+
+To output date and time as UTC timezone, specify the string `UTC` in the `timeZone` property of `FormatterOptions`.
+
+```typescript
+format(new Date(), 'hh:mm A [GMT]Z');
+// => '12:14 PM GMT-0700'
+
+format(new Date(), 'hh:mm A [GMT]Z', { timeZone: 'UTC' });
+// => '07:14 AM GMT+0000'
+```
+
+</details>
+</details>
+
+## parse(dateString, arg[, options])
+
+<details>
+<summary>Parses a date string according to the specified format.</summary>
+
+- dateString
+  - type: `string`
+  - The date string to parse
+- arg
+  - type: `string | CompiledObject`
+  - The format string or compiled object to match against the date string
+- [options]
+  - type: `ParserOptions`
+  - Optional parser options for customization
+
+```typescript
+import { parse } from 'date-and-time';
+import Paris from 'date-and-time/timezones/Europe/Paris';
+import fr from 'date-and-time/locales/fr';
+
+parse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
+// => Jan 02 2015 23:14:05 GMT-0800
+
+parse('02-01-2015', 'DD-MM-YYYY');
+// => Jan 02 2015 00:00:00 GMT-0800
+
+parse('11:14:05 PM', 'h:mm:ss A', { timeZone: 'UTC' });
+// => Jan 02 1970 23:14:05 GMT+0000
+
+parse(
+  '02 janv. 2015, 11:14:05 PM', 'DD MMM YYYY, h:mm:ss A',
+  { timeZone: Paris, locale: fr }
+);
+// => Jan 02 2015 23:14:05 GMT+0100
+
+parse('Jam 1 2017', 'MMM D YYYY');
+// => Invalid Date
+```
+
+The tokens available for use in the format string specified as the second argument and their meanings are as follows:
+
+| Token     | Meaning                                     | Input Examples      |
+|:----------|:--------------------------------------------|:--------------------|
+| YYYY      | 4-digit year                                | 0999, 2015          |
+| Y         | Year without zero padding                   | 2, 44, 88, 2015     |
+| MMMM      | Full month name                             | January, December   |
+| MMM       | Short month name                            | Jan, Dec            |
+| MM        | Month                                       | 01, 12              |
+| M         | Month without zero padding                  | 1, 12               |
+| DD        | Day                                         | 02, 31              |
+| D         | Day without zero padding                    | 2, 31               |
+| HH        | Hour in 24-hour format                      | 23, 08              |
+| H         | Hour in 24-hour format without zero padding | 23, 8               |
+| hh        | Hour in 12-hour format                      | 11, 08              |
+| h         | Hour in 12-hour format without zero padding | 11, 8               |
+| A         | Uppercase AM/PM                             | AM, PM              |
+| AA        | Uppercase AM/PM (with periods)              | A.M., P.M.          |
+| a         | Lowercase AM/PM                             | am, pm              |
+| aa        | Lowercase AM/PM (with periods)              | a.m., p.m.          |
+| mm        | Minutes                                     | 14, 07              |
+| m         | Minutes without zero padding                | 14, 7               |
+| ss        | Seconds                                     | 05, 10              |
+| s         | Seconds without zero padding                | 5, 10               |
+| SSS       | 3-digit milliseconds                        | 753, 022            |
+| SS        | 2-digit milliseconds                        | 75, 02              |
+| S         | 1-digit milliseconds                        | 7, 0                |
+| Z         | Timezone offset                             | +0100, -0800        |
+| ZZ        | Timezone offset with colon                  | +01:00, -08:00      |
+
+Additionally, by importing plugins, you can use the following tokens. For details, please refer to [PLUGINS.md](docs/PLUGINS.md).
+
+| Token     | Meaning                                    | Input Examples       |
+|:----------|:-------------------------------------------|:---------------------|
+| YY        | 2-digit year                               | 90, 00, 08, 19       |
+| DDD       | Ordinal representation of day              | 1st, 2nd, 3rd        |
+| dddd      | Full day name                              | Friday, Sunday       |
+| ddd       | Short day name                             | Fri, Sun             |
+| dd        | Very short day name                        | Fr, Su               |
+| SSSSSS    | 6-digit milliseconds                       | 123456, 000001       |
+| SSSSS     | 5-digit milliseconds                       | 12345, 00001         |
+| SSSS      | 4-digit milliseconds                       | 1234, 0001           |
+| fff       | 3-digit microseconds                       | 753, 022             |
+| ff        | 2-digit microseconds                       | 75, 02               |
+| f         | 1-digit microseconds                       | 7, 0                 |
+| SSSSSSSSS | 9-digit milliseconds                       | 123456789, 000000001 |
+| SSSSSSSS  | 8-digit milliseconds                       | 12345678, 00000001   |
+| SSSSSSS   | 7-digit milliseconds                       | 1234567, 0000001     |
+| FFF       | 3-digit nanoseconds                        | 753, 022             |
+| FF        | 2-digit nanoseconds                        | 75, 02               |
+| F         | 1-digit nanoseconds                        | 7, 0                 |
+
+The breakdown of `ParserOptions` that can be specified as the third argument is as follows:
+
+<details>
+<summary><strong>hour12</strong></summary>
+
+- type: `h11 | h12`
+- default: `h12`
+- The hour format to use for parsing. This is used when the hour is in 12-hour format. It can be `h11` for 11-hour format (0 - 11) or `h12` for 12-hour format (1 - 12).
+
+```typescript
+parse('0:12:54 PM', 'h:mm:ss A', { hour12: 'h11' });
+// => Jan 01 1970 12:12:54 GMT-0800
+```
+
+</details>
+
+<details>
+<summary><strong>hour24</strong></summary>
+
+- type: `h23 | h24`
+- default: `h23`
+- The hour format to use for parsing. This is used when the hour is in 24-hour format. It can be `h23` for 23-hour format (0 - 23) or `h24` for 24-hour format (1 - 24).
+
+```typescript
+parse('24:12:54', 'h:mm:ss', { hour24: 'h24' });
+// => Jan 01 1970 00:12:54 GMT-0800
+```
+
+</details>
+
+<details>
+<summary><strong>numeral</strong></summary>
+
+- type: `Numeral`
+- default: `latn`
+- The numeral system to use for parsing numbers. This is an object that provides methods to encode and decode numbers in the specified numeral system.
+
+```typescript
+import arab from 'date-and-time/numerals/arab';
+
+parse('٠٨/٠٧/٢٠٢٥', 'DD/MM/YYYY', { numeral: arab });
+// => July 09 2025 00:00:00 GMT-0700
+```
+
+Currently, the following numeral systems are supported:
+
+- `arab`
+- `arabext`
+- `beng`
+- `latn`
+- `mymr`
+
+</details>
+
+<details>
+<summary><strong>calendar</strong></summary>
+
+- type: `buddhist | gregory`
+- default: `gregory`
+- The calendar system to use for parsing dates. This can be `buddhist` for Buddhist calendar or `gregory` for Gregorian calendar.
+
+```typescript
+parse('July 09 2025', 'MMMM DD YYYY', { calendar: 'buddhist' });
+// => July 09 1482 00:00:00 GMT-0752
+// Note: Buddhist calendar is 543 years ahead of Gregorian calendar,
+// so 2025 BE (Buddhist Era) equals 1482 CE (Common Era)
+```
+
+</details>
+
+<details>
+<summary><strong>ignoreCase</strong></summary>
+
+- type: `boolean`
+- default: `false`
+- Whether to ignore case when matching strings. This is useful for matching month names, day names, and meridiems in a case-insensitive manner. If true, the parser will convert both the input string and the strings in the locale to lowercase before matching.
+
+```typescript
+parse('july 09 2025', 'MMMM DD YYYY', { ignoreCase: true });
+// => July 09 2025 00:00:00 GMT-0700
+```
+
+</details>
+
+<details>
+<summary><strong>timeZone</strong></summary>
+
+- type: `TimeZone | UTC`
+- default: `undefined`
+- The time zone to use for parsing dates and times. This can be a specific time zone object or `UTC` to use Coordinated Universal Time. If not specified, it defaults to undefined, which means the local time zone will be used.
+
+```typescript
+import New_York from 'date-and-time/timezones/America/New_York';
+
+parse('July 09 2025, 12:34:56', 'MMMM D YYYY, H:mm:ss', { timeZone: New_York });
+// => July 09 2025 09:34:56 GMT-0700 (July 09 2025 12:34:56 GMT-0400)
+
+parse('July 09 2025, 12:34:56', 'MMMM D YYYY, H:mm:ss', { timeZone: 'UTC' });
+// => July 09 2025 05:34:56 GMT-0700 (July 09 2025 12:34:56 GMT+0000)
+```
+
+</details>
+
+<details>
+<summary><strong>locale</strong></summary>
+
+- type: `Locale`
+- default: `en`
+- The locale to use for parsing dates and times. This is an object that provides methods to get localized month names, day names, and meridiems.
+
+```typescript
+import es from 'date-and-time/locales/es';
+
+parse(
+  '23 de julio de 2025, 12:38:08,533 a.m. GMT-07:00',
+  'D [de] MMMM [de] YYYY, h:mm:ss,SSS aa [GMT]ZZ',
+  { locale: es }
+);
+// => July 23 2025 12:38:08.533 GMT-0700
+```
+
+<details>
+<summary>Currently, the following locales are supported:</summary>
+
+- `ar` (Arabic)
+- `az` (Azerbaijani)
+- `bn` (Bengali)
+- `cs` (Czech)
+- `da` (Danish)
+- `de` (German)
+- `el` (Greek)
+- `en` (English)
+- `es` (Spanish)
+- `fa` (Persian)
+- `fi` (Finnish)
+- `fr` (French)
+- `he` (Hebrew)
+- `hi` (Hindi)
+- `hu` (Hungarian)
+- `id` (Indonesian)
+- `it` (Italian)
+- `ja` (Japanese)
+- `ko` (Korean)
+- `ms` (Malay)
+- `my` (Burmese)
+- `nl` (Dutch)
+- `no` (Norwegian)
+- `pl` (Polish)
+- `pt-BR` (Brazilian Portuguese)
+- `pt-PT` (European Portuguese)
+- `ro` (Romanian)
+- `ru` (Russian)
+- `rw` (Kinyarwanda)
+- `sr-Cyrl` (Serbian Cyrillic)
+- `sr-Latn` (Serbian Latin)
+- `sv` (Swedish)
+- `ta` (Tamil)
+- `th` (Thai)
+- `tr` (Turkish)
+- `uk` (Ukrainian)
+- `uz-Cyrl` (Uzbek Cyrillic)
+- `uz-Latn` (Uzbek Latin)
+- `vi` (Vietnamese)
+- `zh-Hans` (Simplified Chinese)
+- `zh-Hant` (Traditional Chinese)
+
+</details>
+</details>
+
+### Notes
+
+<details>
+<summary><strong>When parsing fails</strong></summary>
 
 If this function fails to parse, it will return `Invalid Date`. Notice that the `Invalid Date` is a Date object, not `NaN` or `null`. You can tell whether the Date object is invalid as follows:
 
-```javascript
-const today = date.parse('Jam 1 2017', 'MMM D YYYY');
+```typescript
+const today = parse('Jam 1 2017', 'MMM D YYYY');
 
 if (isNaN(today.getTime())) {
-    // Failure
+  console.error('Parsing failed');
 }
 ```
 
-#### Note 2. Input as UTC
+</details>
 
-This function uses the local time zone offset value of the execution environment by default if the given string does not contain a time zone offset value. To make it use UTC instead, set the UTC option (the third argument) to true. If you want it to use any other time zone, you will need [a plugin](./PLUGINS.md).
+<details>
+<summary><strong>Input as UTC timezone</strong></summary>
 
-```javascript
-date.parse('11:14:05 PM', 'hh:mm:ss A');          // => Jan 1 1970 23:14:05 GMT-0800
-date.parse('11:14:05 PM', 'hh:mm:ss A', true);    // => Jan 1 1970 23:14:05 GMT+0000 (Jan 1 1970 15:14:05 GMT-0800)
+If the `dateString` does not contain a timezone offset and the `timeZone` property of the third argument is not specified, this function considers the `dateString` to be in the local timezone. If you want to process a `dateString` without a timezone offset as UTC timezone, set the string `UTC` to the `timeZone` property in the third argument. Note that the timezone offset contained in the `dateString` takes precedence over the `timeZone` property of the third argument.
+
+```typescript
+parse('11:14:05 PM', 'hh:mm:ss A');
+// => Jan 1 1970 23:14:05 GMT-0800
+
+parse('11:14:05 PM GMT+0000', 'hh:mm:ss A [GMT]Z');
+// => Jan 1 1970 23:14:05 GMT+0000
+
+parse('11:14:05 PM', 'hh:mm:ss A', { timeZone: 'UTC' });
+// => Jan 1 1970 23:14:05 GMT+0000
 ```
 
-#### Note 3. Default Date Time
+</details>
 
-Default date is `January 1, 1970`, time is `00:00:00.000`. Values not passed will be complemented with them:
+<details>
+<summary><strong>Default Date Time</strong></summary>
 
-```javascript
-date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
-date.parse('Feb 2000', 'MMM YYYY');         // => Feb 1 2000 00:00:00 GMT-0800
+Default date is `January 1, 1970`, time is `00:00:00.000`. Any date/time components not specified in the input string will be filled with these default values.
+
+```typescript
+parse('11:14:05 PM', 'hh:mm:ss A');
+// => Jan 1 1970 23:14:05 GMT-0800
+
+parse('Feb 2000', 'MMM YYYY');
+// => Feb 1 2000 00:00:00 GMT-0800
 ```
 
-#### Note 4. Max Date / Min Date
+</details>
 
-Parsable maximum date is `December 31, 9999`, minimum date is `January 1, 0001`.
+<details>
+<summary><strong>Max Date / Min Date</strong></summary>
 
-```javascript
-date.parse('Dec 31 9999', 'MMM D YYYY');    // => Dec 31 9999 00:00:00 GMT-0800
-date.parse('Dec 31 10000', 'MMM D YYYY');   // => Invalid Date
+The parsable maximum date is `December 31, 9999`, and the minimum date is `January 1, 0001`.
 
-date.parse('Jan 1 0001', 'MMM D YYYY');     // => Jan 1 0001 00:00:00 GMT-0800
-date.parse('Jan 1 0000', 'MMM D YYYY');     // => Invalid Date
+```typescript
+parse('Dec 31 9999', 'MMM D YYYY');
+// => Dec 31 9999 00:00:00 GMT-0800
+
+parse('Dec 31 10000', 'MMM D YYYY');
+// => Invalid Date
+
+parse('Jan 1 0001', 'MMM D YYYY');
+// => Jan 1 0001 00:00:00 GMT-0800
+
+parse('Jan 1 0000', 'MMM D YYYY');
+// => Invalid Date
 ```
 
-#### Note 5. 12-hour notation and Meridiem
+</details>
 
-If use `hh` or `h` (12-hour) token, use together `A` (meridiem) token to get the right value.
+<details>
+<summary><strong>12-hour notation and Meridiem</strong></summary>
 
-```javascript
-date.parse('11:14:05', 'hh:mm:ss');         // => Jan 1 1970 11:14:05 GMT-0800
-date.parse('11:14:05 PM', 'hh:mm:ss A');    // => Jan 1 1970 23:14:05 GMT-0800
+If you use the `hh` or `h` (12-hour) token, use it together with the `A` (meridiem) token to get the correct value.
+
+```typescript
+parse('11:14:05', 'hh:mm:ss');
+// => Jan 1 1970 11:14:05 GMT-0800
+
+parse('11:14:05 PM', 'hh:mm:ss A');
+// => Jan 1 1970 23:14:05 GMT-0800
 ```
 
-#### Note 6. Token invalidation
+</details>
+
+<details>
+<summary><strong>Token invalidation</strong></summary>
 
 Any part of the given format string that you do not want to be recognized as a token should be enclosed in square brackets. They are considered comments and will not be parsed.
 
-```javascript
-date.parse('12 hours 34 minutes', 'HH hours mm minutes');       // => Invalid Date
-date.parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');   // => Jan 1 1970 12:34:00 GMT-0800
+```typescript
+parse('12 hours 34 minutes', 'HH hours mm minutes');
+// => Invalid Date
+
+parse('12 hours 34 minutes', 'HH [hours] mm [minutes]');
+// => Jan 1 1970 12:34:00 GMT-0800
 ```
 
-#### Note 7. Wildcard
+</details>
 
-Whitespace acts as a wildcard token. This token will not parse the corresponding parts of the date and time strings. This behavior is similar to enclosing part of a format string in square brackets (Token invalidation), but with the flexibility that the contents do not have to match, as long as the number of characters in the corresponding parts match.
+<details>
+<summary><strong>Wildcard</strong></summary>
 
-```javascript
+Whitespace acts as a wildcard token. This token will skip parsing the corresponding parts of the date and time strings. This behavior is similar to enclosing part of a format string in square brackets (Token invalidation), but with the flexibility that the contents do not have to match exactly - only the character count needs to match between the format string and input string.
+
+```typescript
 // This will be an error.
-date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD');            // => Invalid Date
-// Adjust the length of the format string by appending white spaces of the same length as a part to ignore to the end of it.
-date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');   // => Jan 2 2015 00:00:00 GMT-0800
+parse('2015/01/02 11:14:05', 'YYYY/MM/DD');
+// => Invalid Date
+
+parse('2015/01/02 11:14:05', 'YYYY/MM/DD         ');
+// => Jan 2 2015 00:00:00 GMT-0800
 ```
 
-#### Note 8. Ellipsis
+</details>
 
-`...` token ignores subsequent corresponding date and time strings. Use this token only at the end of a format string. The above example can be also written like this:
+<details>
+<summary><strong>Ellipsis</strong></summary>
 
-```javascript
-date.parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');   // => Jan 2 2015 00:00:00 GMT-0800
+`...` token ignores subsequent corresponding date and time strings. Use this token only at the end of a format string. The above example can also be written like this:
+
+```typescript
+parse('2015/01/02 11:14:05', 'YYYY/MM/DD...');
+// => Jan 2 2015 00:00:00 GMT-0800
 ```
 
-### compile(formatString)
+</details>
+</details>
 
-- @param {**string**} formatString - A format string
-- @returns {**Array.\<string\>**} A compiled object
+## compile(formatString)
 
-If you are going to execute the `format()`, the `parse()` or the `isValid()` so many times with one string format, recommended to precompile and reuse it for performance.
+<details>
+<summary>Compiles a format string into a tokenized array for efficient parsing and formatting.</summary>
 
-```javascript
-  const pattern = date.compile('MMM D YYYY h:m:s A');
+- formatString
+  - type: `string`
+  - The format string to compile
 
-  date.parse('Mar 22 2019 2:54:21 PM', pattern);
-  date.parse('Jul 27 2019 4:15:24 AM', pattern);
-  date.parse('Dec 25 2019 3:51:11 AM', pattern);
+If you are going to execute the `format`, `parse`, or `isValid` functions many times with one string format, it is recommended to precompile and reuse it for performance.
 
-  date.format(new Date(), pattern); // => Mar 16 2020 6:24:56 PM
+```typescript
+import { compile, parse, format } from 'date-and-time';
+
+const pattern = compile('MMM D YYYY h:m:s A');
+
+parse('Mar 22 2019 2:54:21 PM', pattern);
+parse('Jul 27 2019 4:15:24 AM', pattern);
+parse('Dec 25 2019 3:51:11 AM', pattern);
+
+format(new Date(), pattern);
+// => Mar 16 2020 6:24:56 PM
 ```
 
-### preparse(dateString, arg)
+</details>
 
-- @param {**string**} dateString - A date and time string
-- @param {**string|Array.\<string\>**} arg - A format string or its compiled object
-- @returns {**Object**} A pre-parsed result object
+## preparse(dateString, arg[, options])
 
-This function takes exactly the same parameters with the `parse()`, but returns a date structure as follows unlike that:
+<details>
+<summary>Preparses a date string according to the specified pattern.</summary>
 
-```javascript
-date.preparse('Fri Jan 2015 02 23:14:05 GMT-0800', '    MMM YYYY DD HH:mm:ss [GMT]Z');
+- dateString
+  - type: `string`
+  - The date string to preparse
+- arg
+  - type: `string | CompiledObject`
+  - The pattern string or compiled object to match against the date string
+- [options]
+  - type: `ParserOptions`
+  - Optional parser options
+
+```typescript
+import { preparse } from 'date-and-time';
+
+preparse('Jan 2015 02 23:14:05 GMT-0800', 'MMM YYYY DD HH:mm:ss [GMT]Z');
 
 {
-    Y: 2015,        // Year
-    M: 1,           // Month
-    D: 2,           // Day
-    H: 23,          // 24-hour
-    A: 0,           // Meridiem
-    h: 0,           // 12-hour
-    m: 14,          // Minute
-    s: 5,           // Second
-    S: 0,           // Millisecond
-    Z: 480,         // Timsezone offset
-    _index: 33,     // Pointer offset
-    _length: 33,    // Length of the date string
-    _match: 7       // Token matching count
+  Y: 2015,      // Year
+  M: 1,         // Month
+  D: 2,         // Day
+  H: 23,        // Hour (24-hour)
+  m: 14,        // Minute
+  s: 5,         // Second
+  Z: 480,       // Timezone offset in minutes
+  _index: 29,   // Current parsing position
+  _length: 29,  // Total length of date string
+  _match: 7     // Number of matched tokens
 }
 ```
 
-This date structure provides a parsing result. You will be able to tell from it how the date string was parsed(, or why the parsing was failed).
+This date structure provides a parsing result. You will be able to tell from it how the date string was parsed (or why the parsing failed).
 
-### isValid(arg1[, arg2])
+</details>
 
-- @param {**Object|string**} arg1 - A pre-parsed result object or a date and time string
-- @param {**string|Array.\<string\>**} [arg2] - A format string or its compiled object
-- @returns {**boolean**} Whether the date and time string is a valid date and time
+## isValid(dateString, arg[, options])
 
-This function takes either exactly the same parameters with the `parse()` or a date structure which the `preparse()` returns, evaluates the validity of them.
+<details>
+<summary>Validates whether a date string is valid according to the specified format.</summary>
 
-```javascript
-date.isValid('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss'); // => true
-date.isValid('29-02-2015', 'DD-MM-YYYY');                   // => false
+- dateString
+  - type: `string`
+  - The date string to validate
+- arg
+  - type: `string | CompiledObject`
+  - The format string or compiled object
+- [options]
+  - type: `ParserOptions`
+  - Optional parser options
+
+```typescript
+isValid('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');  // => true
+isValid('29-02-2015', 'DD-MM-YYYY');                    // => false
 ```
 
-```javascript
-const result = date.preparse('2015/01/02 23:14:05', 'YYYY/MM/DD HH:mm:ss');
-date.isValid(result);   // => true
+For details about `ParserOptions`, refer to the `parse` function section.
+
+</details>
+
+## transform(dateString, arg1, arg2[, options1[, options2]])
+
+<details>
+<summary>Transforms a date string from one format to another.</summary>
+
+- dateString
+  - type: `string`
+  - The date string to transform
+- arg1
+  - type: `string | CompiledObject`
+  - The format string or compiled object for parsing
+- arg2
+  - type: `string | CompiledObject`
+  - The format string or compiled object for formatting
+- [options1]
+  - type: `ParserOptions`
+  - Optional parser options
+- [options2]
+  - type: `FormatterOptions`
+  - Optional formatter options
+
+This is a syntactic sugar for combining `parse` and `format` processing to convert date formats in a single function. It converts `dateString` to `arg2` format. Actually, it parses the `dateString` in `arg1` format and then formats it in `arg2` format.
+
+```typescript
+import { transform } from 'date-and-time';
+import New_York from 'date-and-time/timezones/America/New_York';
+import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
+
+// Swap the order of month and day
+transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
+// => 8/3/2020
+
+// Convert 24-hour format to 12-hour format
+transform('13:05', 'HH:mm', 'hh:mm A');
+// => 01:05 PM
+
+// Convert EST to PST
+transform(
+  '3/8/2020 1:05 PM', 'D/M/YYYY h:mm A', 'D/M/YYYY h:mm A',
+  { timeZone: New_York }, { timeZone: Los_Angeles }
+);
+// => 3/8/2020 10:05 AM
 ```
 
-### transform(dateString, arg1, arg2[, utc])
+For details about `ParserOptions`, refer to the `parse` function section. For details about `FormatterOptions`, refer to the `format` function section.
 
-- @param {**string**} dateString - A date and time string
-- @param {**string|Array.\<string\>**} arg1 - A format string or its compiled object before transformation
-- @param {**string|Array.\<string\>**} arg2 - A format string or its compiled object after transformation
-- @param {**boolean**} [utc] - Output as UTC
-- @returns {**string**} A formatted string
+</details>
 
-This function transforms the format of a date string. The 2nd parameter, `arg1`, is the format string of it. Available token list is equal to the `parse()`'s. The 3rd parameter, `arg2`, is the transformed format string. Available token list is equal to the `format()`'s.
+## addYears(dateObj, years[, timeZone])
 
-```javascript
-// 3/8/2020 => 8/3/2020
-date.transform('3/8/2020', 'D/M/YYYY', 'M/D/YYYY');
+<details>
+<summary>Adds the specified number of years to a Date object.</summary>
 
-// 13:05 => 01:05 PM
-date.transform('13:05', 'HH:mm', 'hh:mm A');
-```
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- years
+  - type: `number`
+  - The number of years to add
+- [timeZone]
+  - type: `TimeZone | UTC`
+  - Optional time zone object or `UTC`
 
-### addYears(dateObj, years[, utc])
+```typescript
+import { addYears } from 'date-and-time';
+import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} years - The number of years to add
-- @param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the specified number of years
+const now = new Date(2024, 2, 11, 1);   // => Mar 11 2024 01:00:00 GMT-07:00
 
-Adds years to a date object. Subtraction is also possible by specifying a negative value. If the third parameter is false or omitted, this function calculates based on the system's default time zone. If you need to obtain calculation results based on a specific time zone regardless of the execution system, consider using the `addYearsTZ()`, which allows you to specify a time zone name as the third parameter. See [PLUGINS.md](./PLUGINS.md) for details.
-
-```javascript
-const now = new Date();
-const next_year = date.addYears(now, 1);
+addYears(now, 1, Los_Angeles);          // => Mar 11 2025 01:00:00 GMT-07:00
+addYears(now, -1, Los_Angeles);         // => Mar 11 2023 01:00:00 GMT-08:00
 ```
 
 Exceptional behavior of the calculation for the last day of the month:
 
-```javascript
-const now = new Date(Date.UTC(2020, 1, 29));                // => Feb 29 2020
-const next_year = date.addYears(now, 1, true);              // => Feb 28 2021
-const next_next_year = date.addYears(next_year, 1, true);   // => Feb 28 2022
+```typescript
+const now = new Date(Date.UTC(2020, 1, 29));    // => Feb 29 2020
+const next = addYears(now, 1, 'UTC');           // => Feb 28 2021
+const back = addYears(next, -1, 'UTC');         // => Feb 28 2020 (not the original date)
 ```
 
-### addMonths(dateObj, months[, utc])
+</details>
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} months - The number of months to add
-- @param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the specified number of months
+## addMonths(dateObj, months[, timeZone])
 
-Adds months to a date object. Subtraction is also possible by specifying a negative value. If the third parameter is false or omitted, this function calculates based on the system's default time zone. If you need to obtain calculation results based on a specific time zone regardless of the execution system, consider using the `addMonthsTZ()`, which allows you to specify a time zone name as the third parameter. See [PLUGINS.md](./PLUGINS.md) for details.
+<details>
+<summary>Adds the specified number of months to a Date object.</summary>
 
-```javascript
-const now = new Date();
-const next_month = date.addMonths(now, 1);
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- months
+  - type: `number`
+  - The number of months to add
+- [timeZone]
+  - type: `TimeZone | UTC`
+  - Optional time zone object or `UTC`
+
+```typescript
+import { addMonths } from 'date-and-time';
+import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
+
+const now = new Date(2024, 2, 11, 1);   // => Mar 11 2024 01:00:00 GMT-07:00
+
+addMonths(now, 1, Los_Angeles);         // => Apr 11 2024 01:00:00 GMT-07:00
+addMonths(now, -1, Los_Angeles);        // => Feb 11 2024 01:00:00 GMT-08:00
 ```
 
 Exceptional behavior of the calculation for the last day of the month:
 
-```javascript
-const now = new Date(Date.UTC(2023, 0, 31));                    // => Jan 31 2023
-const next_month = date.addMonths(now, 1, true);                // => Feb 28 2023
-const next_next_month = date.addMonths(next_month, 1, true);    // => Mar 28 2023
+```typescript
+const now = new Date(Date.UTC(2023, 0, 31));    // => Jan 31 2023
+const apr = addMonths(now, 3, 'UTC');           // => Apr 30 2023
+const feb = addMonths(apr, -2, 'UTC');          // => Feb 28 2023
 ```
 
-### addDays(dateObj, days[, utc])
+</details>
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} days - The number of days to add
-- @param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`
-- @returns {**Date**} The Date object after adding the specified number of days
+## addDays(dateObj, days[, timeZone])
 
-Adds days to a date object. Subtraction is also possible by specifying a negative value. If the third parameter is false or omitted, this function calculates based on the system's default time zone. If you need to obtain calculation results based on a specific time zone regardless of the execution system, consider using the `addDaysTZ()`, which allows you to specify a time zone name as the third parameter. See [PLUGINS.md](./PLUGINS.md) for details.
+<details>
+<summary>Adds the specified number of days to a Date object.</summary>
 
-```javascript
-const now = new Date();
-const yesterday = date.addDays(now, -1);
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- days
+  - type: `number`
+  - The number of days to add
+- [timeZone]
+  - type: `TimeZone | UTC`
+  - Optional time zone object or `UTC`
+
+```typescript
+import { addDays } from 'date-and-time';
+import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
+
+const now = new Date(2024, 2, 11, 1);   // => Mar 11 2024 01:00:00 GMT-07:00
+
+addDays(now, 1, Los_Angeles);           // => Mar 12 2024 01:00:00 GMT-07:00
+addDays(now, -1, Los_Angeles);          // => Mar 10 2024 01:00:00 GMT-08:00
 ```
 
-### addHours(dateObj, hours)
+</details>
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} hours - The number of hours to add
-- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
-- @returns {**Date**} The Date object after adding the specified number of hours
+## addHours(dateObj, hours)
 
-Adds hours to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
+<details>
+<summary>Adds the specified number of hours to a Date object.</summary>
 
-```javascript
-const now = new Date();
-const an_hour_ago = date.addHours(now, -1);
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- hours
+  - type: `number`
+  - The number of hours to add
+
+```typescript
+import { addHours } from 'date-and-time';
+
+const now = new Date(2025, 6, 24);  // => Jul 24 2025 00:00:00
+
+addHours(now, -1);                  // => Jul 23 2025 23:00:00
 ```
 
-### addMinutes(dateObj, minutes)
+</details>
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} minutes - The number of minutes to add
-- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
-- @returns {**Date**} The Date object after adding the specified number of minutes
+## addMinutes(dateObj, minutes)
 
-Adds minutes to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
+<details>
+<summary>Adds the specified number of minutes to a Date object.</summary>
 
-```javascript
-const now = new Date();
-const two_minutes_later = date.addMinutes(now, 2);
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- minutes
+  - type: `number`
+  - The number of minutes to add
+
+```typescript
+import { addMinutes } from 'date-and-time';
+
+const now = new Date(2025, 6, 24);  // => Jul 24 2025 00:00:00
+
+addMinutes(now, 2);                 // => Jul 24 2025 00:02:00
 ```
 
-### addSeconds(dateObj, seconds)
+</details>
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} seconds - The number of seconds to add
-- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
-- @returns {**Date**} The Date object after adding the specified number of seconds
+## addSeconds(dateObj, seconds)
 
-Adds seconds to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
+<details>
+<summary>Adds the specified number of seconds to a Date object.</summary>
 
-```javascript
-const now = new Date();
-const three_seconds_ago = date.addSeconds(now, -3);
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- seconds
+  - type: `number`
+  - The number of seconds to add
+
+```typescript
+import { addSeconds } from 'date-and-time';
+
+const now = new Date(2025, 6, 24);  // => Jul 24 2025 00:00:00
+
+addSeconds(now, -3);                // => Jul 23 2025 23:59:57
 ```
 
-### addMilliseconds(dateObj, milliseconds)
+</details>
 
-- @param {**Date**} dateObj - A Date object
-- @param {**number**} milliseconds - The number of milliseconds to add
-- ~~@param {**boolean**} [utc] - If true, calculates the date in UTC `Added in: v3.0.0`~~ `Removed in: v3.5.0`
-- @returns {**Date**} The Date object after adding the specified number of milliseconds
+## addMilliseconds(dateObj, milliseconds)
 
-Adds milliseconds to a date object. Subtraction is also possible by specifying a negative value. The third parameter was deprecated in version 3.5.0. Regardless of what is specified for this parameter, the calculation results will not change.
+<details>
+<summary>Adds the specified number of milliseconds to a Date object.</summary>
 
-```javascript
-const now = new Date();
-const a_millisecond_later = date.addMilliseconds(now, 1);
+- dateObj
+  - type: `Date`
+  - The Date object to modify
+- milliseconds
+  - type: `number`
+  - The number of milliseconds to add
+
+```typescript
+import { addMilliseconds } from 'date-and-time';
+
+const now = new Date(2025, 6, 24);  // => Jul 24 2025 00:00:00.000
+
+addMilliseconds(now, 123);          // => Jul 24 2025 00:00:00.123
 ```
 
-### subtract(date1, date2)
+</details>
 
-- @param {**Date**} date1 - A Date object
-- @param {**Date**} date2 - A Date object
-- @returns {**Object**} The result object of subtracting date2 from date1
+## subtract(from, to)
 
-```javascript
-const today = new Date(2015, 0, 2);
+<details>
+<summary>Calculates the difference between two dates.</summary>
+
+- from
+  - type: `Date`
+  - The first Date object
+- to
+  - type: `Date`
+  - The second Date object
+
+Returns a `Duration` instance with methods to get the difference in various units.
+
+```typescript
+import { subtract } from 'date-and-time';
+
 const yesterday = new Date(2015, 0, 1);
+const today = new Date(2015, 0, 2, 3, 4, 5, 6);
 
-date.subtract(today, yesterday).toDays();           // => 1 = today - yesterday
-date.subtract(today, yesterday).toHours();          // => 24
-date.subtract(today, yesterday).toMinutes();        // => 1440
-date.subtract(today, yesterday).toSeconds();        // => 86400
-date.subtract(today, yesterday).toMilliseconds();   // => 86400000
+const duration = subtract(yesterday, today);
+
+duration.toDays().value;            // => 1.127835...
+duration.toHours().value;           // => 27.068057...
+duration.toMinutes().value;         // => 1624.083433...
+duration.toSeconds().value;         // => 97445.006
+duration.toMilliseconds().value;    // => 97445006
+duration.toMicroseconds().value;    // => 97445006000
+duration.toNanoseconds().value;     // => 97445006000000
 ```
 
-### isLeapYear(y)
+### Duration
 
-- @param {**number**} y - A year to check
-- @returns {**boolean**} Whether the year is a leap year
+The `Duration` object can be directly created not only as a return value of the `subtract` function, but also by passing any numeric value (milliseconds) as a constructor argument.
 
-```javascript
-date.isLeapYear(2015);  // => false
-date.isLeapYear(2012);  // => true
+```typescript
+import { Duration } from 'date-and-time';
+
+const duration = new Duration(123);
+
+duration.toSeconds().value; // => 0.123
 ```
 
-### isSameDay(date1, date2)
+<details>
+<summary><strong>toDays()</strong></summary>
 
-- @param {**Date**} date1 - A Date object
-- @param {**Date**} date2 - A Date object
-- @returns {**boolean**} Whether the two dates are the same day (time is ignored)
+This method calculates the number of days in the duration and returns a descriptor that includes the value in days, a format method for custom formatting, and a toParts method that returns an object with the parts of the duration.
 
-```javascript
+```typescript
+duration.toDays().value;
+// => 1.127835...
+
+duration.toDays().format('D[day], H:mm:ss.SSSfffFFF');
+// => 1day, 3:04:05.006000000
+
+duration.toDays().toParts();
+// => { days: 1, hours: 3, minutes: 4, seconds: 5, ... }
+```
+
+</details>
+
+<details>
+<summary><strong>toHours()</strong></summary>
+
+This method calculates the number of hours in the duration and returns a descriptor that includes the value in hours, a format method for custom formatting, and a toParts method that returns an object with the parts of the duration.
+
+```typescript
+duration.toHours().value;
+// => 27.068057...
+
+duration.toHours().format('H:mm:ss.SSSfffFFF');
+// => 27:04:05.006000000
+
+duration.toHours().toParts();
+// => { hours: 27, minutes: 4, seconds: 5, ... }
+```
+
+</details>
+
+<details>
+<summary><strong>toMinutes()</strong></summary>
+
+This method calculates the number of minutes in the duration and returns a descriptor that includes the value in minutes, a format method for custom formatting, and a toParts method that returns an object with the parts of the duration.
+
+```typescript
+duration.toMinutes().value;
+// => 1624.083433...
+
+duration.toMinutes().format('m[min] ss.SSSfffFFF');
+// => 1624min 05.006000000
+
+duration.toMinutes().toParts();
+// => { minutes: 1624, seconds: 5, milliseconds: 6, ... }
+```
+
+</details>
+
+<details>
+<summary><strong>toSeconds()</strong></summary>
+
+This method calculates the number of seconds in the duration and returns a descriptor that includes the value in seconds, a format method for custom formatting, and a toParts method that returns an object with the parts of the duration.
+
+```typescript
+duration.toSeconds().value;
+// => 97445.006
+
+duration.toSeconds().format('s[sec] SSSfffFFF');
+// => 97445sec 006000000
+
+duration.toSeconds().toParts();
+// => { seconds: 97445, milliseconds: 6, microseconds: 0, ... }
+```
+
+</details>
+
+<details>
+<summary><strong>toMilliseconds()</strong></summary>
+
+This method calculates the number of milliseconds in the duration and returns a descriptor that includes the value in milliseconds, a format method for custom formatting, and a toParts method that returns an object with the parts of the duration.
+
+```typescript
+duration.toMilliseconds().value;
+// => 97445006
+
+duration.toMilliseconds().format('S.fffFFF');
+// => 97445006.000000
+
+duration.toMilliseconds().toParts();
+// => { milliseconds: 97445006, microseconds: 0, nanoseconds: 0 }
+```
+
+</details>
+
+<details>
+<summary><strong>toMicroseconds()</strong></summary>
+
+This method calculates the number of microseconds in the duration and returns a descriptor that includes the value in microseconds, a format method for custom formatting, and a toParts method that returns an object with the microseconds and nanoseconds parts.
+
+```typescript
+duration.toMicroseconds().value;
+// => 97445006000
+
+duration.toMicroseconds().format('f.FFF');
+// => 97445006000.000
+
+duration.toMicroseconds().toParts();
+// => { microseconds: 97445006000, nanoseconds: 0 }
+```
+
+</details>
+
+<details>
+<summary><strong>toNanoseconds()</strong></summary>
+
+This method calculates the number of nanoseconds in the duration and returns a descriptor that includes the value in nanoseconds, a format method for custom formatting, and a toParts method that returns an object with the nanoseconds part.
+
+```typescript
+duration.toNanoseconds().value;
+// => 97445006000000
+
+duration.toNanoseconds().format('F[ns]');
+// => 97445006000000ns
+
+duration.toNanoseconds().toParts();
+// => { nanoseconds: 97445006000000 }
+```
+
+</details>
+
+### DurationDescriptor
+
+#### value
+
+The value of the duration in the respective unit.
+
+#### format(formatString[, numeral])
+
+<details>
+<summary>Formats the duration according to the provided format string.</summary>
+
+- formatString
+  - type: `string`
+  - The format string to use for formatting
+- [numeral]
+  - type: `Numeral`
+  - default: `latn`
+  - Optional numeral object for number formatting
+
+The tokens available for use in the format string specified as the first argument and their meanings are as follows. However, tokens for units larger than the `DurationDescriptor` cannot be used. For example, in the case of a `DurationDescriptor` obtained by the `toHours` method, the `D` token representing days cannot be used. For a `DurationDescriptor` obtained by the `toNanoseconds` method, only the `F` token representing nanoseconds can be used.
+
+| Token    | Meaning                            |
+|:---------|:-----------------------------------|
+| D        | Days                               |
+| H        | Hours                              |
+| m        | Minutes                            |
+| s        | Seconds                            |
+| S        | Milliseconds                       |
+| f        | Microseconds                       |
+| F        | Nanoseconds                        |
+
+What makes the format string in `DurationDescriptor` different from others is that repeating the same token produces a zero-padding effect. For example, formatting `1 day` with `DDDD` results in an output of `0001`.
+
+</details>
+
+#### toParts()
+
+<details>
+<summary>Converts the duration to an object containing the parts of the duration in the respective unit.</summary>
+
+```typescript
+{
+  days: 1,
+  hours: 3,
+  minutes: 4,
+  seconds: 5,
+  milliseconds: 6,
+  microseconds: 0,
+  nanoseconds: 0
+}
+```
+
+</details>
+
+### Notes
+
+<details>
+<summary><strong>Negative Duration</strong></summary>
+
+When the `value` becomes negative, there are slight differences in the output results of the `format` method and the `toParts` method. In the `format` method, only the largest unit in the `DurationDescriptor`, for example, only the `D` token in the case of a `DurationDescriptor` obtained by the `toDays` method, gets a minus sign, while in the `toParts` method, all units get a minus sign.
+
+```typescript
+duration.toDays().value;
+// => -1.127835...
+
+duration.toDays().format('D[day], H:mm:ss.SSSfffFFF');
+// => -1day, 3:04:05.006000000
+
+duration.toDays().toParts();
+// => { days: -1, hours: -3, minutes: -4, seconds: -5, ... }
+```
+
+</details>
+
+<details>
+<summary><strong>Negative Zero</strong></summary>
+
+The `format` method may output `-0`. For example, when the value of a `DurationDescriptor` obtained by the `toDays` method is a negative decimal less than 1, using the `D` token in the `format` method outputs `-0`.
+
+```typescript
+duration.toDays().value;
+// => -0.127835...
+
+duration.toDays().format('D[day], H:mm:ss.SSSfffFFF');
+// => -0day, 3:04:05.006000000
+
+duration.toDays().toParts();
+// => { days: 0, hours: -3, minutes: -4, seconds: -5, ... }
+```
+
+</details>
+</details>
+
+## isLeapYear(year)
+
+<details>
+<summary>Determines if the specified year is a leap year.</summary>
+
+- year
+  - type: `number`
+  - The year to check
+
+```typescript
+import { isLeapYear } from 'date-and-time';
+
+isLeapYear(2015);   // => false
+isLeapYear(2012);   // => true
+```
+
+</details>
+
+## isSameDay(date1, date2)
+
+<details>
+<summary>Determines if two dates represent the same calendar day.</summary>
+
+- date1
+  - type: `Date`
+  - The first date to compare
+- date2
+  - type: `Date`
+  - The second date to compare
+
+```typescript
+import { isSameDay } from 'date-and-time';
+
 const date1 = new Date(2017, 0, 2, 0);          // Jan 2 2017 00:00:00
 const date2 = new Date(2017, 0, 2, 23, 59);     // Jan 2 2017 23:59:00
 const date3 = new Date(2017, 0, 1, 23, 59);     // Jan 1 2017 23:59:00
-date.isSameDay(date1, date2);   // => true
-date.isSameDay(date1, date3);   // => false
+
+isSameDay(date1, date2);    // => true
+isSameDay(date1, date3);    // => false
 ```
 
-### locale([locale])
-
-- @param {**Function|string**} [locale] - A locale installer or language code
-- @returns {**string**} The current language code
-
-It returns the current language code if called without any parameters.
-
-```javascript
-date.locale();  // => "en"
-```
-
-To switch to any other language, call it with a locale installer or a language code.
-
-```javascript
-import es from 'date-and-time/locale/es';
-
-date.locale(es);  // Switch to Spanish
-```
-
-See [LOCALE.md](./LOCALE.md) for details.
-
-### extend(extension)
-
-- @param {**Object**} extension - An extension object
-- @returns {**void**}
-
-It extends this library. See [EXTEND.md](./EXTEND.md) for details.
-
-### plugin(plugin)
-
-- @param {**Function|string**} plugin - A plugin installer or plugin name
-- @returns {**void**}
-
-Plugin is a named extension object. By installing predefined plugins, you can easily extend this library. See [PLUGINS.md](./PLUGINS.md) for details.
-
-## Browser Support
-
-Chrome, Firefox, Safari, Edge, and Internet Explorer 6+.
+</details>
 
 ## License
 

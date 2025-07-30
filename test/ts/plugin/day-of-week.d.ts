@@ -1,1 +1,0 @@
-../../../plugin/day-of-week.d.ts

@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linter
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+
+  coverage:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests with coverage
+      run: npm run test:coverage
+
+    - name: Read coverage summary
+      id: coverage
+      run: |
+        echo "pct=$(jq '.total.lines.pct' coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
+
+    - name: Create badges directory
+      run: mkdir -p .github/badges
+
+    - name: Generate coverage badge
+      uses: emibcn/badge-action@v2.0.3
+      with:
+        label: 'coverage'
+        status: ${{ steps.coverage.outputs.pct }}%
+        color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'green' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}
+        path: .github/badges/coverage.svg
+
+    - name: Commit coverage badge
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .github/badges/coverage.svg
+        git diff --staged --quiet || git commit -m "Update coverage badge"
+        git push
+
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage/

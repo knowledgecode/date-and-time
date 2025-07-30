@@ -1,1 +1,0 @@
-../../../plugin/two-digit-year.d.ts
