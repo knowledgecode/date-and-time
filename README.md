@@ -1,3 +1,5 @@
+# date-and-time
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/knowledgecode/date-and-time/refs/heads/master/logo.png" alt="date-and-time" width="256">
 </div>
@@ -10,13 +12,15 @@
 
 </div>
 
-## Install
+The simplest, most intuitive date and time library.
+
+## Installation
 
 ```shell
 npm i date-and-time
 ```
 
-- ESModules:
+- ES Modules:
 
 ```typescript
 import { format } from 'date-and-time';
@@ -1315,6 +1319,6 @@ isSameDay(date1, date3);    // => false
 
 </details>
 
-## License
+## Contributing
 
-MIT
+Contributions are welcome! Please feel free to submit a Pull Request.
