@@ -46,7 +46,7 @@ Version `4.x` has been completely rewritten in TypeScript and some features from
 - Tree shaking is now supported
 - Supports `ES2021` and no longer supports older browsers
 
-For details, please refer to [MIGRATION.md](https://github.com/knowledgecode/date-and-time/blob/master/docs/MIGRATION.md).
+For details, please refer to [migration.md](https://github.com/knowledgecode/date-and-time/blob/master/docs/migration.md).
 
 ## API
 
