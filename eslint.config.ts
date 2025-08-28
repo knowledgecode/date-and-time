@@ -1,16 +1,14 @@
 import tseslint from 'typescript-eslint';
-import globals from 'globals';
 
 export default tseslint.config(
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
   {
+    files: ['**/*.ts'],
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: 'module',
       globals: {
-        ...globals.browser,
-        ...globals.node
       },
       parserOptions: {
         project: './tsconfig.json',

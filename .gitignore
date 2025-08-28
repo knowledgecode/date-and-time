@@ -1,6 +1,7 @@
 .DS_Store
 .claude/
 CLAUDE.md
+cache/
 coverage/
 dist/
 node_modules/
