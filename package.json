@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "The simplest, most intuitive date and time library",
   "keywords": [
     "date",
@@ -45,14 +45,16 @@
   "files": [
     "LICENSE",
     "README.md",
-    "dist/",
-    "docs/"
+    "dist/"
   ],
   "scripts": {
     "build": "rollup -c",
     "build-watch": "rollup -c --watch",
     "build:ts": "rollup -c --config-ts",
     "build:types": "rollup -c --config-types",
+    "docs:build": "vitepress build docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
     "lint": "eslint src",
     "prepublishOnly": "npm run build",
     "test": "vitest run",
@@ -65,7 +67,7 @@
   "engines": {
     "node": ">=18"
   },
-  "homepage": "https://github.com/knowledgecode/date-and-time#readme",
+  "homepage": "https://knowledgecode.github.io/date-and-time/",
   "bugs": {
     "url": "https://github.com/knowledgecode/date-and-time/issues"
   },
@@ -77,18 +79,18 @@
   "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
-    "@types/node": "^24.2.1",
+    "@types/node": "^24.3.0",
     "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "^9.33.0",
+    "eslint": "^9.34.0",
     "glob": "^11.0.3",
-    "globals": "^16.3.0",
     "jiti": "^2.5.1",
     "prettier": "^3.6.2",
-    "rollup": "^4.46.2",
-    "rollup-plugin-dts": "^6.2.1",
+    "rollup": "^4.49.0",
+    "rollup-plugin-dts": "^6.2.3",
     "rollup-plugin-esbuild": "^6.2.1",
-    "tsx": "^4.20.4",
-    "typescript-eslint": "^8.39.1",
+    "tsx": "^4.20.5",
+    "typescript-eslint": "^8.41.0",
+    "vitepress": "^1.6.4",
     "vitest": "^3.2.4"
   }
 }
