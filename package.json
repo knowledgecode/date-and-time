@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "The simplest, most intuitive date and time library",
   "keywords": [
     "date",
@@ -85,12 +85,15 @@
     "glob": "^11.0.3",
     "jiti": "^2.5.1",
     "prettier": "^3.6.2",
-    "rollup": "^4.49.0",
+    "rollup": "^4.50.0",
     "rollup-plugin-dts": "^6.2.3",
     "rollup-plugin-esbuild": "^6.2.1",
     "tsx": "^4.20.5",
     "typescript-eslint": "^8.41.0",
     "vitepress": "^1.6.4",
     "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0"
   }
 }
