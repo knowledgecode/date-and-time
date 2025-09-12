@@ -23,26 +23,26 @@ features:
   - icon: ⚡
     title: Modern & Fast
     details: Written in TypeScript with ES2021 target. Tree-shakable modules for optimal bundle size.
-  
+
   - icon: 🌍
     title: Internationalization
     details: Support for 40+ locales and multiple calendar systems. Arabic, Bengali, Myanmar numerals.
-  
+
   - icon: 🕐
     title: Timezone Support
     details: Complete timezone handling with IANA timezone database built-in.
-  
+
   - icon: 🎯
     title: Type Safe
     details: Full TypeScript support with comprehensive type definitions and IntelliSense.
-  
+
   - icon: 📦
     title: Tree Shakable
     details: Import only what you need. Optimized for modern bundlers with sideEffects false.
-  
+
   - icon: 🧩
     title: Plugin System
-    details: Extensible with microsecond/nanosecond precision and custom formatting options.
+    details: Extensible plugin system allows you to extend formatters and parsers.
 ---
 
 ## Quick Example
