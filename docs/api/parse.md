@@ -383,6 +383,10 @@ parse('2025-08-23T14:30:45Z', 'YYYY-MM-DD[T]HH:mm:ss[Z]');
 
 parse('Report generated on 2025/08/23 at 14:30', '[Report generated on] YYYY/MM/DD [at] HH:mm');
 // => Fri Aug 23 2025 14:30:00 GMT+0900
+
+// Escape square brackets to parse them from input string
+parse('[2025-08-23 14:30:45]', '\\[YYYY-MM-DD HH:mm:ss\\]');
+// => Fri Aug 23 2025 14:30:45 GMT+0900
 ```
 
 ### Wildcard Parsing

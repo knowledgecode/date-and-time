@@ -274,6 +274,10 @@ format(date, 'YYYY-MM-DD[T]HH:mm:ss[Z]');
 
 format(date, '[Report generated on] YYYY/MM/DD [at] HH:mm');
 // => Report generated on 2025/08/23 at 14:30
+
+// Escape square brackets to output them literally
+format(date, '\\[YYYY-MM-DD HH:mm:ss\\]');
+// => [2025-08-23 14:30:45]
 ```
 
 ### Complex Localized Formatting

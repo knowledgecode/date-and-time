@@ -58,7 +58,7 @@
 
 - **Timezone Support** - Comprehensive timezone data from timezonedb
 - **Locale Support** - 40+ languages with native formatting
-- **Plugin System** - Extensible with microsecond/nanosecond precision
+- **Plugin System** - Extend formatters and parsers
 - **Duration Objects** - Rich time difference calculations
 
 ## Version 4.x Highlights
