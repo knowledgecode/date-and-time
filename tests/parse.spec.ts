@@ -489,6 +489,11 @@ test('                 ', () => {
   expect(Number.isNaN(parse('20151231235959900', '                 ').getTime())).toBe(true);
 });
 
+test('\\[YYYY-MM-DD HH:mm:ss\\]', () => {
+  const now = new Date(2025, 7, 23, 14, 30, 45);
+  expect(parse('[2025-08-23 14:30:45]', '\\[YYYY-MM-DD HH:mm:ss\\]')).toEqual(now);
+});
+
 describe('options', () => {
   test('hour12: h11', () => {
     expect(parse('2000-01-01 00:00 AM', 'YYYY-MM-DD hh:mm A', { hour12: 'h11' })).toEqual(new Date(2000, 0, 1, 0, 0));

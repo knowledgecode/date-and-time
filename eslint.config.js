@@ -1,14 +1,17 @@
+// @ts-check
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
+export default defineConfig(
+  tseslint.configs.strict,
+  tseslint.configs.stylistic,
   {
     files: ['**/*.ts'],
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: 'module',
       globals: {
+        process: true
       },
       parserOptions: {
         project: './tsconfig.json',

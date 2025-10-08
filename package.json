@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.0.5",
+  "version": "4.1.0",
   "description": "The simplest, most intuitive date and time library",
   "keywords": [
     "date",
@@ -79,17 +79,16 @@
   "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.7.0",
     "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "^9.35.0",
+    "eslint": "^9.37.0",
     "glob": "^11.0.3",
-    "jiti": "^2.5.1",
     "prettier": "^3.6.2",
-    "rollup": "^4.50.1",
+    "rollup": "^4.52.4",
     "rollup-plugin-dts": "^6.2.3",
     "rollup-plugin-esbuild": "^6.2.1",
-    "tsx": "^4.20.5",
-    "typescript-eslint": "^8.43.0",
+    "tsx": "^4.20.6",
+    "typescript-eslint": "^8.46.0",
     "vitepress": "^1.6.4",
     "vitest": "^3.2.4"
   },

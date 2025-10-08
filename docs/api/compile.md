@@ -76,11 +76,11 @@ dates.forEach(date => {
 import { compile, format } from 'date-and-time';
 
 class Logger {
-  private timestampPattern = compile('YYYY-MM-DD HH:mm:ss.SSS');
-  
+  private timestampPattern = compile('\\[YYYY-MM-DD HH:mm:ss.SSS\\]');
+
   log(level: string, message: string) {
     const timestamp = format(new Date(), this.timestampPattern);
-    console.log(`[${timestamp}] ${level.toUpperCase()}: ${message}`);
+    console.log(`${timestamp} ${level.toUpperCase()}: ${message}`);
   }
 }
 
