@@ -170,3 +170,8 @@ test('[empty]', () => {
   const obj = [''] as string[];
   expect(compile('')).toEqual(obj);
 });
+
+test('\\[YYYY-MM-DD\\]', () => {
+  const obj = ['\\[YYYY-MM-DD\\]', '[', 'YYYY', '-', 'MM', '-', 'DD', ']'];
+  expect(compile('\\[YYYY-MM-DD\\]')).toEqual(obj);
+});
