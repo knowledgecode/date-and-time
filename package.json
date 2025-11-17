@@ -25,10 +25,12 @@
       "require": "./dist/plugin.cjs"
     },
     "./locales/*": {
+      "types": "./dist/locales/*.d.ts",
       "import": "./dist/locales/*.js",
       "require": "./dist/locales/*.cjs"
     },
     "./numerals/*": {
+      "types": "./dist/numerals/*.d.ts",
       "import": "./dist/numerals/*.js",
       "require": "./dist/numerals/*.cjs"
     },
@@ -38,6 +40,7 @@
       "require": "./dist/plugins/*.cjs"
     },
     "./timezones/*": {
+      "types": "./dist/timezones/*.d.ts",
       "import": "./dist/timezones/*.js",
       "require": "./dist/timezones/*.cjs"
     }
