@@ -40,7 +40,12 @@ const types = () => {
   return [
     config('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
-    globSync('src/plugins/**/*.ts').map(input => config(input, 'dist/plugins'))
+    globSync('src/plugins/**/*.ts').map(input => config(input, 'dist/plugins')),
+    globSync('src/locales/**/*.ts').map(input => config(input, 'dist/locales')),
+    globSync('src/numerals/**/*.ts').map(input => config(input, 'dist/numerals')),
+    config(Object.fromEntries(
+      globSync('src/timezones/**/*.ts').map(input => [input.replace(/(^src\/|\.ts$)/g, ''), input])
+    ), 'dist')
   ].flat();
 };
 
