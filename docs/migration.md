@@ -37,7 +37,7 @@ format(new Date(), 'ddd, MMM DD YYYY hh:mm A [GMT]Z', { timeZone: 'UTC' });
 // => Fri, Jan 02 2015 07:14 AM GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `formatTZ` function has been deprecated. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
+Additionally, since the `timezone` plugin has been integrated into the main library, the `formatTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
 
 ```typescript
 import { format } from 'date-and-time';
@@ -58,7 +58,7 @@ parse('11:14:05 PM', 'h:mm:ss A', { timeZone: 'UTC' });
 // => Jan 02 1970 23:14:05 GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `parseTZ` function has been deprecated. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
+Additionally, since the `timezone` plugin has been integrated into the main library, the `parseTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
 
 ```typescript
 import { parse } from 'date-and-time';
@@ -99,7 +99,7 @@ Additionally, the `PreparseResult` object returned by the `preparse` function ha
 
 ### isValid
 
-The following usage that takes `PreparseResult` as an argument has been deprecated.
+The following usage that takes `PreparseResult` as an argument is now obsolete.
 
 ```typescript
 import { isValid, preparse } from 'date-and-time';
@@ -114,7 +114,7 @@ Other changes are the same as for the `parse` function.
 
 ### transform
 
-The fourth argument has been changed from `boolean` to `FormatterOptions`. With `FormatterOptions`, you can now specify timezone and locale settings. Additionally, `ParserOptions` has been added as a parameter before `FormatterOptions`. Since the `timezone` plugin has been integrated into the main library, the `transformTZ` function has been deprecated.
+The fourth argument has been changed from `boolean` to `FormatterOptions`. With `FormatterOptions`, you can now specify timezone and locale settings. Additionally, `ParserOptions` has been added as a parameter before `FormatterOptions`. Since the `timezone` plugin has been integrated into the main library, the `transformTZ` function is now obsolete.
 
 ```typescript
 import { transform } from 'date-and-time';
@@ -147,7 +147,7 @@ addYears(now, 1, 'UTC');
 // => Mar 11 2025 01:00:00 GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `addYearsTZ` function has been deprecated. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
+Additionally, since the `timezone` plugin has been integrated into the main library, the `addYearsTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
 
 ```typescript
 import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
@@ -187,7 +187,7 @@ subtract(yesterday, today).toMilliseconds().value; // => 86400000
 
 ### timeSpan
 
-The `timespan` plugin has been deprecated as it has been integrated into the main library's `subtract` function. Please note that the argument order of the `subtract` function has changed. You can achieve the same output as before as follows:
+The `timespan` plugin is now obsolete as it has been integrated into the main library's `subtract` function. Please note that the argument order of the `subtract` function has changed. You can achieve the same output as before as follows:
 
 ```typescript
 import { subtract } from 'date-and-time';
@@ -219,7 +219,7 @@ format(new Date(), 'dddd, D [de] MMMM [de] YYYY, h:mm aa [GMT]ZZ', { locale: es 
 
 ## Plugins
 
-The following plugins have been deprecated as they have been integrated into the main library:
+The following plugins are now obsolete as they have been integrated into the main library:
 
 - `meridiem`
 - `timespan`
