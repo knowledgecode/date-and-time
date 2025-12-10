@@ -8,7 +8,7 @@
 
 ```typescript
 import { format } from 'date-and-time';
-import foobar from 'date-and-time/plugins/foobar';
+import { formatter as foobar } from 'date-and-time/plugins/foobar';
 
 format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar] });
 ```
@@ -19,7 +19,7 @@ format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar] });
 const { format } = require('date-and-time');
 const foobar = require('date-and-time/plugins/foobar');
 
-format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar] });
+format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar.formatter] });
 ```
 
 ## Plugin List
@@ -39,7 +39,7 @@ You can add tokens to the `Parser` to read day of the week. Since day of the wee
 
 ```typescript
 import { parse } from 'date-and-time';
-import day_of_week from 'date-and-time/plugins/day_of_week';
+import { parser as day_of_week } from 'date-and-time/plugins/day_of_week';
 
 parse(
   'Thursday, March 05, 2020', 'dddd, MMMM, D YYYY',
@@ -67,7 +67,7 @@ You can add tokens to the `Parser` to read microseconds. Since the precision of 
 
 ```typescript
 import { parse } from 'date-and-time';
-import microsecond from 'date-and-time/plugins/microsecond';
+import { parser as microsecond } from 'date-and-time/plugins/microsecond';
 
 parse('12:34:56.123456', 'HH:mm:ss.SSSSSS', { plugins: [microsecond] });
 parse('12:34:56 123.456', 'HH:mm:ss SSS.fff', { plugins: [microsecond] });
@@ -93,8 +93,8 @@ You can add tokens to the `Parser` to read nanoseconds. Since the precision of J
 
 ```typescript
 import { parse } from 'date-and-time';
-import microsecond from 'date-and-time/plugins/microsecond';
-import nanosecond from 'date-and-time/plugins/nanosecond';
+import { parser as microsecond } from 'date-and-time/plugins/microsecond';
+import { parser as nanosecond } from 'date-and-time/plugins/nanosecond';
 
 parse(
   '12:34:56.123456789',
@@ -124,7 +124,7 @@ You can add tokens to the `Formatter` and `Parser` to output or read ordinal rep
 
 ```typescript
 import { format } from 'date-and-time';
-import ordinal from 'date-and-time/plugins/ordinal';
+import { formatter as ordinal } from 'date-and-time/plugins/ordinal';
 
 format(new Date(), 'MMM DDD YYYY', { plugins: [ordinal] });
 // => Jan 1st 2019
@@ -138,7 +138,7 @@ format(new Date(), 'MMM DDD YYYY', { plugins: [ordinal] });
 
 ```typescript
 import { parse } from 'date-and-time';
-import ordinal from 'date-and-time/plugins/ordinal';
+import { parser as ordinal } from 'date-and-time/plugins/ordinal';
 
 parse('Jan 1st 2019', 'MMM DDD YYYY', { plugins: [ordinal] });
 ```
@@ -161,7 +161,7 @@ You can add tokens to the `Parser` to read 2-digit years. This token identifies 
 
 ```typescript
 import { parse } from 'date-and-time';
-import two_digit_year from 'date-and-time/plugins/two-digit-year';
+import { parser as two_digit_year } from 'date-and-time/plugins/two-digit-year';
 
 parse('Dec 25 69', 'MMM DD YY', { plugins: [two_digit_year] });
 // => Dec 25 2069
@@ -185,7 +185,7 @@ You can add tokens to the `Formatter` to output timezone names. These timezone n
 
 ```typescript
 import { parse } from 'date-and-time';
-import zonename from 'date-and-time/plugins/zonename';
+import { formatter as zonename } from 'date-and-time/plugins/zonename';
 import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 
 format(
