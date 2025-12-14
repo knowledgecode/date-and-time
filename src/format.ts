@@ -19,17 +19,17 @@ const comment = /^\[(.*)\]$/;
 export function format(dateObj: Date, arg: string | CompiledObject, options?: FormatterOptions) {
   const pattern = (typeof arg === 'string' ? compile(arg) : arg).slice(1);
   const timeZone = isTimeZone(options?.timeZone) || isUTC(options?.timeZone) ? options.timeZone : undefined;
-  const zoneName = typeof timeZone === 'string' ? timeZone : timeZone?.zone_name || '';
+  const zoneName = typeof timeZone === 'string' ? timeZone : timeZone?.zone_name ?? '';
   const dateTime = zoneName ? new DateTime(dateObj, zoneName) : dateObj;
   const formatterOptions = {
-    hour12: options?.hour12 || 'h12',
-    hour24: options?.hour24 || 'h23',
-    numeral: options?.numeral || latn,
-    calendar: options?.calendar || 'gregory',
+    hour12: options?.hour12 ?? 'h12',
+    hour24: options?.hour24 ?? 'h23',
+    numeral: options?.numeral ?? latn,
+    calendar: options?.calendar ?? 'gregory',
     timeZone,
-    locale: options?.locale || en
+    locale: options?.locale ?? en
   };
-  const formatters = [...options?.plugins || [], defaultFormatter];
+  const formatters = [...options?.plugins ?? [], defaultFormatter];
   const encode = formatterOptions.numeral.encode;
   const resolveToken = (token: string, compiledObj: CompiledObject) => {
     for (const formatter of formatters) {

@@ -2,7 +2,7 @@
  * @file Azerbaijani (az)
  */
 
-import type { Locale, LocaleOptions } from '../locale.ts';
+import type { Locale, LocaleOptions } from '@/locale.ts';
 
 const list = {
   MMMM: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avqust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'],

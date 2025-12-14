@@ -13,7 +13,7 @@ export interface DateTimeParts {
 }
 
 export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
-  if (zoneName?.toUpperCase() === 'UTC') {
+  if (zoneName.toUpperCase() === 'UTC') {
     return {
       weekday: dateObj.getUTCDay(),
       year: dateObj.getUTCFullYear(),
@@ -76,43 +76,43 @@ export interface DateLike {
   /**
    * Returns the year of the date.
    */
-  getFullYear(): number,
+  getFullYear(): number;
   /**
    * Returns the month of the date (0-11).
    */
-  getMonth(): number,
+  getMonth(): number;
   /**
    * Returns the day of the month (1-31).
    */
-  getDate(): number,
+  getDate(): number;
   /**
    * Returns the hours of the date (0-23).
    */
-  getHours(): number,
+  getHours(): number;
   /**
    * Returns the minutes of the date (0-59).
    */
-  getMinutes(): number,
+  getMinutes(): number;
   /**
    * Returns the seconds of the date (0-59).
    */
-  getSeconds(): number,
+  getSeconds(): number;
   /**
    * Returns the milliseconds of the date (0-999).
    */
-  getMilliseconds(): number,
+  getMilliseconds(): number;
   /**
-   * Returns the day of the week (0-6, where 0 is Sunday).
+   * Returns the day of the week (0-6; where 0 is Sunday).
    */
-  getDay(): number,
+  getDay(): number;
   /**
-   * Returns the time value in milliseconds since the Unix epoch (January 1, 1970).
+   * Returns the time value in milliseconds since the Unix epoch (January 1; 1970).
    */
-  getTime(): number,
+  getTime(): number;
   /**
    * Returns the timezone offset in minutes from UTC.
    */
-  getTimezoneOffset(): number
+  getTimezoneOffset(): number;
 }
 
 export class DateTime implements DateLike {

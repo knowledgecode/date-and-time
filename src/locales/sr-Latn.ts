@@ -2,7 +2,7 @@
  * @file Serbian (sr-Latn)
  */
 
-import type { Locale, LocaleOptions } from '../locale.ts';
+import type { Locale, LocaleOptions } from '@/locale.ts';
 
 const list = {
   MMMM: ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'],

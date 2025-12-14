@@ -2,7 +2,7 @@
  * @file German (de)
  */
 
-import type { Locale, LocaleOptions } from '../locale.ts';
+import type { Locale, LocaleOptions } from '@/locale.ts';
 
 const list = {
   MMMM: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],

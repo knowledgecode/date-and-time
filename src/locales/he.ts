@@ -2,7 +2,7 @@
  * @file Hebrew (he)
  */
 
-import type { Locale, LocaleOptions } from '../locale.ts';
+import type { Locale, LocaleOptions } from '@/locale.ts';
 
 const list = {
   MMMM: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],

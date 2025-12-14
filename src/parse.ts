@@ -1,4 +1,4 @@
-import { isTimeZone, isUTC, getTimezoneOffset } from './timezone.ts';
+import { isTimeZone, isUTC, createTimezoneDate } from './timezone.ts';
 import { validatePreparseResult } from './isValid.ts';
 import { preparse } from './preparse.ts';
 import type { CompiledObject } from './compile.ts';
@@ -19,23 +19,20 @@ export function parse(dateString: string, arg: string | CompiledObject, options?
   }
   // Normalize date components (year, month, day, hour, minute, second, millisecond)
   pr.Y = pr.Y ? pr.Y - (options?.calendar === 'buddhist' ? 543 : 0) : 1970;
-  pr.M = (pr.M || 1) - (pr.Y < 100 ? 1900 * 12 + 1 : 1);
-  pr.D ||= 1;
-  pr.H = ((pr.H || 0) % 24) || ((pr.A || 0) * 12 + (pr.h || 0) % 12);
-  pr.m ||= 0;
-  pr.s ||= 0;
-  pr.S ||= 0;
+  pr.M = (pr.M ?? 1) - (pr.Y < 100 ? 1900 * 12 + 1 : 1);
+  pr.D ??= 1;
+  pr.H = ((pr.H ?? 0) % 24) || ((pr.A ?? 0) * 12 + (pr.h ?? 0) % 12);
+  pr.m ??= 0;
+  pr.s ??= 0;
+  pr.S ??= 0;
 
   if (isTimeZone(options?.timeZone)) {
     // Handle timezone-specific calculation
-    const utcTime = Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S);
-    const offset = getTimezoneOffset(utcTime, options.timeZone);
-
-    return new Date(utcTime - offset * 1000);
+    return createTimezoneDate(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S), options.timeZone);
   }
   if (isUTC(options?.timeZone) || 'Z' in pr) {
     // Handle UTC calculation or when 'Z' token is present
-    return new Date(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m + (pr.Z || 0), pr.s, pr.S));
+    return new Date(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m + (pr.Z ?? 0), pr.s, pr.S));
   }
   // Handle local timezone calculation
   return new Date(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S);

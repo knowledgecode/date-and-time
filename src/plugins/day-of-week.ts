@@ -1,4 +1,4 @@
-import { ParserPlugin, ParserPluginOptions, CompiledObject, find } from '../plugin.ts';
+import { ParserPlugin, ParserPluginOptions, CompiledObject, find } from '@/plugin.ts';
 
 class Parser extends ParserPlugin {
   dddd (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {

@@ -20,6 +20,6 @@ const REGEXP = /\[(?:[^[\]]|\[[^[\]]*])*]|([A-Za-z])\1*|\.{3}|./g;
  *          followed by tokenized format components
  */
 export const compile = (formatString: string): CompiledObject => {
-  const array = formatString.replace(LBRACKET, '\uE000').replace(RBRACKET, '\uE001').match(REGEXP) || [];
+  const array = formatString.replace(LBRACKET, '\uE000').replace(RBRACKET, '\uE001').match(REGEXP) ?? [];
   return [formatString, ...array.map(token => token.replace(PUA_LBRACKET, '[').replace(PUA_RBRACKET, ']'))];
 };

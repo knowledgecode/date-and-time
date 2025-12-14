@@ -1,13 +1,13 @@
-import timeZoneNames from '../zonenames.ts';
-import { FormatterPlugin } from '../plugin.ts';
-import type { FormatterPluginOptions, DateLike } from '../plugin.ts';
+import timeZoneNames from '@/zonenames.ts';
+import { FormatterPlugin } from '@/plugin.ts';
+import type { FormatterPluginOptions, DateLike } from '@/plugin.ts';
 
 const getLongTimezoneName = (time: number, zoneName?: string) => {
   const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: zoneName || undefined, timeZoneName: 'long'
+    timeZone: zoneName ?? undefined, timeZoneName: 'long'
   }).formatToParts(time);
 
-  return parts.find(part => part.type === 'timeZoneName')?.value.replace(/^GMT[+-].+$/, '') || '';
+  return parts.find(part => part.type === 'timeZoneName')?.value.replace(/^GMT[+-].+$/, '') ?? '';
 };
 
 const getShortTimezoneName = (time: number, zoneName?: string) => {

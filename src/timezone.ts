@@ -1,8 +1,8 @@
 import { getDateTimeFormat } from './dtf.ts';
 
 export interface TimeZone {
-  zone_name: string,
-  gmt_offset: number[]
+  zone_name: string;
+  gmt_offset: number[];
 }
 
 export const isTimeZone = (timeZone?: TimeZone | 'UTC'): timeZone is TimeZone => {
@@ -13,11 +13,12 @@ export const isUTC = (timeZone?: TimeZone | 'UTC'): timeZone is 'UTC' => {
   return timeZone === 'UTC';
 };
 
-export const getTimezoneOffset = (utcTime: number, timeZone: TimeZone): number => {
+const getTimezoneOffset = (utcTime: number, timeZone: TimeZone): number => {
   const utc = getDateTimeFormat('UTC');
   const tz = getDateTimeFormat(timeZone.zone_name);
   const offset = timeZone.gmt_offset;
 
+  // Try to find the correct offset by checking the current and previous days.
   for (let i = 0; i < 2; i++) {
     const targetString = utc.format(utcTime - i * 86400 * 1000);
 
@@ -29,3 +30,5 @@ export const getTimezoneOffset = (utcTime: number, timeZone: TimeZone): number =
   }
   return NaN;
 };
+
+export const createTimezoneDate = (utcTime: number, timeZone: TimeZone) => new Date(utcTime - getTimezoneOffset(utcTime, timeZone) * 1000);

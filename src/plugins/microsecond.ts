@@ -1,4 +1,4 @@
-import { ParserPlugin, exec } from '../plugin.ts';
+import { ParserPlugin, exec } from '@/plugin.ts';
 
 class Parser extends ParserPlugin {
   SSSS (str: string) {

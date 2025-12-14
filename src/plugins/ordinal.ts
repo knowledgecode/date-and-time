@@ -1,20 +1,20 @@
-import { FormatterPlugin, ParserPlugin, ParserPluginOptions, exec } from '../plugin.ts';
-import type { DateLike } from '../plugin.ts';
+import { FormatterPlugin, ParserPlugin, ParserPluginOptions, exec } from '@/plugin.ts';
+import type { DateLike } from '@/plugin.ts';
 
 class Formatter extends FormatterPlugin {
   DDD (d: DateLike) {
-    const day = d.getDate();
+    const day = String(d.getDate());
 
     switch (day) {
-    case 1:
-    case 21:
-    case 31:
+    case '1':
+    case '21':
+    case '31':
       return `${day}st`;
-    case 2:
-    case 22:
+    case '2':
+    case '22':
       return `${day}nd`;
-    case 3:
-    case 23:
+    case '3':
+    case '23':
       return `${day}rd`;
     default:
       return `${day}th`;

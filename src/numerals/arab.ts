@@ -1,6 +1,6 @@
 const numeral = '٠١٢٣٤٥٦٧٨٩';
 const array = numeral.split('');
-const map = Object.fromEntries(array.map((char, index) => [char, '' + index]));
+const map = Object.fromEntries(array.map((char, index) => [char, String(index)]));
 
 export default {
   encode: (str: string) => str.replace(/\d/g, char => array[+char]),
