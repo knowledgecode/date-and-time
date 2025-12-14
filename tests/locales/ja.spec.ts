@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { format, parse } from '../../src/index.ts';
-import { parser } from '../../src/plugins/day-of-week.ts';
+import { format, parse } from '@/index.ts';
+import { parser } from '@/plugins/day-of-week.ts';
 
-import lo from '../../src/locales/ja.ts';
+import lo from '@/locales/ja.ts';
 
 const locale = {
   MMMM: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],

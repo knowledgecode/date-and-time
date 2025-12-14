@@ -1,8 +1,8 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { format } from '../../src/index.ts';
-import { formatter as zonename } from '../../src/plugins/zonename.ts';
-import Los_Angeles from '../../src/timezones/America/Los_Angeles.ts';
-import Tokyo from '../../src/timezones/Asia/Tokyo.ts';
+import { format } from '@/index.ts';
+import { formatter as zonename } from '@/plugins/zonename.ts';
+import Los_Angeles from '@/timezones/America/Los_Angeles.ts';
+import Tokyo from '@/timezones/Asia/Tokyo.ts';
 
 beforeAll(() => (process.env.TZ = 'UTC'));
 

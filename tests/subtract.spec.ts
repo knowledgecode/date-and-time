@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { subtract } from '../src/index.ts';
+import { subtract } from '@/index.ts';
 
 describe('subtraction', () => {
   test('One year is 365 days', () => {

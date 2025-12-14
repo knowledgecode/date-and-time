@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import numeral from '../../src/numerals/latn.ts';
+import numeral from '@/numerals/latn.ts';
 
 describe('latn', () => {
   test('encode', () => {

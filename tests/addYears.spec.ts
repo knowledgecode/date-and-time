@@ -1,6 +1,6 @@
 import { expect, test, describe, beforeAll } from 'vitest';
-import { addYears } from '../src/index.ts';
-import Los_Angeles from '../src/timezones/America/Los_Angeles.ts';
+import { addYears } from '@/index.ts';
+import Los_Angeles from '@/timezones/America/Los_Angeles.ts';
 
 describe('Local Time', () => {
   beforeAll(() => (process.env.TZ = 'America/Los_Angeles'));

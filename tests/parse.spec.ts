@@ -1,10 +1,10 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { parse } from '../src/index.ts';
-import { parser } from '../src/plugins/day-of-week.ts';
-import Los_Angeles from '../src/timezones/America/Los_Angeles.ts';
-import Tokyo from '../src/timezones/Asia/Tokyo.ts';
-import Adelaide from '../src/timezones/Australia/Adelaide.ts';
-import Apia from '../src/timezones/Pacific/Apia.ts';
+import { parse } from '@/index.ts';
+import { parser } from '@/plugins/day-of-week.ts';
+import Los_Angeles from '@/timezones/America/Los_Angeles.ts';
+import Tokyo from '@/timezones/Asia/Tokyo.ts';
+import Adelaide from '@/timezones/Australia/Adelaide.ts';
+import Apia from '@/timezones/Pacific/Apia.ts';
 
 test('YYYY', () => {
   expect(Number.isNaN(parse('0000', 'YYYY').getTime())).toBe(true);
