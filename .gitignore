@@ -1,6 +1,5 @@
 .DS_Store
-.claude/
-CLAUDE.md
+.vscode/
 cache/
 coverage/
 dist/
