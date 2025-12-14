@@ -34,7 +34,7 @@ format(now, 'ddd, MMM DD YYYY');
 // => Sat, Aug 23 2025
 
 format(now, 'hh:mm A [GMT]Z');
-// => 02:30 PM GMT+0900
+// => 02:30 PM GMT-0700
 ```
 
 ## Format Tokens
@@ -255,6 +255,35 @@ format(midnight, 'H:mm', { hour24: 'h24' });
 // => 24:30
 ```
 
+### plugins
+
+**Type**: `FormatterPlugin[]`  
+**Default**: `undefined`
+
+Enables additional format tokens provided by plugins. Plugins extend the formatter with special tokens that are not included in the core library.
+
+```typescript
+import { format } from 'date-and-time';
+import { formatter as ordinal } from 'date-and-time/plugins/ordinal';
+import { formatter as zonename } from 'date-and-time/plugins/zonename';
+
+const date = new Date();
+
+// Use ordinal plugin
+format(date, 'MMMM DDD, YYYY', { plugins: [ordinal] });
+// => August 23rd, 2025
+
+// Use zonename plugin
+format(date, 'YYYY-MM-DD HH:mm z', { plugins: [zonename] });
+// => 2025-08-23 14:30 PDT
+
+// Use multiple plugins together
+format(date, 'MMMM DDD, YYYY h:mm A zz', { plugins: [ordinal, zonename] });
+// => August 23rd, 2025 2:30 PM Pacific Daylight Time
+```
+
+For a complete list of available plugins, see [Plugins](../plugins).
+
 ## Advanced Usage
 
 ### Comments in Format Strings
@@ -290,9 +319,9 @@ import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 const date = new Date();
 
 // Japanese with timezone
-format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', { 
-  timeZone: Tokyo, 
-  locale: ja 
+format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
+  timeZone: Tokyo,
+  locale: ja
 });
 // => 2025年8月23日土曜日 午後11:30:45 GMT+0900
 ```

@@ -27,24 +27,24 @@ import { parse } from 'date-and-time';
 
 // Basic date parsing
 parse('2025-08-23', 'YYYY-MM-DD');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 
-parse('08/23/2025', 'MM/DD/YYYY');  
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+parse('08/23/2025', 'MM/DD/YYYY');
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 
 parse('23.08.2025', 'DD.MM.YYYY');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 
 // Time parsing
 parse('14:30:45', 'HH:mm:ss');
-// => Thu Jan 01 1970 14:30:45 GMT+0900
+// => Thu Jan 01 1970 14:30:45 GMT-0800
 
 parse('2:30:45 PM', 'h:mm:ss A');
-// => Thu Jan 01 1970 14:30:45 GMT+0900
+// => Thu Jan 01 1970 14:30:45 GMT-0800
 
 // Combined date and time
 parse('2025-08-23 14:30:45', 'YYYY-MM-DD HH:mm:ss');
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Fri Aug 23 2025 14:30:45 GMT-0700
 ```
 
 ## Format Tokens
@@ -133,7 +133,7 @@ import es from 'date-and-time/locales/es';
 
 // Spanish parsing
 parse('23 de agosto de 2025', 'D [de] MMMM [de] YYYY', { locale: es });
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 ```
 
 For a complete list of all supported locales with import examples, see [Supported Locales](../locales).
@@ -186,11 +186,11 @@ import beng from 'date-and-time/numerals/beng';
 
 // Arabic-Indic numerals
 parse('٠٨/٠٧/٢٠٢٥', 'DD/MM/YYYY', { numeral: arab });
-// => Fri Aug 08 2025 00:00:00 GMT+0900
+// => Fri Aug 08 2025 00:00:00 GMT-0700
 
-// Bengali numerals  
+// Bengali numerals
 parse('০৮/০৭/২০২৫', 'DD/MM/YYYY', { numeral: beng });
-// => Fri Aug 08 2025 00:00:00 GMT+0900
+// => Fri Aug 08 2025 00:00:00 GMT-0700
 ```
 
 **Available numeral systems:**
@@ -213,11 +213,11 @@ import { parse } from 'date-and-time';
 
 // Gregorian calendar (default)
 parse('August 23, 2025', 'MMMM D, YYYY');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 
 // Buddhist calendar (543 years behind)
 parse('August 23, 2568', 'MMMM D, YYYY', { calendar: 'buddhist' });
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 ```
 
 ### ignoreCase
@@ -236,10 +236,10 @@ parse('august 23, 2025', 'MMMM D, YYYY');
 
 // Case-insensitive
 parse('AUGUST 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 
 parse('fri aug 23 2025', 'ddd MMM DD YYYY', { ignoreCase: true });
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 ```
 
 ### hour12
@@ -254,11 +254,11 @@ import { parse } from 'date-and-time';
 
 // h12 format - midnight is 12 AM
 parse('12:30 AM', 'h:mm A', { hour12: 'h12' });
-// => Thu Jan 01 1970 00:30:00 GMT+0900
+// => Thu Jan 01 1970 00:30:00 GMT-0800
 
 // h11 format - midnight is 0 AM
 parse('0:30 AM', 'h:mm A', { hour12: 'h11' });
-// => Thu Jan 01 1970 00:30:00 GMT+0900
+// => Thu Jan 01 1970 00:30:00 GMT-0800
 ```
 
 ### hour24
@@ -273,12 +273,46 @@ import { parse } from 'date-and-time';
 
 // h23 format - midnight is 0
 parse('0:30', 'H:mm', { hour24: 'h23' });
-// => Thu Jan 01 1970 00:30:00 GMT+0900
+// => Thu Jan 01 1970 00:30:00 GMT-0800
 
 // h24 format - midnight is 24 (of previous day)
 parse('24:30', 'H:mm', { hour24: 'h24' });
-// => Thu Jan 01 1970 00:30:00 GMT+0900
+// => Thu Jan 01 1970 00:30:00 GMT-0800
 ```
+
+### plugins
+
+**Type**: `ParserPlugin[]`  
+**Default**: `undefined`
+
+Enables additional parse tokens provided by plugins. Plugins extend the parser with special tokens that are not included in the core library.
+
+```typescript
+import { parse } from 'date-and-time';
+import { parser as ordinal } from 'date-and-time/plugins/ordinal';
+import { parser as two_digit_year } from 'date-and-time/plugins/two-digit-year';
+import { parser as microsecond } from 'date-and-time/plugins/microsecond';
+
+// Use ordinal plugin
+parse('January 1st, 2025', 'MMMM DDD, YYYY', { plugins: [ordinal] });
+// => Wed Jan 01 2025 00:00:00 GMT-0800
+
+// Use two-digit-year plugin
+parse('12/25/99', 'MM/DD/YY', { plugins: [two_digit_year] });
+// => Sat Dec 25 1999 00:00:00 GMT-0800
+
+// Use microsecond plugin
+parse('14:30:45.123456', 'HH:mm:ss.SSSSSS', { plugins: [microsecond] });
+// => Thu Jan 01 1970 14:30:45 GMT-0800
+
+// Use multiple plugins together
+parse('January 1st, 99 14:30:45.123456', 'MMMM DDD, YY HH:mm:ss.SSSSSS', {
+  plugins: [ordinal, two_digit_year, microsecond]
+});
+// => Fri Jan 01 1999 14:30:45 GMT-0800
+```
+
+For a complete list of available plugins, see [Plugins](../plugins).
 
 ## Parsing Behavior and Limitations
 
@@ -291,19 +325,19 @@ import { parse } from 'date-and-time';
 
 // Only time - defaults to Jan 1, 1970
 parse('14:30:45', 'HH:mm:ss');
-// => Thu Jan 01 1970 14:30:45 GMT+0900
+// => Thu Jan 01 1970 14:30:45 GMT-0800
 
 // Only date - defaults to 00:00:00
 parse('2025-08-23', 'YYYY-MM-DD');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Fri Aug 23 2025 00:00:00 GMT-0700
 
 // Year and month - defaults to 1st day
 parse('2025-08', 'YYYY-MM');
-// => Mon Aug 01 2025 00:00:00 GMT+0900
+// => Fri Aug 01 2025 00:00:00 GMT-0700
 
 // Just year - defaults to Jan 1st, 00:00:00
 parse('2025', 'YYYY');
-// => Wed Jan 01 2025 00:00:00 GMT+0900
+// => Wed Jan 01 2025 00:00:00 GMT-0800
 ```
 
 ### Date Range Limitations
@@ -315,7 +349,7 @@ import { parse } from 'date-and-time';
 
 // Valid maximum date
 parse('Dec 31 9999', 'MMM D YYYY');
-// => Dec 31 9999 00:00:00 GMT+0900
+// => Fri Dec 31 9999 00:00:00 GMT-0800
 
 // Invalid - exceeds maximum
 parse('Dec 31 10000', 'MMM D YYYY');
@@ -323,7 +357,7 @@ parse('Dec 31 10000', 'MMM D YYYY');
 
 // Valid minimum date
 parse('Jan 1 0001', 'MMM D YYYY');
-// => Jan 1 0001 00:00:00 GMT+0900
+// => Mon Jan 1 0001 00:00:00 GMT-0800
 
 // Invalid - below minimum
 parse('Jan 1 0000', 'MMM D YYYY');
@@ -339,7 +373,7 @@ import { parse } from 'date-and-time';
 
 // Parsed as local timezone
 parse('14:30:45', 'HH:mm:ss');
-// => Thu Jan 01 1970 14:30:45 GMT+0900
+// => Thu Jan 01 1970 14:30:45 GMT-0800
 
 // Timezone offset in input takes precedence
 parse('14:30:45 +0000', 'HH:mm:ss Z');
@@ -359,11 +393,11 @@ import { parse } from 'date-and-time';
 
 // Without meridiem - ambiguous time
 parse('11:30:45', 'h:mm:ss');
-// => Thu Jan 01 1970 11:30:45 GMT+0900 (assumes AM)
+// => Thu Jan 01 1970 11:30:45 GMT-0800 (assumes AM)
 
 // With meridiem - unambiguous time
 parse('11:30:45 PM', 'h:mm:ss A');
-// => Thu Jan 01 1970 23:30:45 GMT+0900
+// => Thu Jan 01 1970 23:30:45 GMT-0800
 ```
 
 ## Advanced Usage
@@ -376,17 +410,17 @@ Parts of the format string enclosed in square brackets are treated as literal te
 import { parse } from 'date-and-time';
 
 parse('Today is Saturday, August 23, 2025', '[Today is] dddd, MMMM D, YYYY');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 parse('2025-08-23T14:30:45Z', 'YYYY-MM-DD[T]HH:mm:ss[Z]');
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Sat Aug 23 2025 14:30:45 GMT-0700
 
 parse('Report generated on 2025/08/23 at 14:30', '[Report generated on] YYYY/MM/DD [at] HH:mm');
-// => Fri Aug 23 2025 14:30:00 GMT+0900
+// => Sat Aug 23 2025 14:30:00 GMT-0700
 
 // Escape square brackets to parse them from input string
 parse('[2025-08-23 14:30:45]', '\\[YYYY-MM-DD HH:mm:ss\\]');
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Sat Aug 23 2025 14:30:45 GMT-0700
 ```
 
 ### Wildcard Parsing
@@ -402,7 +436,7 @@ parse('2025/08/23 14:30:45', 'YYYY/MM/DD');
 
 // Use whitespace as wildcard (9 spaces to match ' 14:30:45')
 parse('2025/08/23 14:30:45', 'YYYY/MM/DD           ');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
 ### Ellipsis Token
@@ -414,11 +448,11 @@ import { parse } from 'date-and-time';
 
 // Ignore everything after the date
 parse('2025/08/23 14:30:45', 'YYYY/MM/DD...');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 // More complex example
 parse('Log entry: 2025-08-23 some extra data here', '[Log entry: ]YYYY-MM-DD...');
-// => Fri Aug 23 2025 00:00:00 GMT+0900
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
 ### Complex Localized Parsing
@@ -445,13 +479,13 @@ import { parse } from 'date-and-time';
 parse('2025-08-23T14:30:45.123Z', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', { timeZone: 'UTC' });
 // => Fri Aug 23 2025 14:30:45 GMT+0000
 
-// RFC 2822 format  
+// RFC 2822 format
 parse('Sat, 23 Aug 2025 14:30:45 +0900', 'ddd, DD MMM YYYY HH:mm:ss ZZ');
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Sat Aug 23 2025 14:30:45 GMT+0900
 
 // File naming format
 parse('20250823_143045', 'YYYYMMDD_HHmmss');
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Sat Aug 23 2025 14:30:45 GMT-0700
 ```
 
 ## Error Handling
@@ -508,12 +542,12 @@ import { parse } from 'date-and-time';
 
 const logLine = '[2025-08-23 14:30:45.123] Application started';
 const timestamp = parse(logLine, ' YYYY-MM-DD HH:mm:ss.SSS ...');
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Sat Aug 23 2025 14:30:45 GMT-0700
 
 // For different log formats
 const syslogLine = 'Aug 23 14:30:45 server: Process started';
 const syslogTimestamp = parse(syslogLine, 'MMM DD HH:mm:ss...');
-// => Fri Aug 23 1970 14:30:45 GMT+0900
+// => Sat Aug 23 1970 14:30:45 GMT-0700
 ```
 
 ### API Responses
