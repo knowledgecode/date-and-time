@@ -14,17 +14,17 @@ interface DurationFormatter {
   F?: number;
 }
 
-const nanosecondsPart = (parts: DurationFormatter, time: number | DOMHighResTimeStamp) => {
+const nanosecondsPart = (parts: DurationFormatter, time: DOMHighResTimeStamp) => {
   parts.F = Math.trunc(time * 1000000);
   return parts;
 };
 
-const microsecondsPart = (parts: DurationFormatter, time: number | DOMHighResTimeStamp) => {
+const microsecondsPart = (parts: DurationFormatter, time: DOMHighResTimeStamp) => {
   parts.f = Math.trunc(time * 1000);
   return nanosecondsPart(parts, Math.abs(time) * 1000 % 1 / 1000);
 };
 
-const millisecondsPart = (parts: DurationFormatter, time: number | DOMHighResTimeStamp) => {
+const millisecondsPart = (parts: DurationFormatter, time: DOMHighResTimeStamp) => {
   parts.S = Math.trunc(time);
   return microsecondsPart(parts, Math.abs(time) % 1);
 };
@@ -58,7 +58,7 @@ const format = (times: DurationFormatter, formatString: string, numeral: Numeral
   const resolveToken = (token: string) => {
     if (token[0] in times) {
       const time = times[token[0] as keyof DurationFormatter] ?? 0;
-      return numeral.encode(`${sign(time)}${`${Math.abs(time)}`.padStart(token.length, '0')}`);
+      return numeral.encode(`${sign(time)}${String(Math.abs(time)).padStart(token.length, '0')}`);
     }
     return comment.test(token) ? token.replace(comment, '$1') : token;
   };
@@ -116,9 +116,9 @@ export interface DurationDescriptor<T> {
 }
 
 export class Duration {
-  private readonly time: number | DOMHighResTimeStamp;
+  private readonly time: DOMHighResTimeStamp;
 
-  constructor (time: number | DOMHighResTimeStamp) {
+  constructor (time: DOMHighResTimeStamp) {
     this.time = time;
   }
 

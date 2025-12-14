@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { format, parse } from '../../src/index.ts';
-import { parser } from '../../src/plugins/day-of-week.ts';
+import { format, parse } from '@/index.ts';
+import { parser } from '@/plugins/day-of-week.ts';
 
-import lo from '../../src/locales/sr-Cyrl.ts';
+import lo from '@/locales/sr-Cyrl.ts';
 
 const locale = {
   MMMM: ['јануар', 'фебруар', 'март', 'април', 'мај', 'јун', 'јул', 'август', 'септембар', 'октобар', 'новембар', 'децембар'],

@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { parse } from '../../src/index.ts';
-import { parser as nanosecond } from '../../src/plugins/nanosecond.ts';
-import { parser as microsecond } from '../../src/plugins/microsecond.ts';
+import { parse } from '@/index.ts';
+import { parser as nanosecond } from '@/plugins/nanosecond.ts';
+import { parser as microsecond } from '@/plugins/microsecond.ts';
 
 beforeAll(() => (process.env.TZ = 'UTC'));
 

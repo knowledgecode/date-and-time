@@ -25,7 +25,7 @@ export function validatePreparseResult(pr: PreparseResult, options?: ParserOptio
     && pr._match > 0
     && range(y, 1, 9999)
     && range(pr.M, 1, 12)
-    && range(pr.D, 1, getLastDayOfMonth(y, pr.M || 1))
+    && range(pr.D, 1, getLastDayOfMonth(y, pr.M ?? 1))
     && range(pr.H, min24, max24)
     && range(pr.A, 0, 1)
     && range(pr.h, min12, max12)

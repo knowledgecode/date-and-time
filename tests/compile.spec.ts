@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { compile } from '../src/index.ts';
+import { compile } from '@/index.ts';
 
 test('YYYY', () => {
   const obj = ['YYYY', 'YYYY'];

@@ -8,7 +8,7 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import prettier from 'prettier';
-import type { TimeZone } from '../src/timezone.ts';
+import type { TimeZone } from '@/timezone.ts';
 
 const createTimeZones = (csv: string) => {
   const map = new Map<string, TimeZone>();
@@ -16,11 +16,11 @@ const createTimeZones = (csv: string) => {
   csv.split('\n').forEach(line => {
     const [zone_name, , , , gmt_offset] = line.split(',');
 
-    if (zone_name && !/UTC$/.test(zone_name)) {
+    if (zone_name && !zone_name.endsWith('UTC')) {
       const data = map.get(zone_name);
 
       if (data) {
-        if (data.gmt_offset.indexOf(+gmt_offset) < 0) {
+        if (!data.gmt_offset.includes(+gmt_offset)) {
           data.gmt_offset.push(+gmt_offset);
         }
       } else {
@@ -35,7 +35,7 @@ const getPath = (timezone: TimeZone) => {
   const re = /[^/]+$/;
   return {
     dir: join('src', 'timezones', timezone.zone_name.replace(re, '')),
-    name: `${re.exec(timezone.zone_name)?.[0] || ''}.ts`
+    name: `${re.exec(timezone.zone_name)?.[0] ?? ''}.ts`
   };
 };
 
@@ -47,21 +47,19 @@ const format = (timezone: TimeZone) => {
   return prettier.format(code, { parser: 'typescript', singleQuote: true, trailingComma: 'none' });
 };
 
-(async () => {
-  const path = process.argv[2];
+const path = process.argv[2];
 
-  if (!path) {
-    console.error('Please provide a CSV file path');
-    process.exit();
-  }
+if (!path) {
+  console.error('Please provide a CSV file path');
+  process.exit();
+}
 
-  const csv = await readFile(path, 'utf8');
-  const map = createTimeZones(csv);
+const csv = await readFile(path, 'utf8');
+const map = createTimeZones(csv);
 
-  map.forEach(async timezone => {
-    const { dir, name } = getPath(timezone);
+for (const timezone of map.values()) {
+  const { dir, name } = getPath(timezone);
 
-    await mkdir(dir, { recursive: true });
-    await writeFile(join(dir, name), await format(timezone));
-  });
-})();
+  await mkdir(dir, { recursive: true });
+  await writeFile(join(dir, name), await format(timezone));
+}

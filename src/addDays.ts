@@ -1,5 +1,5 @@
 import { toParts, fromParts } from './datetime.ts';
-import { isTimeZone, isUTC, getTimezoneOffset } from './timezone.ts';
+import { isTimeZone, isUTC, createTimezoneDate } from './timezone.ts';
 import type { TimeZone } from './timezone.ts';
 
 /**
@@ -17,10 +17,7 @@ export function addDays(dateObj: Date, days: number, timeZone?: TimeZone | 'UTC'
     parts.day += days;
     parts.timezoneOffset = 0;
 
-    const utcTime = fromParts(parts);
-    const offset = getTimezoneOffset(utcTime, timeZone);
-
-    return new Date(utcTime - offset * 1000);
+    return createTimezoneDate(fromParts(parts), timeZone);
   }
 
   const d = new Date(dateObj.getTime());

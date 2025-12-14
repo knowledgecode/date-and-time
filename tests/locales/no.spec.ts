@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { format, parse } from '../../src/index.ts';
-import { parser } from '../../src/plugins/day-of-week.ts';
+import { format, parse } from '@/index.ts';
+import { parser } from '@/plugins/day-of-week.ts';
 
-import lo from '../../src/locales/no.ts';
+import lo from '@/locales/no.ts';
 
 const locale = {
   MMMM: ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'],

@@ -1,10 +1,17 @@
+import alias from '@rollup/plugin-alias';
 import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import { dts } from 'rollup-plugin-dts';
 import { globSync } from 'glob';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const outputDir = (input: string) => input.replace(/^src/g, 'dist').replace(/\/[^/]*$/g, '');
+const replacePath = (input: string) => input.replace(/(^src\/|\.ts$)/g, '');
 
 const ts = () => {
   const plugins = [
+    alias({ entries: [{ find: '@', replacement: resolve(dirname(fileURLToPath(import.meta.url)), 'src') }] }),
     esbuild({ minify: false, target: 'es2021' }),
     terser()
   ];
@@ -20,17 +27,18 @@ const ts = () => {
   return [
     config('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
-    globSync('src/numerals/**/*.ts').map(input => config(input, 'dist/numerals')),
-    globSync('src/locales/**/*.ts').map(input => config(input, 'dist/locales')),
-    globSync('src/plugins/**/*.ts').map(input => config(input, 'dist/plugins')),
-    config(Object.fromEntries(
-      globSync('src/timezones/**/*.ts').map(input => [input.replace(/(^src\/|\.ts$)/g, ''), input])
-    ), 'dist')
+    config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
+    globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
+    globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),
+    config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist')
   ].flat();
 };
 
 const types = () => {
-  const plugins = [dts()];
+  const plugins = [
+    alias({ entries: [{ find: '@', replacement: resolve(dirname(fileURLToPath(import.meta.url)), 'src') }] }),
+    dts()
+  ];
   const config = (input: string | Record<string, string>, outputDir: string) => ({
     input,
     output: { dir: outputDir },
@@ -40,12 +48,10 @@ const types = () => {
   return [
     config('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
-    globSync('src/plugins/**/*.ts').map(input => config(input, 'dist/plugins')),
-    globSync('src/locales/**/*.ts').map(input => config(input, 'dist/locales')),
-    globSync('src/numerals/**/*.ts').map(input => config(input, 'dist/numerals')),
-    config(Object.fromEntries(
-      globSync('src/timezones/**/*.ts').map(input => [input.replace(/(^src\/|\.ts$)/g, ''), input])
-    ), 'dist')
+    config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
+    globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
+    globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),
+    config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist')
   ].flat();
 };
 

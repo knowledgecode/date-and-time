@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { format, parse } from '../../src/index.ts';
-import { formatter, parser } from '../../src/plugins/ordinal.ts';
+import { format, parse } from '@/index.ts';
+import { formatter, parser } from '@/plugins/ordinal.ts';
 
 beforeAll(() => (process.env.TZ = 'UTC'));
 

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { isLeapYear, isSameDay } from '../src/index.ts';
+import { isLeapYear, isSameDay } from '@/index.ts';
 
 test('isLeapYear', () => {
   expect(isLeapYear(4)).toBe(true);

@@ -1,5 +1,5 @@
-import { ParserPlugin, exec } from '../plugin.ts';
-import type { ParserPluginOptions } from '../plugin.ts';
+import { ParserPlugin, exec } from '@/plugin.ts';
+import type { ParserPluginOptions } from '@/plugin.ts';
 
 class Parser extends ParserPlugin {
   YY (str: string, options: ParserPluginOptions) {

@@ -3,7 +3,7 @@ import type { CompiledObject } from './compile.ts';
 export interface LocaleOptions {
   compiledObj: CompiledObject;
   style: 'long' | 'short' | 'narrow';
-  case?: 'uppercase' | 'lowercase'
+  case?: 'uppercase' | 'lowercase';
 }
 
 export interface Locale {

@@ -2,7 +2,7 @@
  * @file Ukrainian (uk)
  */
 
-import type { Locale, LocaleOptions } from '../locale.ts';
+import type { Locale, LocaleOptions } from '@/locale.ts';
 
 const list = {
   MMMM: [

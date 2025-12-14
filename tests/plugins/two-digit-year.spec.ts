@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { parse } from '../../src/index.ts';
-import { parser as year } from '../../src/plugins/two-digit-year.ts';
+import { parse } from '@/index.ts';
+import { parser as year } from '@/plugins/two-digit-year.ts';
 
 beforeAll(() => (process.env.TZ = 'UTC'));
 

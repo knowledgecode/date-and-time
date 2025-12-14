@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import numeral from '../../src/numerals/mymr.ts';
+import numeral from '@/numerals/mymr.ts';
 
 describe('mymr', () => {
   test('encode', () => {

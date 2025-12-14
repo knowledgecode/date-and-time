@@ -1,5 +1,5 @@
 import { expect, test, beforeAll } from 'vitest';
-import { addMinutes } from '../src/index.ts';
+import { addMinutes } from '@/index.ts';
 
 beforeAll(() => (process.env.TZ = 'America/Los_Angeles'));
 

@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { isValid, compile } from '../src/index.ts';
-import { parser } from '../src/plugins/day-of-week.ts';
+import { isValid, compile } from '@/index.ts';
+import { parser } from '@/plugins/day-of-week.ts';
 
 beforeAll(() => (process.env.TZ = 'UTC'));
 

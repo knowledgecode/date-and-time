@@ -87,20 +87,20 @@ const ellipsis = '...';
 export function preparse(dateString: string, arg: string | CompiledObject, options?: ParserOptions) {
   const pattern = (typeof arg === 'string' ? compile(arg) : arg).slice(1);
   const parserOptions = {
-    hour12: options?.hour12 || 'h12',
-    hour24: options?.hour24 || 'h23',
-    numeral: options?.numeral || latn,
-    calendar: options?.calendar || 'gregory',
-    ignoreCase: options?.ignoreCase || false,
+    hour12: options?.hour12 ?? 'h12',
+    hour24: options?.hour24 ?? 'h23',
+    numeral: options?.numeral ?? latn,
+    calendar: options?.calendar ?? 'gregory',
+    ignoreCase: options?.ignoreCase ?? false,
     timeZone: isTimeZone(options?.timeZone) || isUTC(options?.timeZone) ? options.timeZone : undefined,
-    locale: options?.locale || en
+    locale: options?.locale ?? en
   };
   const pr: PreparseResult = {
     _index: 0,
     _length: 0,
     _match: 0
   };
-  const parsers = [...options?.plugins || [], defaultParser];
+  const parsers = [...options?.plugins ?? [], defaultParser];
   const resolveToken = (token: string, str: string) => {
     for (const parser of parsers) {
       if (parser[token]) {

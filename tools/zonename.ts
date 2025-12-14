@@ -7,7 +7,7 @@
 
 import { readFile } from 'node:fs/promises';
 import prettier from 'prettier';
-import zonenames from '../src/zonenames.ts';
+import zonenames from '@/zonenames.ts';
 
 const getTimezone = async (path: string) => {
   try {
@@ -30,7 +30,7 @@ const getTimezone = async (path: string) => {
 };
 
 const getTimezoneName = (dtf: Intl.DateTimeFormat, time: number) => {
-  return dtf.formatToParts(time).find(part => part.type === 'timeZoneName')?.value.replace(/^GMT([+-].+)?$/, '') || '';
+  return dtf.formatToParts(time).find(part => part.type === 'timeZoneName')?.value.replace(/^GMT([+-].+)?$/, '') ?? '';
 };
 
 const getTimezoneNames = (timeZone: string, names: Record<string, string>) => {
@@ -68,31 +68,29 @@ const format = (code: Map<string, string>) => {
   };`, { parser: 'typescript', singleQuote: true, trailingComma: 'none' });
 };
 
-(async () => {
-  const path = process.argv[2];
+const path = process.argv[2];
 
-  if (!path) {
-    console.error('Please provide a CSV file path');
-    process.exit();
+if (!path) {
+  console.error('Please provide a CSV file path');
+  process.exit();
+}
+
+const timezones = await getTimezone(path);
+const timeZoneNames = new Map<string, string>();
+const errorNames = new Set<string>();
+
+timezones.forEach(timeZone => {
+  const { names, errors } = getTimezoneNames(timeZone, zonenames);
+
+  for (const [key, value] of names.entries()) {
+    timeZoneNames.set(key, value);
   }
+  errors.forEach(err => errorNames.add(err));
+});
 
-  const timezones = await getTimezone(path);
-  const timeZoneNames = new Map<string, string>();
-  const errorNames = new Set<string>();
-
-  timezones.forEach(timeZone => {
-    const { names, errors } = getTimezoneNames(timeZone, zonenames);
-
-    for (const [key, value] of names.entries()) {
-      timeZoneNames.set(key, value);
-    }
-    errors.forEach(err => errorNames.add(err));
-  });
-
-  if (errorNames.size) {
-    console.error('Not Found');
-    console.error(Array.from(errorNames));
-  } else {
-    process.stdout.write(await format(sort(timeZoneNames)));
-  }
-})();
+if (errorNames.size) {
+  console.error('Not Found');
+  console.error(Array.from(errorNames));
+} else {
+  process.stdout.write(await format(sort(timeZoneNames)));
+}

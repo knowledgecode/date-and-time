@@ -46,7 +46,7 @@ export interface FormatterPluginOptions {
 }
 
 export abstract class FormatterPlugin {
-  [key: string]: (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) => string;
+  [key: string]: ((d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) => string) | undefined;
 }
 
 export interface FormatterOptions extends Partial<FormatterPluginOptions> {
@@ -59,15 +59,15 @@ const getFullYear = (d: DateLike, calendar: 'buddhist' | 'gregory') => {
 
 class DefaultFormatter extends FormatterPlugin {
   YYYY (d: DateLike, options: FormatterPluginOptions) {
-    return `000${getFullYear(d, options.calendar)}`.slice(-4);
+    return `000${String(getFullYear(d, options.calendar))}`.slice(-4);
   }
 
   YY (d: DateLike, options: FormatterPluginOptions) {
-    return `0${getFullYear(d, options.calendar)}`.slice(-2);
+    return `0${String(getFullYear(d, options.calendar))}`.slice(-2);
   }
 
   Y (d: DateLike, options: FormatterPluginOptions) {
-    return `${getFullYear(d, options.calendar)}`;
+    return String(getFullYear(d, options.calendar));
   }
 
   MMMM (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
@@ -81,27 +81,27 @@ class DefaultFormatter extends FormatterPlugin {
   }
 
   MM (d: DateLike) {
-    return `0${d.getMonth() + 1}`.slice(-2);
+    return `0${String(d.getMonth() + 1)}`.slice(-2);
   }
 
   M (d: DateLike) {
-    return `${d.getMonth() + 1}`;
+    return String(d.getMonth() + 1);
   }
 
   DD (d: DateLike) {
-    return `0${d.getDate()}`.slice(-2);
+    return `0${String(d.getDate())}`.slice(-2);
   }
 
   D (d: DateLike) {
-    return `${d.getDate()}`;
+    return String(d.getDate());
   }
 
   HH (d: DateLike, options: FormatterPluginOptions) {
-    return `0${d.getHours() || (options.hour24 === 'h24' ? 24 : 0)}`.slice(-2);
+    return `0${String(d.getHours() || (options.hour24 === 'h24' ? 24 : 0))}`.slice(-2);
   }
 
   H (d: DateLike, options: FormatterPluginOptions) {
-    return `${d.getHours() || (options.hour24 === 'h24' ? 24 : 0)}`;
+    return String(d.getHours() || (options.hour24 === 'h24' ? 24 : 0));
   }
 
   AA (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
@@ -125,39 +125,39 @@ class DefaultFormatter extends FormatterPlugin {
   }
 
   hh (d: DateLike, options: FormatterPluginOptions) {
-    return `0${d.getHours() % 12 || (options.hour12 === 'h12' ? 12 : 0)}`.slice(-2);
+    return `0${String(d.getHours() % 12 || (options.hour12 === 'h12' ? 12 : 0))}`.slice(-2);
   }
 
   h (d: DateLike, options: FormatterPluginOptions) {
-    return `${d.getHours() % 12 || (options.hour12 === 'h12' ? 12 : 0)}`;
+    return String(d.getHours() % 12 || (options.hour12 === 'h12' ? 12 : 0));
   }
 
   mm (d: DateLike) {
-    return `0${d.getMinutes()}`.slice(-2);
+    return `0${String(d.getMinutes())}`.slice(-2);
   }
 
   m (d: DateLike) {
-    return `${d.getMinutes()}`;
+    return String(d.getMinutes());
   }
 
   ss (d: DateLike) {
-    return `0${d.getSeconds()}`.slice(-2);
+    return `0${String(d.getSeconds())}`.slice(-2);
   }
 
   s (d: DateLike) {
-    return `${d.getSeconds()}`;
+    return String(d.getSeconds());
   }
 
   SSS (d: DateLike) {
-    return `00${d.getMilliseconds()}`.slice(-3);
+    return `00${String(d.getMilliseconds())}`.slice(-3);
   }
 
   SS (d: DateLike) {
-    return `00${d.getMilliseconds()}`.slice(-3, -1);
+    return `00${String(d.getMilliseconds())}`.slice(-3, -1);
   }
 
   S (d: DateLike) {
-    return `00${d.getMilliseconds()}`.slice(-3, -2);
+    return `00${String(d.getMilliseconds())}`.slice(-3, -2);
   }
 
   dddd (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
@@ -178,13 +178,13 @@ class DefaultFormatter extends FormatterPlugin {
   Z (d: DateLike) {
     const offset = d.getTimezoneOffset();
     const absOffset = Math.abs(offset);
-    return `${offset > 0 ? '-' : '+'}${`0${absOffset / 60 | 0}`.slice(-2)}${`0${absOffset % 60}`.slice(-2)}`;
+    return `${offset > 0 ? '-' : '+'}${`0${String(absOffset / 60 | 0)}`.slice(-2)}${`0${String(absOffset % 60)}`.slice(-2)}`;
   }
 
   ZZ (d: DateLike) {
     const offset = d.getTimezoneOffset();
     const absOffset = Math.abs(offset);
-    return `${offset > 0 ? '-' : '+'}${`0${absOffset / 60 | 0}`.slice(-2)}:${`0${absOffset % 60}`.slice(-2)}`;
+    return `${offset > 0 ? '-' : '+'}${`0${String(absOffset / 60 | 0)}`.slice(-2)}:${`0${String(absOffset % 60)}`.slice(-2)}`;
   }
 }
 

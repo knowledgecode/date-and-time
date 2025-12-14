@@ -2,7 +2,7 @@
  * @file Japanese (ja)
  */
 
-import type { Locale, LocaleOptions } from '../locale.ts';
+import type { Locale, LocaleOptions } from '@/locale.ts';
 
 const list = {
   MMMM: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],

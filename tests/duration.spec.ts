@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Duration } from '../src/index.ts';
+import { Duration } from '@/index.ts';
 
 describe('Duration', () => {
   test('toDays', () => {

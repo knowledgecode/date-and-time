@@ -60,7 +60,7 @@ export interface ParseResult {
 }
 
 export abstract class ParserPlugin {
-  [key: string]: (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) => ParseResult;
+  [key: string]: ((str: string, options: ParserPluginOptions, compiledObj: CompiledObject) => ParseResult) | undefined;
 }
 
 export interface ParserOptions extends Partial<ParserPluginOptions> {
@@ -75,7 +75,7 @@ export interface ParserOptions extends Partial<ParserPluginOptions> {
  * @returns ParseResult containing the numeric value, length, and token
  */
 export const exec = (re: RegExp, str: string, token?: ParserToken) => {
-  const result = re.exec(str)?.[0] || '';
+  const result = re.exec(str)?.[0] ?? '';
   return { value: +result, length: result.length, token };
 };
 
@@ -89,8 +89,8 @@ export const exec = (re: RegExp, str: string, token?: ParserToken) => {
 export const find = (array: string[], str: string, token?: ParserToken): ParseResult => {
   return array.reduce((result, item, value) => item.length > result.length && !str.indexOf(item)
     ? { value, length: item.length, token }
-    : result
-  , { value: -1, length: 0, token });
+    : result,
+  { value: -1, length: 0, token });
 };
 
 class DefaultParser extends ParserPlugin {
@@ -231,7 +231,7 @@ class DefaultParser extends ParserPlugin {
   }
 
   ZZ (str: string) {
-    const results = /^([+-][01]\d):([0-5]\d)/.exec(str) || ['', '', ''];
+    const results = /^([+-][01]\d):([0-5]\d)/.exec(str) ?? ['', '', ''];
     const value = +(results[1] + results[2]);
     return { value: (value / 100 | 0) * -60 - value % 100, length: results[0].length, token: 'Z' as ParserToken };
   }

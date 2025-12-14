@@ -1,15 +1,15 @@
 import { expect, test, describe } from 'vitest';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { TimeZone } from '../../src/timezone.ts';
+import type { TimeZone } from '@/timezone.ts';
 
 const importModules = async (path: string) => {
   const items = await readdir(path, { recursive: true, withFileTypes: true });
-  const modules = [] as TimeZone[];
+  const modules: TimeZone[] = [];
 
   for (const item of items) {
     if (item.isFile()) {
-      modules.push((await import(join('../../', item.parentPath, item.name))).default);
+      modules.push((await import(join('../../', item.parentPath, item.name)) as { default: TimeZone }).default);
     }
   }
   return modules;
