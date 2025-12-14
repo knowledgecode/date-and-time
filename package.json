@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "The simplest, most intuitive date and time library",
   "keywords": [
     "date",
@@ -58,7 +58,7 @@
     "docs:build": "vitepress build docs",
     "docs:dev": "vitepress dev docs",
     "docs:preview": "vitepress preview docs",
-    "lint": "eslint src",
+    "lint": "eslint",
     "prepublishOnly": "npm run build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -81,19 +81,22 @@
   "type": "module",
   "sideEffects": false,
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@types/node": "^24.10.1",
-    "@vitest/coverage-v8": "^4.0.9",
-    "eslint": "^9.39.1",
-    "glob": "^11.0.3",
-    "prettier": "^3.6.2",
-    "rollup": "^4.53.2",
-    "rollup-plugin-dts": "^6.2.3",
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "@types/node": "^25.0.2",
+    "@vitest/coverage-v8": "^4.0.15",
+    "eslint": "^9.39.2",
+    "glob": "^13.0.0",
+    "prettier": "^3.7.4",
+    "rollup": "^4.53.3",
+    "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-esbuild": "^6.2.1",
-    "tsx": "^4.20.6",
-    "typescript-eslint": "^8.46.4",
+    "tsx": "^4.21.0",
+    "typescript-eslint": "^8.49.0",
     "vitepress": "^1.6.4",
-    "vitest": "^4.0.9"
+    "vitest": "^4.0.15"
   },
   "overrides": {
     "esbuild": "^0.25.0"
