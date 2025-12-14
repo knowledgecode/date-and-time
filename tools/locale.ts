@@ -19,10 +19,10 @@ const getMonths = (locale: string, style: 'long' | 'short' | 'narrow') => {
   const months2 = [];
 
   for (let i = 0; i < 12; i++) {
-    months1.push(dtf1.formatToParts(new Date(2024, i, 1, 0)).find(p => p.type === 'month')?.value || '');
+    months1.push(dtf1.formatToParts(new Date(2024, i, 1, 0)).find(p => p.type === 'month')?.value ?? '');
   }
   for (let i = 0; i < 12; i++) {
-    months2.push(dtf2.formatToParts(new Date(2024, i, 1, 0)).find(p => p.type === 'month')?.value || '');
+    months2.push(dtf2.formatToParts(new Date(2024, i, 1, 0)).find(p => p.type === 'month')?.value ?? '');
   }
   return compare(months1, months2) ? months1 : [months1, months2];
 };
@@ -36,10 +36,10 @@ const getWeekdays = (locale: string, style: 'long' | 'short' | 'narrow') => {
   const weekdays2 = [];
 
   for (let i = 1; i <= 7; i++) {
-    weekdays1.push(dtf1.formatToParts(new Date(2024, 11, i, 0)).find(p => p.type === 'weekday')?.value || '');
+    weekdays1.push(dtf1.formatToParts(new Date(2024, 11, i, 0)).find(p => p.type === 'weekday')?.value ?? '');
   }
   for (let i = 1; i <= 7; i++) {
-    weekdays2.push(dtf2.formatToParts(new Date(2024, 11, i, 0)).find(p => p.type === 'weekday')?.value || '');
+    weekdays2.push(dtf2.formatToParts(new Date(2024, 11, i, 0)).find(p => p.type === 'weekday')?.value ?? '');
   }
   return compare(weekdays1, weekdays2) ? weekdays1 : [weekdays1, weekdays2];
 };
@@ -49,18 +49,18 @@ const getDayPeriod = (locale: string) => {
   const options2: Intl.DateTimeFormatOptions = { ...options1, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const dtf1 = new Intl.DateTimeFormat(locale, options1);
   const dtf2 = new Intl.DateTimeFormat(locale, options2);
-  const dayperiod1 = [];
-  const dayperiod2 = [];
+  const dayperiod1: string[] = [];
+  const dayperiod2: string[] = [];
 
   for (let i = 0; i < 24; i++) {
-    const value = dtf1.formatToParts(new Date(2024, 11, 1, i)).find(p => p.type === 'dayPeriod')?.value || '';
-    if (dayperiod1.indexOf(value) < 0) {
+    const value = dtf1.formatToParts(new Date(2024, 11, 1, i)).find(p => p.type === 'dayPeriod')?.value ?? '';
+    if (!dayperiod1.includes(value)) {
       dayperiod1.push(value);
     }
   }
   for (let i = 0; i < 24; i++) {
-    const value = dtf2.formatToParts(new Date(2024, 11, 1, i)).find(p => p.type === 'dayPeriod')?.value || '';
-    if (dayperiod2.indexOf(value) < 0) {
+    const value = dtf2.formatToParts(new Date(2024, 11, 1, i)).find(p => p.type === 'dayPeriod')?.value ?? '';
+    if (!dayperiod2.includes(value)) {
       dayperiod2.push(value);
     }
   }
@@ -82,7 +82,6 @@ const getParts = (locale: string) => {
 const getDate = (locale: string) => {
   const options: Intl.DateTimeFormatOptions = {
     hour12: true, weekday: 'short',
-//    year: 'numeric', month: 'long', day: 'numeric',
     year: 'numeric', month: 'short', day: 'numeric',
     hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3,
     timeZone: 'Europe/Paris', timeZoneName: 'longOffset'
