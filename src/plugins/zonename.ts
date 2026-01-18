@@ -1,5 +1,6 @@
 import timeZoneNames from '@/zonenames.ts';
 import { FormatterPlugin } from '@/plugin.ts';
+import { isTimeZone } from '@/zone.ts';
 import type { FormatterPluginOptions, DateLike } from '@/plugin.ts';
 
 const getLongTimezoneName = (time: number, zoneName?: string) => {
@@ -16,12 +17,12 @@ const getShortTimezoneName = (time: number, zoneName?: string) => {
 
 class Formatter extends FormatterPlugin {
   z (d: DateLike, options: FormatterPluginOptions) {
-    const zoneName = options.timeZone === 'UTC' ? 'UTC' : options.timeZone?.zone_name;
+    const zoneName = isTimeZone(options.timeZone) ? options.timeZone.zone_name : options.timeZone;
     return getShortTimezoneName(d.getTime(), zoneName);
   }
 
   zz (d: DateLike, options: FormatterPluginOptions) {
-    const zoneName = options.timeZone === 'UTC' ? 'UTC' : options.timeZone?.zone_name;
+    const zoneName = isTimeZone(options.timeZone) ? options.timeZone.zone_name : options.timeZone;
     return getLongTimezoneName(d.getTime(), zoneName);
   }
 }

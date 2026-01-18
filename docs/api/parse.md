@@ -170,6 +170,10 @@ parse('2025-08-23T14:30:00 +05:00', 'YYYY-MM-DD[T]HH:mm:ss ZZ', { timeZone: New_
 // => Fri Aug 23 2025 14:30:00 GMT+0500 (New_York timeZone is ignored)
 ```
 
+:::warning Important Difference from format()
+The `parse()` function only accepts TimeZone objects and the "UTC" string for the `timeZone` option. Unlike `format()`, which supports both TimeZone objects and IANA timezone name strings, `parse()` does not support string type timezone names.
+:::
+
 For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
 
 ### numeral

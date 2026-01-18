@@ -5,6 +5,7 @@ import Los_Angeles from '@/timezones/America/Los_Angeles.ts';
 import Tokyo from '@/timezones/Asia/Tokyo.ts';
 import Adelaide from '@/timezones/Australia/Adelaide.ts';
 import Apia from '@/timezones/Pacific/Apia.ts';
+import { Los_Angeles as los_angeles, Tokyo as tokyo, Adelaide as adelaide, Apia as apia } from '@/timezone.ts';
 
 test('YYYY', () => {
   expect(Number.isNaN(parse('0000', 'YYYY').getTime())).toBe(true);
@@ -532,7 +533,9 @@ describe('options', () => {
   test('timeZone', () => {
     const now = new Date(Date.UTC(2025, 1 - 1, 1, 0));
     expect(parse('2024-12-31 16:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2024-12-31 16:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: los_angeles })).toEqual(now);
     expect(parse('2025-01-01 09:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo })).toEqual(now);
+    expect(parse('2025-01-01 09:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: tokyo })).toEqual(now);
     expect(parse('2025-01-01 00:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'UTC' })).toEqual(now);
 
     const dummyTimeZone = {
@@ -548,31 +551,37 @@ describe('timeZone Los_Angeles', () => {
   test('before DST', () => {
     const now = new Date('2021-03-14T09:59:59.999Z');
     expect(parse('2021-03-14 01:59:59.999', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2021-03-14 01:59:59.999', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: los_angeles })).toEqual(now);
   });
 
   test('start DST 1', () => {
     const now = new Date('2021-03-14T10:00:00.000Z');
     expect(parse('2021-03-14 02:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2021-03-14 02:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: los_angeles })).toEqual(now);
   });
 
   test('start DST 2', () => {
     const now = new Date('2021-03-14T10:00:00.000Z');
     expect(parse('2021-03-14 03:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2021-03-14 03:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: los_angeles })).toEqual(now);
   });
 
   test('before of PST', () => {
     const now = new Date('2021-11-07T08:59:59.999Z');
     expect(parse('2021-11-07 01:59:59.999', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2021-11-07 01:59:59.999', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: los_angeles })).toEqual(now);
   });
 
   test('end of DST', () => {
     const now = new Date('2021-11-07T10:00:00.000Z');
     expect(parse('2021-11-07 02:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2021-11-07 02:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: los_angeles })).toEqual(now);
   });
 
   test('after of DST', () => {
     const now = new Date('2021-11-07T11:00:00.000Z');
     expect(parse('2021-11-07 03:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: Los_Angeles })).toEqual(now);
+    expect(parse('2021-11-07 03:00:00.000', 'YYYY-MM-DD HH:mm:ss.SSS', { timeZone: los_angeles })).toEqual(now);
   });
 });
 
@@ -584,6 +593,7 @@ describe('timeZone Adelaide', () => {
     const dateObj = new Date(Date.UTC(2021, 9, 2, 16, 29, 59, 999));
 
     expect(parse(dateString, formatString, { timeZone: Adelaide }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: adelaide }).getTime()).toBe(dateObj.getTime());
   });
 
   test('start of DST 1', () => {
@@ -593,6 +603,7 @@ describe('timeZone Adelaide', () => {
     const dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
 
     expect(parse(dateString, formatString, { timeZone: Adelaide }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: adelaide }).getTime()).toBe(dateObj.getTime());
   });
 
   test('start of DST 2', () => {
@@ -602,6 +613,7 @@ describe('timeZone Adelaide', () => {
     const dateObj = new Date(Date.UTC(2021, 9, 2, 17, 29, 59, 999));
 
     expect(parse(dateString, formatString, { timeZone: Adelaide }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: adelaide }).getTime()).toBe(dateObj.getTime());
   });
 
   test('start of DST 3', () => {
@@ -611,6 +623,7 @@ describe('timeZone Adelaide', () => {
     const dateObj = new Date(Date.UTC(2021, 9, 2, 16, 30, 0, 0));
 
     expect(parse(dateString, formatString, { timeZone: Adelaide }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: adelaide }).getTime()).toBe(dateObj.getTime());
   });
 
   test('end of DST', () => {
@@ -620,6 +633,7 @@ describe('timeZone Adelaide', () => {
     const dateObj = new Date(Date.UTC(2021, 3, 3, 16, 29, 59, 999));
 
     expect(parse(dateString, formatString, { timeZone: Adelaide }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: adelaide }).getTime()).toBe(dateObj.getTime());
   });
 
   test('after DST', () => {
@@ -629,6 +643,7 @@ describe('timeZone Adelaide', () => {
     const dateObj = new Date(Date.UTC(2021, 3, 3, 17, 30, 0, 0));
 
     expect(parse(dateString, formatString, { timeZone: Adelaide }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: adelaide }).getTime()).toBe(dateObj.getTime());
   });
 });
 
@@ -641,6 +656,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(1892, 7 - 1, 4, 23, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('1.2', () => {
@@ -649,6 +665,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(1892, 7 - 1, 4, 0, 0, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('2.1', () => {
@@ -657,6 +674,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(1910, 12 - 1, 31, 23, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('2.2', () => {
@@ -665,6 +683,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(1910, 12 - 1, 31, 23, 56, 56);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('3.1', () => {
@@ -673,6 +692,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(1949, 12 - 1, 31, 23, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('3.2', () => {
@@ -681,6 +701,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(1950, 1 - 1, 1, 0, 30, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('4.1', () => {
@@ -689,6 +710,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2010, 9 - 1, 25, 23, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('4.2', () => {
@@ -697,6 +719,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2010, 9 - 1, 26, 1, 0, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('5.1', () => {
@@ -705,6 +728,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2011, 4 - 1, 2, 3, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('5.2', () => {
@@ -713,6 +737,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2011, 4 - 1, 2, 3, 0, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('6.1', () => {
@@ -721,6 +746,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2011, 9 - 1, 24, 2, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('6.2', () => {
@@ -729,6 +755,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2011, 9 - 1, 24, 4, 0, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('7.1', () => {
@@ -737,6 +764,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2011, 12 - 1, 29, 23, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('7.2', () => {
@@ -745,6 +773,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2011, 12 - 1, 31, 0, 0, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('8.1', () => {
@@ -753,6 +782,7 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2012, 4 - 1, 1, 3, 59, 59);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 
   test('8.2', () => {
@@ -761,5 +791,6 @@ describe('timeZone Apia', () => {
     const dateObj = new Date(2012, 4 - 1, 1, 3, 0, 0);
 
     expect(parse(dateString, formatString, { timeZone: Apia }).getTime()).toBe(dateObj.getTime());
+    expect(parse(dateString, formatString, { timeZone: apia }).getTime()).toBe(dateObj.getTime());
   });
 });

@@ -37,7 +37,7 @@ format(new Date(), 'ddd, MMM DD YYYY hh:mm A [GMT]Z', { timeZone: 'UTC' });
 // => Fri, Jan 02 2015 07:14 AM GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `formatTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
+Additionally, since the `timezone` plugin has been integrated into the main library, the `formatTZ` function is now obsolete. In v4.0/4.1, timezones must be imported as TimeZone objects from timezone modules. IANA timezone name strings are not supported in this version (except for UTC timezone).
 
 ```typescript
 import { format } from 'date-and-time';
@@ -45,6 +45,57 @@ import New_York from 'date-and-time/timezones/America/New_York';
 
 format(now, 'dddd, MMMM D, YYYY [at] H:mm:ss.SSS [GMT]ZZ', { timeZone: New_York });
 // => Wednesday, July 23, 2025 at 3:28:27.443 GMT-04:00
+```
+
+#### New in v4.2.0: Enhanced Timezone Support
+
+In addition to TimeZone objects, the `format()` function now supports specifying timezones using IANA timezone name strings. This provides flexibility in how you work with timezones:
+
+```typescript
+import { format } from 'date-and-time';
+
+const now = new Date();
+
+// Using IANA timezone name string (simplest)
+format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
+// => 2025-08-23 09:30:45 EST
+
+// Using TimeZone object (recommended for type safety)
+import New_York from 'date-and-time/timezones/America/New_York';
+format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: New_York });
+// => 2025-08-23 09:30:45 EST
+
+// Using consolidated import (recommended for multiple timezones)
+import { New_York as NY } from 'date-and-time/timezone';
+format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: NY });
+// => 2025-08-23 09:30:45 EST
+```
+
+**Note**: The `parse()` function does not support string type timezone names. Only TimeZone objects and the "UTC" string are supported for parsing.
+
+##### Consolidated Import
+
+For better code organization when working with multiple timezones, you can import all timezones from a single `date-and-time/timezone` module:
+
+```typescript
+// Consolidated import (recommended for multiple timezones)
+import { Tokyo, New_York, London, Sydney } from 'date-and-time/timezone';
+
+const now = new Date();
+
+format(now, 'YYYY-MM-DD HH:mm', { timeZone: Tokyo });    // JST
+format(now, 'YYYY-MM-DD HH:mm', { timeZone: New_York }); // EST/EDT
+format(now, 'YYYY-MM-DD HH:mm', { timeZone: London });   // GMT/BST
+format(now, 'YYYY-MM-DD HH:mm', { timeZone: Sydney });   // AEDT/AEST
+```
+
+Alternatively, you can still import individual timezone modules directly:
+
+```typescript
+import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
+import New_York from 'date-and-time/timezones/America/New_York';
+import London from 'date-and-time/timezones/Europe/London';
+import Sydney from 'date-and-time/timezones/Australia/Sydney';
 ```
 
 ### parse

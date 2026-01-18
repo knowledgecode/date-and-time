@@ -1,5 +1,67 @@
 # Supported Timezones
 
+## Import Methods
+
+There are three ways to import and use timezones with the date-and-time library:
+
+### Method 1: Individual Import
+
+Import each timezone you need directly from its module path. This approach is useful when you only need a few specific timezones.
+
+```typescript
+import { format } from 'date-and-time';
+import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
+import New_York from 'date-and-time/timezones/America/New_York';
+
+const date = new Date();
+
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
+// => 2025-08-23 23:30:45
+
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: New_York });
+// => 2025-08-23 09:30:45
+```
+
+### Method 2: Consolidated Import
+
+Import multiple timezones from a single module using named imports. This approach is recommended when working with multiple timezones as it provides better code organization.
+
+```typescript
+import { format } from 'date-and-time';
+import { Tokyo, New_York, London, Sydney } from 'date-and-time/timezone';
+
+const date = new Date();
+
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });    // JST
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: New_York }); // EST/EDT
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: London });   // GMT/BST
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: Sydney });   // AEDT/AEST
+```
+
+Both Method 1 and Method 2 provide the same functionality - they differ only in code organization.
+
+### Method 3: IANA Timezone Name String
+
+Functions that accept `FormatterOptions` (such as `format()` and `transform()`) allow you to specify timezones using IANA timezone name strings directly. This is the simplest approach.
+
+```typescript
+import { format } from 'date-and-time';
+
+const date = new Date();
+
+// Using IANA timezone name strings
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
+// => 2025-08-23 23:30:45
+
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'America/New_York' });
+// => 2025-08-23 09:30:45
+
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Europe/London' });
+// => 2025-08-23 14:30:45
+```
+
+**Important Note**: The `parse()` function does not support string type timezone names because it uses `ParserOptions` instead of `FormatterOptions`. Only TimeZone objects and the "UTC" string are supported for parsing.
+
 ## Regions
 
 1. [Africa](#africa)

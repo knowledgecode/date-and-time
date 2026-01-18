@@ -1,7 +1,7 @@
 import type { CompiledObject } from './compile.ts';
 import type { Locale } from './locale.ts';
 import type { Numeral } from './numeral.ts';
-import type { TimeZone } from './timezone.ts';
+import type { TimeZone } from './zone.ts';
 
 type ParserToken = 'Y' | 'M' | 'D' | 'H' | 'A' | 'h' | 'm' | 's' | 'S' | 'Z';
 

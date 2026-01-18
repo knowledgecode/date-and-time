@@ -27,6 +27,7 @@ const ts = () => {
   return [
     config('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
+    config('src/timezone.ts', 'dist'),
     config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
     globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
     globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),
@@ -48,6 +49,7 @@ const types = () => {
   return [
     config('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
+    config('src/timezone.ts', 'dist'),
     config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
     globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
     globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),

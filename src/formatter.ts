@@ -2,7 +2,7 @@ import type { CompiledObject } from './compile.ts';
 import type { DateLike } from './datetime.ts';
 import type { Locale } from './locale.ts';
 import type { Numeral } from './numeral.ts';
-import type { TimeZone } from './timezone.ts';
+import type { TimeZone } from './zone.ts';
 
 export interface FormatterPluginOptions {
   /**
@@ -31,12 +31,12 @@ export interface FormatterPluginOptions {
    */
   calendar: 'buddhist' | 'gregory';
 
-  /**
-   * The time zone to use for formatting dates and times.
-   * This can be a specific time zone object or 'UTC' to use Coordinated Universal Time.
-   * If not specified, it defaults to undefined, which means the local time zone will be used.
-   */
-  timeZone: TimeZone | 'UTC' | undefined;
+/**
+  * The time zone to use for formatting dates and times.
+  * This can be a specific time zone object, an IANA time zone name, or 'UTC' to use Coordinated Universal Time.
+  * If not specified, it defaults to undefined, which means the local time zone will be used.
+  */
+  timeZone: TimeZone | string | undefined;
 
   /**
    * The locale to use for formatting dates and times.
@@ -72,12 +72,12 @@ class DefaultFormatter extends FormatterPlugin {
 
   MMMM (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getMonthList({ style: 'long', compiledObj });
-    return list[d.getMonth()] || '';
+    return list[d.getMonth()] ?? '';
   }
 
   MMM (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getMonthList({ style: 'short', compiledObj });
-    return list[d.getMonth()] || '';
+    return list[d.getMonth()] ?? '';
   }
 
   MM (d: DateLike) {
@@ -106,22 +106,22 @@ class DefaultFormatter extends FormatterPlugin {
 
   AA (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getMeridiemList({ style: 'long', compiledObj, case: 'uppercase' });
-    return list[+(d.getHours() > 11)] || '';
+    return list[+(d.getHours() > 11)] ?? '';
   }
 
   A (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getMeridiemList({ style: 'short', compiledObj, case: 'uppercase' });
-    return list[+(d.getHours() > 11)] || '';
+    return list[+(d.getHours() > 11)] ?? '';
   }
 
   aa (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getMeridiemList({ style: 'long', compiledObj, case: 'lowercase' });
-    return list[+(d.getHours() > 11)] || '';
+    return list[+(d.getHours() > 11)] ?? '';
   }
 
   a (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getMeridiemList({ style: 'short', compiledObj, case: 'lowercase' });
-    return list[+(d.getHours() > 11)] || '';
+    return list[+(d.getHours() > 11)] ?? '';
   }
 
   hh (d: DateLike, options: FormatterPluginOptions) {
@@ -162,17 +162,17 @@ class DefaultFormatter extends FormatterPlugin {
 
   dddd (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getDayOfWeekList({ style: 'long', compiledObj });
-    return list[d.getDay()] || '';
+    return list[d.getDay()] ?? '';
   }
 
   ddd (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getDayOfWeekList({ style: 'short', compiledObj });
-    return list[d.getDay()] || '';
+    return list[d.getDay()] ?? '';
   }
 
   dd (d: DateLike, options: FormatterPluginOptions, compiledObj: CompiledObject) {
     const list = options.locale.getDayOfWeekList({ style: 'narrow', compiledObj });
-    return list[d.getDay()] || '';
+    return list[d.getDay()] ?? '';
   }
 
   Z (d: DateLike) {

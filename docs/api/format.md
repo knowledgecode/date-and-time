@@ -134,24 +134,33 @@ For a complete list of all supported locales with import examples, see [Supporte
 
 ### timeZone
 
-**Type**: `TimeZone | "UTC"`  
+**Type**: `TimeZone | string`
 **Default**: `undefined` (local timezone)
 
-Converts the date to the specified timezone before formatting.
+Converts the date to the specified timezone before formatting. You can specify a timezone in three ways:
 
 ```typescript
 import { format } from 'date-and-time';
+
+// Method 1: Individual timezone import
 import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 import New_York from 'date-and-time/timezones/America/New_York';
 
+// Method 2: Consolidated timezone import
+import { Tokyo as TokyoTZ, New_York as NY } from 'date-and-time/timezone';
+
 const date = new Date();
 
-// Format in Tokyo timezone
+// Using TimeZone object (individual import)
 format(date, 'YYYY-MM-DD HH:mm:ss [JST]', { timeZone: Tokyo });
 // => 2025-08-23 23:30:45 JST
 
-// Format in New York timezone  
-format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: New_York });
+// Using TimeZone object (consolidated import)
+format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: NY });
+// => 2025-08-23 09:30:45 EST
+
+// Using IANA timezone name string (format only)
+format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 // => 2025-08-23 09:30:45 EST
 
 // Format in UTC
@@ -314,13 +323,32 @@ format(date, '\\[YYYY-MM-DD HH:mm:ss\\]');
 ```typescript
 import { format } from 'date-and-time';
 import ja from 'date-and-time/locales/ja';
+
+// Method 1: Individual timezone import
 import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
+
+// Method 2: Consolidated timezone import (alternative)
+import { Tokyo as TokyoTZ } from 'date-and-time/timezone';
 
 const date = new Date();
 
-// Japanese with timezone
+// Japanese with timezone (using individual import)
 format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
   timeZone: Tokyo,
+  locale: ja
+});
+// => 2025年8月23日土曜日 午後11:30:45 GMT+0900
+
+// Or using consolidated import
+format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
+  timeZone: TokyoTZ,
+  locale: ja
+});
+// => 2025年8月23日土曜日 午後11:30:45 GMT+0900
+
+// Or using IANA timezone name string
+format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
+  timeZone: 'Asia/Tokyo',
   locale: ja
 });
 // => 2025年8月23日土曜日 午後11:30:45 GMT+0900
@@ -342,7 +370,7 @@ format(date, 'ddd, DD MMM YYYY HH:mm:ss ZZ');
 // => Sat, 23 Aug 2025 14:30:45 +09:00
 
 // Log timestamp
-format(date, '[YYYY-MM-DD HH:mm:ss.SSS]');
+format(date, '\\[YYYY-MM-DD HH:mm:ss.SSS]\\');
 // => [2025-08-23 14:30:45.123]
 
 // File naming

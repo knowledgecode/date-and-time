@@ -1,6 +1,6 @@
 import { toParts, fromParts } from './datetime.ts';
-import { isTimeZone, isUTC, createTimezoneDate } from './timezone.ts';
-import type { TimeZone } from './timezone.ts';
+import { isTimeZone, isUTC, createTimezoneDate } from './zone.ts';
+import type { TimeZone } from './zone.ts';
 
 /**
  * Adds the specified number of months to a Date object.
