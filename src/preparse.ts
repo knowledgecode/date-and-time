@@ -1,5 +1,5 @@
 import { compile } from './compile.ts';
-import { isTimeZone, isUTC } from './timezone.ts';
+import { isTimeZone, isUTC } from './zone.ts';
 import { parser as defaultParser } from './parser.ts';
 import en from './locales/en.ts';
 import latn from './numerals/latn.ts';

@@ -1,4 +1,4 @@
-import { isTimeZone, isUTC, createTimezoneDate } from './timezone.ts';
+import { isTimeZone, isUTC, createTimezoneDate } from './zone.ts';
 import { validatePreparseResult } from './isValid.ts';
 import { preparse } from './preparse.ts';
 import type { CompiledObject } from './compile.ts';

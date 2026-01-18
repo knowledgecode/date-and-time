@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { TimeZone } from '@/timezone.ts';
+import type { TimeZone } from '@/zone.ts';
 
 const importModules = async (path: string) => {
   const items = await readdir(path, { recursive: true, withFileTypes: true });

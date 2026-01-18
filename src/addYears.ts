@@ -1,5 +1,5 @@
 import { addMonths } from './addMonths.ts';
-import type { TimeZone } from './timezone.ts';
+import type { TimeZone } from './zone.ts';
 
 /**
  * Adds the specified number of years to a Date object.

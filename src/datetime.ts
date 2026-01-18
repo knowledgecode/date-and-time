@@ -1,4 +1,5 @@
 import { getDateTimeFormat } from './dtf.ts';
+import { isUTC } from './zone.ts';
 
 export interface DateTimeParts {
   weekday: number;
@@ -13,7 +14,7 @@ export interface DateTimeParts {
 }
 
 export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
-  if (zoneName.toUpperCase() === 'UTC') {
+  if (isUTC(zoneName)) {
     return {
       weekday: dateObj.getUTCDay(),
       year: dateObj.getUTCFullYear(),
@@ -102,11 +103,11 @@ export interface DateLike {
    */
   getMilliseconds(): number;
   /**
-   * Returns the day of the week (0-6; where 0 is Sunday).
+   * Returns the day of the week (0-6, where 0 is Sunday).
    */
   getDay(): number;
   /**
-   * Returns the time value in milliseconds since the Unix epoch (January 1; 1970).
+   * Returns the time value in milliseconds since the Unix epoch (January 1, 1970).
    */
   getTime(): number;
   /**

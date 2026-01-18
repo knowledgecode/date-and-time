@@ -6,4 +6,4 @@ export type { CompiledObject } from './compile.ts';
 export type { DateLike } from './datetime.ts';
 export type { Locale } from './locale.ts';
 export type { Numeral } from './numeral.ts';
-export type { TimeZone } from './timezone.ts';
+export type { TimeZone } from './zone.ts';

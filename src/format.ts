@@ -3,7 +3,7 @@ import { DateTime } from './datetime.ts';
 import { formatter as defaultFormatter } from './formatter.ts';
 import en from './locales/en.ts';
 import latn from './numerals/latn.ts';
-import { isTimeZone, isUTC } from './timezone.ts';
+import { isTimeZone } from './zone.ts';
 import type { CompiledObject } from './compile.ts';
 import type { FormatterOptions } from './formatter.ts';
 
@@ -18,15 +18,14 @@ const comment = /^\[(.*)\]$/;
  */
 export function format(dateObj: Date, arg: string | CompiledObject, options?: FormatterOptions) {
   const pattern = (typeof arg === 'string' ? compile(arg) : arg).slice(1);
-  const timeZone = isTimeZone(options?.timeZone) || isUTC(options?.timeZone) ? options.timeZone : undefined;
-  const zoneName = typeof timeZone === 'string' ? timeZone : timeZone?.zone_name ?? '';
+  const zoneName = isTimeZone(options?.timeZone) ? options.timeZone.zone_name : options?.timeZone;
   const dateTime = zoneName ? new DateTime(dateObj, zoneName) : dateObj;
   const formatterOptions = {
     hour12: options?.hour12 ?? 'h12',
     hour24: options?.hour24 ?? 'h23',
     numeral: options?.numeral ?? latn,
     calendar: options?.calendar ?? 'gregory',
-    timeZone,
+    timeZone: options?.timeZone,
     locale: options?.locale ?? en
   };
   const formatters = [...options?.plugins ?? [], defaultFormatter];
