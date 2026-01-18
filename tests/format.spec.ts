@@ -2,6 +2,7 @@ import { describe, expect, test, beforeAll } from 'vitest';
 import { format, compile } from '@/index.ts';
 import Los_Angeles from '@/timezones/America/Los_Angeles.ts';
 import Tokyo from '@/timezones/Asia/Tokyo.ts';
+import { Los_Angeles as los_angeles, Tokyo as tokyo } from '@/timezone.ts';
 
 describe('YYYY', () => {
   beforeAll(() => (process.env.TZ = 'UTC'));
@@ -750,7 +751,11 @@ describe('options', () => {
   test('timeZone', () => {
     const now = new Date(2025, 1 - 1, 1, 0);
     expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: Los_Angeles })).toBe('2024-12-31 16:00:00.000 -0800 Tu');
+    expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: los_angeles })).toBe('2024-12-31 16:00:00.000 -0800 Tu');
+    expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: 'America/Los_Angeles' })).toBe('2024-12-31 16:00:00.000 -0800 Tu');
     expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: Tokyo })).toBe('2025-01-01 09:00:00.000 +0900 We');
+    expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: tokyo })).toBe('2025-01-01 09:00:00.000 +0900 We');
+    expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: 'Asia/Tokyo' })).toBe('2025-01-01 09:00:00.000 +0900 We');
     expect(format(now, 'YYYY-MM-DD HH:mm:ss.SSS Z dd', { timeZone: 'UTC' })).toBe('2025-01-01 00:00:00.000 +0000 We');
   });
 });
