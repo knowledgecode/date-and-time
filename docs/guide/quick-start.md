@@ -83,22 +83,46 @@ For a complete list of all supported locales with import examples, see [Supporte
 
 ```typescript
 import { format, parse } from 'date-and-time';
+
+// Method 1: Individual timezone imports
 import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 import New_York from 'date-and-time/timezones/America/New_York';
 
+// Method 2: Consolidated timezone imports (alternative)
+import { Los_Angeles, London } from 'date-and-time/timezone';
+
 const date = new Date();
 
-// Format in different timezones
+// Using TimeZone objects (Method 1 - individual import)
 format(date, 'YYYY-MM-DD HH:mm:ss [JST]', { timeZone: Tokyo });
 // => 2025-08-23 23:30:45 JST
 
-format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: New_York });
+// Using TimeZone objects (Method 2 - consolidated import)
+format(date, 'YYYY-MM-DD HH:mm:ss [PST]', { timeZone: Los_Angeles });
+// => 2025-08-23 06:30:45 PST
+
+// Using IANA timezone name strings (simplest approach)
+format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 // => 2025-08-23 09:30:45 EST
 
 // UTC formatting
 format(date, 'YYYY-MM-DD HH:mm:ss [UTC]', { timeZone: 'UTC' });
 // => 2025-08-23 14:30:45 UTC
+
+// Parsing in timezone (TimeZone objects only)
+parse('2025-08-23 23:30:45', 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
+// => Fri Aug 23 2025 23:30:45 GMT+0900
 ```
+
+### Three Ways to Specify Timezones
+
+The `format()` function supports three methods for specifying timezones:
+
+1. **TimeZone objects via individual imports** - Type-safe but requires multiple import statements
+2. **TimeZone objects via consolidated imports** - Type-safe with better code organization
+3. **IANA timezone name strings** - Simplest approach, no imports needed for timezone modules
+
+The `parse()` function only supports TimeZone objects and the "UTC" string for timezone specification.
 
 For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
 
