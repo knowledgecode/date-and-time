@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.1.2",
+  "version": "4.2.0",
   "description": "The simplest, most intuitive date and time library",
   "keywords": [
     "date",
@@ -23,6 +23,11 @@
       "types": "./dist/plugin.d.ts",
       "import": "./dist/plugin.js",
       "require": "./dist/plugin.cjs"
+    },
+    "./timezone": {
+      "types": "./dist/timezone.d.ts",
+      "import": "./dist/timezone.js",
+      "require": "./dist/timezone.cjs"
     },
     "./locales/*": {
       "types": "./dist/locales/*.d.ts",
@@ -63,6 +68,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "timezone": "tsx tools/timezone.ts",
+    "ts": "tsc --noEmit",
     "zonename": "tsx tools/zonename.ts"
   },
   "author": "KNOWLEDGECODE",
@@ -81,22 +87,21 @@
   "type": "module",
   "sideEffects": false,
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
     "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@stylistic/eslint-plugin": "^5.6.1",
-    "@types/node": "^25.0.2",
-    "@vitest/coverage-v8": "^4.0.15",
+    "@stylistic/eslint-plugin": "^5.7.0",
+    "@types/node": "^25.0.9",
+    "@vitest/coverage-v8": "^4.0.17",
     "eslint": "^9.39.2",
     "glob": "^13.0.0",
-    "prettier": "^3.7.4",
-    "rollup": "^4.53.3",
+    "prettier": "^3.8.0",
+    "rollup": "^4.55.1",
     "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-esbuild": "^6.2.1",
     "tsx": "^4.21.0",
-    "typescript-eslint": "^8.49.0",
+    "typescript-eslint": "^8.53.0",
     "vitepress": "^1.6.4",
-    "vitest": "^4.0.15"
+    "vitest": "^4.0.17"
   },
   "overrides": {
     "esbuild": "^0.25.0"
