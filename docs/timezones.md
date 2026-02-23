@@ -40,9 +40,11 @@ format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: Sydney });   // AEDT/AEST
 
 Both Method 1 and Method 2 provide the same functionality - they differ only in code organization.
 
+> **Note**: The TimeZone module import approach (Method 1 and Method 2) may be deprecated in a future version. Switching to IANA timezone name strings (Method 3) is recommended for new projects.
+
 ### Method 3: IANA Timezone Name String
 
-Functions that accept `FormatterOptions` (such as `format()` and `transform()`) allow you to specify timezones using IANA timezone name strings directly. This is the simplest approach.
+All date-and-time functions that accept timezone options — `format()`, `parse()`, `preparse()`, `isValid()`, `transform()`, `addYears()`, `addMonths()`, and `addDays()` — support specifying timezones using IANA timezone name strings directly. This is the simplest approach and is recommended for new projects.
 
 ```typescript
 import { format } from 'date-and-time';
@@ -60,7 +62,7 @@ format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Europe/London' });
 // => 2025-08-23 14:30:45
 ```
 
-**Important Note**: The `parse()` function does not support string type timezone names because it uses `ParserOptions` instead of `FormatterOptions`. Only TimeZone objects and the "UTC" string are supported for parsing.
+**Note**: Starting from v4.3.0, all functions that accept a timezone parameter support IANA timezone name strings (e.g., `'America/New_York'`), TimeZone objects, and the `"UTC"` string.
 
 ## Regions
 

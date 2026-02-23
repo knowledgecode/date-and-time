@@ -1,6 +1,6 @@
 # isSameDay()
 
-Check if two Date objects represent the same calendar day, regardless of time.
+Checks if two Date objects represent the same calendar day, regardless of time.
 
 ## Syntax
 

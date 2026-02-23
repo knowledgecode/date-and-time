@@ -109,8 +109,12 @@ format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 format(date, 'YYYY-MM-DD HH:mm:ss [UTC]', { timeZone: 'UTC' });
 // => 2025-08-23 14:30:45 UTC
 
-// Parsing in timezone (TimeZone objects only)
+// Parsing in timezone (TimeZone object)
 parse('2025-08-23 23:30:45', 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
+// => Fri Aug 23 2025 23:30:45 GMT+0900
+
+// Parsing in timezone (IANA timezone name string)
+parse('2025-08-23 23:30:45', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
 // => Fri Aug 23 2025 23:30:45 GMT+0900
 ```
 
@@ -122,7 +126,7 @@ The `format()` function supports three methods for specifying timezones:
 2. **TimeZone objects via consolidated imports** - Type-safe with better code organization
 3. **IANA timezone name strings** - Simplest approach, no imports needed for timezone modules
 
-The `parse()` function only supports TimeZone objects and the "UTC" string for timezone specification.
+The `parse()` function supports the same timezone formats as `format()`: TimeZone objects, IANA timezone name strings, and the `"UTC"` string.
 
 For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
 

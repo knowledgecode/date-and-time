@@ -67,9 +67,9 @@ parse('2025-08-23 14:30:45', 'YYYY-MM-DD HH:mm:ss');
 | Token | Description | Input Examples |
 |-------|-------------|----------------|
 | `HH` | Hour in 24-hour format | 23, 08 |
-| `H` | Hour in 24-hour format (no padding) | 23, 8 |
+| `H` | Hour in 24-hour format without zero padding | 23, 8 |
 | `hh` | Hour in 12-hour format | 11, 08 |
-| `h` | Hour in 12-hour format (no padding) | 11, 8 |
+| `h` | Hour in 12-hour format without zero padding | 11, 8 |
 | `mm` | Minutes | 14, 07 |
 | `m` | Minutes without zero padding | 14, 7 |
 | `ss` | Seconds | 05, 10 |
@@ -140,10 +140,12 @@ For a complete list of all supported locales with import examples, see [Supporte
 
 ### timeZone
 
-**Type**: `TimeZone | "UTC"`  
+**Type**: `TimeZone | string`
 **Default**: `undefined` (local timezone)
 
-Interprets the parsed date in the specified timezone. **Note**: If the input string contains a timezone offset (e.g., `Z` or `ZZ` tokens), that offset takes precedence and the `timeZone` option is ignored.
+Interprets the parsed date in the specified timezone.
+
+**Note**: If the input string contains a timezone offset (e.g., `Z` or `ZZ` tokens), that offset takes precedence and the `timeZone` option is ignored.
 
 ```typescript
 import { parse } from 'date-and-time';
@@ -158,6 +160,10 @@ parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
 parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: New_York });
 // => Fri Aug 23 2025 14:30:00 GMT-0400
 
+// Parse using an IANA timezone name string (no import needed)
+parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
+// => Fri Aug 23 2025 14:30:00 GMT+0900
+
 // Parse in UTC
 parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'UTC' });
 // => Fri Aug 23 2025 14:30:00 GMT+0000
@@ -170,8 +176,8 @@ parse('2025-08-23T14:30:00 +05:00', 'YYYY-MM-DD[T]HH:mm:ss ZZ', { timeZone: New_
 // => Fri Aug 23 2025 14:30:00 GMT+0500 (New_York timeZone is ignored)
 ```
 
-:::warning Important Difference from format()
-The `parse()` function only accepts TimeZone objects and the "UTC" string for the `timeZone` option. Unlike `format()`, which supports both TimeZone objects and IANA timezone name strings, `parse()` does not support string type timezone names.
+:::tip
+Like `format()`, `parse()` accepts TimeZone objects, IANA timezone name strings (e.g., `'America/New_York'`), and the `"UTC"` string for the `timeZone` option. If the input string contains a timezone offset token (`Z` or `ZZ`), that offset takes precedence over the `timeZone` option.
 :::
 
 For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
@@ -370,12 +376,12 @@ parse('Jan 1 0000', 'MMM D YYYY');
 
 ### UTC Input Parsing
 
-If the input string doesn't contain a timezone offset and no `timeZone` option is specified, the function treats the input as local timezone. To parse input as UTC, set `timeZone: 'UTC'` in the options.
+If the input string doesn't contain a timezone offset and no `timeZone` option is specified, the function treats the input as the local timezone. To parse input as UTC, set `timeZone: 'UTC'` in the options.
 
 ```typescript
 import { parse } from 'date-and-time';
 
-// Parsed as local timezone
+// Parsed as the local timezone
 parse('14:30:45', 'HH:mm:ss');
 // => Thu Jan 01 1970 14:30:45 GMT-0800
 

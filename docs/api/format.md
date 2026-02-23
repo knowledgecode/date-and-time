@@ -66,9 +66,9 @@ format(now, 'hh:mm A [GMT]Z');
 | Token | Description | Output Examples |
 |-------|-------------|-----------------|
 | `HH` | Hour in 24-hour format | 23, 08 |
-| `H` | Hour in 24-hour format (no padding) | 23, 8 |
+| `H` | Hour in 24-hour format without zero padding | 23, 8 |
 | `hh` | Hour in 12-hour format | 11, 08 |
-| `h` | Hour in 12-hour format (no padding) | 11, 8 |
+| `h` | Hour in 12-hour format without zero padding | 11, 8 |
 | `mm` | Minutes | 14, 07 |
 | `m` | Minutes without zero padding | 14, 7 |
 | `ss` | Seconds | 05, 10 |
@@ -159,7 +159,7 @@ format(date, 'YYYY-MM-DD HH:mm:ss [JST]', { timeZone: Tokyo });
 format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: NY });
 // => 2025-08-23 09:30:45 EST
 
-// Using IANA timezone name string (format only)
+// Using IANA timezone name string
 format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 // => 2025-08-23 09:30:45 EST
 

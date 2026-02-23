@@ -98,6 +98,8 @@ const localized = format(date, 'YYYY年M月D日', { locale: ja });
 
 // Timezone-aware operations
 const tokyoTime = format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
+// Or using IANA timezone name string (New in v4.2.0)
+const tokyoTime2 = format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
 ```
 
 ## Browser and Environment Support
