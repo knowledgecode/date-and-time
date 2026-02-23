@@ -41,10 +41,10 @@ export interface ParserPluginOptions {
 
   /**
    * The time zone to use for parsing dates and times.
-   * This can be a specific time zone object or 'UTC' to use Coordinated Universal Time.
+   * This can be a specific time zone object, an IANA time zone name, or 'UTC' to use Coordinated Universal Time.
    * If not specified, it defaults to undefined, which means the local time zone will be used.
    */
-  timeZone: TimeZone | 'UTC' | undefined;
+  timeZone: TimeZone | string | undefined;
 
   /**
    * The locale to use for parsing dates and times.
@@ -83,15 +83,30 @@ export const exec = (re: RegExp, str: string, token?: ParserToken) => {
  * Finds the best matching string from an array based on length and string position.
  * @param array - Array of strings to search through
  * @param str - The string to match against
+ * @param options - Parser plugin options
  * @param [token] - Optional parser token to associate with the result
  * @returns ParseResult with the index of the longest matching string at the start position
  */
-export const find = (array: string[], str: string, token?: ParserToken): ParseResult => {
-  return array.reduce((result, item, value) => item.length > result.length && !str.indexOf(item)
+export const find = (array: string[], str: string, options: ParserPluginOptions, token?: ParserToken): ParseResult => {
+  const [array2, str2] = options.ignoreCase ? (() => {
+    const locale = options.locale.getLocale();
+    return [array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale)];
+  })() : [array, str];
+
+  return array2.reduce((result, item, value) => item.length > result.length && !str2.indexOf(item)
     ? { value, length: item.length, token }
     : result,
   { value: -1, length: 0, token });
 };
+
+const VALID_TOKENS = new Set<ParserToken>(['Y', 'M', 'D', 'H', 'A', 'h', 'm', 's', 'S', 'Z']);
+
+/**
+ * Validates if a token is a recognized parser token.
+ * @param token - The token string to validate
+ * @returns True if the token is valid, false otherwise
+ */
+export const validateToken = (token: ParserToken) => VALID_TOKENS.has(token);
 
 class DefaultParser extends ParserPlugin {
   YYYY (str: string) {
@@ -104,10 +119,7 @@ class DefaultParser extends ParserPlugin {
 
   MMMM (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMonthList({ style: 'long', compiledObj });
-    const locale = options.locale.getLocale();
-    const result = options.ignoreCase
-      ? find(array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale), 'M')
-      : find(array, str, 'M');
+    const result = find(array, str, options, 'M');
 
     result.value++;
     return result;
@@ -115,10 +127,7 @@ class DefaultParser extends ParserPlugin {
 
   MMM (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMonthList({ style: 'short', compiledObj });
-    const locale = options.locale.getLocale();
-    const result = options.ignoreCase
-      ? find(array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale), 'M')
-      : find(array, str, 'M');
+    const result = find(array, str, options, 'M');
 
     result.value++;
     return result;
@@ -150,38 +159,22 @@ class DefaultParser extends ParserPlugin {
 
   AA (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'long', compiledObj, case: 'uppercase' });
-    const locale = options.locale.getLocale();
-
-    return options.ignoreCase
-      ? find(array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale), 'A')
-      : find(array, str, 'A');
+    return find(array, str, options, 'A');
   }
 
   A (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'short', compiledObj, case: 'uppercase' });
-    const locale = options.locale.getLocale();
-
-    return options.ignoreCase
-      ? find(array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale), 'A')
-      : find(array, str, 'A');
+    return find(array, str, options, 'A');
   }
 
   aa (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'long', compiledObj, case: 'lowercase' });
-    const locale = options.locale.getLocale();
-
-    return options.ignoreCase
-      ? find(array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale), 'A')
-      : find(array, str, 'A');
+    return find(array, str, options, 'A');
   }
 
   a (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'short', compiledObj, case: 'lowercase' });
-    const locale = options.locale.getLocale();
-
-    return options.ignoreCase
-      ? find(array.map(s => s.toLocaleLowerCase(locale)), str.toLocaleLowerCase(locale), 'A')
-      : find(array, str, 'A');
+    return find(array, str, options, 'A');
   }
 
   hh (str: string) {
@@ -233,7 +226,7 @@ class DefaultParser extends ParserPlugin {
   ZZ (str: string) {
     const results = /^([+-][01]\d):([0-5]\d)/.exec(str) ?? ['', '', ''];
     const value = +(results[1] + results[2]);
-    return { value: (value / 100 | 0) * -60 - value % 100, length: results[0].length, token: 'Z' as ParserToken };
+    return { value: (value / 100 | 0) * -60 - value % 100, length: results[0].length, token: 'Z' } satisfies ParseResult;
   }
 }
 

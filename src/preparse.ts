@@ -1,6 +1,6 @@
 import { compile } from './compile.ts';
-import { isTimeZone, isUTC } from './zone.ts';
-import { parser as defaultParser } from './parser.ts';
+import { isTimeZone } from './zone.ts';
+import { parser as defaultParser, validateToken } from './parser.ts';
 import en from './locales/en.ts';
 import latn from './numerals/latn.ts';
 import type { CompiledObject } from './compile.ts';
@@ -92,7 +92,9 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
     numeral: options?.numeral ?? latn,
     calendar: options?.calendar ?? 'gregory',
     ignoreCase: options?.ignoreCase ?? false,
-    timeZone: isTimeZone(options?.timeZone) || isUTC(options?.timeZone) ? options.timeZone : undefined,
+    timeZone: isTimeZone(options?.timeZone) || typeof options?.timeZone === 'string'
+      ? options.timeZone || undefined
+      : undefined,
     locale: options?.locale ?? en
   };
   const pr: PreparseResult = {
@@ -120,7 +122,7 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
       if (!result.length) {
         break;
       }
-      if (result.token) {
+      if (result.token && validateToken(result.token)) {
         pr[result.token] = result.value + 0;
       }
       pr._index += result.length;

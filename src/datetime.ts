@@ -1,5 +1,4 @@
 import { getDateTimeFormat } from './dtf.ts';
-import { isUTC } from './zone.ts';
 
 export interface DateTimeParts {
   weekday: number;
@@ -13,23 +12,20 @@ export interface DateTimeParts {
   timezoneOffset: number;
 }
 
-export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
-  if (isUTC(zoneName)) {
-    return {
-      weekday: dateObj.getUTCDay(),
-      year: dateObj.getUTCFullYear(),
-      month: dateObj.getUTCMonth() + 1,
-      day: dateObj.getUTCDate(),
-      hour: dateObj.getUTCHours(),
-      minute: dateObj.getUTCMinutes(),
-      second: dateObj.getUTCSeconds(),
-      fractionalSecond: dateObj.getUTCMilliseconds(),
-      timezoneOffset: 0
-    };
-  }
+export const fromParts = (parts: DateTimeParts) => {
+  return Date.UTC(
+    parts.year,
+    parts.month - (parts.year < 100 ? 1900 * 12 + 1 : 1),
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second,
+    parts.fractionalSecond + parts.timezoneOffset * 60000
+  );
+};
 
-  const values = getDateTimeFormat(zoneName)
-    .formatToParts(dateObj)
+export const dtfToParts = (dtf: Intl.DateTimeFormat, time: number): DateTimeParts => {
+  return dtf.formatToParts(time)
     .reduce((parts, { type, value }) => {
       switch (type) {
       case 'weekday':
@@ -52,25 +48,32 @@ export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
       hour: 0, minute: 0, second: 0, fractionalSecond: 0,
       timezoneOffset: 0
     });
-
-  values.timezoneOffset = (dateObj.getTime() - Date.UTC(
-    values.year,
-    values.month - (values.year < 100 ? 1900 * 12 + 1 : 1),
-    values.day,
-    values.hour,
-    values.minute,
-    values.second,
-    values.fractionalSecond
-  )) / 60000;
-
-  return values;
 };
 
-export const fromParts = (parts: DateTimeParts) => {
-  return Date.UTC(
-    parts.year, parts.month - (parts.year < 100 ? 1900 * 12 + 1 : 1), parts.day,
-    parts.hour, parts.minute, parts.second, parts.fractionalSecond + parts.timezoneOffset * 60000
-  );
+export const isUTC = (timeZone: unknown): timeZone is 'UTC' => {
+  return typeof timeZone === 'string' && timeZone.toUpperCase() === 'UTC';
+};
+
+export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
+  if (isUTC(zoneName)) {
+    return {
+      weekday: dateObj.getUTCDay(),
+      year: dateObj.getUTCFullYear(),
+      month: dateObj.getUTCMonth() + 1,
+      day: dateObj.getUTCDate(),
+      hour: dateObj.getUTCHours(),
+      minute: dateObj.getUTCMinutes(),
+      second: dateObj.getUTCSeconds(),
+      fractionalSecond: dateObj.getUTCMilliseconds(),
+      timezoneOffset: 0
+    };
+  }
+
+  const time = dateObj.getTime();
+  const parts = dtfToParts(getDateTimeFormat(zoneName), time);
+
+  parts.timezoneOffset = (time - fromParts(parts)) / 60000;
+  return parts;
 };
 
 export interface DateLike {

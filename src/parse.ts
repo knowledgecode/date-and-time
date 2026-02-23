@@ -1,6 +1,7 @@
-import { isTimeZone, isUTC, createTimezoneDate } from './zone.ts';
-import { validatePreparseResult } from './isValid.ts';
+import { createTimezoneDate } from './zone.ts';
+import { isUTC } from './datetime.ts';
 import { preparse } from './preparse.ts';
+import { validatePreparseResult } from './isValid.ts';
 import type { CompiledObject } from './compile.ts';
 import type { ParserOptions } from './parser.ts';
 
@@ -26,14 +27,14 @@ export function parse(dateString: string, arg: string | CompiledObject, options?
   pr.s ??= 0;
   pr.S ??= 0;
 
-  if (isTimeZone(options?.timeZone)) {
-    // Handle timezone-specific calculation
-    return createTimezoneDate(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S), options.timeZone);
-  }
+  // If the preparse result contains a timezone offset (Z), use it to create the date.
   if (isUTC(options?.timeZone) || 'Z' in pr) {
-    // Handle UTC calculation or when 'Z' token is present
     return new Date(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m + (pr.Z ?? 0), pr.s, pr.S));
   }
-  // Handle local timezone calculation
+  // If a specific time zone is provided in the options, use it to create the date.
+  if (options?.timeZone) {
+    return createTimezoneDate(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S), options.timeZone);
+  }
+  // If no time zone information is available, create the date in the local time zone.
   return new Date(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S);
 }
