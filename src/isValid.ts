@@ -4,7 +4,7 @@ import type { ParserOptions } from './parser.ts';
 import type { PreparseResult } from './preparse.ts';
 
 const getLastDayOfMonth = (year: number, month: number) => {
-  return new Date(year, month - (year < 100 ? 1900 * 12 : 0), 0).getDate();
+  return new Date(Date.UTC(year, month - (year < 100 ? 1900 * 12 : 0), 0)).getUTCDate();
 };
 
 /**
@@ -32,7 +32,7 @@ export function validatePreparseResult(pr: PreparseResult, options?: ParserOptio
     && range(pr.m, 0, 59)
     && range(pr.s, 0, 59)
     && range(pr.S, 0, 999)
-    && range(pr.Z, -840, 720);
+    && range(pr.Z, -913, 956);
 }
 
 /**

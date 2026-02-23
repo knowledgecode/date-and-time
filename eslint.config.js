@@ -110,7 +110,7 @@ export default defineConfig(
       '@stylistic/function-call-spacing': 'warn',
       '@stylistic/generator-star-spacing': 'warn',
       '@stylistic/implicit-arrow-linebreak': 'warn',
-      '@stylistic/indent': ['warn', 2, { ignoreComments: true }],
+      '@stylistic/indent': ['warn', 2, { SwitchCase: 0, ignoreComments: true }],
       '@stylistic/jsx-quotes': 'warn',
       '@stylistic/key-spacing': 'warn',
       '@stylistic/keyword-spacing': 'warn',

@@ -1,6 +1,6 @@
 # Plugins
 
-`date-and-time` adopts a plugin system. Special tokens that are considered to be used relatively infrequently are provided as plugins outside the main library. By adding plugins as needed, you can use those tokens in `Formatter` and `Parser`. Here, `Formatter` refers to the output engine used by the `format` function, and `Parser` refers to the parsing engine used by the `parse`, `preparse`, and `isValid` functions. These engines are extended by adding plugins as arguments to these functions.
+`date-and-time` adopts a plugin system. Special tokens used relatively infrequently are provided as plugins outside the main library. By adding plugins as needed, you can use those tokens in `Formatter` and `Parser`. Here, `Formatter` refers to the output engine used by the `format` function, and `Parser` refers to the parsing engine used by the `parse`, `preparse`, and `isValid` functions. These engines are extended by adding plugins as arguments to these functions.
 
 ## Install
 
@@ -27,7 +27,7 @@ format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar.formatter] });
 <details open>
 <summary><strong>day-of-week</strong></summary>
 
-You can add tokens to the `Parser` to read day of the week. Since day of the week is not information that can identify a specific date, it is actually a meaningless token, but it can be used to skip that portion when the string you want to read contains a day of the week.
+You can add tokens to the `Parser` to read the day of the week. Since the day of the week does not provide information that identifies a specific date, it is a meaningless token, but it can be used to skip that portion when the string you want to read contains a day of the week.
 
 `Parser`:
 
@@ -39,7 +39,7 @@ You can add tokens to the `Parser` to read day of the week. Since day of the wee
 
 ```typescript
 import { parse } from 'date-and-time';
-import { parser as day_of_week } from 'date-and-time/plugins/day_of_week';
+import { parser as day_of_week } from 'date-and-time/plugins/day-of-week';
 
 parse(
   'Thursday, March 05, 2020', 'dddd, MMMM, D YYYY',
@@ -52,7 +52,7 @@ parse(
 <details open>
 <summary><strong>microsecond</strong></summary>
 
-You can add tokens to the `Parser` to read microseconds. Since the precision of JavaScript's Date type is milliseconds, these tokens are actually meaningless, but they can be used to skip that portion when the string you want to read contains microseconds.
+You can add tokens to the `Parser` to read microseconds. Since the precision of JavaScript's Date type is milliseconds, these tokens are meaningless, but they can be used to skip that portion when the string you want to read contains microseconds.
 
 `Parser`:
 
@@ -78,7 +78,7 @@ parse('12:34:56 123.456', 'HH:mm:ss SSS.fff', { plugins: [microsecond] });
 <details open>
 <summary><strong>nanosecond</strong></summary>
 
-You can add tokens to the `Parser` to read nanoseconds. Since the precision of JavaScript's Date type is milliseconds, these tokens are actually meaningless, but they can be used to skip that portion when the string you want to read contains nanoseconds.
+You can add tokens to the `Parser` to read nanoseconds. Since the precision of JavaScript's Date type is milliseconds, these tokens are meaningless, but they can be used to skip that portion when the string you want to read contains nanoseconds.
 
 `Parser`:
 
@@ -184,7 +184,7 @@ You can add tokens to the `Formatter` to output timezone names. These timezone n
 | zz       | Long timezone name              | Pacific Standard Time |
 
 ```typescript
-import { parse } from 'date-and-time';
+import { format } from 'date-and-time';
 import { formatter as zonename } from 'date-and-time/plugins/zonename';
 import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 

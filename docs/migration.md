@@ -2,11 +2,11 @@
 
 Version `4.x` has been completely rewritten in TypeScript and some features from `3.x` are no longer compatible. This section explains the changes to each feature and the migration methods.
 
-## Install
+## Installation
 
-Version `4.x` adopts a modern development style and no longer supports older browsers. Module imports are only supported in `ESModules` or `CommonJS` style. Additionally, since functions can now be imported directly, there is a higher possibility of reducing the final module size through bundler tree shaking.
+Version `4.x` adopts a modern development style and no longer supports older browsers. Module imports are only supported in ES Modules or CommonJS style. Additionally, since functions can now be imported directly, it is more likely to reduce the final module size through bundler tree shaking.
 
-- ESModules:
+- ES Modules:
 
 ```typescript
 import { format } from 'date-and-time';
@@ -71,8 +71,6 @@ format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: NY });
 // => 2025-08-23 09:30:45 EST
 ```
 
-**Note**: The `parse()` function does not support string type timezone names. Only TimeZone objects and the "UTC" string are supported for parsing.
-
 ##### Consolidated Import
 
 For better code organization when working with multiple timezones, you can import all timezones from a single `date-and-time/timezone` module:
@@ -98,6 +96,8 @@ import London from 'date-and-time/timezones/Europe/London';
 import Sydney from 'date-and-time/timezones/Australia/Sydney';
 ```
 
+> **Note**: The TimeZone module import approach (individual imports and consolidated imports) may be deprecated in a future version in favor of IANA timezone name strings. Using IANA timezone name strings is recommended for new projects.
+
 ### parse
 
 The third argument has been changed from `boolean` to `ParserOptions`. With `ParserOptions`, you can now specify timezone and locale settings. If you previously set the third argument to `true` to parse input in UTC timezone, you can achieve the same output as follows:
@@ -109,7 +109,7 @@ parse('11:14:05 PM', 'h:mm:ss A', { timeZone: 'UTC' });
 // => Jan 02 1970 23:14:05 GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `parseTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
+Additionally, since the `timezone` plugin has been integrated into the main library, the `parseTZ` function is now obsolete. Timezones can now be specified as TimeZone module imports, IANA timezone name strings, or the `"UTC"` string.
 
 ```typescript
 import { parse } from 'date-and-time';
@@ -119,6 +119,21 @@ import fr from 'date-and-time/locales/fr';
 parse(
   '02 janv. 2015, 11:14:05 PM', 'DD MMM YYYY, h:mm:ss A',
   { timeZone: Paris, locale: fr }
+);
+// => Jan 02 2015 23:14:05 GMT+0100
+```
+
+#### New in v4.3.0: Enhanced Timezone Support
+
+The `parse()` function now also supports IANA timezone name strings (e.g., `'America/New_York'`), in addition to TimeZone objects and the `"UTC"` string.
+
+```typescript
+import { parse } from 'date-and-time';
+import fr from 'date-and-time/locales/fr';
+
+parse(
+  '02 janv. 2015, 11:14:05 PM', 'DD MMM YYYY, h:mm:ss A',
+  { timeZone: 'Europe/Paris', locale: fr }
 );
 // => Jan 02 2015 23:14:05 GMT+0100
 ```
@@ -184,6 +199,25 @@ transform(
 // => 3/8/2020 10:05 AM
 ```
 
+#### New in v4.3.0: Enhanced Timezone Support
+
+The `transform()` function now supports IANA timezone name strings for both `parserOptions` and `formatterOptions`. Using IANA timezone name strings is recommended over importing TimeZone modules.
+
+```typescript
+import { transform } from 'date-and-time';
+
+// Convert 24-hour format to 12-hour format
+transform('13:05', 'HH:mm', 'hh:mm A', { timeZone: 'UTC' }, { timeZone: 'UTC' });
+// => 01:05 PM
+
+// Convert East Coast time to West Coast time using IANA timezone name strings
+transform(
+  '3/8/2020 1:05 PM', 'D/M/YYYY h:mm A', 'D/M/YYYY h:mm A',
+  { timeZone: 'America/New_York' }, { timeZone: 'America/Los_Angeles' }
+);
+// => 3/8/2020 10:05 AM
+```
+
 ### addYears
 
 The third argument has been changed from `boolean` to `TimeZone | UTC`. If you previously set the third argument to `true` to calculate in UTC timezone, you can achieve the same output as follows:
@@ -198,7 +232,7 @@ addYears(now, 1, 'UTC');
 // => Mar 11 2025 01:00:00 GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `addYearsTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA time zone names` (except for UTC timezone).
+Additionally, since the `timezone` plugin has been integrated into the main library, the `addYearsTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA timezone names` (except for the UTC timezone).
 
 ```typescript
 import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
@@ -207,6 +241,20 @@ const now = new Date(2024, 2, 11, 1);
 // => Mar 11 2024 01:00:00 GMT-07:00
 
 addYears(now, 1, Los_Angeles);
+// => Mar 11 2025 01:00:00 GMT-07:00
+```
+
+#### New in v4.3.0: Enhanced Timezone Support
+
+The `addYears()`, `addMonths()`, and `addDays()` functions now support IANA timezone name strings. Using IANA timezone name strings is recommended over importing TimeZone modules.
+
+```typescript
+import { addYears } from 'date-and-time';
+
+const now = new Date(2024, 2, 11, 1);
+// => Mar 11 2024 01:00:00 GMT-07:00
+
+addYears(now, 1, 'America/Los_Angeles');
 // => Mar 11 2025 01:00:00 GMT-07:00
 ```
 
@@ -238,7 +286,7 @@ subtract(yesterday, today).toMilliseconds().value; // => 86400000
 
 ### timeSpan
 
-The `timespan` plugin is now obsolete as it has been integrated into the main library's `subtract` function. Please note that the argument order of the `subtract` function has changed. You can achieve the same output as before as follows:
+The `timeSpan` plugin is now obsolete as it has been integrated into the main library's `subtract` function. Please note that the argument order of the `subtract` function has changed. You can achieve the same output as before as follows:
 
 ```typescript
 import { subtract } from 'date-and-time';
@@ -275,3 +323,5 @@ The following plugins are now obsolete as they have been integrated into the mai
 - `meridiem`
 - `timespan`
 - `timezone`
+
+The custom plugin feature that existed up to 3.x is not yet supported at this time.

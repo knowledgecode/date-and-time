@@ -1,6 +1,6 @@
 # isLeapYear()
 
-Determine if a given year is a leap year according to the Gregorian calendar rules.
+Determines if a given year is a leap year according to the Gregorian calendar rules.
 
 ## Syntax
 

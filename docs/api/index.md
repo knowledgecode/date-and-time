@@ -78,7 +78,7 @@ format(new Date(), 'YYYY年M月D日(ddd) HH:mm', {
 ```typescript
 interface FormatterOptions {
   locale?: Locale;                    // Locale object for localized formatting
-  timeZone?: TimeZone | 'UTC';        // Timezone object or UTC string
+  timeZone?: TimeZone | string;       // Timezone object or IANA timezone name string
   numeral?: Numeral;                  // Numeral system for number formatting
   calendar?: 'gregory' | 'buddhist';  // Calendar system
   hour12?: 'h11' | 'h12';             // 12-hour format type
@@ -91,7 +91,7 @@ interface FormatterOptions {
 ```typescript
 interface ParserOptions {
   locale?: Locale;                    // Locale object for localized parsing
-  timeZone?: TimeZone | 'UTC';        // Timezone object or UTC string
+  timeZone?: TimeZone | string;       // Timezone object or IANA timezone name string
   numeral?: Numeral;                  // Numeral system for number parsing
   calendar?: 'gregory' | 'buddhist';  // Calendar system
   hour12?: 'h11' | 'h12';             // 12-hour format type

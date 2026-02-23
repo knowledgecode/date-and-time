@@ -1,6 +1,6 @@
 # subtract()
 
-Calculates the difference between two Date objects and return a rich Duration object with multiple time units and formatting options.
+Calculates the difference between two Date objects and returns a rich Duration object with multiple time units and formatting options.
 
 ## Syntax
 

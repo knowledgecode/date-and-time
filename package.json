@@ -1,6 +1,6 @@
 {
   "name": "date-and-time",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "The simplest, most intuitive date and time library",
   "keywords": [
     "date",
@@ -87,23 +87,25 @@
   "type": "module",
   "sideEffects": false,
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@stylistic/eslint-plugin": "^5.7.0",
-    "@types/node": "^25.0.9",
-    "@vitest/coverage-v8": "^4.0.17",
-    "eslint": "^9.39.2",
-    "glob": "^13.0.0",
-    "prettier": "^3.8.0",
-    "rollup": "^4.55.1",
+    "@stylistic/eslint-plugin": "^5.9.0",
+    "@types/node": "^25.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^10.0.1",
+    "glob": "^13.0.6",
+    "prettier": "^3.8.1",
+    "rollup": "^4.58.0",
     "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-esbuild": "^6.2.1",
     "tsx": "^4.21.0",
-    "typescript-eslint": "^8.53.0",
+    "typescript-eslint": "^8.56.0",
     "vitepress": "^1.6.4",
-    "vitest": "^4.0.17"
+    "vitest": "^4.0.18"
   },
   "overrides": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "minimatch": "^10.2.2"
   }
 }
