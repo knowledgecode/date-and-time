@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { isValid, compile } from '@/index.ts';
+import { isValid, compile, format } from '@/index.ts';
 import { parser } from '@/plugins/day-of-week.ts';
 
 beforeAll(() => (process.env.TZ = 'UTC'));
@@ -136,5 +136,17 @@ describe('options', () => {
     expect(isValid('9999-01-01 12:00 AM', 'YYYY-MM-DD hh:mm A', { calendar: 'buddhist' })).toBe(true);
     expect(isValid('0544-01-01 12:00 AM', 'YYYY-MM-DD hh:mm A', { calendar: 'buddhist' })).toBe(true);
     expect(isValid('0543-01-01 12:00 AM', 'YYYY-MM-DD hh:mm A', { calendar: 'buddhist' })).toBe(false);
+  });
+
+  test('timeZone: min', () => {
+    process.env.TZ = 'America/Metlakatla';
+    const dateString = format(new Date(-3225223728000), 'YYYY-MM-DD[T]HH:mm:ss ZZ');
+    expect(isValid(dateString, 'YYYY-MM-DD[T]HH:mm:ss ZZ')).toBe(true);
+  });
+
+  test('timeZone: max', () => {
+    process.env.TZ = 'Asia/Manila';
+    const dateString = format(new Date(-3944621033000), 'YYYY-MM-DD[T]HH:mm:ss ZZ');
+    expect(isValid(dateString, 'YYYY-MM-DD[T]HH:mm:ss ZZ')).toBe(true);
   });
 });
