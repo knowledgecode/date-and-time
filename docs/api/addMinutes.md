@@ -10,10 +10,10 @@ addMinutes(dateObj, minutes)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `minutes` | `number` | Yes | Number of minutes to add (positive) or subtract (negative) |
+| Parameter | Type     | Required | Description                                                |
+|-----------|----------|----------|------------------------------------------------------------|
+| `dateObj` | `Date`   | Yes      | The base Date object                                       |
+| `minutes` | `number` | Yes      | Number of minutes to add (positive) or subtract (negative) |
 
 ### Returns
 

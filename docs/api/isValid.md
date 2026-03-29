@@ -10,11 +10,11 @@ isValid(dateString, formatString[, options])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateString` | `string` | Yes | The date string to validate |
-| `formatString` | `string \| CompiledObject` | Yes | The format pattern or compiled object |
-| `options` | `ParserOptions` | No | Parser options for validation (see [`parse()`](./parse#parseroptions) for details) |
+| Parameter      | Type                       | Required | Description                                                                        |
+|----------------|----------------------------|----------|------------------------------------------------------------------------------------|
+| `dateString`   | `string`                   | Yes      | The date string to validate                                                        |
+| `formatString` | `string \| CompiledObject` | Yes      | The format pattern or compiled object                                              |
+| `options`      | `ParserOptions`            | No       | Parser options for validation (see [`parse()`](./parse#parseroptions) for details) |
 
 ### Returns
 
@@ -26,20 +26,20 @@ isValid(dateString, formatString[, options])
 import { isValid } from 'date-and-time';
 
 // Valid dates
-isValid('2025-08-23', 'YYYY-MM-DD');           // => true
-isValid('08/23/2025', 'MM/DD/YYYY');           // => true  
-isValid('14:30:45', 'HH:mm:ss');               // => true
-isValid('2:30 PM', 'h:mm A');                  // => true
+isValid('2025-08-23', 'YYYY-MM-DD');    // => true
+isValid('08/23/2025', 'MM/DD/YYYY');    // => true  
+isValid('14:30:45', 'HH:mm:ss');        // => true
+isValid('2:30 PM', 'h:mm A');           // => true
 
 // Invalid dates
-isValid('2025-02-30', 'YYYY-MM-DD');           // => false (Feb 30th doesn't exist)
-isValid('2025-13-01', 'YYYY-MM-DD');           // => false (month 13 doesn't exist)
-isValid('25:30:00', 'HH:mm:ss');               // => false (hour 25 doesn't exist)
-isValid('invalid-date', 'YYYY-MM-DD');         // => false (doesn't match format)
+isValid('2025-02-30', 'YYYY-MM-DD');    // => false (Feb 30th doesn't exist)
+isValid('2025-13-01', 'YYYY-MM-DD');    // => false (month 13 doesn't exist)
+isValid('25:30:00', 'HH:mm:ss');        // => false (hour 25 doesn't exist)
+isValid('invalid-date', 'YYYY-MM-DD');  // => false (doesn't match format)
 
 // Format mismatch
-isValid('2025-08-23', 'MM/DD/YYYY');           // => false (wrong format)
-isValid('08/23/2025', 'YYYY-MM-DD');           // => false (wrong format)
+isValid('2025-08-23', 'MM/DD/YYYY');    // => false (wrong format)
+isValid('08/23/2025', 'YYYY-MM-DD');    // => false (wrong format)
 ```
 
 ## Validation with Options
@@ -61,13 +61,13 @@ isValid('23 de invalid de 2025', 'D [de] MMMM [de] YYYY', { locale: es }); // =>
 import { isValid } from 'date-and-time';
 
 // Case-sensitive (default)
-isValid('AUGUST 23, 2025', 'MMMM D, YYYY');                    // => false
-isValid('august 23, 2025', 'MMMM D, YYYY');                    // => false
+isValid('AUGUST 23, 2025', 'MMMM D, YYYY');   // => false
+isValid('august 23, 2025', 'MMMM D, YYYY');   // => false
 
 // Case-insensitive
-isValid('AUGUST 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });  // => true
-isValid('august 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });  // => true
-isValid('August 23, 2025', 'MMMM D, YYYY');                        // => true (correct case)
+isValid('AUGUST 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });   // => true
+isValid('august 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });   // => true
+isValid('August 23, 2025', 'MMMM D, YYYY');                         // => true (correct case)
 ```
 
 ## Advanced Validation Patterns

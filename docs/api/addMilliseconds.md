@@ -10,10 +10,10 @@ addMilliseconds(dateObj, milliseconds)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `milliseconds` | `number` | Yes | Number of milliseconds to add (positive) or subtract (negative) |
+| Parameter      | Type     | Required | Description                                                     |
+|----------------|----------|----------|-----------------------------------------------------------------|
+| `dateObj`      | `Date`   | Yes      | The base Date object                                            |
+| `milliseconds` | `number` | Yes      | Number of milliseconds to add (positive) or subtract (negative) |
 
 ### Returns
 

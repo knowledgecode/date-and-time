@@ -74,20 +74,16 @@ format(new Date(), 'D MMMM YYYY', { locale: fr });
 
 For a complete list of all supported locales with import examples, see [Supported Locales](../locales).
 
-### Timezone Imports
+### Timezone Usage
+
+Pass an IANA timezone name string directly to any function that accepts a timezone option:
 
 ```typescript
-// Import specific timezones
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
-import New_York from 'date-and-time/timezones/America/New_York';
-import London from 'date-and-time/timezones/Europe/London';
-
-// Use in operations
-format(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
-format(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: New_York });
+format(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
+format(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: 'America/New_York' });
 ```
 
-For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
+For a complete list of all supported timezones, see [Supported Timezones](../timezones).
 
 ### Numeral Systems
 
@@ -120,12 +116,12 @@ format(new Date(), 'HH:mm:ss.SSSSSS', { plugins: [microsecond] }); // with micro
 
 For browser-only projects, you can use date-and-time directly from a CDN:
 
-### ES Modules via CDN
+### Via jsDelivr
 
 ```html
 <script type="module">
-  import { format } from 'https://cdn.skypack.dev/date-and-time';
-  
+  import { format } from 'https://cdn.jsdelivr.net/npm/date-and-time/dist/index.js';
+
   console.log(format(new Date(), 'YYYY/MM/DD'));
 </script>
 ```
@@ -134,8 +130,8 @@ For browser-only projects, you can use date-and-time directly from a CDN:
 
 ```html
 <script type="module">
-  import { format } from 'https://unpkg.com/date-and-time@4/dist/index.js';
-  
+  import { format } from 'https://unpkg.com/date-and-time/dist/index.js';
+
   console.log(format(new Date(), 'YYYY/MM/DD'));
 </script>
 ```

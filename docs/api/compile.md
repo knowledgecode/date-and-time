@@ -10,9 +10,9 @@ compile(formatString)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `formatString` | `string` | Yes | The format pattern to compile |
+| Parameter      | Type     | Required | Description                   |
+|----------------|----------|----------|-------------------------------|
+| `formatString` | `string` | Yes      | The format pattern to compile |
 
 ### Returns
 

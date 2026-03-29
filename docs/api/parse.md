@@ -10,11 +10,11 @@ parse(dateString, formatString[, options])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateString` | `string` | Yes | The date string to parse |
-| `formatString` | `string \| CompiledObject` | Yes | The format pattern or compiled object |
-| `options` | `ParserOptions` | No | Parser options for customization |
+| Parameter      | Type                       | Required | Description                           |
+|----------------|----------------------------|----------|---------------------------------------|
+| `dateString`   | `string`                   | Yes      | The date string to parse              |
+| `formatString` | `string \| CompiledObject` | Yes      | The format pattern or compiled object |
+| `options`      | `ParserOptions`            | No       | Parser options for customization      |
 
 ### Returns
 
@@ -51,72 +51,74 @@ parse('2025-08-23 14:30:45', 'YYYY-MM-DD HH:mm:ss');
 
 ### Date Tokens
 
-| Token | Description | Input Examples |
-|-------|-------------|----------------|
-| `YYYY` | 4-digit year | 0999, 2015 |
-| `Y` | Year without zero padding | 2, 44, 888, 2015 |
-| `MMMM` | Full month name | January, December |
-| `MMM` | Short month name | Jan, Dec |
-| `MM` | Month (01-12) | 01, 12 |
-| `M` | Month without zero padding | 1, 12 |
-| `DD` | Day (01-31) | 02, 31 |
-| `D` | Day without zero padding | 2, 31 |
+| Token  | Description                | Input Examples    |
+|--------|----------------------------|-------------------|
+| `YYYY` | 4-digit year               | 0999, 2015        |
+| `Y`    | Year without zero padding  | 2, 44, 888, 2015  |
+| `MMMM` | Full month name            | January, December |
+| `MMM`  | Short month name           | Jan, Dec          |
+| `MM`   | Month (01-12)              | 01, 12            |
+| `M`    | Month without zero padding | 1, 12             |
+| `DD`   | Day (01-31)                | 02, 31            |
+| `D`    | Day without zero padding   | 2, 31             |
 
 ### Time Tokens
 
-| Token | Description | Input Examples |
-|-------|-------------|----------------|
-| `HH` | Hour in 24-hour format | 23, 08 |
-| `H` | Hour in 24-hour format without zero padding | 23, 8 |
-| `hh` | Hour in 12-hour format | 11, 08 |
-| `h` | Hour in 12-hour format without zero padding | 11, 8 |
-| `mm` | Minutes | 14, 07 |
-| `m` | Minutes without zero padding | 14, 7 |
-| `ss` | Seconds | 05, 10 |
-| `s` | Seconds without zero padding | 5, 10 |
-| `SSS` | 3-digit milliseconds | 753, 022 |
-| `SS` | 2-digit milliseconds | 75, 02 |
-| `S` | 1-digit milliseconds | 7, 0 |
+| Token | Description                                 | Input Examples |
+|-------|---------------------------------------------|----------------|
+| `HH`  | Hour in 24-hour format                      | 23, 08         |
+| `H`   | Hour in 24-hour format without zero padding | 23, 8          |
+| `hh`  | Hour in 12-hour format                      | 11, 08         |
+| `h`   | Hour in 12-hour format without zero padding | 11, 8          |
+| `mm`  | Minutes                                     | 14, 07         |
+| `m`   | Minutes without zero padding                | 14, 7          |
+| `ss`  | Seconds                                     | 05, 10         |
+| `s`   | Seconds without zero padding                | 5, 10          |
+| `SSS` | 3-digit milliseconds                        | 753, 022       |
+| `SS`  | 2-digit milliseconds                        | 75, 02         |
+| `S`   | 1-digit milliseconds                        | 7, 0           |
 
 ### AM/PM Tokens
 
-| Token | Description | Input Examples |
-|-------|-------------|----------------|
-| `A` | Uppercase AM/PM | AM, PM |
-| `AA` | Uppercase AM/PM (with periods) | A.M., P.M. |
-| `a` | Lowercase AM/PM | am, pm |
-| `aa` | Lowercase AM/PM (with periods) | a.m., p.m. |
+| Token | Description                    | Input Examples |
+|-------|--------------------------------|----------------|
+| `A`   | Uppercase AM/PM                | AM, PM         |
+| `AA`  | Uppercase AM/PM (with periods) | A.M., P.M.     |
+| `a`   | Lowercase AM/PM                | am, pm         |
+| `aa`  | Lowercase AM/PM (with periods) | a.m., p.m.     |
 
 ### Timezone Tokens
 
-| Token | Description | Input Examples |
-|-------|-------------|----------------|
-| `Z` | Timezone offset | +0100, -0800 |
-| `ZZ` | Timezone offset with colon | +01:00, -08:00 |
+| Token | Description                | Input Examples |
+|-------|----------------------------|----------------|
+| `Z`   | Timezone offset            | +0100, -0800   |
+| `ZZ`  | Timezone offset with colon | +01:00, -08:00 |
 
 ### Plugin Tokens
 
 Additional tokens available with plugins:
 
-| Token | Description | Input Examples | Plugin Required |
-|-------|-------------|----------------|-----------------|
-| `YY` | 2-digit year | 90, 00, 08, 19 | two-digit-year |
-| `DDD` | Ordinal representation | 1st, 2nd, 3rd | ordinal |
-| `dddd` | Full day name | Friday, Sunday | day-of-week |
-| `ddd` | Short day name | Fri, Sun | day-of-week |
-| `dd` | Very short day name | Fr, Su | day-of-week |
-| `SSSSSS` | 6-digit milliseconds | 123456, 000001 | microsecond |
-| `SSSSS` | 5-digit milliseconds | 12345, 00001 | microsecond |
-| `SSSS` | 4-digit milliseconds | 1234, 0001 | microsecond |
-| `fff` | 3-digit microseconds | 753, 022 | microsecond |
-| `ff` | 2-digit microseconds | 75, 02 | microsecond |
-| `f` | 1-digit microseconds | 7, 0 | microsecond |
-| `SSSSSSSSS` | 9-digit milliseconds | 123456789, 000000001 | nanosecond |
-| `SSSSSSSS` | 8-digit milliseconds | 12345678, 00000001 | nanosecond |
-| `SSSSSSS` | 7-digit milliseconds | 1234567, 0000001 | nanosecond |
-| `FFF` | 3-digit nanoseconds | 753, 022 | nanosecond |
-| `FF` | 2-digit nanoseconds | 75, 02 | nanosecond |
-| `F` | 1-digit nanoseconds | 7, 0 | nanosecond |
+| Token       | Description            | Input Examples       | Plugin Required |
+|-------------|------------------------|----------------------|-----------------|
+| `YY`        | 2-digit year           | 90, 00, 08, 19       | two-digit-year  |
+| `DDD`       | Ordinal representation | 1st, 2nd, 3rd        | ordinal         |
+| `dddd`      | Full day name          | Friday, Sunday       | day-of-week     |
+| `ddd`       | Short day name         | Fri, Sun             | day-of-week     |
+| `dd`        | Very short day name    | Fr, Su               | day-of-week     |
+| `SSSSSS`    | 6-digit milliseconds   | 123456, 000001       | microsecond     |
+| `SSSSS`     | 5-digit milliseconds   | 12345, 00001         | microsecond     |
+| `SSSS`      | 4-digit milliseconds   | 1234, 0001           | microsecond     |
+| `fff`       | 3-digit microseconds   | 753, 022             | microsecond     |
+| `ff`        | 2-digit microseconds   | 75, 02               | microsecond     |
+| `f`         | 1-digit microseconds   | 7, 0                 | microsecond     |
+| `SSSSSSSSS` | 9-digit milliseconds   | 123456789, 000000001 | nanosecond      |
+| `SSSSSSSS`  | 8-digit milliseconds   | 12345678, 00000001   | nanosecond      |
+| `SSSSSSS`   | 7-digit milliseconds   | 1234567, 0000001     | nanosecond      |
+| `FFF`       | 3-digit nanoseconds    | 753, 022             | nanosecond      |
+| `FF`        | 2-digit nanoseconds    | 75, 02               | nanosecond      |
+| `F`         | 1-digit nanoseconds    | 7, 0                 | nanosecond      |
+
+For available plugins, see the [`plugins`](#plugins) option in ParserOptions.
 
 ## ParserOptions
 
@@ -140,7 +142,7 @@ For a complete list of all supported locales with import examples, see [Supporte
 
 ### timeZone
 
-**Type**: `TimeZone | string`
+**Type**: `TimeZone | string`  
 **Default**: `undefined` (local timezone)
 
 Interprets the parsed date in the specified timezone.
@@ -149,18 +151,8 @@ Interprets the parsed date in the specified timezone.
 
 ```typescript
 import { parse } from 'date-and-time';
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
-import New_York from 'date-and-time/timezones/America/New_York';
 
-// Parse in Tokyo timezone
-parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
-// => Fri Aug 23 2025 14:30:00 GMT+0900
-
-// Parse in New York timezone
-parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: New_York });
-// => Fri Aug 23 2025 14:30:00 GMT-0400
-
-// Parse using an IANA timezone name string (no import needed)
+// Parse using an IANA timezone name string
 parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
 // => Fri Aug 23 2025 14:30:00 GMT+0900
 
@@ -169,18 +161,14 @@ parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'UTC' });
 // => Fri Aug 23 2025 14:30:00 GMT+0000
 
 // Timezone offset in input takes precedence over timeZone option
-parse('2025-08-23 14:30:00 +0300', 'YYYY-MM-DD HH:mm:ss Z', { timeZone: Tokyo });
-// => Fri Aug 23 2025 14:30:00 GMT+0300 (Tokyo timeZone is ignored)
+parse('2025-08-23 14:30:00 +0300', 'YYYY-MM-DD HH:mm:ss Z', { timeZone: 'Asia/Tokyo' });
+// => Fri Aug 23 2025 14:30:00 GMT+0300 (Asia/Tokyo timeZone is ignored)
 
-parse('2025-08-23T14:30:00 +05:00', 'YYYY-MM-DD[T]HH:mm:ss ZZ', { timeZone: New_York });
-// => Fri Aug 23 2025 14:30:00 GMT+0500 (New_York timeZone is ignored)
+parse('2025-08-23T14:30:00 +05:00', 'YYYY-MM-DD[T]HH:mm:ss ZZ', { timeZone: 'America/New_York' });
+// => Fri Aug 23 2025 14:30:00 GMT+0500 (America/New_York timeZone is ignored)
 ```
 
-:::tip
-Like `format()`, `parse()` accepts TimeZone objects, IANA timezone name strings (e.g., `'America/New_York'`), and the `"UTC"` string for the `timeZone` option. If the input string contains a timezone offset token (`Z` or `ZZ`), that offset takes precedence over the `timeZone` option.
-:::
-
-For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
+For a complete list of all supported timezones, see [Supported Timezones](../timezones).
 
 ### numeral
 
@@ -470,12 +458,11 @@ parse('Log entry: 2025-08-23 some extra data here', '[Log entry: ]YYYY-MM-DD...'
 ```typescript
 import { parse } from 'date-and-time';
 import fr from 'date-and-time/locales/fr';
-import Paris from 'date-and-time/timezones/Europe/Paris';
 
 // French with timezone
 parse('samedi, 23 août 2025 à 14:30:45', 'dddd, D MMMM YYYY [à] HH:mm:ss', {
   locale: fr,
-  timeZone: Paris
+  timeZone: 'Europe/Paris'
 });
 // => Fri Aug 23 2025 14:30:45 GMT+0200
 ```

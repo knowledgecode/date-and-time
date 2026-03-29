@@ -53,6 +53,9 @@
 
 - **`isLeapYear()`** - Check if a year is a leap year
 - **`isSameDay()`** - Check if two dates are on the same day
+- **`getDaysInMonth()`** - Get the number of days in a month
+- **`getISOWeekYear()`** - Get the ISO week year for a date (follows ISO 8601)
+- **`getISOWeek()`** - Get the ISO week number for a date (1–53, follows ISO 8601)
 
 ### Advanced Features
 
@@ -87,7 +90,6 @@ Version 4.x represents a complete rewrite with significant improvements:
 ```typescript
 import { format, parse } from 'date-and-time';
 import ja from 'date-and-time/locales/ja';
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 
 // Core functionality
 const date = new Date();
@@ -97,9 +99,7 @@ const formatted = format(date, 'YYYY/MM/DD');
 const localized = format(date, 'YYYY年M月D日', { locale: ja });
 
 // Timezone-aware operations
-const tokyoTime = format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: Tokyo });
-// Or using IANA timezone name string (New in v4.2.0)
-const tokyoTime2 = format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
+const tokyoTime = format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
 ```
 
 ## Browser and Environment Support
@@ -113,11 +113,11 @@ const tokyoTime2 = format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' 
 ### Browsers
 
 | Browser | Minimum Version |
-|---------|----------------|
-| Chrome | 85+ |
-| Firefox | 78+ |
-| Safari | 14+ |
-| Edge | 85+ |
+|---------|-----------------|
+| Chrome  | 85+             |
+| Firefox | 78+             |
+| Safari  | 14+             |
+| Edge    | 85+             |
 
 ### Module Systems
 

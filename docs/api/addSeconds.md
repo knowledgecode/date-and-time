@@ -10,10 +10,10 @@ addSeconds(dateObj, seconds)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `seconds` | `number` | Yes | Number of seconds to add (positive) or subtract (negative) |
+| Parameter | Type     | Required | Description                                                |
+|-----------|----------|----------|------------------------------------------------------------|
+| `dateObj` | `Date`   | Yes      | The base Date object                                       |
+| `seconds` | `number` | Yes      | Number of seconds to add (positive) or subtract (negative) |
 
 ### Returns
 

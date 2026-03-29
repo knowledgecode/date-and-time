@@ -10,9 +10,9 @@ isLeapYear(year)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `year` | `number` | Yes | The year to check |
+| Parameter | Type     | Required | Description       |
+|-----------|----------|----------|-------------------|
+| `year`    | `number` | Yes      | The year to check |
 
 ### Returns
 
