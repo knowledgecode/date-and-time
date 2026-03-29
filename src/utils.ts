@@ -18,6 +18,7 @@ export const isSameDay = (date1: Date, date2: Date) => {
 };
 
 // The toUTC function converts a given year, month, and day into a UTC timestamp.
+// The `m` parameter is 0-indexed (0 = January, 11 = December), matching the convention of Date.UTC.
 const toUTC = (y: number, m: number, d: number) => Date.UTC(y, m - (y < 100 ? 1900 * 12 : 0), d);
 
 /**
@@ -41,6 +42,7 @@ export function getDaysInMonth (...args: [date: Date] | [year: number, month: nu
       ? [args[0].getFullYear(), args[0].getMonth() + 1]
       : args
   )();
+  // month is 1-indexed here; day 0 of next month = last day of current month
   return new Date(toUTC(year, month, 0)).getUTCDate();
 }
 
@@ -106,5 +108,5 @@ export function getISOWeek (...args: [date: Date] | [year: number, month: number
   const target = getThursdayOfWeek(toUTC(year, month - 1, day));
   // Calculate the ISO week number by finding the difference in weeks between the target date
   // and the Thursday of the first week of the year (January 4th)
-  return (target.getTime() - getThursdayOfWeek(toUTC(target.getUTCFullYear(), 0, 4)).getTime()) / 86400000 / 7 + 1;
+  return Math.round((target.getTime() - getThursdayOfWeek(toUTC(target.getUTCFullYear(), 0, 4)).getTime()) / 86400000 / 7) + 1;
 }

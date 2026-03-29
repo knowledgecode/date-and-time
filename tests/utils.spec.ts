@@ -67,6 +67,26 @@ describe('getISOWeekYear', () => {
     expect(getISOWeekYear(2024, 12, 30)).toBe(2025);  // Dec 30
     expect(getISOWeekYear(2021, 1, 1)).toBe(2020);    // Jan 1
   });
+
+  test('Date overload for year < 100', () => {
+    // year 3: Dec 29 is a Monday → its Thursday is Jan 1 of year 4 → iso year = 4
+    const date1 = new Date(3, 11 - 1900 * 12, 29);
+
+    expect(getISOWeekYear(date1)).toBe(4);
+
+    // year 4: Jan 5 is a Monday → belongs to week 2 of year 4
+    const date2 = new Date(4, 0 - 1900 * 12, 5);
+
+    expect(getISOWeekYear(date2)).toBe(4);
+  });
+
+  test('(year, month, day) overload for year < 100', () => {
+    // year 3: Dec 29 is a Monday → its Thursday is Jan 1 of year 4 → iso year = 4
+    expect(getISOWeekYear(3, 12, 29)).toBe(4);
+
+    // year 4: Jan 5 is a Monday → belongs to week 2 of year 4
+    expect(getISOWeekYear(4, 1, 5)).toBe(4);
+  });
 });
 
 describe('getISOWeek', () => {
@@ -86,5 +106,25 @@ describe('getISOWeek', () => {
     expect(getISOWeek(2024, 1, 8)).toBe(2);   // Jan 8
     expect(getISOWeek(2024, 7, 4)).toBe(27);  // Jul 4
     expect(getISOWeek(2021, 1, 1)).toBe(53);  // Jan 1
+  });
+
+  test('Date overload for year < 100', () => {
+    // year 4: Jan 5 is a Monday → belongs to week 2 of year 4
+    const date1 = new Date(4, 0 - 1900 * 12, 5);
+
+    expect(getISOWeek(date1)).toBe(2);
+
+    // year 4: Dec 31 is a Friday → its Thursday is Dec 30 → week 53 of year 4
+    const date2 = new Date(4, 11 - 1900 * 12, 31);
+
+    expect(getISOWeek(date2)).toBe(53);
+  });
+
+  test('(year, month, day) overload for year < 100', () => {
+    // year 4: Jan 5 is a Monday → belongs to week 2 of year 4
+    expect(getISOWeek(4, 1, 5)).toBe(2);
+
+    // year 4: Dec 31 is a Friday → its Thursday is Dec 30 → week 53 of year 4
+    expect(getISOWeek(4, 12, 31)).toBe(53);
   });
 });
