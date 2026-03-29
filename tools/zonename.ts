@@ -29,10 +29,12 @@ const getTimezone = async (path: string) => {
   }
 };
 
+// Extract the timezone name from the formatted date parts
 const getTimezoneName = (dtf: Intl.DateTimeFormat, time: number) => {
   return dtf.formatToParts(time).find(part => part.type === 'timeZoneName')?.value.replace(/^GMT([+-].+)?$/, '') ?? '';
 };
 
+// Extract timezone names and their abbreviations by analyzing historical time periods
 const getTimezoneNames = (timeZone: string, names: Record<string, string>) => {
   const dtf = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'long' });
   const map = new Map<string, string>();
@@ -79,6 +81,7 @@ const timezones = await getTimezone(path);
 const timeZoneNames = new Map<string, string>();
 const errorNames = new Set<string>();
 
+// Extract timezone names and their abbreviations by analyzing historical time periods
 timezones.forEach(timeZone => {
   const { names, errors } = getTimezoneNames(timeZone, zonenames);
 
@@ -88,9 +91,18 @@ timezones.forEach(timeZone => {
   errors.forEach(err => errorNames.add(err));
 });
 
+// Add missing timezone names from the existing mapping
+for (const [key, value] of Object.entries(zonenames)) {
+  if (!timeZoneNames.has(key)) {
+    timeZoneNames.set(key, value);
+  }
+}
+
 if (errorNames.size) {
+  // Log any timezone names that were not found in the existing mapping
   console.error('Not Found');
   console.error(Array.from(errorNames));
 } else {
+  // Output the final mapping of timezone long names to their abbreviations
   process.stdout.write(await format(sort(timeZoneNames)));
 }
