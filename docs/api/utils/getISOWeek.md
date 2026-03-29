@@ -33,7 +33,7 @@ getISOWeek(new Date(2025, 0, 1));  // => 1  (Jan 1, 2025 is in week 1)
 getISOWeek(new Date(2025, 5, 15)); // => 24 (Jun 15, 2025 is in week 24)
 ```
 
-### Using Year and Month Numbers
+### Using Year, Month, and Day
 
 ```typescript
 import { getISOWeek } from 'date-and-time';
