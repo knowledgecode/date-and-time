@@ -12,6 +12,10 @@ describe('plugins', () => {
       expect(format(new Date(999), 't', { plugins: [formatter] })).toBe('0');        // just under 1 second → floor
       expect(format(new Date(1999), 't', { plugins: [formatter] })).toBe('1');       // 1.999 s → floor to 1
       expect(format(new Date(1000000000000), 't', { plugins: [formatter] })).toBe('1000000000'); // Sep 9, 2001
+      expect(format(new Date(-1), 't', { plugins: [formatter] })).toBe('-1');          // -1ms → floor to -1s
+      expect(format(new Date(-1500), 't', { plugins: [formatter] })).toBe('-2');       // -1.5s → floor to -2s
+      expect(format(new Date(-1000), 't', { plugins: [formatter] })).toBe('-1');       // exactly -1s
+      expect(format(new Date(2147483648000), 't', { plugins: [formatter] })).toBe('2147483648'); // year 2038+
     });
 
     test('T — Unix timestamp in milliseconds', () => {

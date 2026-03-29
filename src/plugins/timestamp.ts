@@ -3,7 +3,7 @@ import type { DateLike } from '@/plugin.ts';
 
 class Formatter extends FormatterPlugin {
   t (d: DateLike) {
-    return String(d.getTime() / 1000 | 0);
+    return String(Math.floor(d.getTime() / 1000));
   }
 
   T (d: DateLike) {
