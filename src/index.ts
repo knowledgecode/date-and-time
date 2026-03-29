@@ -13,4 +13,10 @@ export { addSeconds } from './addSeconds.ts';
 export { addMilliseconds } from './addMilliseconds.ts';
 export { Duration } from './duration.ts';
 export { subtract } from './subtract.ts';
-export { isLeapYear, isSameDay } from './utils.ts';
+export {
+  isLeapYear,
+  isSameDay,
+  getDaysInMonth,
+  getISOWeekYear,
+  getISOWeek
+} from './utils.ts';
