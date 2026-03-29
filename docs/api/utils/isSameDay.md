@@ -10,10 +10,10 @@ isSameDay(date1, date2)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `date1` | `Date` | Yes | The first Date object to compare |
-| `date2` | `Date` | Yes | The second Date object to compare |
+| Parameter | Type   | Required | Description                       |
+|-----------|--------|----------|-----------------------------------|
+| `date1`   | `Date` | Yes      | The first Date object to compare  |
+| `date2`   | `Date` | Yes      | The second Date object to compare |
 
 ### Returns
 

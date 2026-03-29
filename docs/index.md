@@ -50,7 +50,6 @@ features:
 ```typescript
 import { format, parse, addDays } from 'date-and-time';
 import ja from 'date-and-time/locales/ja';
-import { Tokyo } from 'date-and-time/timezone';
 
 const now = new Date();
 
@@ -62,11 +61,7 @@ format(now, 'YYYY/MM/DD HH:mm:ss');
 format(now, 'YYYY年M月D日(ddd)', { locale: ja });
 // => 2025年8月23日(金)
 
-// Timezone-aware formatting (using TimeZone object)
-format(now, 'YYYY-MM-DD HH:mm:ss [JST]', { timeZone: Tokyo });
-// => 2025-08-23 23:30:45 JST
-
-// Timezone-aware formatting (using IANA timezone name string)
+// Timezone-aware formatting
 format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 // => 2025-08-23 09:30:45 EST
 

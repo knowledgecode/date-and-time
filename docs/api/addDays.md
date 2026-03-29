@@ -10,11 +10,11 @@ addDays(dateObj, days[, timeZone])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `days` | `number` | Yes | Number of days to add (positive) or subtract (negative) |
-| `timeZone` | `TimeZone \| string` | No | Timezone for the calculation |
+| Parameter  | Type                 | Required | Description                                             |
+|------------|----------------------|----------|---------------------------------------------------------|
+| `dateObj`  | `Date`               | Yes      | The base Date object                                    |
+| `days`     | `number`             | Yes      | Number of days to add (positive) or subtract (negative) |
+| `timeZone` | `TimeZone \| string` | No       | Timezone for the calculation                            |
 
 ### Returns
 
@@ -42,32 +42,17 @@ console.log(past); // August 10, 2024
 
 ```typescript
 import { addDays } from 'date-and-time';
-import New_York from 'date-and-time/timezones/America/New_York';
 
 // Working with specific timezones
 const nyDate = new Date('2024-03-10T05:00:00Z'); // March 10, 2024 05:00 UTC (DST transition day)
 
 // Add 30 days in New York timezone
-const futureNY = addDays(nyDate, 30, New_York);
+const futureNY = addDays(nyDate, 30, 'America/New_York');
 console.log(futureNY); // April 9, 2024 04:00 UTC (EDT, DST adjusted)
 
 // UTC calculation for comparison
 const futureUTC = addDays(nyDate, 30, 'UTC');
 console.log(futureUTC); // April 9, 2024 05:00 UTC (same time, no DST adjustment)
-```
-
-### Using IANA Timezone Name Strings
-
-As of v4.3.0, you can use IANA timezone name strings directly instead of importing TimeZone objects:
-
-```typescript
-import { addDays } from 'date-and-time';
-
-const nyDate = new Date('2024-03-10T05:00:00Z'); // March 10, 2024 05:00 UTC
-
-// Using IANA timezone name string (New in v4.3.0)
-const futureNY = addDays(nyDate, 30, 'America/New_York');
-console.log(futureNY); // April 9, 2024 04:00 UTC (EDT, DST adjusted)
 ```
 
 ## Use Cases

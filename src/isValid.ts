@@ -1,11 +1,8 @@
 import { preparse } from './preparse.ts';
-import { CompiledObject } from './compile.ts';
+import { getDaysInMonth } from './utils.ts';
+import type { CompiledObject } from './compile.ts';
 import type { ParserOptions } from './parser.ts';
 import type { PreparseResult } from './preparse.ts';
-
-const getLastDayOfMonth = (year: number, month: number) => {
-  return new Date(Date.UTC(year, month - (year < 100 ? 1900 * 12 : 0), 0)).getUTCDate();
-};
 
 /**
  * Validates whether a preparse result object is valid.
@@ -25,7 +22,7 @@ export function validatePreparseResult(pr: PreparseResult, options?: ParserOptio
     && pr._match > 0
     && range(y, 1, 9999)
     && range(pr.M, 1, 12)
-    && range(pr.D, 1, getLastDayOfMonth(y, pr.M ?? 1))
+    && range(pr.D, 1, getDaysInMonth(y, pr.M ?? 1))
     && range(pr.H, min24, max24)
     && range(pr.A, 0, 1)
     && range(pr.h, min12, max12)

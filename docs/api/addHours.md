@@ -10,10 +10,10 @@ addHours(dateObj, hours)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `hours` | `number` | Yes | Number of hours to add (positive) or subtract (negative) |
+| Parameter | Type     | Required | Description                                              |
+|-----------|----------|----------|----------------------------------------------------------|
+| `dateObj` | `Date`   | Yes      | The base Date object                                     |
+| `hours`   | `number` | Yes      | Number of hours to add (positive) or subtract (negative) |
 
 ### Returns
 

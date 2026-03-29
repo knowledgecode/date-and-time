@@ -6,7 +6,7 @@ Version `4.x` has been completely rewritten in TypeScript and some features from
 
 Version `4.x` adopts a modern development style and no longer supports older browsers. Module imports are only supported in ES Modules or CommonJS style. Additionally, since functions can now be imported directly, it is more likely to reduce the final module size through bundler tree shaking.
 
-- ES Modules:
+### ES Modules (Recommended)
 
 ```typescript
 import { format } from 'date-and-time';
@@ -15,13 +15,37 @@ format(new Date(), 'ddd, MMM DD YYYY');
 // => Wed, Jul 09 2025
 ```
 
-- CommonJS:
+### CommonJS
 
 ```typescript
 const { format } = require('date-and-time');
 
 format(new Date(), 'ddd, MMM DD YYYY');
 // => Wed, Jul 09 2025
+```
+
+## CDN Usage
+
+For browser-only projects, you can use date-and-time directly from a CDN:
+
+### Via jsDelivr
+
+```html
+<script type="module">
+  import { format } from 'https://cdn.jsdelivr.net/npm/date-and-time/dist/index.js';
+
+  console.log(format(new Date(), 'YYYY/MM/DD'));
+</script>
+```
+
+### Via unpkg
+
+```html
+<script type="module">
+  import { format } from 'https://unpkg.com/date-and-time/dist/index.js';
+
+  console.log(format(new Date(), 'YYYY/MM/DD'));
+</script>
 ```
 
 ## API
@@ -37,66 +61,16 @@ format(new Date(), 'ddd, MMM DD YYYY hh:mm A [GMT]Z', { timeZone: 'UTC' });
 // => Fri, Jan 02 2015 07:14 AM GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `formatTZ` function is now obsolete. In v4.0/4.1, timezones must be imported as TimeZone objects from timezone modules. IANA timezone name strings are not supported in this version (except for UTC timezone).
-
-```typescript
-import { format } from 'date-and-time';
-import New_York from 'date-and-time/timezones/America/New_York';
-
-format(now, 'dddd, MMMM D, YYYY [at] H:mm:ss.SSS [GMT]ZZ', { timeZone: New_York });
-// => Wednesday, July 23, 2025 at 3:28:27.443 GMT-04:00
-```
-
-#### New in v4.2.0: Enhanced Timezone Support
-
-In addition to TimeZone objects, the `format()` function now supports specifying timezones using IANA timezone name strings. This provides flexibility in how you work with timezones:
+Additionally, since the `timezone` plugin has been integrated into the main library, the `formatTZ` function is now obsolete. Pass an IANA timezone name string directly to the `timeZone` option:
 
 ```typescript
 import { format } from 'date-and-time';
 
 const now = new Date();
 
-// Using IANA timezone name string (simplest)
 format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 // => 2025-08-23 09:30:45 EST
-
-// Using TimeZone object (recommended for type safety)
-import New_York from 'date-and-time/timezones/America/New_York';
-format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: New_York });
-// => 2025-08-23 09:30:45 EST
-
-// Using consolidated import (recommended for multiple timezones)
-import { New_York as NY } from 'date-and-time/timezone';
-format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: NY });
-// => 2025-08-23 09:30:45 EST
 ```
-
-##### Consolidated Import
-
-For better code organization when working with multiple timezones, you can import all timezones from a single `date-and-time/timezone` module:
-
-```typescript
-// Consolidated import (recommended for multiple timezones)
-import { Tokyo, New_York, London, Sydney } from 'date-and-time/timezone';
-
-const now = new Date();
-
-format(now, 'YYYY-MM-DD HH:mm', { timeZone: Tokyo });    // JST
-format(now, 'YYYY-MM-DD HH:mm', { timeZone: New_York }); // EST/EDT
-format(now, 'YYYY-MM-DD HH:mm', { timeZone: London });   // GMT/BST
-format(now, 'YYYY-MM-DD HH:mm', { timeZone: Sydney });   // AEDT/AEST
-```
-
-Alternatively, you can still import individual timezone modules directly:
-
-```typescript
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
-import New_York from 'date-and-time/timezones/America/New_York';
-import London from 'date-and-time/timezones/Europe/London';
-import Sydney from 'date-and-time/timezones/Australia/Sydney';
-```
-
-> **Note**: The TimeZone module import approach (individual imports and consolidated imports) may be deprecated in a future version in favor of IANA timezone name strings. Using IANA timezone name strings is recommended for new projects.
 
 ### parse
 
@@ -109,23 +83,7 @@ parse('11:14:05 PM', 'h:mm:ss A', { timeZone: 'UTC' });
 // => Jan 02 1970 23:14:05 GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `parseTZ` function is now obsolete. Timezones can now be specified as TimeZone module imports, IANA timezone name strings, or the `"UTC"` string.
-
-```typescript
-import { parse } from 'date-and-time';
-import Paris from 'date-and-time/timezones/Europe/Paris';
-import fr from 'date-and-time/locales/fr';
-
-parse(
-  '02 janv. 2015, 11:14:05 PM', 'DD MMM YYYY, h:mm:ss A',
-  { timeZone: Paris, locale: fr }
-);
-// => Jan 02 2015 23:14:05 GMT+0100
-```
-
-#### New in v4.3.0: Enhanced Timezone Support
-
-The `parse()` function now also supports IANA timezone name strings (e.g., `'America/New_York'`), in addition to TimeZone objects and the `"UTC"` string.
+Additionally, since the `timezone` plugin has been integrated into the main library, the `parseTZ` function is now obsolete. Pass an IANA timezone name string directly to the `timeZone` option:
 
 ```typescript
 import { parse } from 'date-and-time';
@@ -184,33 +142,12 @@ The fourth argument has been changed from `boolean` to `FormatterOptions`. With 
 
 ```typescript
 import { transform } from 'date-and-time';
-import New_York from 'date-and-time/timezones/America/New_York';
-import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
 
 // Convert 24-hour format to 12-hour format
 transform('13:05', 'HH:mm', 'hh:mm A', { timeZone: 'UTC' }, { timeZone: 'UTC' });
 // => 01:05 PM
 
 // Convert East Coast time to West Coast time
-transform(
-  '3/8/2020 1:05 PM', 'D/M/YYYY h:mm A', 'D/M/YYYY h:mm A',
-  { timeZone: New_York }, { timeZone: Los_Angeles }
-);
-// => 3/8/2020 10:05 AM
-```
-
-#### New in v4.3.0: Enhanced Timezone Support
-
-The `transform()` function now supports IANA timezone name strings for both `parserOptions` and `formatterOptions`. Using IANA timezone name strings is recommended over importing TimeZone modules.
-
-```typescript
-import { transform } from 'date-and-time';
-
-// Convert 24-hour format to 12-hour format
-transform('13:05', 'HH:mm', 'hh:mm A', { timeZone: 'UTC' }, { timeZone: 'UTC' });
-// => 01:05 PM
-
-// Convert East Coast time to West Coast time using IANA timezone name strings
 transform(
   '3/8/2020 1:05 PM', 'D/M/YYYY h:mm A', 'D/M/YYYY h:mm A',
   { timeZone: 'America/New_York' }, { timeZone: 'America/Los_Angeles' }
@@ -232,21 +169,7 @@ addYears(now, 1, 'UTC');
 // => Mar 11 2025 01:00:00 GMT+0000
 ```
 
-Additionally, since the `timezone` plugin has been integrated into the main library, the `addYearsTZ` function is now obsolete. Timezones are now imported as modules rather than using `IANA timezone names` (except for the UTC timezone).
-
-```typescript
-import Los_Angeles from 'date-and-time/timezones/America/Los_Angeles';
-
-const now = new Date(2024, 2, 11, 1);
-// => Mar 11 2024 01:00:00 GMT-07:00
-
-addYears(now, 1, Los_Angeles);
-// => Mar 11 2025 01:00:00 GMT-07:00
-```
-
-#### New in v4.3.0: Enhanced Timezone Support
-
-The `addYears()`, `addMonths()`, and `addDays()` functions now support IANA timezone name strings. Using IANA timezone name strings is recommended over importing TimeZone modules.
+Additionally, since the `timezone` plugin has been integrated into the main library, the `addYearsTZ` function is now obsolete. Pass an IANA timezone name string directly:
 
 ```typescript
 import { addYears } from 'date-and-time';

@@ -59,8 +59,16 @@ export default defineConfig({
             { text: 'addSeconds()', link: '/api/addSeconds' },
             { text: 'addMilliseconds()', link: '/api/addMilliseconds' },
             { text: 'subtract()', link: '/api/subtract' },
-            { text: 'isLeapYear()', link: '/api/isLeapYear' },
-            { text: 'isSameDay()', link: '/api/isSameDay' },
+          ]
+        },
+        {
+          text: 'Utility Functions',
+          items: [
+            { text: 'isLeapYear()', link: '/api/utils/isLeapYear' },
+            { text: 'isSameDay()', link: '/api/utils/isSameDay' },
+            { text: 'getDaysInMonth()', link: '/api/utils/getDaysInMonth' },
+            { text: 'getISOWeekYear()', link: '/api/utils/getISOWeekYear' },
+            { text: 'getISOWeek()', link: '/api/utils/getISOWeek' },
           ]
         }
       ]

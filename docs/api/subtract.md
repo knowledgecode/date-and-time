@@ -10,10 +10,10 @@ subtract(date1, date2)
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `date1` | `Date` | Yes | The earlier/start date |
-| `date2` | `Date` | Yes | The later/end date |
+| Parameter | Type   | Required | Description            |
+|-----------|--------|----------|------------------------|
+| `date1`   | `Date` | Yes      | The earlier/start date |
+| `date2`   | `Date` | Yes      | The later/end date     |
 
 ### Returns
 

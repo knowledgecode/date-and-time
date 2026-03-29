@@ -10,11 +10,11 @@ preparse(dateString, formatString[, options])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateString` | `string` | Yes | The date string to parse |
-| `formatString` | `string \| CompiledObject` | Yes | Format pattern string or compiled object |
-| `options` | `ParserOptions` | No | Parsing options for customization (see [`parse()`](./parse) for details) |
+| Parameter      | Type                       | Required | Description                                                              |
+|----------------|----------------------------|----------|--------------------------------------------------------------------------|
+| `dateString`   | `string`                   | Yes      | The date string to parse                                                 |
+| `formatString` | `string \| CompiledObject` | Yes      | Format pattern string or compiled object                                 |
+| `options`      | `ParserOptions`            | No       | Parsing options for customization (see [`parse()`](./parse) for details) |
 
 ### Returns
 

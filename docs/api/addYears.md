@@ -10,11 +10,11 @@ addYears(dateObj, years[, timeZone])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `years` | `number` | Yes | Number of years to add (positive) or subtract (negative) |
-| `timeZone` | `TimeZone \| string` | No | Timezone for the calculation |
+| Parameter  | Type                 | Required | Description                                              |
+|------------|----------------------|----------|----------------------------------------------------------|
+| `dateObj`  | `Date`               | Yes      | The base Date object                                     |
+| `years`    | `number`             | Yes      | Number of years to add (positive) or subtract (negative) |
+| `timeZone` | `TimeZone \| string` | No       | Timezone for the calculation                             |
 
 ### Returns
 
@@ -42,32 +42,17 @@ console.log(past);  // January 15, 2022
 
 ```typescript
 import { addYears } from 'date-and-time';
-import New_York from 'date-and-time/timezones/America/New_York';
 
 // Working with specific timezones
 const nyDate = new Date('2024-03-10T05:00:00Z'); // March 10, 2024 05:00 UTC (DST transition day)
 
 // Add years in New York timezone
-const futureNY = addYears(nyDate, 1, New_York);
+const futureNY = addYears(nyDate, 1, 'America/New_York');
 console.log(futureNY); // March 10, 2025 04:00 UTC (EST, DST adjusted)
 
 // UTC calculation for comparison
 const futureUTC = addYears(nyDate, 1, 'UTC');
 console.log(futureUTC); // March 10, 2025 05:00 UTC (same time, no DST adjustment)
-```
-
-### Using IANA Timezone Name Strings
-
-As of v4.3.0, you can use IANA timezone name strings directly instead of importing TimeZone objects:
-
-```typescript
-import { addYears } from 'date-and-time';
-
-const nyDate = new Date('2024-03-10T05:00:00Z'); // March 10, 2024 05:00 UTC
-
-// Using IANA timezone name string (New in v4.3.0)
-const futureNY = addYears(nyDate, 1, 'America/New_York');
-console.log(futureNY); // March 10, 2025 04:00 UTC (EST, DST adjusted)
 ```
 
 ## Use Cases

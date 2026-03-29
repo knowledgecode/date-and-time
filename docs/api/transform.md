@@ -10,13 +10,13 @@ transform(dateString, sourceFormat, targetFormat[, parserOptions, formatterOptio
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateString` | `string` | Yes | The input date string to transform |
-| `sourceFormat` | `string \| CompiledObject` | Yes | Source format pattern or compiled pattern |
-| `targetFormat` | `string \| CompiledObject` | Yes | Target format pattern or compiled pattern |
-| `parserOptions` | `ParserOptions` | No | Options for parsing the source string |
-| `formatterOptions` | `FormatterOptions` | No | Options for formatting the target string |
+| Parameter          | Type                       | Required | Description                               |
+|--------------------|----------------------------|----------|-------------------------------------------|
+| `dateString`       | `string`                   | Yes      | The input date string to transform        |
+| `sourceFormat`     | `string \| CompiledObject` | Yes      | Source format pattern or compiled pattern |
+| `targetFormat`     | `string \| CompiledObject` | Yes      | Target format pattern or compiled pattern |
+| `parserOptions`    | `ParserOptions`            | No       | Options for parsing the source string     |
+| `formatterOptions` | `FormatterOptions`         | No       | Options for formatting the target string  |
 
 ### Returns
 

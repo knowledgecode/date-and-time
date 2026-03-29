@@ -10,11 +10,11 @@ format(dateObj, formatString[, options])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The Date object to format |
-| `formatString` | `string \| CompiledObject` | Yes | The format string or compiled object |
-| `options` | `FormatterOptions` | No | Formatter options for customization |
+| Parameter      | Type                       | Required | Description                          |
+|----------------|----------------------------|----------|--------------------------------------|
+| `dateObj`      | `Date`                     | Yes      | The Date object to format            |
+| `formatString` | `string \| CompiledObject` | Yes      | The format string or compiled object |
+| `options`      | `FormatterOptions`         | No       | Formatter options for customization  |
 
 ### Returns
 
@@ -41,67 +41,77 @@ format(now, 'hh:mm A [GMT]Z');
 
 ### Date Tokens
 
-| Token | Description | Output Examples |
-|-------|-------------|-----------------|
-| `YYYY` | 4-digit year | 0999, 2015 |
-| `YY` | 2-digit year | 99, 01, 15 |
-| `Y` | Year without zero padding | 2, 44, 888, 2015 |
-| `MMMM` | Full month name | January, December |
-| `MMM` | Short month name | Jan, Dec |
-| `MM` | Month (01-12) | 01, 12 |
-| `M` | Month without zero padding | 1, 12 |
-| `DD` | Day (01-31) | 02, 31 |
-| `D` | Day without zero padding | 2, 31 |
+| Token  | Description                | Output Examples   |
+|--------|----------------------------|-------------------|
+| `YYYY` | 4-digit year               | 0999, 2015        |
+| `YY`   | 2-digit year               | 99, 01, 15        |
+| `Y`    | Year without zero padding  | 2, 44, 888, 2015  |
+| `MMMM` | Full month name            | January, December |
+| `MMM`  | Short month name           | Jan, Dec          |
+| `MM`   | Month (01-12)              | 01, 12            |
+| `M`    | Month without zero padding | 1, 12             |
+| `DD`   | Day (01-31)                | 02, 31            |
+| `D`    | Day without zero padding   | 2, 31             |
 
 ### Day of Week Tokens
 
-| Token | Description | Output Examples |
-|-------|-------------|-----------------|
-| `dddd` | Full day name | Friday, Sunday |
-| `ddd` | Short day name | Fri, Sun |
-| `dd` | Very short day name | Fr, Su |
+| Token  | Description         | Output Examples |
+|--------|---------------------|-----------------|
+| `dddd` | Full day name       | Friday, Sunday  |
+| `ddd`  | Short day name      | Fri, Sun        |
+| `dd`   | Very short day name | Fr, Su          |
 
 ### Time Tokens
 
-| Token | Description | Output Examples |
-|-------|-------------|-----------------|
-| `HH` | Hour in 24-hour format | 23, 08 |
-| `H` | Hour in 24-hour format without zero padding | 23, 8 |
-| `hh` | Hour in 12-hour format | 11, 08 |
-| `h` | Hour in 12-hour format without zero padding | 11, 8 |
-| `mm` | Minutes | 14, 07 |
-| `m` | Minutes without zero padding | 14, 7 |
-| `ss` | Seconds | 05, 10 |
-| `s` | Seconds without zero padding | 5, 10 |
-| `SSS` | 3-digit milliseconds | 753, 022 |
-| `SS` | 2-digit milliseconds | 75, 02 |
-| `S` | 1-digit milliseconds | 7, 0 |
+| Token | Description                                 | Output Examples |
+|-------|---------------------------------------------|-----------------|
+| `HH`  | Hour in 24-hour format                      | 23, 08          |
+| `H`   | Hour in 24-hour format without zero padding | 23, 8           |
+| `hh`  | Hour in 12-hour format                      | 11, 08          |
+| `h`   | Hour in 12-hour format without zero padding | 11, 8           |
+| `mm`  | Minutes                                     | 14, 07          |
+| `m`   | Minutes without zero padding                | 14, 7           |
+| `ss`  | Seconds                                     | 05, 10          |
+| `s`   | Seconds without zero padding                | 5, 10           |
+| `SSS` | 3-digit milliseconds                        | 753, 022        |
+| `SS`  | 2-digit milliseconds                        | 75, 02          |
+| `S`   | 1-digit milliseconds                        | 7, 0            |
 
 ### AM/PM Tokens
 
-| Token | Description | Output Examples |
-|-------|-------------|-----------------|
-| `A` | Uppercase AM/PM | AM, PM |
-| `AA` | Uppercase AM/PM (with periods) | A.M., P.M. |
-| `a` | Lowercase AM/PM | am, pm |
-| `aa` | Lowercase AM/PM (with periods) | a.m., p.m. |
+| Token | Description                    | Output Examples |
+|-------|--------------------------------|-----------------|
+| `A`   | Uppercase AM/PM                | AM, PM          |
+| `AA`  | Uppercase AM/PM (with periods) | A.M., P.M.      |
+| `a`   | Lowercase AM/PM                | am, pm          |
+| `aa`  | Lowercase AM/PM (with periods) | a.m., p.m.      |
 
 ### Timezone Tokens
 
-| Token | Description | Output Examples |
-|-------|-------------|-----------------|
-| `Z` | Timezone offset | +0100, -0800 |
-| `ZZ` | Timezone offset with colon | +01:00, -08:00 |
+| Token | Description                | Output Examples |
+|-------|----------------------------|-----------------|
+| `Z`   | Timezone offset            | +0100, -0800    |
+| `ZZ`  | Timezone offset with colon | +01:00, -08:00  |
 
 ### Plugin Tokens
 
 Additional tokens available with plugins:
 
-| Token | Description | Output Examples | Plugin Required |
-|-------|-------------|-----------------|-----------------|
-| `DDD` | Ordinal representation | 1st, 2nd, 3rd | ordinal |
-| `z` | Short timezone name | PST, EST | zonename |
-| `zz` | Long timezone name | Pacific Standard Time | zonename |
+| Token  | Description                         | Output Examples       | Plugin Required |
+|--------|-------------------------------------|-----------------------|-----------------|
+| `DDD`  | Ordinal representation              | 1st, 2nd, 3rd         | ordinal         |
+| `Q`    | Quarter of year                     | 1, 2, 3, 4            | quarter         |
+| `t`    | Unix timestamp (seconds)            | 0, 1000000000         | timestamp       |
+| `T`    | Unix timestamp (milliseconds)       | 0, 1000000000000      | timestamp       |
+| `W`    | ISO week number                     | 1, 27, 53             | week            |
+| `WW`   | ISO week number (zero-padded)       | 01, 27, 53            | week            |
+| `G`    | ISO week year                       | 2024, 2025            | week            |
+| `GG`   | ISO week year (2-digit zero-padded) | 24, 25                | week            |
+| `GGGG` | ISO week year (4-digit zero-padded) | 2024, 2025            | week            |
+| `z`    | Short timezone name                 | PST, EST              | zonename        |
+| `zz`   | Long timezone name                  | Pacific Standard Time | zonename        |
+
+For available plugins, see the [`plugins`](#plugins) option in FormatterOptions.
 
 ## FormatterOptions
 
@@ -134,41 +144,27 @@ For a complete list of all supported locales with import examples, see [Supporte
 
 ### timeZone
 
-**Type**: `TimeZone | string`
+**Type**: `TimeZone | string`  
 **Default**: `undefined` (local timezone)
 
-Converts the date to the specified timezone before formatting. You can specify a timezone in three ways:
+Converts the date to the specified timezone before formatting.
 
 ```typescript
 import { format } from 'date-and-time';
 
-// Method 1: Individual timezone import
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
-import New_York from 'date-and-time/timezones/America/New_York';
-
-// Method 2: Consolidated timezone import
-import { Tokyo as TokyoTZ, New_York as NY } from 'date-and-time/timezone';
-
 const date = new Date();
 
-// Using TimeZone object (individual import)
-format(date, 'YYYY-MM-DD HH:mm:ss [JST]', { timeZone: Tokyo });
+format(date, 'YYYY-MM-DD HH:mm:ss [JST]', { timeZone: 'Asia/Tokyo' });
 // => 2025-08-23 23:30:45 JST
 
-// Using TimeZone object (consolidated import)
-format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: NY });
-// => 2025-08-23 09:30:45 EST
-
-// Using IANA timezone name string
 format(date, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
 // => 2025-08-23 09:30:45 EST
 
-// Format in UTC
 format(date, 'YYYY-MM-DD HH:mm:ss [UTC]', { timeZone: 'UTC' });
 // => 2025-08-23 14:30:45 UTC
 ```
 
-For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
+For a complete list of all supported timezones, see [Supported Timezones](../timezones).
 
 ### numeral
 
@@ -324,29 +320,8 @@ format(date, '\\[YYYY-MM-DD HH:mm:ss\\]');
 import { format } from 'date-and-time';
 import ja from 'date-and-time/locales/ja';
 
-// Method 1: Individual timezone import
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
-
-// Method 2: Consolidated timezone import (alternative)
-import { Tokyo as TokyoTZ } from 'date-and-time/timezone';
-
 const date = new Date();
 
-// Japanese with timezone (using individual import)
-format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
-  timeZone: Tokyo,
-  locale: ja
-});
-// => 2025年8月23日土曜日 午後11:30:45 GMT+0900
-
-// Or using consolidated import
-format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
-  timeZone: TokyoTZ,
-  locale: ja
-});
-// => 2025年8月23日土曜日 午後11:30:45 GMT+0900
-
-// Or using IANA timezone name string
 format(date, 'YYYY年MMMM月D日dddd Ah:mm:ss [GMT]Z', {
   timeZone: 'Asia/Tokyo',
   locale: ja

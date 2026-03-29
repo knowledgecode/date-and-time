@@ -6,34 +6,37 @@ Welcome to the comprehensive API reference for date-and-time v4.x. This section 
 
 ### Formatting and Parsing
 
-| Function | Description |
-|----------|-------------|
-| [`format()`](./format) | Convert Date objects to formatted strings |
-| [`parse()`](./parse) | Parse date strings into Date objects |
-| [`compile()`](./compile) | Precompile format patterns for performance |
-| [`preparse()`](./preparse) | Parse and return intermediate parsing results |
-| [`isValid()`](./isValid) | Validate date string formats |
-| [`transform()`](./transform) | Transform date strings between formats |
+| Function                     | Description                                   |
+|------------------------------|-----------------------------------------------|
+| [`format()`](./format)       | Convert Date objects to formatted strings     |
+| [`parse()`](./parse)         | Parse date strings into Date objects          |
+| [`compile()`](./compile)     | Precompile format patterns for performance    |
+| [`preparse()`](./preparse)   | Parse and return intermediate parsing results |
+| [`isValid()`](./isValid)     | Validate date string formats                  |
+| [`transform()`](./transform) | Transform date strings between formats        |
 
 ### Date Arithmetic
 
-| Function | Description |
-|----------|-------------|
-| [`addYears()`](./add-functions#addyears) | Add/subtract years from dates |
-| [`addMonths()`](./add-functions#addmonths) | Add/subtract months from dates |
-| [`addDays()`](./add-functions#adddays) | Add/subtract days from dates |
-| [`addHours()`](./add-functions#addhours) | Add/subtract hours from dates |
-| [`addMinutes()`](./add-functions#addminutes) | Add/subtract minutes from dates |
-| [`addSeconds()`](./add-functions#addseconds) | Add/subtract seconds from dates |
-| [`addMilliseconds()`](./add-functions#addmilliseconds) | Add/subtract milliseconds from dates |
-| [`subtract()`](./subtract) | Calculate time differences with Duration objects |
+| Function                                               | Description                                      |
+|--------------------------------------------------------|--------------------------------------------------|
+| [`addYears()`](./add-functions#addyears)               | Add/subtract years from dates                    |
+| [`addMonths()`](./add-functions#addmonths)             | Add/subtract months from dates                   |
+| [`addDays()`](./add-functions#adddays)                 | Add/subtract days from dates                     |
+| [`addHours()`](./add-functions#addhours)               | Add/subtract hours from dates                    |
+| [`addMinutes()`](./add-functions#addminutes)           | Add/subtract minutes from dates                  |
+| [`addSeconds()`](./add-functions#addseconds)           | Add/subtract seconds from dates                  |
+| [`addMilliseconds()`](./add-functions#addmilliseconds) | Add/subtract milliseconds from dates             |
+| [`subtract()`](./subtract)                             | Calculate time differences with Duration objects |
 
 ### Utility Functions
 
-| Function | Description |
-|----------|-------------|
-| [`isLeapYear()`](./utilities#isleapyear) | Check if a year is a leap year |
-| [`isSameDay()`](./utilities#issameday) | Check if two dates are on the same day |
+| Function                                     | Description                            |
+|----------------------------------------------|----------------------------------------|
+| [`isLeapYear()`](./utils/isLeapYear)         | Check if a year is a leap year         |
+| [`isSameDay()`](./utils/isSameDay)           | Check if two dates are on the same day |
+| [`getDaysInMonth()`](./utils/getDaysInMonth) | Get the number of days in a month      |
+| [`getISOWeekYear()`](./utils/getISOWeekYear) | Get the ISO week year for a date       |
+| [`getISOWeek()`](./utils/getISOWeek)         | Get the ISO week number for a date     |
 
 ## Quick Examples
 
@@ -60,11 +63,10 @@ isValid('2025-02-29', 'YYYY-MM-DD'); // => false (not a leap year)
 ```typescript
 import { format } from 'date-and-time';
 import ja from 'date-and-time/locales/ja';
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
 
 format(new Date(), 'YYYY年M月D日(ddd) HH:mm', {
   locale: ja,
-  timeZone: Tokyo
+  timeZone: 'Asia/Tokyo'
 });
 // => 2025年8月23日(土) 23:30
 ```
@@ -104,52 +106,52 @@ interface ParserOptions {
 
 ### Date Tokens
 
-| Token | Meaning | Output Examples |
-|-------|---------|-----------------|
-| `YYYY` | 4-digit year | 0999, 2015 |
-| `YY` | 2-digit year | 99, 01, 15 |
-| `Y` | Year without zero padding | 2, 44, 888, 2015 |
-| `MMMM` | Full month name | January, December |
-| `MMM` | Short month name | Jan, Dec |
-| `MM` | Month | 01, 12 |
-| `M` | Month without zero padding | 1, 12 |
-| `DD` | Day | 02, 31 |
-| `D` | Day without zero padding | 2, 31 |
+| Token  | Meaning                    | Output Examples   |
+|--------|----------------------------|-------------------|
+| `YYYY` | 4-digit year               | 0999, 2015        |
+| `YY`   | 2-digit year               | 99, 01, 15        |
+| `Y`    | Year without zero padding  | 2, 44, 888, 2015  |
+| `MMMM` | Full month name            | January, December |
+| `MMM`  | Short month name           | Jan, Dec          |
+| `MM`   | Month                      | 01, 12            |
+| `M`    | Month without zero padding | 1, 12             |
+| `DD`   | Day                        | 02, 31            |
+| `D`    | Day without zero padding   | 2, 31             |
 
 ### Time Tokens
 
-| Token | Meaning | Output Examples |
-|-------|---------|-----------------|
-| `HH` | Hour in 24-hour format | 23, 08 |
-| `H` | Hour in 24-hour format without zero padding | 23, 8 |
-| `hh` | Hour in 12-hour format | 11, 08 |
-| `h` | Hour in 12-hour format without zero padding | 11, 8 |
-| `mm` | Minutes | 14, 07 |
-| `m` | Minutes without zero padding | 14, 7 |
-| `ss` | Seconds | 05, 10 |
-| `s` | Seconds without zero padding | 5, 10 |
-| `SSS` | 3-digit milliseconds | 753, 022 |
-| `SS` | 2-digit milliseconds | 75, 02 |
-| `S` | 1-digit milliseconds | 7, 0 |
+| Token | Meaning                                     | Output Examples |
+|-------|---------------------------------------------|-----------------|
+| `HH`  | Hour in 24-hour format                      | 23, 08          |
+| `H`   | Hour in 24-hour format without zero padding | 23, 8           |
+| `hh`  | Hour in 12-hour format                      | 11, 08          |
+| `h`   | Hour in 12-hour format without zero padding | 11, 8           |
+| `mm`  | Minutes                                     | 14, 07          |
+| `m`   | Minutes without zero padding                | 14, 7           |
+| `ss`  | Seconds                                     | 05, 10          |
+| `s`   | Seconds without zero padding                | 5, 10           |
+| `SSS` | 3-digit milliseconds                        | 753, 022        |
+| `SS`  | 2-digit milliseconds                        | 75, 02          |
+| `S`   | 1-digit milliseconds                        | 7, 0            |
 
 ### Day of Week Tokens
 
-| Token | Meaning | Output Examples |
-|-------|---------|-----------------|
-| `dddd` | Full day name | Friday, Sunday |
-| `ddd` | Short day name | Fri, Sun |
-| `dd` | Very short day name | Fr, Su |
+| Token  | Meaning             | Output Examples |
+|--------|---------------------|-----------------|
+| `dddd` | Full day name       | Friday, Sunday  |
+| `ddd`  | Short day name      | Fri, Sun        |
+| `dd`   | Very short day name | Fr, Su          |
 
 ### AM/PM and Timezone Tokens
 
-| Token | Meaning | Output Examples |
-|-------|---------|-----------------|
-| `A` | Uppercase AM/PM | AM, PM |
-| `AA` | Uppercase AM/PM (with periods) | A.M., P.M. |
-| `a` | Lowercase AM/PM | am, pm |
-| `aa` | Lowercase AM/PM (with periods) | a.m., p.m. |
-| `Z` | Timezone offset | +0100, -0800 |
-| `ZZ` | Timezone offset with colon | +01:00, -08:00 |
+| Token | Meaning                        | Output Examples |
+|-------|--------------------------------|-----------------|
+| `A`   | Uppercase AM/PM                | AM, PM          |
+| `AA`  | Uppercase AM/PM (with periods) | A.M., P.M.      |
+| `a`   | Lowercase AM/PM                | am, pm          |
+| `aa`  | Lowercase AM/PM (with periods) | a.m., p.m.      |
+| `Z`   | Timezone offset                | +0100, -0800    |
+| `ZZ`  | Timezone offset with colon     | +01:00, -08:00  |
 
 ## Supported Locales
 
@@ -170,17 +172,14 @@ For a complete list of all supported locales with import examples, see [Supporte
 
 ## Supported Timezones
 
-Complete IANA timezone database support. Import specific timezones:
+Complete IANA timezone database support. Pass an IANA timezone name string directly to any function:
 
 ```typescript
-// Examples
-import Tokyo from 'date-and-time/timezones/Asia/Tokyo';
-import New_York from 'date-and-time/timezones/America/New_York';
-import London from 'date-and-time/timezones/Europe/London';
-import Sydney from 'date-and-time/timezones/Australia/Sydney';
+format(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
+format(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: 'America/New_York' });
 ```
 
-For a complete list of all supported timezones with import examples, see [Supported Timezones](../timezones).
+For a complete list of all supported timezones, see [Supported Timezones](../timezones).
 
 ## Numeral Systems
 

@@ -17,10 +17,10 @@ The simplest, most intuitive date and time library.
 ## Installation
 
 ```shell
-npm i date-and-time
+npm install date-and-time
 ```
 
-- ES Modules:
+### ES Modules (Recommended)
 
 ```typescript
 import { format } from 'date-and-time';
@@ -29,13 +29,35 @@ format(new Date(), 'ddd, MMM DD YYYY');
 // => Wed, Jul 09 2025
 ```
 
-- CommonJS:
+### CommonJS
 
 ```typescript
 const { format } = require('date-and-time');
 
 format(new Date(), 'ddd, MMM DD YYYY');
 // => Wed, Jul 09 2025
+```
+
+## CDN Usage
+
+### Via jsDelivr
+
+```html
+<script type="module">
+  import { format } from 'https://cdn.jsdelivr.net/npm/date-and-time/dist/index.js';
+
+  console.log(format(new Date(), 'YYYY/MM/DD'));
+</script>
+```
+
+### Via unpkg
+
+```html
+<script type="module">
+  import { format } from 'https://unpkg.com/date-and-time/dist/index.js';
+
+  console.log(format(new Date(), 'YYYY/MM/DD'));
+</script>
 ```
 
 ## Migration

@@ -10,11 +10,11 @@ addMonths(dateObj, months[, timeZone])
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `dateObj` | `Date` | Yes | The base Date object |
-| `months` | `number` | Yes | Number of months to add (positive) or subtract (negative) |
-| `timeZone` | `TimeZone \| string` | No | Timezone for the calculation |
+| Parameter  | Type                 | Required | Description                                               |
+|------------|----------------------|----------|-----------------------------------------------------------|
+| `dateObj`  | `Date`               | Yes      | The base Date object                                      |
+| `months`   | `number`             | Yes      | Number of months to add (positive) or subtract (negative) |
+| `timeZone` | `TimeZone \| string` | No       | Timezone for the calculation                              |
 
 ### Returns
 
@@ -42,32 +42,17 @@ console.log(past);  // October 15, 2023
 
 ```typescript
 import { addMonths } from 'date-and-time';
-import New_York from 'date-and-time/timezones/America/New_York';
 
 // Working with specific timezones
 const nyDate = new Date('2024-03-10T05:00:00Z'); // March 10, 2024 05:00 UTC (DST transition day)
 
 // Add 6 months in New York timezone
-const futureNY = addMonths(nyDate, 6, New_York);
+const futureNY = addMonths(nyDate, 6, 'America/New_York');
 console.log(futureNY); // September 10, 2024 04:00 UTC (EDT, DST adjusted)
 
 // UTC calculation for comparison
 const futureUTC = addMonths(nyDate, 6, 'UTC');
 console.log(futureUTC); // September 10, 2024 05:00 UTC (same time, no DST adjustment)
-```
-
-### Using IANA Timezone Name Strings
-
-As of v4.3.0, you can use IANA timezone name strings directly instead of importing TimeZone objects:
-
-```typescript
-import { addMonths } from 'date-and-time';
-
-const nyDate = new Date('2024-03-10T05:00:00Z'); // March 10, 2024 05:00 UTC
-
-// Using IANA timezone name string (New in v4.3.0)
-const futureNY = addMonths(nyDate, 6, 'America/New_York');
-console.log(futureNY); // September 10, 2024 04:00 UTC (EDT, DST adjusted)
 ```
 
 ## Use Cases
