@@ -1,3 +1,7 @@
+---
+title: Supported Locales
+---
+
 # Supported Locales
 
 - ar (Arabic)

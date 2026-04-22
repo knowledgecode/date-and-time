@@ -1,3 +1,7 @@
+---
+title: preparse()
+---
+
 # preparse()
 
 Pre-parses date strings and returns intermediate parsing results. This function is useful when you need to examine parsing details before creating a final Date object.

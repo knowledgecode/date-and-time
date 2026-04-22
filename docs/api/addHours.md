@@ -1,3 +1,7 @@
+---
+title: addHours()
+---
+
 # addHours()
 
 Adds or subtracts hours from a Date object.

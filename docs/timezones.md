@@ -1,3 +1,7 @@
+---
+title: Supported Timezones
+---
+
 # Supported Timezones
 
 ## Import Methods

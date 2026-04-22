@@ -1,3 +1,7 @@
+---
+title: addDays()
+---
+
 # addDays()
 
 Adds or subtracts days from a Date object. Handles month boundaries, leap years, and daylight saving time transitions properly.

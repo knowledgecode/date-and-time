@@ -1,3 +1,7 @@
+---
+title: addMonths()
+---
+
 # addMonths()
 
 Adds or subtracts months from a Date object. Handles month boundaries, leap years, and varying month lengths appropriately.
