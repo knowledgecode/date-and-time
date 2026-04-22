@@ -4,3 +4,6 @@ cache/
 coverage/
 dist/
 node_modules/
+
+# Astro
+.astro/
