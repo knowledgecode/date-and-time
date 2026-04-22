@@ -1,0 +1,119 @@
+---
+title: date-and-time
+description: The simplest, most intuitive date and time library
+template: splash
+hero:
+  title: date-and-time
+  tagline: The simplest, most intuitive date and time library. Modern TypeScript library for date manipulation with full ES Modules support.
+  image:
+    src: /date-and-time/logo.png
+    alt: date-and-time
+  actions:
+    - text: Get Started
+      link: /date-and-time/guide/
+      icon: right-arrow
+      variant: primary
+    - text: API Reference
+      link: /date-and-time/api/
+      variant: minimal
+    - text: View on GitHub
+      link: https://github.com/knowledgecode/date-and-time
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Features
+
+<CardGrid>
+  <Card title="Modern & Fast" icon="rocket">
+    Written in TypeScript with ES2021 target. Tree-shakable modules for optimal bundle size.
+  </Card>
+  <Card title="Internationalization" icon="translate">
+    Support for 40+ locales and multiple calendar systems. Arabic, Bengali, Myanmar numerals.
+  </Card>
+  <Card title="Timezone Support" icon="moon">
+    Complete timezone handling with IANA timezone database built-in.
+  </Card>
+  <Card title="Type Safe" icon="approve-check">
+    Full TypeScript support with comprehensive type definitions and IntelliSense.
+  </Card>
+  <Card title="Tree Shakable" icon="puzzle">
+    Import only what you need. Optimized for modern bundlers with sideEffects false.
+  </Card>
+  <Card title="Plugin System" icon="add-document">
+    Extensible plugin system allows you to extend formatters and parsers.
+  </Card>
+</CardGrid>
+
+## Quick Example
+
+```typescript
+import { format, parse, addDays } from 'date-and-time';
+import ja from 'date-and-time/locales/ja';
+
+const now = new Date();
+
+// Basic formatting
+format(now, 'YYYY/MM/DD HH:mm:ss');
+// => 2025/08/23 14:30:45
+
+// Localized formatting
+format(now, 'YYYY年M月D日(ddd)', { locale: ja });
+// => 2025年8月23日(金)
+
+// Timezone-aware formatting
+format(now, 'YYYY-MM-DD HH:mm:ss [EST]', { timeZone: 'America/New_York' });
+// => 2025-08-23 09:30:45 EST
+
+// Parsing
+const date = parse('2025/08/23 14:30:45', 'YYYY/MM/DD HH:mm:ss');
+console.log(date)
+
+// Date arithmetic
+const futureDate = addDays(now, 7);
+console.log(format(futureDate, 'YYYY/MM/DD'));
+```
+
+## Key Features in v4.x
+
+- **Complete TypeScript rewrite** with enhanced type safety
+- **Tree-shaking support** for better bundle optimization
+- **Integrated timezone and timespan plugins** into the core library
+- **Modern JavaScript** targeting ES2021 (Node.js ≥18 required)
+- **Enhanced API** with options objects instead of boolean flags
+- **Improved locale handling** with per-function locale specification
+
+## Browser & Environment Support
+
+- **Node.js**: 18+
+- **Browsers**: Chrome 85+, Firefox 78+, Safari 14+, Edge 85+
+- **Module Systems**: ES Modules, CommonJS
+- **TypeScript**: 4.5+
+
+## Installation
+
+<Tabs>
+<TabItem label="npm">
+```bash
+npm install date-and-time
+```
+</TabItem>
+<TabItem label="yarn">
+```bash
+yarn add date-and-time
+```
+</TabItem>
+<TabItem label="pnpm">
+```bash
+pnpm add date-and-time
+```
+</TabItem>
+</Tabs>
+
+## Community
+
+- [GitHub Repository](https://github.com/knowledgecode/date-and-time)
+- [npm Package](https://www.npmjs.com/package/date-and-time)
+- [Issue Tracker](https://github.com/knowledgecode/date-and-time/issues)
