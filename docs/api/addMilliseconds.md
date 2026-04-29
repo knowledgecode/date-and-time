@@ -1,4 +1,6 @@
-# addMilliseconds()
+---
+title: addMilliseconds()
+---
 
 Adds or subtracts milliseconds from a Date object.
 

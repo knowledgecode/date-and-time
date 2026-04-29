@@ -1,4 +1,6 @@
-# Plugins
+---
+title: Plugins
+---
 
 `date-and-time` adopts a plugin system. Special tokens used relatively infrequently are provided as plugins outside the main library. By adding plugins as needed, you can use those tokens in `Formatter` and `Parser`. Here, `Formatter` refers to the output engine used by the `format` function, and `Parser` refers to the parsing engine used by the `parse`, `preparse`, and `isValid` functions. These engines are extended by adding plugins as arguments to these functions.
 

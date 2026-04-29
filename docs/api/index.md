@@ -1,4 +1,6 @@
-# API Reference
+---
+title: API Reference
+---
 
 Welcome to the comprehensive API reference for date-and-time v4.x. This section provides detailed documentation for all available functions, types, and options.
 

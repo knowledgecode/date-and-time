@@ -1,4 +1,6 @@
-# addSeconds()
+---
+title: addSeconds()
+---
 
 Adds or subtracts seconds from a Date object.
 

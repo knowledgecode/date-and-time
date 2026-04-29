@@ -1,4 +1,4 @@
-name: Deploy VitePress site to GitHub Pages
+name: Deploy Starlight site to GitHub Pages
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'docs/**'
+      - 'astro.config.mjs'
       - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
@@ -24,13 +25,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 'lts/*'
           cache: npm
 
       - name: Setup Pages
@@ -39,13 +38,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build with VitePress
+      - name: Build with Astro
         run: npm run docs:build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: pages
 
   deploy:
     needs: build
@@ -53,6 +52,9 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

@@ -1,4 +1,6 @@
-# isLeapYear()
+---
+title: isLeapYear()
+---
 
 Determines if a given year is a leap year according to the Gregorian calendar rules.
 

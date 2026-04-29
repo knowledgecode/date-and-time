@@ -1,4 +1,6 @@
-# compile()
+---
+title: compile()
+---
 
 Precompiles a format string into a reusable compiled object for improved performance when the same format pattern is used repeatedly.
 

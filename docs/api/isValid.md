@@ -1,4 +1,6 @@
-# isValid()
+---
+title: isValid()
+---
 
 Validates whether a date string conforms to the specified format pattern and represents a valid date.
 

@@ -1,4 +1,6 @@
-# Introduction
+---
+title: Introduction
+---
 
 **date-and-time** is the simplest, most intuitive date and time library for JavaScript and TypeScript. Built from the ground up with modern development practices, it provides a comprehensive set of tools for date manipulation, formatting, parsing, and timezone handling.
 

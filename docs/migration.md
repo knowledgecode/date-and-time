@@ -1,4 +1,6 @@
-# Migration Guide
+---
+title: Migration Guide
+---
 
 Version `4.x` has been completely rewritten in TypeScript and some features from `3.x` are no longer compatible. This section explains the changes to each feature and the migration methods.
 

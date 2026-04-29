@@ -1,246 +1,267 @@
-# Supported Locales
+---
+title: Locales
+---
 
-- ar (Arabic)
+Locales customize the language-specific strings used in date formatting and parsing — month names, day-of-week names, and AM/PM indicators. By default, the library uses English (`en`). To use another language, import the corresponding locale module and pass it as the `locale` option.
+
+```typescript
+import { format, parse } from 'date-and-time';
+import es from 'date-and-time/locales/es';
+
+const date = new Date('2025-08-23T12:00:00');
+
+format(date, 'MMMM D, YYYY', { locale: es });
+// => agosto 23, 2025
+
+format(date, 'ddd, D MMM', { locale: es });
+// => sáb, 23 ago
+```
+
+## Supported Locales
+
+The following 41 locales are available:
+
+### ar (Arabic)
 
 ```typescript
 import ar from 'date-and-time/locales/ar';
 ```
 
-- az (Azerbaijani)
+### az (Azerbaijani)
 
 ```typescript
 import az from 'date-and-time/locales/az';
 ```
 
-- bn (Bengali)
+### bn (Bengali)
 
 ```typescript
 import bn from 'date-and-time/locales/bn';
 ```
 
-- cs (Czech)
+### cs (Czech)
 
 ```typescript
 import cs from 'date-and-time/locales/cs';
 ```
 
-- da (Danish)
+### da (Danish)
 
 ```typescript
 import da from 'date-and-time/locales/da';
 ```
 
-- de (German)
+### de (German)
 
 ```typescript
 import de from 'date-and-time/locales/de';
 ```
 
-- el (Greek)
+### el (Greek)
 
 ```typescript
 import el from 'date-and-time/locales/el';
 ```
 
-- en (English)
+### en (English)
 
 ```typescript
 import en from 'date-and-time/locales/en';
 ```
 
-- es (Spanish)
+### es (Spanish)
 
 ```typescript
 import es from 'date-and-time/locales/es';
 ```
 
-- fa (Persian)
+### fa (Persian)
 
 ```typescript
 import fa from 'date-and-time/locales/fa';
 ```
 
-- fi (Finnish)
+### fi (Finnish)
 
 ```typescript
 import fi from 'date-and-time/locales/fi';
 ```
 
-- fr (French)
+### fr (French)
 
 ```typescript
 import fr from 'date-and-time/locales/fr';
 ```
 
-- he (Hebrew)
+### he (Hebrew)
 
 ```typescript
 import he from 'date-and-time/locales/he';
 ```
 
-- hi (Hindi)
+### hi (Hindi)
 
 ```typescript
 import hi from 'date-and-time/locales/hi';
 ```
 
-- hu (Hungarian)
+### hu (Hungarian)
 
 ```typescript
 import hu from 'date-and-time/locales/hu';
 ```
 
-- id (Indonesian)
+### id (Indonesian)
 
 ```typescript
 import id from 'date-and-time/locales/id';
 ```
 
-- it (Italian)
+### it (Italian)
 
 ```typescript
 import it from 'date-and-time/locales/it';
 ```
 
-- ja (Japanese)
+### ja (Japanese)
 
 ```typescript
 import ja from 'date-and-time/locales/ja';
 ```
 
-- ko (Korean)
+### ko (Korean)
 
 ```typescript
 import ko from 'date-and-time/locales/ko';
 ```
 
-- ms (Malay)
+### ms (Malay)
 
 ```typescript
 import ms from 'date-and-time/locales/ms';
 ```
 
-- my (Burmese)
+### my (Burmese)
 
 ```typescript
 import my from 'date-and-time/locales/my';
 ```
 
-- nl (Dutch)
+### nl (Dutch)
 
 ```typescript
 import nl from 'date-and-time/locales/nl';
 ```
 
-- no (Norwegian)
+### no (Norwegian)
 
 ```typescript
 import no from 'date-and-time/locales/no';
 ```
 
-- pl (Polish)
+### pl (Polish)
 
 ```typescript
 import pl from 'date-and-time/locales/pl';
 ```
 
-- pt-BR (Brazilian Portuguese)
+### pt-BR (Brazilian Portuguese)
 
 ```typescript
 import ptBR from 'date-and-time/locales/pt-BR';
 ```
 
-- pt-PT (European Portuguese)
+### pt-PT (European Portuguese)
 
 ```typescript
 import ptPT from 'date-and-time/locales/pt-PT';
 ```
 
-- ro (Romanian)
+### ro (Romanian)
 
 ```typescript
 import ro from 'date-and-time/locales/ro';
 ```
 
-- ru (Russian)
+### ru (Russian)
 
 ```typescript
 import ru from 'date-and-time/locales/ru';
 ```
 
-- rw (Kinyarwanda)
+### rw (Kinyarwanda)
 
 ```typescript
 import rw from 'date-and-time/locales/rw';
 ```
 
-- sr-Cyrl (Serbian Cyrillic)
+### sr-Cyrl (Serbian Cyrillic)
 
 ```typescript
 import srCyrl from 'date-and-time/locales/sr-Cyrl';
 ```
 
-- sr-Latn (Serbian Latin)
+### sr-Latn (Serbian Latin)
 
 ```typescript
 import srLatn from 'date-and-time/locales/sr-Latn';
 ```
 
-- sv (Swedish)
+### sv (Swedish)
 
 ```typescript
 import sv from 'date-and-time/locales/sv';
 ```
 
-- ta (Tamil)
+### ta (Tamil)
 
 ```typescript
 import ta from 'date-and-time/locales/ta';
 ```
 
-- th (Thai)
+### th (Thai)
 
 ```typescript
 import th from 'date-and-time/locales/th';
 ```
 
-- tr (Turkish)
+### tr (Turkish)
 
 ```typescript
 import tr from 'date-and-time/locales/tr';
 ```
 
-- uk (Ukrainian)
+### uk (Ukrainian)
 
 ```typescript
 import uk from 'date-and-time/locales/uk';
 ```
 
-- uz-Cyrl (Uzbek Cyrillic)
+### uz-Cyrl (Uzbek Cyrillic)
 
 ```typescript
 import uzCyrl from 'date-and-time/locales/uz-Cyrl';
 ```
 
-- uz-Latn (Uzbek Latin)
+### uz-Latn (Uzbek Latin)
 
 ```typescript
 import uzLatn from 'date-and-time/locales/uz-Latn';
 ```
 
-- vi (Vietnamese)
+### vi (Vietnamese)
 
 ```typescript
 import vi from 'date-and-time/locales/vi';
 ```
 
-- zh-Hans (Simplified Chinese)
+### zh-Hans (Simplified Chinese)
 
 ```typescript
 import zhHans from 'date-and-time/locales/zh-Hans';
 ```
 
-- zh-Hant (Traditional Chinese)
+### zh-Hant (Traditional Chinese)
 
 ```typescript
 import zhHant from 'date-and-time/locales/zh-Hant';
