@@ -2,8 +2,6 @@
 title: addYears()
 ---
 
-# addYears()
-
 Adds or subtracts years from a Date object. Handles leap years and edge cases appropriately.
 
 ## Syntax

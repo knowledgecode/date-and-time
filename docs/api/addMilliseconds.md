@@ -2,8 +2,6 @@
 title: addMilliseconds()
 ---
 
-# addMilliseconds()
-
 Adds or subtracts milliseconds from a Date object.
 
 ## Syntax

@@ -2,8 +2,6 @@
 title: getDaysInMonth()
 ---
 
-# getDaysInMonth()
-
 Returns the number of days in a given month of a specific year. Correctly handles leap years when calculating February.
 
 ## Syntax

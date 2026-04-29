@@ -2,8 +2,6 @@
 title: addMinutes()
 ---
 
-# addMinutes()
-
 Adds or subtracts minutes from a Date object.
 
 ## Syntax

@@ -2,8 +2,6 @@
 title: Quick Start
 ---
 
-# Quick Start
-
 This guide will get you up and running with date-and-time in just a few minutes.
 
 ## Basic Example

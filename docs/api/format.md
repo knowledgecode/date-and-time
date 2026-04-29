@@ -2,8 +2,6 @@
 title: format()
 ---
 
-# format()
-
 Formats a Date object according to the specified format string.
 
 ## Syntax

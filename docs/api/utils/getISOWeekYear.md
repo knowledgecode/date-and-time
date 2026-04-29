@@ -2,8 +2,6 @@
 title: getISOWeekYear()
 ---
 
-# getISOWeekYear()
-
 Returns the ISO 8601 week year for a given date. The ISO week year may differ from the calendar year near the start and end of the year, because ISO weeks always start on Monday and the first week of the year is the one containing the first Thursday of the year.
 
 ## Syntax

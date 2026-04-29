@@ -2,8 +2,6 @@
 title: transform()
 ---
 
-# transform()
-
 Transforms date strings from one format to another. This is a convenience function that combines parse() and format() operations.
 
 ## Syntax

@@ -2,8 +2,6 @@
 title: parse()
 ---
 
-# parse()
-
 Parses a formatted date string into a Date object according to the specified format pattern.
 
 ## Syntax
