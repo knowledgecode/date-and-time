@@ -1,0 +1,148 @@
+/* ─── Font sizes (match VitePress heading scale) ─── */
+:root {
+  --sl-text-h1: 1.75rem;
+  --sl-text-h2: 1.5rem;
+  --sl-text-h3: 1.25rem;
+  --sl-text-h4: 1.125rem;
+}
+@media (min-width: 50em) {
+  :root {
+    --sl-text-h1: 1.75rem;
+    --sl-text-h2: 1.5rem;
+    --sl-text-h3: 1.25rem;
+    --sl-text-h4: 1.125rem;
+  }
+}
+
+/* ─── Colors (neutral, matching VitePress) ─── */
+:root {
+  --sl-color-text: rgba(235, 235, 245, 0.86);
+  /* Accent: #5672cd — dark mode */
+  --sl-color-accent-low: hsl(226, 40%, 18%);
+  --sl-color-accent: hsl(226, 54%, 57%);
+  --sl-color-accent-high: hsl(226, 80%, 85%);
+}
+:root[data-theme='light'] {
+  --sl-color-text: rgba(60, 60, 67);
+  --sl-color-hairline: rgba(60, 60, 67, 0.12);
+  --sl-color-hairline-light: rgba(60, 60, 67, 0.08);
+  /* Accent: #5672cd — light mode */
+  --sl-color-accent-low: hsl(226, 60%, 94%);
+  --sl-color-accent: hsl(226, 54%, 47%);
+  --sl-color-accent-high: hsl(226, 54%, 28%);
+}
+
+/* ─── h2 border-top (VitePress section divider style) ─── */
+.sl-markdown-content h2:not(:where(.not-content *)) {
+  border-top: 1px solid var(--sl-color-hairline);
+  padding-top: 24px;
+  margin-top: 2em;
+}
+
+/* ─── Left sidebar menu line-height ─── */
+.sidebar-content a,
+.sidebar-content summary {
+  line-height: 1.6;
+}
+
+/* ─── "On this page" TOC line-height ─── */
+starlight-toc a {
+  line-height: 1.6;
+}
+
+/* ─── Tables ─── */
+.sl-markdown-content table:not(:where(.not-content *)) {
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  width: 100%;
+}
+.sl-markdown-content tr:not(:where(.not-content *)) {
+  border-top: 1px solid var(--sl-color-hairline);
+  border-bottom: 1px solid var(--sl-color-hairline);
+  transition: background-color 0.25s;
+}
+/* Zebra stripe (dark mode default) */
+.sl-markdown-content tr:nth-child(2n):not(:where(.not-content *)) {
+  background-color: var(--sl-color-gray-6);
+}
+:root[data-theme='light'] .sl-markdown-content tr:nth-child(2n):not(:where(.not-content *)) {
+  background-color: var(--sl-color-gray-7);
+}
+/* th (dark mode default) */
+.sl-markdown-content th:not(:where(.not-content *)) {
+  border: var(--ec-brdWd) solid var(--ec-brdCol);
+  padding: 8px 16px;
+  background-color: var(--sl-color-gray-6);
+  color: var(--sl-color-gray-3);
+}
+:root[data-theme='light'] .sl-markdown-content th:not(:where(.not-content *)) {
+  background-color: var(--sl-color-gray-7);
+}
+.sl-markdown-content td:not(:where(.not-content *)) {
+  border: var(--ec-brdWd) solid var(--ec-brdCol);
+  padding: 8px 16px;
+}
+
+/* ─── Pagination ─── */
+.pagination-links {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sl-color-hairline);
+}
+.pagination-links a {
+  align-items: center;
+  gap: 0.75rem;
+  border-color: var(--sl-color-hairline);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: none;
+  transition: border-color 0.25s;
+}
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent);
+}
+.pagination-links a > span {
+  font-size: 0.75rem;
+  color: var(--sl-color-gray-3);
+  letter-spacing: 0.4px;
+}
+.pagination-links .link-title {
+  font-size: var(--sl-text-base);
+  line-height: 1.4;
+  color: var(--sl-color-white);
+  margin-top: 4px;
+}
+:root[data-theme='light'] .pagination-links .link-title {
+  color: var(--sl-color-gray-1);
+}
+.pagination-links svg {
+  color: var(--sl-color-accent);
+  flex-shrink: 0;
+}
+
+/* ─── Hero image ─── */
+.hero img {
+  width: 320px;
+  height: 320px;
+}
+
+/* ─── Cards ─── */
+/* Dark mode default */
+article.card {
+  background-color: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-6);
+  border-radius: 12px;
+  transition: border-color 0.25s;
+}
+/* Light mode override */
+:root[data-theme='light'] article.card {
+  background-color: var(--sl-color-gray-7);
+  border-color: var(--sl-color-gray-7);
+}
+article.card:hover {
+  border-color: var(--sl-color-accent);
+}
+article.card .title {
+  color: inherit;
+}

@@ -3,6 +3,7 @@
 cache/
 coverage/
 dist/
+pages/
 node_modules/
 
 # Astro

@@ -8,7 +8,7 @@ export default defineConfig(
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
-    ignores: ["**/*.js", "coverage", "dist", "docs"]
+    ignores: ["**/*.js", "**/*.mjs", "coverage", "dist", "docs", ".astro"]
   },
   {
     files: ['**/*.ts'],

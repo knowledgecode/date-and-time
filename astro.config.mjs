@@ -2,10 +2,14 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
+  outDir: './pages',
   srcDir: './docs',
   site: 'https://knowledgecode.github.io',
   base: '/date-and-time',
   trailingSlash: 'never',
+  devToolbar: {
+    enabled: false,
+  },
   markdown: {
     shikiConfig: {
       themes: {
@@ -16,6 +20,9 @@ export default defineConfig({
   },
   integrations: [
     starlight({
+      customCss: [
+        './docs/styles/custom.css',
+      ],
       title: 'date-and-time',
       description: 'The simplest, most intuitive date and time library',
       logo: {
@@ -30,7 +37,7 @@ export default defineConfig({
         {
           label: 'Getting Started',
           items: [
-            { label: 'Introduction', link: '/guide/' },
+            { label: 'Introduction', link: '/guide' },
             { label: 'Installation', link: '/guide/installation' },
             { label: 'Quick Start', link: '/guide/quick-start' },
           ],
@@ -39,7 +46,7 @@ export default defineConfig({
           label: 'API Reference',
           collapsed: true,
           items: [
-            { label: 'Overview', link: '/api/' },
+            { label: 'Overview', link: '/api' },
             {
               label: 'Core Functions',
               items: [
