@@ -1,8 +1,17 @@
 ---
-title: Supported Timezones
+title: Timezones
 ---
 
-# Supported Timezones
+Timezone support lets you format and parse dates in any timezone, regardless of the local system timezone. Pass an IANA timezone name string as the `timeZone` option to any function that accepts it — no additional imports are needed for the recommended approach.
+
+```typescript
+import { format } from 'date-and-time';
+
+const date = new Date();
+
+format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
+// => 2025-08-23 23:30:45
+```
 
 ## Import Methods
 
@@ -68,6 +77,8 @@ format(date, 'YYYY-MM-DD HH:mm:ss', { timeZone: New_York });
 ```
 
 ## Regions
+
+The timezones listed below are confirmed to work — since this library internally relies on the `Intl` API, other timezones supported by your runtime may also work.
 
 1. [Africa](#africa)
 2. [America](#america)
