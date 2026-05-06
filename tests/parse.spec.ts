@@ -558,6 +558,41 @@ describe('options', () => {
     expect(Number.isNaN(parse('2025-01-01 00:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: dummyTimeZone }).getTime())).toBe(true);
     expect(Number.isNaN(parse('2025-01-01 00:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'dummyTimeZone' }).getTime())).toBe(true);
   });
+
+  test('defaultDate: date components', () => {
+    expect(parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15 } }))
+      .toEqual(new Date(2024, 2, 15, 12, 30));
+    expect(parse('03-15', 'MM-DD', { defaultDate: { Y: 2024 } }))
+      .toEqual(new Date(2024, 2, 15));
+  });
+
+  test('defaultDate: time components', () => {
+    expect(parse('2024-03-15', 'YYYY-MM-DD', { defaultDate: { H: 10, m: 30, s: 45 } }))
+      .toEqual(new Date(2024, 2, 15, 10, 30, 45));
+  });
+
+  test('defaultDate: timezone offset (Z)', () => {
+    // Z: -540 means UTC+9 (JST): minutes become 30+(-540)=-510, so Date.UTC(2024,2,15,12,-510) = 03:30 UTC
+    expect(parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15, Z: -540 } }))
+      .toEqual(new Date(Date.UTC(2024, 2, 15, 3, 30)));
+  });
+
+  test('defaultDate: Z takes precedence over timeZone option', () => {
+    // Z: -540 (UTC+9) overrides timeZone: 'UTC'; 12:30 local → 03:30 UTC
+    expect(parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15, Z: -540 }, timeZone: 'UTC' }))
+      .toEqual(new Date(Date.UTC(2024, 2, 15, 3, 30)));
+  });
+
+  test('defaultDate: 12-hour components (h and A)', () => {
+    // base.A=1 (PM), base.h=2 → hour = 1*12 + 2 = 14 (2 PM)
+    expect(parse('30', 'mm', { defaultDate: { Y: 2024, M: 3, D: 15, h: 2, A: 1 } }))
+      .toEqual(new Date(2024, 2, 15, 14, 30));
+  });
+
+  test('defaultDate: calendar: buddhist interaction', () => {
+    expect(parse('2567-03-15', 'YYYY-MM-DD', { calendar: 'buddhist' }))
+      .toEqual(new Date(2024, 2, 15));
+  });
 });
 
 describe('timeZone Los_Angeles', () => {

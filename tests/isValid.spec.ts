@@ -149,4 +149,30 @@ describe('options', () => {
     const dateString = format(new Date(-3944621033000), 'YYYY-MM-DD[T]HH:mm:ss ZZ');
     expect(isValid(dateString, 'YYYY-MM-DD[T]HH:mm:ss ZZ')).toBe(true);
   });
+
+  test('defaultDate: year for leap day validation', () => {
+    expect(isValid('02-29', 'MM-DD', { defaultDate: { Y: 2024 } })).toBe(true);
+    expect(isValid('02-29', 'MM-DD', { defaultDate: { Y: 2023 } })).toBe(false);
+    expect(isValid('02-29', 'MM-DD')).toBe(false); // defaults to 1970 (non-leap year)
+  });
+
+  test('defaultDate: month for day range validation', () => {
+    expect(isValid('29', 'D', { defaultDate: { Y: 2024, M: 2 } })).toBe(true);
+    expect(isValid('29', 'D', { defaultDate: { Y: 2023, M: 2 } })).toBe(false);
+    expect(isValid('31', 'D', { defaultDate: { Y: 2024, M: 4 } })).toBe(false); // April has 30 days
+  });
+
+  test('defaultDate: timezone offset (Z) validation', () => {
+    expect(isValid('12:00', 'HH:mm', { defaultDate: { Y: 2024, M: 1, D: 1, Z: 0 } })).toBe(true);
+    expect(isValid('12:00', 'HH:mm', { defaultDate: { Y: 2024, M: 1, D: 1, Z: -999 } })).toBe(false);
+  });
+
+  test('defaultDate: H out of range', () => {
+    expect(isValid('30', 'mm', { defaultDate: { Y: 2024, M: 1, D: 1, H: 25 } })).toBe(false);
+    expect(isValid('30', 'mm', { defaultDate: { Y: 2024, M: 1, D: 1, H: 0 } })).toBe(true);
+  });
+
+  test('defaultDate: H not in format with hour24: h24 (regression)', () => {
+    expect(isValid('30', 'mm', { defaultDate: { Y: 2024, M: 1, D: 1 }, hour24: 'h24' })).toBe(true);
+  });
 });
