@@ -72,6 +72,25 @@ isValid('august 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });   // => true
 isValid('August 23, 2025', 'MMMM D, YYYY');                         // => true (correct case)
 ```
 
+### defaultDate Validation
+
+Use `defaultDate` to provide context for validation of partial date strings. The most practical use case is leap year-aware validation of month-day strings.
+
+```typescript
+import { isValid } from 'date-and-time';
+
+// Leap day validation — result depends on the year
+isValid('02-29', 'MM-DD', { defaultDate: { Y: 2024 } }); // => true  (2024 is a leap year)
+isValid('02-29', 'MM-DD', { defaultDate: { Y: 2023 } }); // => false (2023 is not a leap year)
+isValid('02-29', 'MM-DD');                               // => false (default year 1970 is not a leap year)
+
+// Day range validation — depends on both year and month
+isValid('29', 'D', { defaultDate: { Y: 2024, M: 2 } }); // => true  (Feb 2024 has 29 days)
+isValid('31', 'D', { defaultDate: { Y: 2024, M: 4 } }); // => false (April has 30 days)
+```
+
+**Note**: Values provided in `defaultDate` are also subject to range validation. For example, an out-of-range `H` value in `defaultDate` will cause `isValid()` to return `false`.
+
 ## Advanced Validation Patterns
 
 ### Multiple Format Validation

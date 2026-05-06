@@ -1,9 +1,20 @@
-import { createTimezoneDate } from './zone.ts';
+import { createTimezoneDate, TimeZone } from './zone.ts';
 import { isUTC } from './datetime.ts';
 import { preparse } from './preparse.ts';
-import { validatePreparseResult } from './isValid.ts';
+import { toGregorianYear, getDefaultDate, validatePreparseResult } from './isValid.ts';
 import type { CompiledObject } from './compile.ts';
 import type { ParserOptions } from './parser.ts';
+
+const convert = (Y: number, M: number, D: number, H: number, m: number, s: number, S: number, timeZone?: string | TimeZone) => {
+  // If a specific time zone is provided in the options, use it to create the date.
+  if (timeZone) {
+    const naiveUTC = Date.UTC(Y, M - 1, D, H, m, s, S);
+    // If the specified time zone is UTC, create the date directly in UTC. Otherwise, create the date using the specified time zone.
+    return isUTC(timeZone) ? new Date(naiveUTC) : createTimezoneDate(naiveUTC, timeZone);
+  }
+  // If no time zone is provided, create the date in the local time zone.
+  return new Date(Y, M - 1, D, H, m, s, S);
+};
 
 /**
  * Parses a date string according to the specified format.
@@ -18,23 +29,20 @@ export function parse(dateString: string, arg: string | CompiledObject, options?
   if (!validatePreparseResult(pr, options)) {
     return new Date(NaN);
   }
-  // Normalize date components (year, month, day, hour, minute, second, millisecond)
-  pr.Y = pr.Y ? pr.Y - (options?.calendar === 'buddhist' ? 543 : 0) : 1970;
-  pr.M = (pr.M ?? 1) - (pr.Y < 100 ? 1900 * 12 + 1 : 1);
-  pr.D ??= 1;
-  pr.H = ((pr.H ?? 0) % 24) || ((pr.A ?? 0) * 12 + (pr.h ?? 0) % 12);
-  pr.m ??= 0;
-  pr.s ??= 0;
-  pr.S ??= 0;
 
-  // If the preparse result contains a timezone offset (Z), use it to create the date.
-  if (isUTC(options?.timeZone) || 'Z' in pr) {
-    return new Date(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m + (pr.Z ?? 0), pr.s, pr.S));
-  }
-  // If a specific time zone is provided in the options, use it to create the date.
-  if (options?.timeZone) {
-    return createTimezoneDate(Date.UTC(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S), options.timeZone);
-  }
-  // If no time zone information is available, create the date in the local time zone.
-  return new Date(pr.Y, pr.M, pr.D, pr.H, pr.m, pr.s, pr.S);
+  const base = getDefaultDate(options?.defaultDate);
+  const year = toGregorianYear(pr.Y, options) ?? base.Y;
+  // When a Z offset exists (from the parsed string or defaultDate.Z), it takes precedence over options.timeZone.
+  const offset = pr.Z ?? base.Z;
+
+  return convert(
+    year,
+    (pr.M ?? base.M) - (year < 100 ? 1900 * 12 : 0),
+    pr.D ?? base.D,
+    ((pr.H ?? base.H ?? 0) % 24) || ((pr.A ?? base.A ?? 0) * 12 + (pr.h ?? base.h ?? 0) % 12),
+    (pr.m ?? base.m) + (offset ?? 0),
+    pr.s ?? base.s,
+    pr.S ?? base.S,
+    typeof offset === 'number' ? 'UTC' : options?.timeZone
+  );
 }

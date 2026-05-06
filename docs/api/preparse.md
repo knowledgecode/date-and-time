@@ -16,7 +16,7 @@ preparse(dateString, formatString[, options])
 |----------------|----------------------------|----------|--------------------------------------------------------------------------|
 | `dateString`   | `string`                   | Yes      | The date string to parse                                                 |
 | `formatString` | `string \| CompiledObject` | Yes      | Format pattern string or compiled object                                 |
-| `options`      | `ParserOptions`            | No       | Parsing options for customization (see [`parse()`](./parse) for details) |
+| `options`      | `ParserOptions`            | No       | Parsing options for customization (see [`parse()`](./parse#parseroptions) for details) |
 
 ### Returns
 
@@ -94,7 +94,7 @@ console.log(result);
 
 ## ParserOptions
 
-The `options` parameter accepts the same `ParserOptions` as the [`parse()`](./parse#parseroptions) function. This includes locale, timezone, numeral system, calendar, case sensitivity, and hour format settings. Refer to the parse documentation for complete details on all available options.
+The `options` parameter accepts the same `ParserOptions` as the [`parse()`](./parse#parseroptions) function. This includes locale, timezone, numeral system, calendar, case sensitivity, hour format settings, and `defaultDate`. Refer to the parse documentation for complete details on all available options.
 
 ## Use Cases
 

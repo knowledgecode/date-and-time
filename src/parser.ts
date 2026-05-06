@@ -5,6 +5,58 @@ import type { TimeZone } from './zone.ts';
 
 type ParserToken = 'Y' | 'M' | 'D' | 'H' | 'A' | 'h' | 'm' | 's' | 'S' | 'Z';
 
+export interface ParsedComponents {
+  /**
+   * Year component
+   */
+  Y?: number;
+
+  /**
+   * Month component (1-12)
+   */
+  M?: number;
+
+  /**
+   * Day component
+   */
+  D?: number;
+
+  /**
+   * Hour in 24-hour format
+   */
+  H?: number;
+
+  /**
+   * Meridiem indicator (0:AM / 1:PM)
+   */
+  A?: number;
+
+  /**
+   * Hour in 12-hour format
+   */
+  h?: number;
+
+  /**
+   * Minute component
+   */
+  m?: number;
+
+  /**
+   * Second component
+   */
+  s?: number;
+
+  /**
+   * Millisecond component
+   */
+  S?: number;
+
+  /**
+   * Timezone offset in minutes
+   */
+  Z?: number;
+}
+
 export interface ParserPluginOptions {
   /**
    * The hour format to use for parsing.
@@ -51,6 +103,13 @@ export interface ParserPluginOptions {
    * This is an object that provides methods to get localized month names, day names, and meridiems.
    */
   locale: Locale;
+
+  /**
+   * Default date components to use when certain components are missing from the input string.
+   * This allows the parser to fill in missing components with default values, which can be useful for parsing partial date strings.
+   * For example, if the input string only contains a month and day, the parser can use the default year from this object.
+   */
+  defaultDate: ParsedComponents;
 }
 
 export interface ParseResult {
