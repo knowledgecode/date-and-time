@@ -4,59 +4,9 @@ import { parser as defaultParser, validateToken } from './parser.ts';
 import en from './locales/en.ts';
 import latn from './numerals/latn.ts';
 import type { CompiledObject } from './compile.ts';
-import type { ParserOptions } from './parser.ts';
+import type { ParsedComponents, ParserOptions } from './parser.ts';
 
-export interface PreparseResult {
-  /**
-   * Year component
-   */
-  Y?: number;
-
-  /**
-   * Month component (1-12)
-   */
-  M?: number;
-
-  /**
-   * Day component
-   */
-  D?: number;
-
-  /**
-   * Hour in 24-hour format
-   */
-  H?: number;
-
-  /**
-   * Meridiem indicator (0:AM/1:PM)
-   */
-  A?: number;
-
-  /**
-   * Hour in 12-hour format
-   */
-  h?: number;
-
-  /**
-   * Minute component
-   */
-  m?: number;
-
-  /**
-   * Second component
-   */
-  s?: number;
-
-  /**
-   * Millisecond component
-   */
-  S?: number;
-
-  /**
-   * Timezone offset in minutes
-   */
-  Z?: number;
-
+export interface PreparseResult extends ParsedComponents {
   /**
    * Current parsing position
    */
@@ -95,7 +45,8 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
     timeZone: isTimeZone(options?.timeZone) || typeof options?.timeZone === 'string'
       ? options.timeZone || undefined
       : undefined,
-    locale: options?.locale ?? en
+    locale: options?.locale ?? en,
+    defaultDate: options?.defaultDate ?? {}
   };
   const pr: PreparseResult = {
     _index: 0,
