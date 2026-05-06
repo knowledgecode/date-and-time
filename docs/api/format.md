@@ -119,6 +119,18 @@ For available plugins, see the [`plugins`](#plugins) option in FormatterOptions.
 
 The `FormatterOptions` object allows you to customize the formatting behavior:
 
+```typescript
+interface FormatterOptions {
+  locale?: Locale;
+  timeZone?: TimeZone | string;
+  numeral?: Numeral;
+  calendar?: 'gregory' | 'buddhist';
+  hour12?: 'h11' | 'h12';
+  hour24?: 'h23' | 'h24';
+  plugins?: FormatterPlugin[];
+}
+```
+
 ### locale
 
 **Type**: `Locale`  

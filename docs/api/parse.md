@@ -124,6 +124,22 @@ For available plugins, see the [`plugins`](#plugins) option in ParserOptions.
 
 ## ParserOptions
 
+The `ParserOptions` object allows you to customize the parsing behavior:
+
+```typescript
+interface ParserOptions {
+  locale?: Locale;
+  timeZone?: TimeZone | string;
+  numeral?: Numeral;
+  calendar?: 'gregory' | 'buddhist';
+  hour12?: 'h11' | 'h12';
+  hour24?: 'h23' | 'h24';
+  ignoreCase?: boolean;
+  defaultDate?: ParsedComponents;
+  plugins?: ParserPlugin[];
+}
+```
+
 ### locale
 
 **Type**: `Locale`  
@@ -220,28 +236,6 @@ parse('August 23, 2568', 'MMMM D, YYYY', { calendar: 'buddhist' });
 // => Fri Aug 23 2025 00:00:00 GMT-0700
 ```
 
-### ignoreCase
-
-**Type**: `boolean`  
-**Default**: `false`
-
-Enables case-insensitive parsing for text elements.
-
-```typescript
-import { parse } from 'date-and-time';
-
-// Case-sensitive (default)
-parse('august 23, 2025', 'MMMM D, YYYY');
-// => Invalid Date
-
-// Case-insensitive
-parse('AUGUST 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });
-// => Fri Aug 23 2025 00:00:00 GMT-0700
-
-parse('fri aug 23 2025', 'ddd MMM DD YYYY', { ignoreCase: true });
-// => Fri Aug 23 2025 00:00:00 GMT-0700
-```
-
 ### hour12
 
 **Type**: `"h11" | "h12"`  
@@ -278,6 +272,72 @@ parse('0:30', 'H:mm', { hour24: 'h23' });
 // h24 format - midnight is 24 (of previous day)
 parse('24:30', 'H:mm', { hour24: 'h24' });
 // => Thu Jan 01 1970 00:30:00 GMT-0800
+```
+
+### ignoreCase
+
+**Type**: `boolean`  
+**Default**: `false`
+
+Enables case-insensitive parsing for text elements.
+
+```typescript
+import { parse } from 'date-and-time';
+
+// Case-sensitive (default)
+parse('august 23, 2025', 'MMMM D, YYYY');
+// => Invalid Date
+
+// Case-insensitive
+parse('AUGUST 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });
+// => Fri Aug 23 2025 00:00:00 GMT-0700
+
+parse('fri aug 23 2025', 'ddd MMM DD YYYY', { ignoreCase: true });
+// => Fri Aug 23 2025 00:00:00 GMT-0700
+```
+
+### defaultDate
+
+**Type**: `ParsedComponents`  
+**Default**: `{ Y: 1970, M: 1, D: 1, m: 0, s: 0, S: 0 }`
+
+Specifies default values for date/time components that are missing from the format string. This is useful when parsing partial strings such as time-only or month-day formats.
+
+```typescript
+interface ParsedComponents {
+  Y?: number;  // Year
+  M?: number;  // Month (1-12)
+  D?: number;  // Day
+  H?: number;  // Hour (24-hour)
+  A?: number;  // Meridiem (0: AM, 1: PM)
+  h?: number;  // Hour (12-hour)
+  m?: number;  // Minute
+  s?: number;  // Second
+  S?: number;  // Millisecond
+  Z?: number;  // Timezone offset in minutes (e.g., UTC+9 = -540)
+}
+```
+
+**Note**: If `defaultDate.Z` is set, it takes precedence over the `timeZone` option. `Z` is in minutes, using the same sign convention as the `Z` / `ZZ` format tokens (e.g., UTC+9 = `-540`).
+
+```typescript
+import { parse } from 'date-and-time';
+
+// Parse time-only string — fill in date from defaultDate
+parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15 } });
+// => Fri Mar 15 2024 12:30:00
+
+// Parse month-day only — fill in year from defaultDate
+parse('03-15', 'MM-DD', { defaultDate: { Y: 2024 } });
+// => Fri Mar 15 2024 00:00:00
+
+// Fill in time components for a date-only format
+parse('2024-03-15', 'YYYY-MM-DD', { defaultDate: { H: 10, m: 30, s: 45 } });
+// => Fri Mar 15 2024 10:30:45
+
+// defaultDate.Z takes precedence over timeZone option
+parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15, Z: -540 }, timeZone: 'UTC' });
+// => Fri Mar 15 2024 03:30:00 UTC  (interpreted as UTC+9; timeZone: 'UTC' is ignored)
 ```
 
 ### plugins
@@ -339,6 +399,8 @@ parse('2025-08', 'YYYY-MM');
 parse('2025', 'YYYY');
 // => Wed Jan 01 2025 00:00:00 GMT-0800
 ```
+
+To customize these defaults, use the [`defaultDate`](#defaultdate) option.
 
 ### Date Range Limitations
 
