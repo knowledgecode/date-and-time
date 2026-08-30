@@ -6,16 +6,23 @@ on:
   pull_request:
     branches: [ master, develop ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7.0.1
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7.0.0
       with:
         node-version: 'lts/*'
         cache: 'npm'
@@ -32,13 +39,16 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    timeout-minutes: 10
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7.0.1
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7.0.0
       with:
         node-version: 'lts/*'
         cache: 'npm'
@@ -58,7 +68,7 @@ jobs:
       run: mkdir -p .github/badges
 
     - name: Generate coverage badge
-      uses: emibcn/badge-action@v2.0.3
+      uses: emibcn/badge-action@f9150fde070fcca0c4e832437611b44838fcd325 # v2.0.4
       with:
         label: 'coverage'
         status: ${{ steps.coverage.outputs.pct }}%
@@ -74,7 +84,7 @@ jobs:
         git push
 
     - name: Upload coverage reports
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: coverage-report
         path: coverage/
