@@ -589,6 +589,42 @@ describe('options', () => {
       .toEqual(new Date(2024, 2, 15, 14, 30));
   });
 
+  test('defaultDate: H should not override explicitly parsed 12-hour time', () => {
+    expect(parse('1 am', 'h a', { defaultDate: { H: 5 } }))
+      .toEqual(new Date(1970, 0, 1, 1));
+    expect(parse('11 pm', 'h a', { defaultDate: { H: 5 } }))
+      .toEqual(new Date(1970, 0, 1, 23));
+    expect(parse('12 am', 'h a', { defaultDate: { H: 5 } }))
+      .toEqual(new Date(1970, 0, 1, 0));
+    expect(parse('12 pm', 'h a', { defaultDate: { H: 5 } }))
+      .toEqual(new Date(1970, 0, 1, 12));
+  });
+
+  test('hour24: h24 style H=24 should map to midnight, not roll over to the next day', () => {
+    expect(parse('2024-03-15 24', 'YYYY-MM-DD H', { hour24: 'h24' }))
+      .toEqual(new Date(2024, 2, 15, 0));
+  });
+
+  test('defaultDate: partial 12-hour mixing between parsed h and default A', () => {
+    expect(parse('5', 'h', { defaultDate: { Y: 1970, M: 1, D: 1, A: 1 } }))
+      .toEqual(new Date(1970, 0, 1, 17));
+  });
+
+  test('defaultDate: unrelated 12-hour fields should not override an explicitly parsed 24-hour H', () => {
+    expect(parse('2024-03-15 20', 'YYYY-MM-DD H', { defaultDate: { A: 1, h: 5 } }))
+      .toEqual(new Date(2024, 2, 15, 20));
+  });
+
+  test('defaultDate: explicitly parsed H=0 (midnight) should not fall through to unrelated defaultDate.A', () => {
+    expect(parse('2024-03-15 00', 'YYYY-MM-DD HH', { defaultDate: { A: 1 } }))
+      .toEqual(new Date(2024, 2, 15, 0));
+  });
+
+  test('defaultDate: partial 12-hour mixing between parsed A and default h', () => {
+    expect(parse('PM', 'A', { defaultDate: { Y: 1970, M: 1, D: 1, h: 5 } }))
+      .toEqual(new Date(1970, 0, 1, 17));
+  });
+
   test('defaultDate: calendar: buddhist interaction', () => {
     expect(parse('2567-03-15', 'YYYY-MM-DD', { calendar: 'buddhist' }))
       .toEqual(new Date(2024, 2, 15));

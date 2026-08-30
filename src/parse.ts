@@ -32,6 +32,7 @@ export function parse(dateString: string, arg: string | CompiledObject, options?
 
   const base = getDefaultDate(options?.defaultDate);
   const year = toGregorianYear(pr.Y, options) ?? base.Y;
+  const hour24 = ((pr.H ?? pr.A ?? pr.h ?? -1) < 0 ? base.H : pr.H) ?? -1;
   // When a Z offset exists (from the parsed string or defaultDate.Z), it takes precedence over options.timeZone.
   const offset = pr.Z ?? base.Z;
 
@@ -39,7 +40,7 @@ export function parse(dateString: string, arg: string | CompiledObject, options?
     year,
     (pr.M ?? base.M) - (year < 100 ? 1900 * 12 : 0),
     pr.D ?? base.D,
-    ((pr.H ?? base.H ?? 0) % 24) || ((pr.A ?? base.A ?? 0) * 12 + (pr.h ?? base.h ?? 0) % 12),
+    hour24 < 0 ? (pr.A ?? base.A ?? 0) * 12 + (pr.h ?? base.h ?? 0) % 12 : hour24 % 24,
     (pr.m ?? base.m) + (offset ?? 0),
     pr.s ?? base.s,
     pr.S ?? base.S,
