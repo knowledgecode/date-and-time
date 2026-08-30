@@ -4,7 +4,7 @@ import { resolve } from 'path';
 export default defineConfig({
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src')
+      '@': resolve(import.meta.dirname, './src')
     }
   },
   test: {
@@ -12,7 +12,13 @@ export default defineConfig({
       exclude: ['src/**/*.d.ts'],
       include: ['src/**/*.ts'],
       provider: 'v8',
-      reporter: ['json-summary', 'html']
+      reporter: ['json-summary', 'html'],
+      thresholds: {
+        lines: 100,
+        statements: 100,
+        functions: 100,
+        branches: 95
+      }
     },
     include: ['tests/**/*.spec.ts']
   }
