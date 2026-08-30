@@ -1242,7 +1242,7 @@ export const Mbabane: TimeZone = {
 
 export const McMurdo: TimeZone = {
   zone_name: 'Antarctica/McMurdo',
-  gmt_offset: [46800, 43200]
+  gmt_offset: [46800, 43200, 0]
 };
 
 export const Melbourne: TimeZone = {
