@@ -7,7 +7,7 @@
 <div align="center">
 
 [![CI](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml/badge.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
-[![Coverage](https://raw.githubusercontent.com/knowledgecode/date-and-time/refs/heads/master/.github/badges/coverage.svg)](https://github.com/knowledgecode/date-and-time/actions/workflows/test.yml)
+[![Coverage](https://codecov.io/gh/knowledgecode/date-and-time/graph/badge.svg)](https://codecov.io/gh/knowledgecode/date-and-time)
 [![npm](https://img.shields.io/npm/v/date-and-time)](https://www.npmjs.com/package/date-and-time)
 
 </div>

@@ -12,7 +12,7 @@ export default defineConfig({
       exclude: ['src/**/*.d.ts'],
       include: ['src/**/*.ts'],
       provider: 'v8',
-      reporter: ['json-summary', 'html'],
+      reporter: ['html', 'lcov'],
       thresholds: {
         lines: 100,
         statements: 100,
