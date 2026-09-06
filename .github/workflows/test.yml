@@ -41,7 +41,7 @@ jobs:
     if: github.event_name == 'push'
     timeout-minutes: 10
     permissions:
-      contents: write
+      contents: read
 
     steps:
     - name: Checkout code
@@ -59,29 +59,12 @@ jobs:
     - name: Run tests with coverage
       run: npm run test:coverage
 
-    - name: Read coverage summary
-      id: coverage
-      run: |
-        echo "pct=$(jq '.total.lines.pct' coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-
-    - name: Create badges directory
-      run: mkdir -p .github/badges
-
-    - name: Generate coverage badge
-      uses: emibcn/badge-action@f9150fde070fcca0c4e832437611b44838fcd325 # v2.0.4
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
       with:
-        label: 'coverage'
-        status: ${{ steps.coverage.outputs.pct }}%
-        color: ${{ fromJSON(steps.coverage.outputs.pct) >= 80 && 'green' || fromJSON(steps.coverage.outputs.pct) >= 60 && 'yellow' || 'red' }}
-        path: .github/badges/coverage.svg
-
-    - name: Commit coverage badge
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .github/badges/coverage.svg
-        git diff --staged --quiet || git commit -m "Update coverage badge"
-        git push
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage/lcov.info
+        fail_ci_if_error: true
 
     - name: Upload coverage reports
       uses: actions/upload-artifact@v7.0.1
