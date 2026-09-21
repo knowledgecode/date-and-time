@@ -25,6 +25,7 @@ export default defineConfig({
       ],
       title: 'date-and-time',
       description: 'The simplest, most intuitive date and time library',
+      disable404Route: true,
       logo: {
         src: './docs/assets/logo.png',
         alt: 'date-and-time',

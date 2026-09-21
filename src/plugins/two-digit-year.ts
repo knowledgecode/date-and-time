@@ -1,7 +1,7 @@
-import { ParserPlugin, exec } from '@/plugin.ts';
-import type { ParserPluginOptions } from '@/plugin.ts';
+import { exec } from '@/plugin.ts';
+import type { ParserPluginOptions, ParserPluginObject } from '@/plugin.ts';
 
-class Parser extends ParserPlugin {
+export const parser = {
   YY (str: string, options: ParserPluginOptions) {
     const result = exec(/^\d\d/, str, 'Y');
 
@@ -14,6 +14,4 @@ class Parser extends ParserPlugin {
     }
     return result;
   }
-}
-
-export const parser = new Parser();
+} satisfies ParserPluginObject;

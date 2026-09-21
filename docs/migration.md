@@ -249,4 +249,28 @@ The following plugins are now obsolete as they have been integrated into the mai
 - `timespan`
 - `timezone`
 
-The custom plugin feature that existed up to 3.x is not yet supported at this time.
+The custom plugin feature (`date.extend(...)`) that existed up to 3.x has been replaced by the `plugins` option, which accepts a plain object literal instead of mutating a global singleton. Below is a `Formatter` example. A `Parser` plugin is passed the same way, but its tokens are more limited: they can only set the date components the built-in parser already provides. See the Plugins guide for details on writing your own plugin.
+
+```typescript
+// 3.x
+date.extend({
+  formatter: {
+    Q: function (d) { return String(Math.floor(d.getMonth() / 3) + 1); }
+  }
+});
+date.format(new Date(), 'YYYY [Q]Q');
+```
+
+```typescript
+// 4.x
+import { format } from 'date-and-time';
+import type { DateLike, FormatterPluginObject } from 'date-and-time/plugin';
+
+const quarter: FormatterPluginObject = {
+  Q: (d: DateLike) => String((d.getMonth() / 3 | 0) + 1)
+};
+
+format(new Date(), 'YYYY [Q]Q', { plugins: [quarter] });
+```
+
+The 3.x `extend` silently ignored any key that collided with a built-in token, leaving the built-in behavior in place. With `FormatterPluginObject`/`ParserPluginObject`, the same collision (such as `YYYY` or `MM`) is rejected at compile time instead. Note that an untyped plain object is not checked against built-in tokens, and custom plugins are searched before the built-in tokens; this differs from 3.x and can silently override a built-in token if the same key is reused.

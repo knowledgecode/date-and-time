@@ -1,14 +1,11 @@
-import { FormatterPlugin } from '@/plugin.ts';
-import type { DateLike } from '@/plugin.ts';
+import type { DateLike, FormatterPluginObject } from '@/plugin.ts';
 
-class Formatter extends FormatterPlugin {
+export const formatter = {
   t (d: DateLike) {
     return String(Math.floor(d.getTime() / 1000));
-  }
+  },
 
   T (d: DateLike) {
     return String(d.getTime());
   }
-}
-
-export const formatter = new Formatter();
+} satisfies FormatterPluginObject;

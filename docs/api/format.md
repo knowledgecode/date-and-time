@@ -127,7 +127,7 @@ interface FormatterOptions {
   calendar?: 'gregory' | 'buddhist';
   hour12?: 'h11' | 'h12';
   hour24?: 'h23' | 'h24';
-  plugins?: FormatterPlugin[];
+  plugins?: (FormatterPluginObject | FormatterPlugin)[];
 }
 ```
 
@@ -276,10 +276,10 @@ format(midnight, 'H:mm', { hour24: 'h24' });
 
 ### plugins
 
-**Type**: `FormatterPlugin[]`  
+**Type**: `(FormatterPluginObject | FormatterPlugin)[]`  
 **Default**: `undefined`
 
-Enables additional format tokens provided by plugins. Plugins extend the formatter with special tokens that are not included in the core library.
+Enables additional format tokens provided by plugins. Plugins extend the formatter with special tokens that are not included in the core library. Each entry may also be a plain object literal annotated with `FormatterPluginObject`, which rejects keys that collide with built-in tokens at compile time. Entries that are not annotated this way are not checked, so an entry that defines a built-in token such as `YYYY` overrides it. `FormatterPlugin` is deprecated, kept only for compatibility with existing code, and will be removed in the next major version. See the [Plugins](../plugins) guide for details.
 
 ```typescript
 import { format } from 'date-and-time';
