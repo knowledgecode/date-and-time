@@ -2,6 +2,8 @@ import { describe, expect, test } from 'vitest';
 import { format } from '@/format.ts';
 import { parse } from '@/parse.ts';
 import { FormatterPlugin, ParserPlugin } from '@/plugin.ts';
+import { formatter as timestamp } from '@/plugins/timestamp.ts';
+import { parser as microsecond } from '@/plugins/microsecond.ts';
 import type { FormatterOptions } from '@/formatter.ts';
 import type { ParserOptions } from '@/parser.ts';
 import type { FormatterPluginObject, ParserPluginObject } from '@/plugin.ts';
@@ -95,5 +97,12 @@ describe('ParserOptions.plugins', () => {
     // @ts-expect-error - a token must be a function
     const options: ParserOptions = { plugins: [{ YY: 1 }] };
     expect(options).toBeDefined();
+  });
+});
+
+describe('bundled plugins', () => {
+  test('keep the member types of their tokens', () => {
+    expect(timestamp.t(new Date(5000))).toBe('5');
+    expect(microsecond.f('5')).toMatchObject({ value: 5, length: 1 });
   });
 });

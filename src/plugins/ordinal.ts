@@ -1,7 +1,7 @@
-import { FormatterPlugin, ParserPlugin, ParserPluginOptions, exec } from '@/plugin.ts';
-import type { DateLike } from '@/plugin.ts';
+import { ParserPluginOptions, exec } from '@/plugin.ts';
+import type { DateLike, FormatterPluginObject, ParserPluginObject } from '@/plugin.ts';
 
-class Formatter extends FormatterPlugin {
+export const formatter = {
   DDD (d: DateLike) {
     const day = String(d.getDate());
 
@@ -20,9 +20,9 @@ class Formatter extends FormatterPlugin {
       return `${day}th`;
     }
   }
-}
+} satisfies FormatterPluginObject;
 
-class Parser extends ParserPlugin {
+export const parser = {
   DDD (str: string, options: ParserPluginOptions) {
     const result = exec(/^\d\d?(?=st|nd|rd|th)/, options.ignoreCase ? str.toLowerCase() : str, 'D');
 
@@ -31,8 +31,4 @@ class Parser extends ParserPlugin {
     }
     return result;
   }
-}
-
-export const formatter = new Formatter();
-
-export const parser = new Parser();
+} satisfies ParserPluginObject;
