@@ -24,6 +24,27 @@ const foobar = require('date-and-time/plugins/foobar');
 format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar.formatter] });
 ```
 
+## Writing Your Own Plugin
+
+For a quick, one-off token, you can pass a plain object literal typed as `FormatterPluginObject` (for `format`) or `ParserPluginObject` (for `parse`, `preparse`, and `isValid`). Any key that collides with a built-in token (such as `YYYY` or `MM`) is rejected at compile time, so you cannot accidentally shadow a built-in token by mistake.
+
+```typescript
+import { format } from 'date-and-time';
+import type { DateLike, FormatterPluginObject } from 'date-and-time/plugin';
+
+const quarter: FormatterPluginObject = {
+  Q: (d: DateLike) => String((d.getMonth() / 3 | 0) + 1)
+};
+
+format(new Date(2025, 3, 1), 'YYYY [Q]Q', { plugins: [quarter] });
+// => 2025 Q2
+```
+
+```typescript
+// @ts-expect-error - `YYYY` is a built-in token and cannot be redefined this way
+const invalid: FormatterPluginObject = { YYYY: () => 'nope' };
+```
+
 ## day-of-week
 
 This plugin adds tokens to the `Parser` for reading the day of the week. Since the day of the week does not provide information that identifies a specific date, it is a meaningless token, but it can be used to skip that portion when the string you want to read contains a day of the week.

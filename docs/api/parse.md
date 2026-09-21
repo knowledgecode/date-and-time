@@ -136,7 +136,7 @@ interface ParserOptions {
   hour24?: 'h23' | 'h24';
   ignoreCase?: boolean;
   defaultDate?: ParsedComponents;
-  plugins?: ParserPlugin[];
+  plugins?: (ParserPluginObject | ParserPlugin)[];
 }
 ```
 
@@ -342,10 +342,10 @@ parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15, Z: -540 }, timeZo
 
 ### plugins
 
-**Type**: `ParserPlugin[]`  
+**Type**: `(ParserPluginObject | ParserPlugin)[]`  
 **Default**: `undefined`
 
-Enables additional parse tokens provided by plugins. Plugins extend the parser with special tokens that are not included in the core library.
+Enables additional parse tokens provided by plugins. Plugins extend the parser with special tokens that are not included in the core library. Each entry may also be a plain object literal typed as `ParserPluginObject`, which rejects keys that collide with built-in tokens at compile time; see the [Plugins](../plugins) guide for details.
 
 ```typescript
 import { parse } from 'date-and-time';
