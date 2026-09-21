@@ -118,12 +118,21 @@ export interface ParseResult {
   token?: ParserToken;
 }
 
+type ParserFunction = (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) => ParseResult;
+
+/**
+ * Base class for authoring parser plugins by extending it with token methods.
+ * @deprecated Prefer a plain object literal typed as `ParserPluginObject`, which statically
+ * rejects keys that collide with built-in tokens. This class is kept only to avoid a breaking
+ * change for existing class-based plugins and will be removed in the next major version.
+ */
 export abstract class ParserPlugin {
-  [key: string]: ((str: string, options: ParserPluginOptions, compiledObj: CompiledObject) => ParseResult) | undefined;
+  [key: string]: ParserFunction | undefined;
 }
 
 export interface ParserOptions extends Partial<ParserPluginOptions> {
-  plugins?: ParserPlugin[];
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  plugins?: (ParserPluginObject | ParserPlugin)[];
 }
 
 /**
@@ -167,14 +176,20 @@ const VALID_TOKENS = new Set<ParserToken>(['Y', 'M', 'D', 'H', 'A', 'h', 'm', 's
  */
 export const validateToken = (token: ParserToken) => VALID_TOKENS.has(token);
 
-class DefaultParser extends ParserPlugin {
+type ReservedParserToken =
+  | 'YYYY' | 'Y' | 'MMMM' | 'MMM' | 'MM' | 'M' | 'DD' | 'D' | 'HH' | 'H'
+  | 'AA' | 'A' | 'aa' | 'a' | 'hh' | 'h' | 'mm' | 'm' | 'ss' | 's' | 'SSS' | 'SS' | 'S'
+  | 'Z' | 'ZZ';
+
+// The `satisfies` clause below requires exactly the keys listed in `ReservedParserToken`.
+const defaultParser = {
   YYYY (str: string) {
     return exec(/^\d{4}/, str, 'Y');
-  }
+  },
 
   Y (str: string) {
     return exec(/^\d{1,4}/, str, 'Y');
-  }
+  },
 
   MMMM (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMonthList({ style: 'long', compiledObj });
@@ -182,7 +197,7 @@ class DefaultParser extends ParserPlugin {
 
     result.value++;
     return result;
-  }
+  },
 
   MMM (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMonthList({ style: 'short', compiledObj });
@@ -190,103 +205,113 @@ class DefaultParser extends ParserPlugin {
 
     result.value++;
     return result;
-  }
+  },
 
   MM (str: string) {
     return exec(/^\d\d/, str, 'M');
-  }
+  },
 
   M (str: string) {
     return exec(/^\d\d?/, str, 'M');
-  }
+  },
 
   DD (str: string) {
     return exec(/^\d\d/, str, 'D');
-  }
+  },
 
   D (str: string) {
     return exec(/^\d\d?/, str, 'D');
-  }
+  },
 
   HH (str: string) {
     return exec(/^\d\d/, str, 'H');
-  }
+  },
 
   H (str: string) {
     return exec(/^\d\d?/, str, 'H');
-  }
+  },
 
   AA (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'long', compiledObj, case: 'uppercase' });
     return find(array, str, options, 'A');
-  }
+  },
 
   A (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'short', compiledObj, case: 'uppercase' });
     return find(array, str, options, 'A');
-  }
+  },
 
   aa (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'long', compiledObj, case: 'lowercase' });
     return find(array, str, options, 'A');
-  }
+  },
 
   a (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {
     const array = options.locale.getMeridiemList({ style: 'short', compiledObj, case: 'lowercase' });
     return find(array, str, options, 'A');
-  }
+  },
 
   hh (str: string) {
     return exec(/^\d\d/, str, 'h');
-  }
+  },
 
   h (str: string) {
     return exec(/^\d\d?/, str, 'h');
-  }
+  },
 
   mm (str: string) {
     return exec(/^\d\d/, str, 'm');
-  }
+  },
 
   m (str: string) {
     return exec(/^\d\d?/, str, 'm');
-  }
+  },
 
   ss (str: string) {
     return exec(/^\d\d/, str, 's');
-  }
+  },
 
   s (str: string) {
     return exec(/^\d\d?/, str, 's');
-  }
+  },
 
   SSS (str: string) {
     return exec(/^\d{1,3}/, str, 'S');
-  }
+  },
 
   SS (str: string) {
     const result = exec(/^\d\d?/, str, 'S');
     result.value *= 10;
     return result;
-  }
+  },
 
   S (str: string) {
     const result = exec(/^\d/, str, 'S');
     result.value *= 100;
     return result;
-  }
+  },
 
   Z (str: string) {
     const result = exec(/^[+-][01]\d[0-5]\d/, str, 'Z');
     result.value = (result.value / 100 | 0) * -60 - result.value % 100;
     return result;
-  }
+  },
 
   ZZ (str: string) {
     const results = /^([+-][01]\d):([0-5]\d)/.exec(str) ?? ['', '', ''];
     const value = +(results[1] + results[2]);
     return { value: (value / 100 | 0) * -60 - value % 100, length: results[0].length, token: 'Z' } satisfies ParseResult;
   }
-}
+} satisfies Record<ReservedParserToken, ParserFunction>;
 
-export const parser = new DefaultParser();
+/**
+ * Type for authoring a parser plugin as a plain object literal. Keys matching a token already
+ * implemented by the built-in parser are statically rejected, which prevents accidentally
+ * shadowing a built-in token.
+ */
+export type ParserPluginObject =
+  Partial<Record<ReservedParserToken, never>> &
+  Record<string, ParserFunction | undefined>;
+
+// Widened to a string-indexed record so a token can be looked up by an arbitrary string.
+export const parser: Record<string, ParserFunction | undefined> = defaultParser;
