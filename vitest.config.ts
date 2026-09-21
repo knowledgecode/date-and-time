@@ -14,6 +14,8 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['html', 'lcov']
     },
-    include: ['tests/**/*.spec.ts']
+    fsModuleCache: true,
+    include: ['tests/**/*.spec.ts'],
+    isolate: true
   }
 });
