@@ -249,7 +249,7 @@ The following plugins are now obsolete as they have been integrated into the mai
 - `timespan`
 - `timezone`
 
-The custom plugin feature (`date.extend(...)`) that existed up to 3.x has been replaced by the `plugins` option, which accepts a plain object literal instead of mutating a global singleton. Below is a `Formatter` example; a `Parser` plugin follows the same shape. See the Plugins guide for details on writing your own plugin.
+The custom plugin feature (`date.extend(...)`) that existed up to 3.x has been replaced by the `plugins` option, which accepts a plain object literal instead of mutating a global singleton. Below is a `Formatter` example. A `Parser` plugin is passed the same way, but its tokens are more limited: they can only set the date components the built-in parser already provides. See the Plugins guide for details on writing your own plugin.
 
 ```typescript
 // 3.x

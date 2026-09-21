@@ -26,7 +26,7 @@ format(new Date(), 'ddd, MMM DD YYYY', { plugins: [foobar.formatter] });
 
 ## Writing Your Own Plugin
 
-For a quick, one-off token, you can pass a plain object literal typed as `FormatterPluginObject` (for `format`) or `ParserPluginObject` (for `parse`, `preparse`, and `isValid`). Any key that collides with a built-in token (such as `YYYY` or `MM`) is rejected at compile time, so you cannot accidentally shadow a built-in token by mistake.
+For a quick, one-off token, you can pass a plain object literal instead of a plugin module. Annotate it with `FormatterPluginObject` (for `format`) or `ParserPluginObject` (for `parse`, `preparse`, and `isValid`), and any key that collides with a built-in token (such as `YYYY` or `MM`) is rejected at compile time.
 
 ```typescript
 import { format } from 'date-and-time';
@@ -44,6 +44,34 @@ format(new Date(2025, 3, 1), 'YYYY [Q]Q', { plugins: [quarter] });
 // @ts-expect-error - `YYYY` is a built-in token and cannot be redefined this way
 const invalid: FormatterPluginObject = { YYYY: () => 'nope' };
 ```
+
+Parser plugins are more limited than formatter plugins. A formatter token can return any string, but a parser token can only supply one of the date components that the built-in parser already reads: year (`Y`), month (`M`), day (`D`), 24-hour (`H`), meridiem (`A`), 12-hour (`h`), minute (`m`), second (`s`), millisecond (`S`), and time zone offset (`Z`). There is no way to add a new component.
+
+A parser token receives the remaining input string and returns a `value`, the `length` of the text it consumed, and the `token` naming the component that `value` is applied to. The `exec` helper builds this result from a regular expression, and its third argument is the component. A `length` of `0` means the token did not match, and parsing stops there. A result without a `token` only consumes its text and its `value` is discarded, which is how the `day-of-week` plugin skips a day name. Any name other than the components above is rejected by the type definitions and ignored at run time.
+
+The following token reads a day with an English ordinal suffix, such as `23rd`; the bundled `ordinal` plugin below provides the same token. The regular expression matches only the number, so `length` is increased by 2 to consume the suffix as well, while `value` is applied to the day component:
+
+```typescript
+import { parse } from 'date-and-time';
+import { exec } from 'date-and-time/plugin';
+import type { ParserPluginObject } from 'date-and-time/plugin';
+
+const ordinal: ParserPluginObject = {
+  DDD: (str: string) => {
+    const result = exec(/^\d\d?(?=st|nd|rd|th)/, str, 'D');
+
+    if (result.length > 0) {
+      result.length += 2;
+    }
+    return result;
+  }
+};
+
+parse('August 23rd, 2025', 'MMMM DDD, YYYY', { plugins: [ordinal] });
+// => Sat Aug 23 2025 00:00:00 GMT-0700
+```
+
+Objects passed to `plugins` without one of these annotations are not checked against built-in tokens. Since custom plugins are searched before the built-in tokens, a key such as `YYYY` in such an object silently overrides the built-in token. The `FormatterPlugin` and `ParserPlugin` types, which `plugins` also accepts, are deprecated, kept only for compatibility with existing code, and will be removed in the next major version.
 
 ## day-of-week
 

@@ -345,7 +345,7 @@ parse('12:30', 'HH:mm', { defaultDate: { Y: 2024, M: 3, D: 15, Z: -540 }, timeZo
 **Type**: `(ParserPluginObject | ParserPlugin)[]`  
 **Default**: `undefined`
 
-Enables additional parse tokens provided by plugins. Plugins extend the parser with special tokens that are not included in the core library. Each entry may also be a plain object literal typed as `ParserPluginObject`, which rejects keys that collide with built-in tokens at compile time; see the [Plugins](../plugins) guide for details.
+Enables additional parse tokens provided by plugins. Plugins extend the parser with special tokens that are not included in the core library. Unlike a format token, a parse token can only set one of the date components that the built-in parser already provides (year, month, day, hour, minute, second, millisecond, meridiem, and time zone offset); a token that sets none of them just skips the matching text. Each entry may also be a plain object literal annotated with `ParserPluginObject`, which rejects keys that collide with built-in tokens at compile time. Entries that are not annotated this way are not checked, so an entry that defines a built-in token such as `YYYY` overrides it. `ParserPlugin` is deprecated, kept only for compatibility with existing code, and will be removed in the next major version. See the [Plugins](../plugins) guide for details.
 
 ```typescript
 import { parse } from 'date-and-time';
