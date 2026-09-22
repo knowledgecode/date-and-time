@@ -80,6 +80,14 @@ format(new Date(), 'D MMMM YYYY', { locale: fr });
 
 For a complete list of all supported locales with import examples, see [Supported Locales](../locales).
 
+CommonJS's `require()` returns the same locale object as the ESM default export:
+
+```typescript
+const ja = require('date-and-time/locales/ja');
+
+format(new Date(), 'YYYY年M月D日', { locale: ja });
+```
+
 ### Timezone Usage
 
 Pass an IANA timezone name string directly to any function that accepts a timezone option:
@@ -102,6 +110,14 @@ format(new Date(), 'DD/MM/YYYY', { numeral: arab });
 // => ٠٨/٠٧/٢٠٢٥
 ```
 
+The same applies to numeral systems under CommonJS:
+
+```typescript
+const arab = require('date-and-time/numerals/arab');
+
+format(new Date(), 'DD/MM/YYYY', { numeral: arab });
+```
+
 ## Plugin Imports
 
 Some advanced features are available as plugins:
@@ -109,13 +125,12 @@ Some advanced features are available as plugins:
 ```typescript
 import { format } from 'date-and-time';
 // Import specific plugins
-import microsecond from 'date-and-time/plugins/microsecond';
-import ordinal from 'date-and-time/plugins/ordinal';
-import zonename from 'date-and-time/plugins/zonename';
+import { formatter as ordinal } from 'date-and-time/plugins/ordinal';
+import { formatter as zonename } from 'date-and-time/plugins/zonename';
 
 // Use plugin-specific tokens with plugins specified in options
 format(new Date(), 'MMMM DDD, YYYY', { plugins: [ordinal] }); // with ordinal plugin
-format(new Date(), 'HH:mm:ss.SSSSSS', { plugins: [microsecond] }); // with microsecond plugin
+format(new Date(), 'YYYY-MM-DD HH:mm:ss z', { plugins: [zonename], timeZone: 'Asia/Tokyo' }); // with zonename plugin
 ```
 
 ## CDN Usage

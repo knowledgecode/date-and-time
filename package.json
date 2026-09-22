@@ -30,14 +30,24 @@
       "require": "./dist/timezone.cjs"
     },
     "./locales/*": {
-      "types": "./dist/locales/*.d.ts",
-      "import": "./dist/locales/*.js",
-      "require": "./dist/locales/*.cjs"
+      "import": {
+        "types": "./dist/locales/*.d.ts",
+        "default": "./dist/locales/*.js"
+      },
+      "require": {
+        "types": "./dist/locales/*.d.cts",
+        "default": "./dist/locales/*.cjs"
+      }
     },
     "./numerals/*": {
-      "types": "./dist/numerals/*.d.ts",
-      "import": "./dist/numerals/*.js",
-      "require": "./dist/numerals/*.cjs"
+      "import": {
+        "types": "./dist/numerals/*.d.ts",
+        "default": "./dist/numerals/*.js"
+      },
+      "require": {
+        "types": "./dist/numerals/*.d.cts",
+        "default": "./dist/numerals/*.cjs"
+      }
     },
     "./plugins/*": {
       "types": "./dist/plugins/*.d.ts",
@@ -45,9 +55,14 @@
       "require": "./dist/plugins/*.cjs"
     },
     "./timezones/*": {
-      "types": "./dist/timezones/*.d.ts",
-      "import": "./dist/timezones/*.js",
-      "require": "./dist/timezones/*.cjs"
+      "import": {
+        "types": "./dist/timezones/*.d.ts",
+        "default": "./dist/timezones/*.js"
+      },
+      "require": {
+        "types": "./dist/timezones/*.d.cts",
+        "default": "./dist/timezones/*.cjs"
+      }
     }
   },
   "files": [
@@ -64,7 +79,7 @@
     "docs:dev": "astro dev",
     "docs:preview": "astro preview",
     "lint": "eslint",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && vitest run tests/build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "timezone": "tsx tools/timezone.ts",

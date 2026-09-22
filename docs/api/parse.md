@@ -29,13 +29,13 @@ import { parse } from 'date-and-time';
 
 // Basic date parsing
 parse('2025-08-23', 'YYYY-MM-DD');
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 parse('08/23/2025', 'MM/DD/YYYY');
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 parse('23.08.2025', 'DD.MM.YYYY');
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 // Time parsing
 parse('14:30:45', 'HH:mm:ss');
@@ -46,7 +46,7 @@ parse('2:30:45 PM', 'h:mm:ss A');
 
 // Combined date and time
 parse('2025-08-23 14:30:45', 'YYYY-MM-DD HH:mm:ss');
-// => Fri Aug 23 2025 14:30:45 GMT-0700
+// => Sat Aug 23 2025 14:30:45 GMT-0700
 ```
 
 ## Format Tokens
@@ -153,7 +153,7 @@ import es from 'date-and-time/locales/es';
 
 // Spanish parsing
 parse('23 de agosto de 2025', 'D [de] MMMM [de] YYYY', { locale: es });
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
 For a complete list of all supported locales with import examples, see [Supported Locales](../locales).
@@ -172,18 +172,18 @@ import { parse } from 'date-and-time';
 
 // Parse using an IANA timezone name string
 parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
-// => Fri Aug 23 2025 14:30:00 GMT+0900
+// => Sat Aug 23 2025 14:30:00 GMT+0900
 
 // Parse in UTC
 parse('2025-08-23 14:30:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'UTC' });
-// => Fri Aug 23 2025 14:30:00 GMT+0000
+// => Sat Aug 23 2025 14:30:00 GMT+0000
 
 // Timezone offset in input takes precedence over timeZone option
 parse('2025-08-23 14:30:00 +0300', 'YYYY-MM-DD HH:mm:ss Z', { timeZone: 'Asia/Tokyo' });
-// => Fri Aug 23 2025 14:30:00 GMT+0300 (Asia/Tokyo timeZone is ignored)
+// => Sat Aug 23 2025 14:30:00 GMT+0300 (Asia/Tokyo timeZone is ignored)
 
 parse('2025-08-23T14:30:00 +05:00', 'YYYY-MM-DD[T]HH:mm:ss ZZ', { timeZone: 'America/New_York' });
-// => Fri Aug 23 2025 14:30:00 GMT+0500 (America/New_York timeZone is ignored)
+// => Sat Aug 23 2025 14:30:00 GMT+0500 (America/New_York timeZone is ignored)
 ```
 
 For a complete list of all supported timezones, see [Supported Timezones](../timezones).
@@ -229,11 +229,11 @@ import { parse } from 'date-and-time';
 
 // Gregorian calendar (default)
 parse('August 23, 2025', 'MMMM D, YYYY');
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 // Buddhist calendar (543 years behind)
 parse('August 23, 2568', 'MMMM D, YYYY', { calendar: 'buddhist' });
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
 ### hour12
@@ -290,10 +290,7 @@ parse('august 23, 2025', 'MMMM D, YYYY');
 
 // Case-insensitive
 parse('AUGUST 23, 2025', 'MMMM D, YYYY', { ignoreCase: true });
-// => Fri Aug 23 2025 00:00:00 GMT-0700
-
-parse('fri aug 23 2025', 'ddd MMM DD YYYY', { ignoreCase: true });
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
 ### defaultDate
@@ -389,7 +386,7 @@ parse('14:30:45', 'HH:mm:ss');
 
 // Only date - defaults to 00:00:00
 parse('2025-08-23', 'YYYY-MM-DD');
-// => Fri Aug 23 2025 00:00:00 GMT-0700
+// => Sat Aug 23 2025 00:00:00 GMT-0700
 
 // Year and month - defaults to 1st day
 parse('2025-08', 'YYYY-MM');
@@ -528,7 +525,7 @@ parse('samedi, 23 août 2025 à 14:30:45', 'dddd, D MMMM YYYY [à] HH:mm:ss', {
   locale: fr,
   timeZone: 'Europe/Paris'
 });
-// => Fri Aug 23 2025 14:30:45 GMT+0200
+// => Sat Aug 23 2025 14:30:45 GMT+0200
 ```
 
 ### Business and Technical Formats
@@ -538,7 +535,7 @@ import { parse } from 'date-and-time';
 
 // ISO 8601 format
 parse('2025-08-23T14:30:45.123Z', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', { timeZone: 'UTC' });
-// => Fri Aug 23 2025 14:30:45 GMT+0000
+// => Sat Aug 23 2025 14:30:45 GMT+0000
 
 // RFC 2822 format
 parse('Sat, 23 Aug 2025 14:30:45 +0900', 'ddd, DD MMM YYYY HH:mm:ss ZZ');
@@ -608,7 +605,7 @@ const timestamp = parse(logLine, ' YYYY-MM-DD HH:mm:ss.SSS ...');
 // For different log formats
 const syslogLine = 'Aug 23 14:30:45 server: Process started';
 const syslogTimestamp = parse(syslogLine, 'MMM DD HH:mm:ss...');
-// => Sat Aug 23 1970 14:30:45 GMT-0700
+// => Sun Aug 23 1970 14:30:45 GMT-0700
 ```
 
 ### API Responses

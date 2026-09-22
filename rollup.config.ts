@@ -1,3 +1,4 @@
+import type { Plugin } from 'rollup';
 import alias from '@rollup/plugin-alias';
 import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
@@ -9,29 +10,43 @@ import { fileURLToPath } from 'node:url';
 const outputDir = (input: string) => input.replace(/^src/g, 'dist').replace(/\/[^/]*$/g, '');
 const replacePath = (input: string) => input.replace(/(^src\/|\.ts$)/g, '');
 
+const fixCjsDefaultInterop = (): Plugin => ({
+  name: 'fix-cjs-default-interop',
+  renderChunk: (code, _chunk, outputOptions) => {
+    if (outputOptions.format !== 'cjs') {
+      return null;
+    }
+    return {
+      code: `${code}Object.defineProperty(module.exports, 'default', { value: module.exports, enumerable: false });\n`,
+      map: null
+    };
+  }
+});
+
 const ts = () => {
   const plugins = [
     alias({ entries: [{ find: '@', replacement: resolve(dirname(fileURLToPath(import.meta.url)), 'src') }] }),
     esbuild({ minify: false, target: 'es2021' }),
     terser()
   ];
-  const config = (input: string | Record<string, string>, outputDir: string) => ({
+  const defaultExportPlugins = [...plugins, fixCjsDefaultInterop()];
+  const config = (input: string | Record<string, string>, outputDir: string, entryPlugins = plugins) => ({
     input,
     output: [
       { dir: outputDir, format: 'es' },
       { dir: outputDir, format: 'cjs', entryFileNames: '[name].cjs' }
     ],
-    plugins
+    plugins: entryPlugins
   });
 
   return [
     config('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
     config('src/timezone.ts', 'dist'),
-    config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
-    globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
+    config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist', defaultExportPlugins),
+    globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input), defaultExportPlugins)),
     globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),
-    config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist')
+    config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist', defaultExportPlugins)
   ].flat();
 };
 
@@ -40,10 +55,20 @@ const types = () => {
     alias({ entries: [{ find: '@', replacement: resolve(dirname(fileURLToPath(import.meta.url)), 'src') }] }),
     dts()
   ];
+  const cjsExportEquals = (): Plugin => ({
+    name: 'cjs-dts-export-equals',
+    renderChunk: (code) => code.replace(/export \{ (\w+) as default \};\n?$/, 'export = $1;\n')
+  });
+  const cjsPlugins = [...plugins, cjsExportEquals()];
   const config = (input: string | Record<string, string>, outputDir: string) => ({
     input,
     output: { dir: outputDir },
     plugins
+  });
+  const cjsConfig = (input: string | Record<string, string>, outputDir: string) => ({
+    input,
+    output: { dir: outputDir, entryFileNames: '[name].d.cts' },
+    plugins: cjsPlugins
   });
 
   return [
@@ -51,9 +76,12 @@ const types = () => {
     config('src/plugin.ts', 'dist'),
     config('src/timezone.ts', 'dist'),
     config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
+    cjsConfig(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
     globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
+    globSync('src/locales/**/*.ts').map(input => cjsConfig(input, outputDir(input))),
     globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),
-    config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist')
+    config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
+    cjsConfig(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist')
   ].flat();
 };
 
