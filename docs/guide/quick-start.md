@@ -19,7 +19,7 @@ console.log(formatted);
 // Parse a date string
 const parsed = parse('2025/08/23 14:30:45', 'YYYY/MM/DD HH:mm:ss');
 console.log(parsed);
-// => Fri Aug 23 2025 14:30:45 GMT+0900
+// => Sat Aug 23 2025 14:30:45 GMT+0900
 ```
 
 ## Common Format Patterns
@@ -98,7 +98,7 @@ format(date, 'YYYY-MM-DD HH:mm:ss [UTC]', { timeZone: 'UTC' });
 
 // Parsing in timezone
 parse('2025-08-23 23:30:45', 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Tokyo' });
-// => Fri Aug 23 2025 23:30:45 GMT+0900
+// => Sat Aug 23 2025 23:30:45 GMT+0900
 ```
 
 For a complete list of all supported timezones, see [Supported Timezones](../timezones).

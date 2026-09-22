@@ -125,13 +125,12 @@ Some advanced features are available as plugins:
 ```typescript
 import { format } from 'date-and-time';
 // Import specific plugins
-import microsecond from 'date-and-time/plugins/microsecond';
-import ordinal from 'date-and-time/plugins/ordinal';
-import zonename from 'date-and-time/plugins/zonename';
+import { formatter as ordinal } from 'date-and-time/plugins/ordinal';
+import { formatter as zonename } from 'date-and-time/plugins/zonename';
 
 // Use plugin-specific tokens with plugins specified in options
 format(new Date(), 'MMMM DDD, YYYY', { plugins: [ordinal] }); // with ordinal plugin
-format(new Date(), 'HH:mm:ss.SSSSSS', { plugins: [microsecond] }); // with microsecond plugin
+format(new Date(), 'YYYY-MM-DD HH:mm:ss z', { plugins: [zonename], timeZone: 'Asia/Tokyo' }); // with zonename plugin
 ```
 
 ## CDN Usage

@@ -359,7 +359,7 @@ format(date, 'ddd, DD MMM YYYY HH:mm:ss ZZ');
 // => Sat, 23 Aug 2025 14:30:45 +09:00
 
 // Log timestamp
-format(date, '\\[YYYY-MM-DD HH:mm:ss.SSS]\\');
+format(date, '\\[YYYY-MM-DD HH:mm:ss.SSS\\]');
 // => [2025-08-23 14:30:45.123]
 
 // File naming
