@@ -1,8 +1,6 @@
-import { compile } from './compile.ts';
+import { compile, COMMENT } from './compile.ts';
 import latn from './numerals/latn.ts';
 import type { Numeral } from './numeral.ts';
-
-const comment = /^\[(.*)\]$/;
 
 interface DurationFormatter {
   D?: number;
@@ -60,7 +58,7 @@ const format = (times: DurationFormatter, formatString: string, numeral: Numeral
       const time = times[token[0] as keyof DurationFormatter] ?? 0;
       return numeral.encode(`${sign(time)}${String(Math.abs(time)).padStart(token.length, '0')}`);
     }
-    return comment.test(token) ? token.replace(comment, '$1') : token;
+    return COMMENT.test(token) ? token.replace(COMMENT, '$1') : token;
   };
 
   return pattern.reduce((result, token) => result + resolveToken(token), '');

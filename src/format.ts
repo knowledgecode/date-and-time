@@ -1,4 +1,4 @@
-import { compile } from './compile.ts';
+import { compile, COMMENT } from './compile.ts';
 import { DateTime } from './datetime.ts';
 import { formatter as defaultFormatter } from './formatter.ts';
 import en from './locales/en.ts';
@@ -6,8 +6,6 @@ import latn from './numerals/latn.ts';
 import { isTimeZone } from './zone.ts';
 import type { CompiledObject } from './compile.ts';
 import type { FormatterOptions } from './formatter.ts';
-
-const comment = /^\[(.*)\]$/;
 
 /**
  * Formats a Date object according to the specified format string.
@@ -42,7 +40,7 @@ export function format(dateObj: Date, arg: string | CompiledObject, options?: Fo
         return encode(formatter[token](dateTime, formatterOptions, compiledObj));
       }
     }
-    return comment.test(token) ? token.replace(comment, '$1') : token;
+    return COMMENT.test(token) ? token.replace(COMMENT, '$1') : token;
   };
 
   return pattern.reduce((result, token) => result + resolveToken(token, pattern), '');

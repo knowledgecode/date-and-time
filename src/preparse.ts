@@ -1,4 +1,4 @@
-import { compile } from './compile.ts';
+import { compile, COMMENT } from './compile.ts';
 import { isTimeZone } from './zone.ts';
 import { parser as defaultParser, validateToken } from './parser.ts';
 import en from './locales/en.ts';
@@ -24,7 +24,6 @@ export interface PreparseResult extends ParsedComponents {
 }
 
 const wildcard = ' ';
-const comment = /^\[(.*)\]$/;
 const ellipsis = '...';
 
 /**
@@ -80,7 +79,7 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
       pr._match++;
     } else if (token === str[0] || token === wildcard) {
       pr._index++;
-    } else if (comment.test(token) && !str.indexOf(token.replace(comment, '$1'))) {
+    } else if (COMMENT.test(token) && !str.indexOf(token.replace(COMMENT, '$1'))) {
       pr._index += token.length - 2;
     } else if (token === ellipsis) {
       pr._index = dateString.length;
