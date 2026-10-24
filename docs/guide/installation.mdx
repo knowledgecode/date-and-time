@@ -179,13 +179,13 @@ console.log(format(new Date(), 'YYYY/MM/DD HH:mm:ss'));
 Now that you have date-and-time installed, you can:
 
 1. **[Quick Start](./quick-start)** - Learn the basics with simple examples
-2. **[API Reference](/api/)** - Dive deep into all available functions
+2. **[API Reference](../api)** - Dive deep into all available functions
 
 ## Troubleshooting
 
 ### TypeScript Issues
 
-If you encounter TypeScript errors, ensure you're using TypeScript 4.5+ and have the latest version of date-and-time:
+If you encounter TypeScript errors, make sure your `tsconfig.json` sets `moduleResolution` to `bundler`, `node16`, or `nodenext`. The type definitions are resolved through the package's `exports` field, which the legacy `node` (`node10`) setting ignores. Also make sure you have the latest versions of TypeScript and date-and-time:
 
 ```bash
 npm install typescript@latest date-and-time@latest
