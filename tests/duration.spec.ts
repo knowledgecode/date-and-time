@@ -132,3 +132,9 @@ describe('Duration (Negative Zero)', () => {
     expect(new Duration(duration).toNanoseconds().toParts()).toEqual({ nanoseconds: 0 });
   });
 });
+
+describe('Duration comments spanning line breaks', () => {
+  test('[D\nH] D H', () => {
+    expect(new Duration(90061001).toDays().format('[D\nH] D H')).toBe('D\nH 1 1');
+  });
+});

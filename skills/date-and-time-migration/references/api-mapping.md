@@ -102,7 +102,7 @@ addYears(now, 1, 'UTC');
 addYears(now, 1, 'America/Los_Angeles');
 ```
 
-The same applies to `addMonths` and `addDays`, including `addMonthsTZ` and `addDaysTZ`. The third argument is now a timezone string, so a leftover `true` throws `RangeError: Invalid time zone specified: true`.
+The same applies to `addMonths` and `addDays`, including `addMonthsTZ` and `addDaysTZ`. The third argument is now a timezone string, so a leftover `true` makes the result an `Invalid Date` (older releases threw `RangeError: Invalid time zone specified: true`).
 
 `addHours`, `addMinutes`, `addSeconds`, and `addMilliseconds` behave the same. Since v3.5 their third `utc` argument was deprecated and ignored; v4 removes it, so delete a leftover `true` (TypeScript reports it as an extra argument; JavaScript ignores it).
 

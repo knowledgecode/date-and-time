@@ -70,7 +70,15 @@ export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
   }
 
   const time = dateObj.getTime();
-  const parts = dtfToParts(getDateTimeFormat(zoneName), time);
+  const dtf = getDateTimeFormat(zoneName);
+
+  // formatToParts throws on an invalid time value, so an invalid date or an unknown zone
+  // takes the UTC path with an invalid date, whose fields are all NaN.
+  if (!dtf || Number.isNaN(time)) {
+    return toParts(new Date(NaN), 'UTC');
+  }
+
+  const parts = dtfToParts(dtf, time);
 
   parts.timezoneOffset = (time - fromParts(parts)) / 60000;
   return parts;

@@ -22,7 +22,7 @@ transform(dateString, sourceFormat, targetFormat[, parserOptions, formatterOptio
 
 ### Returns
 
-`string` - The transformed date string in the target format
+`string` - The transformed date string in the target format, or `'Invalid Date'` if the input cannot be parsed
 
 ## Basic Examples
 

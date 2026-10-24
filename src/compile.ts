@@ -13,6 +13,9 @@ const PUA_RBRACKET = /\uE001/g;
 // Regular expression to match format tokens, literal text, and escaped characters
 const REGEXP = /\[(?:[^[\]]|\[[^[\]]*])*]|([A-Za-z])\1*|\.{3}|./g;
 
+// Regular expression to match a bracketed literal token; the s flag lets the literal span line breaks
+export const COMMENT = /^\[(.*)\]$/s;
+
 /**
  * Compiles a format string into a tokenized array for efficient parsing and formatting.
  * @param formatString - The format string to compile

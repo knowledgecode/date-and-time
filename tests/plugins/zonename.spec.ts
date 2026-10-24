@@ -25,3 +25,11 @@ describe('plugins', () => {
     expect(format(now, 'zz', { plugins: [zonename], timeZone: Tokyo })).toBe('Japan Standard Time');
   });
 });
+
+describe('empty time zone', () => {
+  beforeAll(() => (process.env.TZ = 'Asia/Tokyo'));
+
+  test('falls back to the local time zone', () => {
+    expect(format(new Date(0), 'z zz', { timeZone: '', plugins: [zonename] })).toBe('JST Japan Standard Time');
+  });
+});

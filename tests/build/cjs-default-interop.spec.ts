@@ -33,4 +33,10 @@ describe.skipIf(!built)('CJS default export interop', () => {
     expect(readFileSync(dist('locales/ja.d.cts'), 'utf8')).toMatch(/^export = \w+;$/m);
     expect(readFileSync(dist('numerals/arab.d.cts'), 'utf8')).toMatch(/^export = \w+;$/m);
   });
+
+  test('named-export modules each generate a .d.cts identical to their .d.ts', () => {
+    for (const path of ['index', 'plugin', 'timezone', 'plugins/ordinal']) {
+      expect(readFileSync(dist(`${path}.d.cts`), 'utf8')).toBe(readFileSync(dist(`${path}.d.ts`), 'utf8'));
+    }
+  });
 });

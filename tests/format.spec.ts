@@ -793,3 +793,25 @@ describe('timeZone DST', () => {
     expect(format(dateObj, 'YYYY-MM-DD HH:mm:ss.SSS [UTC]Z')).toBe(dateString);
   });
 });
+
+describe('invalid input', () => {
+  test('Invalid Date returns "Invalid Date"', () => {
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm')).toBe('Invalid Date');
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm', { timeZone: 'UTC' })).toBe('Invalid Date');
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm', { timeZone: 'Asia/Tokyo' })).toBe('Invalid Date');
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm', { timeZone: Tokyo })).toBe('Invalid Date');
+  });
+
+  test('unknown time zone returns "Invalid Date"', () => {
+    expect(format(new Date(0), 'YYYY-MM-DD HH:mm', { timeZone: 'Invalid/Zone' })).toBe('Invalid Date');
+  });
+});
+
+describe('comments spanning line breaks', () => {
+  beforeAll(() => (process.env.TZ = 'UTC'));
+
+  test('[a\nb] YYYY', () => {
+    const now = new Date(2000, 1 - 1, 1, 0, 0, 0);
+    expect(format(now, '[a\nb] YYYY')).toBe('a\nb 2000');
+  });
+});

@@ -96,3 +96,9 @@ describe('transform', () => {
     expect(transform(string1, formatString1, formatString2, { timeZone: 'UTC' }, { timeZone: Tokyo })).toBe(string2);
   });
 });
+
+describe('invalid input', () => {
+  test('unparsable string returns "Invalid Date"', () => {
+    expect(transform('invalid-date', 'YYYY-MM-DD', 'MM/DD/YYYY')).toBe('Invalid Date');
+  });
+});

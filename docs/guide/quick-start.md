@@ -183,6 +183,6 @@ if (isNaN(result.getTime())) {
 
 Now that you're familiar with the basics:
 
-1. **[API Reference](/api/)** - Explore all available functions
+1. **[API Reference](../api)** - Explore all available functions
 2. **[Plugins](../plugins)** - Extend functionality with microsecond precision, ordinals, and more
 3. **[Migration Guide](../migration)** - If upgrading from v3.x

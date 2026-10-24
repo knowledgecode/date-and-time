@@ -53,7 +53,7 @@ const sortMap = (map: Map<string, TimeZone>) => {
 const formatAll = (map: Map<string, TimeZone>) => {
   const code = [];
 
-  code.push('import { TimeZone } from \'@/zone.ts\';');
+  code.push('import type { TimeZone } from \'@/zone.ts\';');
 
   for (const timezone of sortMap(map)) {
     const name = getPath(timezone).name.replace(/-/g, '_');
@@ -70,7 +70,7 @@ const path = process.argv[2];
 
 if (!path) {
   console.error('Please provide a CSV file path');
-  process.exit();
+  process.exit(1);
 }
 
 const csv = await readFile(path, 'utf8');

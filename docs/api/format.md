@@ -20,7 +20,7 @@ format(dateObj, formatString[, options])
 
 ### Returns
 
-`string` - The formatted date string
+`string` - The formatted date string, or `'Invalid Date'` if `dateObj` is an invalid Date or `timeZone` names a timezone the runtime does not recognize
 
 ## Basic Examples
 

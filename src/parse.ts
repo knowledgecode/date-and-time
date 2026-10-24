@@ -1,9 +1,10 @@
-import { createTimezoneDate, TimeZone } from './zone.ts';
+import { createTimezoneDate } from './zone.ts';
 import { isUTC } from './datetime.ts';
 import { preparse } from './preparse.ts';
 import { toGregorianYear, getDefaultDate, validatePreparseResult } from './isValid.ts';
 import type { CompiledObject } from './compile.ts';
 import type { ParserOptions } from './parser.ts';
+import type { TimeZone } from './zone.ts';
 
 const convert = (Y: number, M: number, D: number, H: number, m: number, s: number, S: number, timeZone?: string | TimeZone) => {
   // If a specific time zone is provided in the options, use it to create the date.

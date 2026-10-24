@@ -11,20 +11,15 @@ export const isTimeZone = (timeZone: unknown): timeZone is TimeZone => {
 };
 
 const getTimezoneOffset = (naiveUTC: number, zoneName: string): number => {
-  const dtf = (() => {
-    try {
-      return getDateTimeFormat(zoneName);
-    } catch {
-      return undefined;
-    }
-  })();
+  const dtf = getDateTimeFormat(zoneName);
   const set = new Set<number>();
 
-  if (dtf) {
+  // formatToParts throws on an invalid time value, so a NaN input skips the search.
+  if (dtf && !Number.isNaN(naiveUTC)) {
     // Try to find the correct offset by checking the current and previous days.
     for (let d = 0; d < 2; d++) {
       const time = naiveUTC - d * 86400 * 1000;
-      // Starting from a positive offset (≥ the maximum westward IANA offset, Metlakatla: UTC-15:13:42)
+      // Starting from the largest eastward IANA offset (Metlakatla LMT: UTC+15:13:42)
       // ensures DST is preferred over standard time for ambiguous fall-back timestamps.
       let offset = 54822 * 1000;
 

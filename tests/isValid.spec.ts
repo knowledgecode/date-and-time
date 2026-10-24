@@ -176,3 +176,9 @@ describe('options', () => {
     expect(isValid('30', 'mm', { defaultDate: { Y: 2024, M: 1, D: 1 }, hour24: 'h24' })).toBe(true);
   });
 });
+
+describe('comments spanning line breaks', () => {
+  test('[a\nb] YYYY', () => {
+    expect(isValid('a\nb 2000', '[a\nb] YYYY')).toBe(true);
+  });
+});
