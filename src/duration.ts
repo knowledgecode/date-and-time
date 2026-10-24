@@ -12,17 +12,17 @@ interface DurationFormatter {
   F?: number;
 }
 
-const nanosecondsPart = (parts: DurationFormatter, time: DOMHighResTimeStamp) => {
+const nanosecondsPart = (parts: DurationFormatter, time: number) => {
   parts.F = Math.trunc(time * 1000000);
   return parts;
 };
 
-const microsecondsPart = (parts: DurationFormatter, time: DOMHighResTimeStamp) => {
+const microsecondsPart = (parts: DurationFormatter, time: number) => {
   parts.f = Math.trunc(time * 1000);
   return nanosecondsPart(parts, Math.abs(time) * 1000 % 1 / 1000);
 };
 
-const millisecondsPart = (parts: DurationFormatter, time: DOMHighResTimeStamp) => {
+const millisecondsPart = (parts: DurationFormatter, time: number) => {
   parts.S = Math.trunc(time);
   return microsecondsPart(parts, Math.abs(time) % 1);
 };
@@ -114,9 +114,13 @@ export interface DurationDescriptor<T> {
 }
 
 export class Duration {
-  private readonly time: DOMHighResTimeStamp;
+  private readonly time: number;
 
-  constructor (time: DOMHighResTimeStamp) {
+  /**
+   * @param time - The duration in milliseconds. A fractional part carries sub-millisecond
+   * precision, such as the difference between two `performance.now()` values.
+   */
+  constructor (time: number) {
     this.time = time;
   }
 
