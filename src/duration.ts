@@ -220,7 +220,7 @@ export class Duration {
       toParts: () => {
         return {
           minutes: Math.trunc(this.time / 60000) + 0,
-          seconds: Math.trunc(this.time % 86400000 % 3600000 % 60000 / 1000) + 0,
+          seconds: Math.trunc(this.time % 60000 / 1000) + 0,
           milliseconds: Math.trunc(this.time % 1000) + 0,
           microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
           nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
@@ -243,8 +243,8 @@ export class Duration {
       toParts: () => {
         return {
           hours: Math.trunc(this.time / 3600000) + 0,
-          minutes: Math.trunc(this.time % 86400000 % 3600000 / 60000) + 0,
-          seconds: Math.trunc(this.time % 86400000 % 3600000 % 60000 / 1000) + 0,
+          minutes: Math.trunc(this.time % 3600000 / 60000) + 0,
+          seconds: Math.trunc(this.time % 60000 / 1000) + 0,
           milliseconds: Math.trunc(this.time % 1000) + 0,
           microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
           nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
@@ -268,8 +268,8 @@ export class Duration {
         return {
           days: Math.trunc(this.time / 86400000) + 0,
           hours: Math.trunc(this.time % 86400000 / 3600000) + 0,
-          minutes: Math.trunc(this.time % 86400000 % 3600000 / 60000) + 0,
-          seconds: Math.trunc(this.time % 86400000 % 3600000 % 60000 / 1000) + 0,
+          minutes: Math.trunc(this.time % 3600000 / 60000) + 0,
+          seconds: Math.trunc(this.time % 60000 / 1000) + 0,
           milliseconds: Math.trunc(this.time % 1000) + 0,
           microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
           nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
