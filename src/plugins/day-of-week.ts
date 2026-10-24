@@ -1,5 +1,5 @@
-import { ParserPluginOptions, CompiledObject, find } from '@/plugin.ts';
-import type { ParserPluginObject } from '@/plugin.ts';
+import { find } from '@/plugin.ts';
+import type { CompiledObject, ParserPluginOptions, ParserPluginObject } from '@/plugin.ts';
 
 export const parser = {
   dddd (str: string, options: ParserPluginOptions, compiledObj: CompiledObject) {

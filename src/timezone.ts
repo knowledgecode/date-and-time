@@ -1,4 +1,4 @@
-import { TimeZone } from '@/zone.ts';
+import type { TimeZone } from '@/zone.ts';
 
 export const Abidjan: TimeZone = {
   zone_name: 'Africa/Abidjan',

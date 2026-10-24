@@ -1,5 +1,5 @@
-import { ParserPluginOptions, exec } from '@/plugin.ts';
-import type { DateLike, FormatterPluginObject, ParserPluginObject } from '@/plugin.ts';
+import { exec } from '@/plugin.ts';
+import type { DateLike, FormatterPluginObject, ParserPluginOptions, ParserPluginObject } from '@/plugin.ts';
 
 export const formatter = {
   DDD (d: DateLike) {

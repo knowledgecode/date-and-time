@@ -1,6 +1,6 @@
 import { parse } from './parse.ts';
 import { format } from './format.ts';
-import { CompiledObject } from './compile.ts';
+import type { CompiledObject } from './compile.ts';
 import type { ParserOptions } from './parser.ts';
 import type { FormatterOptions } from './formatter.ts';
 
