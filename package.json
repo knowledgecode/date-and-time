@@ -15,19 +15,34 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./plugin": {
-      "types": "./dist/plugin.d.ts",
-      "import": "./dist/plugin.js",
-      "require": "./dist/plugin.cjs"
+      "import": {
+        "types": "./dist/plugin.d.ts",
+        "default": "./dist/plugin.js"
+      },
+      "require": {
+        "types": "./dist/plugin.d.cts",
+        "default": "./dist/plugin.cjs"
+      }
     },
     "./timezone": {
-      "types": "./dist/timezone.d.ts",
-      "import": "./dist/timezone.js",
-      "require": "./dist/timezone.cjs"
+      "import": {
+        "types": "./dist/timezone.d.ts",
+        "default": "./dist/timezone.js"
+      },
+      "require": {
+        "types": "./dist/timezone.d.cts",
+        "default": "./dist/timezone.cjs"
+      }
     },
     "./locales/*": {
       "import": {
@@ -50,9 +65,14 @@
       }
     },
     "./plugins/*": {
-      "types": "./dist/plugins/*.d.ts",
-      "import": "./dist/plugins/*.js",
-      "require": "./dist/plugins/*.cjs"
+      "import": {
+        "types": "./dist/plugins/*.d.ts",
+        "default": "./dist/plugins/*.js"
+      },
+      "require": {
+        "types": "./dist/plugins/*.d.cts",
+        "default": "./dist/plugins/*.cjs"
+      }
     },
     "./timezones/*": {
       "import": {

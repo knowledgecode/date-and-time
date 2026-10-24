@@ -73,13 +73,17 @@ const types = () => {
 
   return [
     config('src/index.ts', 'dist'),
+    cjsConfig('src/index.ts', 'dist'),
     config('src/plugin.ts', 'dist'),
+    cjsConfig('src/plugin.ts', 'dist'),
     config('src/timezone.ts', 'dist'),
+    cjsConfig('src/timezone.ts', 'dist'),
     config(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
     cjsConfig(Object.fromEntries(globSync('src/numerals/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
     globSync('src/locales/**/*.ts').map(input => config(input, outputDir(input))),
     globSync('src/locales/**/*.ts').map(input => cjsConfig(input, outputDir(input))),
     globSync('src/plugins/**/*.ts').map(input => config(input, outputDir(input))),
+    globSync('src/plugins/**/*.ts').map(input => cjsConfig(input, outputDir(input))),
     config(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist'),
     cjsConfig(Object.fromEntries(globSync('src/timezones/**/*.ts').map(input => [replacePath(input), input])), 'dist')
   ].flat();
