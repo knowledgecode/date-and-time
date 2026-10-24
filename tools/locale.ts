@@ -92,7 +92,8 @@ const getDate = (locale: string) => {
 const locale = process.argv[2];
 
 if (!locale) {
-  process.exit();
+  console.error('Please provide a locale code');
+  process.exit(1);
 }
 
 const list = {

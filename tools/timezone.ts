@@ -70,7 +70,7 @@ const path = process.argv[2];
 
 if (!path) {
   console.error('Please provide a CSV file path');
-  process.exit();
+  process.exit(1);
 }
 
 const csv = await readFile(path, 'utf8');
