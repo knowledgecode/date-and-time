@@ -7,7 +7,7 @@ import type { TimeZone } from './zone.ts';
  * @param dateObj - The Date object to modify
  * @param days - The number of days to add
  * @param [timeZone] - Optional time zone object, an IANA timezone name or 'UTC' to use Coordinated Universal Time.
- * @returns A new Date object with the specified number of days added
+ * @returns A new Date object with the specified number of days added, or an invalid date if the date or the time zone is invalid
  */
 export function addDays(dateObj: Date, days: number, timeZone?: TimeZone | string) {
   const zoneName = isTimeZone(timeZone) ? timeZone.zone_name : timeZone ?? undefined;

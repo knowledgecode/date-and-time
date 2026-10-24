@@ -153,7 +153,7 @@ What raises an error, and where. "Checker" means `tsc` on a TypeScript project, 
 | Breakage | Checker | Plain JavaScript at runtime |
 |----------|---------|-----------------------------|
 | Boolean UTC flag on `format`, `parse`, `preparse`, `isValid`, `transform` | error | no error: the result is in local time |
-| Boolean UTC flag on `addYears`, `addMonths`, `addDays` | error | `RangeError: Invalid time zone specified: true` |
+| Boolean UTC flag on `addYears`, `addMonths`, `addDays` | error | no error: the result is an `Invalid Date` (older releases threw `RangeError: Invalid time zone specified: true`) |
 | Removed APIs (`date.locale`, `date.plugin`, `date.extend`, `formatTZ`, ...) | error | `TypeError`, only when that line runs |
 | Old module paths (`locale/`, `plugin/`) | error | throws when the module loads |
 | `subtract` result used as a number | error | `NaN`, or `[object Object]` inside a string |
@@ -165,7 +165,7 @@ What raises an error, and where. "Checker" means `tsc` on a TypeScript project, 
 
 Details:
 
-- **Boolean UTC flag.** In v4, passing `true` as the last argument of `format`, `parse`, `preparse`, `isValid`, or `transform` is read as "no options": the result is in local time. Verified: `format(d, 'HH:mm', true)` under `TZ=Asia/Tokyo` returns `23:30`, not the UTC `14:30`. The `addYears`, `addMonths`, and `addDays` functions throw `RangeError: Invalid time zone specified: true` instead. TypeScript rejects all of them; JavaScript accepts all but the adders. Search pattern D exists for this.
+- **Boolean UTC flag.** In v4, passing `true` as the last argument of `format`, `parse`, `preparse`, `isValid`, or `transform` is read as "no options": the result is in local time. Verified: `format(d, 'HH:mm', true)` under `TZ=Asia/Tokyo` returns `23:30`, not the UTC `14:30`. The `addYears`, `addMonths`, and `addDays` functions return an `Invalid Date` instead (older releases threw `RangeError: Invalid time zone specified: true`). TypeScript rejects all of them; JavaScript accepts all of them without an error. Search pattern D exists for this.
 - **`subtract` reversed.** v3 `subtract(a, b)` was `a - b`; v4 `subtract(from, to)` is `to - from`. The result is now an object, so `subtract(a, b).toDays() * 2` is `NaN` in JavaScript and a template literal prints `[object Object]`.
 - **`z` and `zz` print literally.** The v3 `timezone` plugin provided them. In v4 they need the `zonename` plugin; without it `format(d, 'HH:mm z')` returns `23:30 z`.
 - **The global locale is gone.** A v3 startup call such as `date.locale(ja)` no longer exists, so every call formats in English until `{ locale }` is passed. Use the wrapper in [references/locales-and-plugins.md](references/locales-and-plugins.md) rather than editing every call.

@@ -328,3 +328,14 @@ describe('America/Los_Angeles', () => {
     expect(addMonths(date1, 1, Los_Angeles)).toEqual(date2);
   });
 });
+
+describe('Invalid input', () => {
+  test('Invalid Date with a time zone', () => {
+    expect(addMonths(new Date(NaN), 1, 'America/Los_Angeles').getTime()).toBeNaN();
+    expect(addMonths(new Date(NaN), 1, Los_Angeles).getTime()).toBeNaN();
+  });
+
+  test('Unknown time zone', () => {
+    expect(addMonths(new Date(0), 1, 'Invalid/Zone').getTime()).toBeNaN();
+  });
+});

@@ -793,3 +793,16 @@ describe('timeZone DST', () => {
     expect(format(dateObj, 'YYYY-MM-DD HH:mm:ss.SSS [UTC]Z')).toBe(dateString);
   });
 });
+
+describe('invalid input', () => {
+  test('Invalid Date returns "Invalid Date"', () => {
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm')).toBe('Invalid Date');
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm', { timeZone: 'UTC' })).toBe('Invalid Date');
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm', { timeZone: 'Asia/Tokyo' })).toBe('Invalid Date');
+    expect(format(new Date(NaN), 'YYYY-MM-DD HH:mm', { timeZone: Tokyo })).toBe('Invalid Date');
+  });
+
+  test('unknown time zone returns "Invalid Date"', () => {
+    expect(format(new Date(0), 'YYYY-MM-DD HH:mm', { timeZone: 'Invalid/Zone' })).toBe('Invalid Date');
+  });
+});

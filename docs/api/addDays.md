@@ -20,7 +20,7 @@ addDays(dateObj, days[, timeZone])
 
 ### Returns
 
-`Date` - A new Date object with the specified number of days added or subtracted
+`Date` - A new Date object with the specified number of days added or subtracted, or an Invalid Date if `dateObj` is an invalid Date or `timeZone` names a timezone the runtime does not recognize
 
 ## Basic Examples
 

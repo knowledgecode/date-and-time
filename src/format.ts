@@ -14,12 +14,18 @@ const comment = /^\[(.*)\]$/;
  * @param dateObj - The Date object to format
  * @param arg - The format string or compiled object to match against the Date object
  * @param [options] - Optional formatter options for customization
- * @returns The formatted date string representation
+ * @returns The formatted date string representation, or 'Invalid Date' if the date or the time zone is invalid
  */
 export function format(dateObj: Date, arg: string | CompiledObject, options?: FormatterOptions) {
   const pattern = (typeof arg === 'string' ? compile(arg) : arg).slice(1);
   const zoneName = isTimeZone(options?.timeZone) ? options.timeZone.zone_name : options?.timeZone;
   const dateTime = zoneName ? new DateTime(dateObj, zoneName) : dateObj;
+
+  // An invalid Date, or a zone name Intl does not recognize, leaves every date field NaN.
+  if (Number.isNaN(dateTime.getFullYear())) {
+    return 'Invalid Date';
+  }
+
   const formatterOptions = {
     hour12: options?.hour12 ?? 'h12',
     hour24: options?.hour24 ?? 'h23',

@@ -25,13 +25,13 @@ const { format, parse } = require('date-and-time');   // CommonJS
 
 | Function | Signature | Returns |
 |----------|-----------|---------|
-| `format` | `(date, pattern, options?)` | `string` |
+| `format` | `(date, pattern, options?)` | `string`, or `'Invalid Date'` for an invalid date or an unknown timezone |
 | `parse` | `(string, pattern, options?)` | `Date`, or `Invalid Date` on failure |
 | `isValid` | `(string, pattern, options?)` | `boolean` |
 | `preparse` | `(string, pattern, options?)` | components read from the string (low-level) |
-| `transform` | `(string, fromPattern, toPattern, parserOptions?, formatterOptions?)` | `string` |
+| `transform` | `(string, fromPattern, toPattern, parserOptions?, formatterOptions?)` | `string`, or `'Invalid Date'` when the input does not parse |
 | `compile` | `(pattern)` | compiled pattern, accepted wherever `pattern` is |
-| `addYears`, `addMonths`, `addDays` | `(date, n, timeZone?)` | new `Date` |
+| `addYears`, `addMonths`, `addDays` | `(date, n, timeZone?)` | new `Date`; `Invalid Date` for an invalid date or an unknown timezone |
 | `addHours`, `addMinutes`, `addSeconds`, `addMilliseconds` | `(date, n)` | new `Date` |
 | `subtract` | `(from, to)` | `Duration` holding `to - from` |
 | `isLeapYear`, `isSameDay` | `(year)`, `(date1, date2)` | `boolean` |

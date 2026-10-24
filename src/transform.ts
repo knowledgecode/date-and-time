@@ -11,7 +11,7 @@ import type { FormatterOptions } from './formatter.ts';
  * @param arg2 - The format string or compiled object for formatting
  * @param [options1] - Optional parser options
  * @param [options2] - Optional formatter options
- * @returns The transformed date string
+ * @returns The transformed date string, or 'Invalid Date' if parsing fails
  */
 export function transform(dateString: string, arg1: string | CompiledObject, arg2: string | CompiledObject, options1?: ParserOptions, options2?: FormatterOptions) {
   return format(parse(dateString, arg1, options1), arg2, options2);

@@ -6,7 +6,7 @@ import type { TimeZone } from './zone.ts';
  * @param dateObj - The Date object to modify
  * @param years - The number of years to add
  * @param [timeZone] - Optional time zone object, an IANA timezone name or 'UTC' to use Coordinated Universal Time.
- * @returns A new Date object with the specified number of years added
+ * @returns A new Date object with the specified number of years added, or an invalid date if the date or the time zone is invalid
  */
 export function addYears(dateObj: Date, years: number, timeZone?: TimeZone | string) {
   return addMonths(dateObj, years * 12, timeZone);
