@@ -16,7 +16,7 @@ export function addMonths(dateObj: Date, months: number, timeZone?: TimeZone | s
     const d = new Date(dateObj.getTime());
 
     // Handle UTC calculation
-    if (isUTC(timeZone)) {
+    if (isUTC(zoneName)) {
       d.setUTCMonth(d.getUTCMonth() + months);
       // Adjust to last day of month if new month has fewer days
       if (d.getUTCDate() < dateObj.getUTCDate()) {
