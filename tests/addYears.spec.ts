@@ -112,7 +112,14 @@ describe('Local Time', () => {
 });
 
 describe('UTC Time', () => {
-  beforeAll(() => (process.env.TZ = 'Asia/Tokyo'));
+  beforeAll(() => (process.env.TZ = 'America/Los_Angeles'));
+
+  test('UTC timezone object when clamping a leap day', () => {
+    const date1 = new Date(Date.UTC(2024, 1, 29, 0, 30));
+    const date2 = new Date(Date.UTC(2025, 1, 28, 0, 30));
+
+    expect(addYears(date1, 1, { zone_name: 'UTC', gmt_offset: [0] })).toEqual(date2);
+  });
 
   test('One year after 2:00 AM on January 31, 2024', () => {
     const date1 = new Date(Date.UTC(2024, 0, 31, 10));

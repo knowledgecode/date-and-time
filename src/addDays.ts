@@ -16,7 +16,7 @@ export function addDays(dateObj: Date, days: number, timeZone?: TimeZone | strin
     const d = new Date(dateObj.getTime());
 
     // Handle UTC calculation
-    if (isUTC(timeZone)) {
+    if (isUTC(zoneName)) {
       d.setUTCDate(d.getUTCDate() + days);
       return d;
     }
