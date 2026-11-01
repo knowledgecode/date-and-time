@@ -58,8 +58,8 @@ const sign = (time: number) => {
 const format = (times: DurationFormatter, formatString: string, numeral: Numeral = latn) => {
   const pattern = compile(formatString).slice(1);
   const resolveToken = (token: string) => {
-    if (token[0] in times) {
-      const time = times[token[0] as keyof DurationFormatter] ?? 0;
+    const time = times[token[0] as keyof DurationFormatter];
+    if (time !== undefined) {
       return numeral.encode(`${sign(time)}${String(Math.abs(time)).padStart(token.length, '0')}`);
     }
     return COMMENT.test(token) ? token.replace(COMMENT, '$1') : token;
@@ -140,12 +140,12 @@ const createDescriptor = <T>(
     toParts: () => {
       const timeSign = Math.sign(time);
       const parts = decompose({}, toIntegerNanoseconds(time));
-      const keys = Object.keys(parts) as (keyof DurationFormatter)[];
+      const entries = Object.entries(parts) as [keyof DurationFormatter, number][];
       const result: Record<string, number> = {};
 
       // decompose() inserts the leading unit first and signs only that one; the smaller units are magnitudes.
-      keys.forEach((key, i) => {
-        result[PART_NAMES[key]] = (i ? timeSign : 1) * (parts[key] ?? 0) + 0;
+      entries.forEach(([key, value], i) => {
+        result[PART_NAMES[key]] = (i ? timeSign : 1) * value + 0;
       });
       return result as T;
     }
