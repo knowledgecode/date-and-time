@@ -236,6 +236,8 @@ parse('August 23, 2568', 'MMMM D, YYYY', { calendar: 'buddhist' });
 // => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
+For the Buddhist years `parse()` accepts, see [Date Range Limitations](#date-range-limitations).
+
 ### hour12
 
 **Type**: `"h11" | "h12"`  
@@ -422,6 +424,8 @@ parse('Jan 1 0001', 'MMM D YYYY');
 parse('Jan 1 0000', 'MMM D YYYY');
 // => Invalid Date
 ```
+
+With `calendar: 'buddhist'`, the input year is a Buddhist year, and `YYYY` and `Y` read at most four digits. The parsable range is then `January 1, 0544` to `December 31, 9999` in Buddhist years, which is `January 1, 0001` to `December 31, 9456` in the Gregorian calendar.
 
 ### UTC Input Parsing
 

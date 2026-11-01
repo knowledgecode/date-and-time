@@ -19,6 +19,11 @@ describe('YYYY', () => {
     const now = new Date(9999, 12 - 1, 31, 23, 59, 59, 999);
     expect(format(now, 'YYYY')).toBe('9999');
   });
+
+  test('10000', () => {
+    const now = new Date(10000, 1 - 1, 1, 0, 0, 0, 0);
+    expect(format(now, 'YYYY')).toBe('0000');
+  });
 });
 
 describe('YY', () => {
@@ -46,6 +51,11 @@ describe('Y', () => {
   test('9999', () => {
     const now = new Date(9999, 12 - 1, 31, 23, 59, 59, 999);
     expect(format(now, 'Y')).toBe('9999');
+  });
+
+  test('10000', () => {
+    const now = new Date(10000, 1 - 1, 1, 0, 0, 0, 0);
+    expect(format(now, 'Y')).toBe('10000');
   });
 });
 
@@ -796,6 +806,12 @@ describe('options', () => {
     expect(format(new Date(1, 0 - (1900 + 543) * 12, 1, 0, 0, 0), 'Y-MM-DD HH', { calendar: 'buddhist' })).toBe('1-01-01 00');
     expect(format(new Date(1, 0 - 1900 * 12, 1, 0, 0, 0), 'Y-MM-DD HH', { calendar: 'buddhist' })).toBe('544-01-01 00');
     expect(format(new Date(9456, 1 - 1, 1, 0, 0, 0), 'Y-MM-DD HH', { calendar: 'buddhist' })).toBe('9999-01-01 00');
+  });
+
+  test('calendar: buddhist (year above 9999)', () => {
+    expect(format(new Date(9456, 12 - 1, 31, 0, 0, 0), 'YYYY-MM-DD', { calendar: 'buddhist' })).toBe('9999-12-31');
+    expect(format(new Date(9457, 1 - 1, 1, 0, 0, 0), 'YYYY-MM-DD', { calendar: 'buddhist' })).toBe('0000-01-01');
+    expect(format(new Date(9457, 1 - 1, 1, 0, 0, 0), 'Y-MM-DD', { calendar: 'buddhist' })).toBe('10000-01-01');
   });
 
   test('timeZone', () => {
