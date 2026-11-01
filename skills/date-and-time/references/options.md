@@ -33,7 +33,7 @@ interface ParserOptions {
 | `locale` | both | English (built in) | Month names, weekday names, and AM/PM text |
 | `timeZone` | both | local timezone | `format` converts the date to this zone first; `parse` reads the input as this zone |
 | `numeral` | both | `latn` | Digit system for output and input |
-| `calendar` | both | `'gregory'` | `'buddhist'` adds 543 to the year (2025 becomes 2568) |
+| `calendar` | both | `'gregory'` | `'buddhist'` adds 543 to the year (2025 becomes 2568); `YYYY` then prints up to Buddhist 9999 (Gregorian 9456), and `parse` accepts Buddhist 0544-9999 |
 | `hour12` | both | `'h12'` | `'h11'` shows the first hour after midnight as `0:30 AM`; `'h12'` as `12:30 AM` |
 | `hour24` | both | `'h23'` | `'h24'` shows the first hour after midnight as `24:30`; `'h23'` as `0:30` |
 | `ignoreCase` | parse | `false` | Case-insensitive month, weekday, and AM/PM names |

@@ -55,6 +55,8 @@ format(now, 'hh:mm A [GMT]Z');
 | `DD`   | Day (01-31)                | 02, 31            |
 | `D`    | Day without zero padding   | 2, 31             |
 
+`YYYY` prints exactly four digits, so a year above 9999 keeps only its last four: `format(new Date(10000, 0, 1), 'YYYY')` returns `0000`. `Y` prints every digit (`10000`), but `parse()` cannot read either result back; see [Date Range Limitations](./parse#date-range-limitations). The year is counted in the selected [`calendar`](#calendar), so with `'buddhist'` this already happens for dates after December 31, 9456.
+
 ### Day of Week Tokens
 
 | Token  | Description         | Output Examples |
@@ -232,6 +234,8 @@ format(date, 'MMMM D, YYYY', { calendar: 'buddhist' });
 // => August 23, 2568
 ```
 
+With `'buddhist'`, `YYYY` prints the full year up to Buddhist year 9999, which ends on December 31, 9456 in the Gregorian calendar. Later dates are cut to four digits, as described under [Date Tokens](#date-tokens).
+
 ### hour12
 
 **Type**: `"h11" | "h12"`  
@@ -355,8 +359,8 @@ format(date, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', { timeZone: 'UTC' });
 // => 2025-08-23T14:30:45.123Z
 
 // RFC 2822 format
-format(date, 'ddd, DD MMM YYYY HH:mm:ss ZZ');
-// => Sat, 23 Aug 2025 14:30:45 +09:00
+format(date, 'ddd, DD MMM YYYY HH:mm:ss Z');
+// => Sat, 23 Aug 2025 14:30:45 +0900
 
 // Log timestamp
 format(date, '\\[YYYY-MM-DD HH:mm:ss.SSS\\]');

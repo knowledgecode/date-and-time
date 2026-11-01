@@ -539,6 +539,12 @@ describe('options', () => {
     expect(Number.isNaN(parse('0543-01-01 12:00 AM', 'YYYY-MM-DD hh:mm A', { calendar: 'buddhist' }).getTime())).toBe(true);
   });
 
+  test('calendar: buddhist (year above 9999)', () => {
+    expect(parse('9999-12-31', 'YYYY-MM-DD', { calendar: 'buddhist' })).toEqual(new Date(9456, 12 - 1, 31));
+    expect(Number.isNaN(parse('10000-01-01', 'YYYY-MM-DD', { calendar: 'buddhist' }).getTime())).toBe(true);
+    expect(Number.isNaN(parse('10000-01-01', 'Y-MM-DD', { calendar: 'buddhist' }).getTime())).toBe(true);
+  });
+
   test('timeZone', () => {
     const now = new Date(Date.UTC(2025, 1 - 1, 1, 0));
     expect(parse('2024-12-31 16:00:00', 'YYYY-MM-DD HH:mm:ss', { timeZone: Los_Angeles })).toEqual(now);

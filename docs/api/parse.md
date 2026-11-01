@@ -236,6 +236,8 @@ parse('August 23, 2568', 'MMMM D, YYYY', { calendar: 'buddhist' });
 // => Sat Aug 23 2025 00:00:00 GMT-0700
 ```
 
+For the Buddhist years `parse()` accepts, see [Date Range Limitations](#date-range-limitations).
+
 ### hour12
 
 **Type**: `"h11" | "h12"`  
@@ -423,6 +425,8 @@ parse('Jan 1 0000', 'MMM D YYYY');
 // => Invalid Date
 ```
 
+With `calendar: 'buddhist'`, the input year is a Buddhist year, and `YYYY` and `Y` read at most four digits. The parsable range is then `January 1, 0544` to `December 31, 9999` in Buddhist years, which is `January 1, 0001` to `December 31, 9456` in the Gregorian calendar.
+
 ### UTC Input Parsing
 
 If the input string doesn't contain a timezone offset and no `timeZone` option is specified, the function treats the input as the local timezone. To parse input as UTC, set `timeZone: 'UTC'` in the options.
@@ -532,13 +536,14 @@ parse('samedi, 23 août 2025 à 14:30:45', 'dddd, D MMMM YYYY [à] HH:mm:ss', {
 
 ```typescript
 import { parse } from 'date-and-time';
+import { parser as day_of_week } from 'date-and-time/plugins/day-of-week';
 
 // ISO 8601 format
 parse('2025-08-23T14:30:45.123Z', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', { timeZone: 'UTC' });
 // => Sat Aug 23 2025 14:30:45 GMT+0000
 
 // RFC 2822 format
-parse('Sat, 23 Aug 2025 14:30:45 +0900', 'ddd, DD MMM YYYY HH:mm:ss ZZ');
+parse('Sat, 23 Aug 2025 14:30:45 +0900', 'ddd, DD MMM YYYY HH:mm:ss Z', { plugins: [day_of_week] });
 // => Sat Aug 23 2025 14:30:45 GMT+0900
 
 // File naming format

@@ -80,7 +80,7 @@ export const toParts = (dateObj: Date, zoneName: string): DateTimeParts => {
 
   const parts = dtfToParts(dtf, time);
 
-  parts.timezoneOffset = (time - fromParts(parts)) / 60000;
+  parts.timezoneOffset = Math.trunc((time - fromParts(parts)) / 60000);
   return parts;
 };
 
@@ -122,7 +122,8 @@ export interface DateLike {
    */
   getTime(): number;
   /**
-   * Returns the timezone offset in minutes from UTC.
+   * Returns the timezone offset in minutes from UTC. Like `Date#getTimezoneOffset()`, it is a whole
+   * number of minutes; an offset with seconds, such as Local Mean Time, is truncated toward zero.
    */
   getTimezoneOffset(): number;
 }

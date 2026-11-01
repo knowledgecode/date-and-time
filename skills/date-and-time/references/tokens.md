@@ -8,7 +8,7 @@ Available without a plugin. "Parse" says whether the token can be used when read
 
 | Token | Meaning | Examples | Parse |
 |-------|---------|----------|-------|
-| `YYYY` | 4-digit year | 0999, 2015 | yes |
+| `YYYY` | 4-digit year; a year above 9999 keeps only its last 4 digits | 0999, 2015 | yes |
 | `YY` | 2-digit year | 99, 01, 15 | no (needs `two-digit-year`) |
 | `Y` | year without padding | 2, 44, 2015 | yes |
 | `MMMM` | full month name | January | yes |
