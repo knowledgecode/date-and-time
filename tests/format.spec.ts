@@ -1,5 +1,8 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import { format, compile } from '@/index.ts';
+import { format, compile, parse } from '@/index.ts';
+import Abidjan from '@/timezones/Africa/Abidjan.ts';
+import Addis_Ababa from '@/timezones/Africa/Addis_Ababa.ts';
+import Monrovia from '@/timezones/Africa/Monrovia.ts';
 import Los_Angeles from '@/timezones/America/Los_Angeles.ts';
 import Tokyo from '@/timezones/Asia/Tokyo.ts';
 import { Los_Angeles as los_angeles, Tokyo as tokyo } from '@/timezone.ts';
@@ -609,6 +612,22 @@ describe('ZZ', () => {
     const now = new Date(9999, 12 - 1, 31, 23, 59, 59, 999);
     expect(format(now, 'ZZ', { timeZone: Tokyo })).toBe('+09:00');
   });
+
+  // LMT offsets carry seconds; the seconds are truncated, as Date#getTimezoneOffset does.
+  test('-00:44 (LMT -00:44:30)', () => {
+    const now = new Date(Date.UTC(1960, 0, 1));
+    expect(format(now, 'ZZ', { timeZone: Monrovia })).toBe('-00:44');
+  });
+
+  test('-00:16 (LMT -00:16:08)', () => {
+    const now = new Date(Date.UTC(1900, 0, 1));
+    expect(format(now, 'ZZ', { timeZone: Abidjan })).toBe('-00:16');
+  });
+
+  test('+02:27 (LMT +02:27:16)', () => {
+    const now = new Date(Date.UTC(1900, 0, 1));
+    expect(format(now, 'ZZ', { timeZone: Addis_Ababa })).toBe('+02:27');
+  });
 });
 
 describe('Z', () => {
@@ -627,6 +646,37 @@ describe('Z', () => {
   test('+0900', () => {
     const now = new Date(9999, 12 - 1, 31, 23, 59, 59, 999);
     expect(format(now, 'Z', { timeZone: Tokyo })).toBe('+0900');
+  });
+
+  test('-0044 (LMT -00:44:30)', () => {
+    const now = new Date(Date.UTC(1960, 0, 1));
+    expect(format(now, 'Z', { timeZone: Monrovia })).toBe('-0044');
+  });
+
+  test('-0016 (LMT -00:16:08)', () => {
+    const now = new Date(Date.UTC(1900, 0, 1));
+    expect(format(now, 'Z', { timeZone: Abidjan })).toBe('-0016');
+  });
+
+  test('+0227 (LMT +02:27:16)', () => {
+    const now = new Date(Date.UTC(1900, 0, 1));
+    expect(format(now, 'Z', { timeZone: Addis_Ababa })).toBe('+0227');
+  });
+});
+
+describe('ZZ round trip with LMT offsets', () => {
+  beforeAll(() => (process.env.TZ = 'UTC'));
+
+  // ZZ cannot carry the seconds of an LMT offset, so the round trip is off by less than a minute.
+  test.each([
+    ['Africa/Monrovia', Monrovia, 1960],
+    ['Africa/Abidjan', Abidjan, 1900],
+    ['Africa/Addis_Ababa', Addis_Ababa, 1900]
+  ])('%s', (_, timeZone, year) => {
+    const now = new Date(Date.UTC(year, 0, 1));
+    const formatString = 'YYYY-MM-DD HH:mm:ss ZZ';
+    const parsed = parse(format(now, formatString, { timeZone }), formatString);
+    expect(Math.abs(parsed.getTime() - now.getTime())).toBeLessThan(60000);
   });
 });
 
