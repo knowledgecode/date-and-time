@@ -12,39 +12,43 @@ interface DurationFormatter {
   F?: number;
 }
 
-const nanosecondsPart = (parts: DurationFormatter, time: number) => {
-  parts.F = Math.trunc(time * 1000000);
+const nanosecondsPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.F = nanoseconds;
   return parts;
 };
 
-const microsecondsPart = (parts: DurationFormatter, time: number) => {
-  parts.f = Math.trunc(time * 1000);
-  return nanosecondsPart(parts, Math.abs(time) * 1000 % 1 / 1000);
+const microsecondsPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.f = Math.trunc(nanoseconds / 1000);
+  return nanosecondsPart(parts, Math.abs(nanoseconds % 1000));
 };
 
-const millisecondsPart = (parts: DurationFormatter, time: number) => {
-  parts.S = Math.trunc(time);
-  return microsecondsPart(parts, Math.abs(time) % 1);
+const millisecondsPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.S = Math.trunc(nanoseconds / 1000000);
+  return microsecondsPart(parts, Math.abs(nanoseconds % 1000000));
 };
 
-const secondsPart = (parts: DurationFormatter, time: number) => {
-  parts.s = Math.trunc(time / 1000);
-  return millisecondsPart(parts, Math.abs(time) % 1000);
+const secondsPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.s = Math.trunc(nanoseconds / 1000000000);
+  return millisecondsPart(parts, Math.abs(nanoseconds % 1000000000));
 };
 
-const minutesPart = (parts: DurationFormatter, time: number) => {
-  parts.m = Math.trunc(time / 60000);
-  return secondsPart(parts, Math.abs(time) % 60000);
+const minutesPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.m = Math.trunc(nanoseconds / 60000000000);
+  return secondsPart(parts, Math.abs(nanoseconds % 60000000000));
 };
 
-const hoursPart = (parts: DurationFormatter, time: number) => {
-  parts.H = Math.trunc(time / 3600000);
-  return minutesPart(parts, Math.abs(time) % 3600000);
+const hoursPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.H = Math.trunc(nanoseconds / 3600000000000);
+  return minutesPart(parts, Math.abs(nanoseconds % 3600000000000));
 };
 
-const daysPart = (parts: DurationFormatter, time: number) => {
-  parts.D = Math.trunc(time / 86400000);
-  return hoursPart(parts, Math.abs(time) % 86400000);
+const daysPart = (parts: DurationFormatter, nanoseconds: number) => {
+  parts.D = Math.trunc(nanoseconds / 86400000000000);
+  return hoursPart(parts, Math.abs(nanoseconds % 86400000000000));
+};
+
+const toIntegerNanoseconds = (time: number) => {
+  return Math.sign(time) * Math.round(Math.abs(time) * 1000000);
 };
 
 const sign = (time: number) => {
@@ -113,6 +117,41 @@ export interface DurationDescriptor<T> {
   toParts: () => T;
 }
 
+const PART_NAMES = {
+  D: 'days',
+  H: 'hours',
+  m: 'minutes',
+  s: 'seconds',
+  S: 'milliseconds',
+  f: 'microseconds',
+  F: 'nanoseconds'
+} as const;
+
+const createDescriptor = <T>(
+  time: number,
+  value: number,
+  decompose: (parts: DurationFormatter, nanoseconds: number) => DurationFormatter
+): DurationDescriptor<T> => {
+  return {
+    value,
+    format: (formatString: string, numeral?: Numeral) => {
+      return format(decompose({}, toIntegerNanoseconds(time)), formatString, numeral);
+    },
+    toParts: () => {
+      const timeSign = Math.sign(time);
+      const parts = decompose({}, toIntegerNanoseconds(time));
+      const keys = Object.keys(parts) as (keyof DurationFormatter)[];
+      const result: Record<string, number> = {};
+
+      // decompose() inserts the leading unit first and signs only that one; the smaller units are magnitudes.
+      keys.forEach((key, i) => {
+        result[PART_NAMES[key]] = (i ? timeSign : 1) * (parts[key] ?? 0) + 0;
+      });
+      return result as T;
+    }
+  };
+};
+
 export class Duration {
   private readonly time: number;
 
@@ -130,17 +169,7 @@ export class Duration {
    * the parts of the duration in nanoseconds.
    */
   toNanoseconds (): DurationDescriptor<NanosecondsParts> {
-    return {
-      value: this.time * 1000000,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(nanosecondsPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          nanoseconds: Math.trunc(this.time * 1000000) + 0
-        };
-      }
-    };
+    return createDescriptor<NanosecondsParts>(this.time, this.time * 1000000, nanosecondsPart);
   }
 
   /**
@@ -149,18 +178,7 @@ export class Duration {
    * the parts of the duration in microseconds and nanoseconds.
    */
   toMicroseconds (): DurationDescriptor<MicrosecondsParts> {
-    return {
-      value: this.time * 1000,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(microsecondsPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          microseconds: Math.trunc(this.time * 1000) + 0,
-          nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
-        };
-      }
-    };
+    return createDescriptor<MicrosecondsParts>(this.time, this.time * 1000, microsecondsPart);
   }
 
   /**
@@ -169,19 +187,7 @@ export class Duration {
    * the parts of the duration in milliseconds, microseconds, and nanoseconds.
    */
   toMilliseconds (): DurationDescriptor<MillisecondsParts> {
-    return {
-      value: this.time,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(millisecondsPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          milliseconds: Math.trunc(this.time) + 0,
-          microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
-          nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
-        };
-      }
-    };
+    return createDescriptor<MillisecondsParts>(this.time, this.time, millisecondsPart);
   }
 
   /**
@@ -190,20 +196,7 @@ export class Duration {
    * the parts of the duration in seconds, milliseconds, microseconds, and nanoseconds.
    */
   toSeconds (): DurationDescriptor<SecondsParts> {
-    return {
-      value: this.time / 1000,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(secondsPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          seconds: Math.trunc(this.time / 1000) + 0,
-          milliseconds: Math.trunc(this.time % 1000) + 0,
-          microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
-          nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
-        };
-      }
-    };
+    return createDescriptor<SecondsParts>(this.time, this.time / 1000, secondsPart);
   }
 
   /**
@@ -212,21 +205,7 @@ export class Duration {
    * the parts of the duration in minutes, seconds, milliseconds, microseconds, and nanoseconds.
    */
   toMinutes (): DurationDescriptor<MinutesParts> {
-    return {
-      value: this.time / 60000,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(minutesPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          minutes: Math.trunc(this.time / 60000) + 0,
-          seconds: Math.trunc(this.time % 60000 / 1000) + 0,
-          milliseconds: Math.trunc(this.time % 1000) + 0,
-          microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
-          nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
-        };
-      }
-    };
+    return createDescriptor<MinutesParts>(this.time, this.time / 60000, minutesPart);
   }
 
   /**
@@ -235,22 +214,7 @@ export class Duration {
    * the parts of the duration in hours, minutes, seconds, milliseconds, microseconds, and nanoseconds.
    */
   toHours (): DurationDescriptor<HoursParts> {
-    return {
-      value: this.time / 3600000,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(hoursPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          hours: Math.trunc(this.time / 3600000) + 0,
-          minutes: Math.trunc(this.time % 3600000 / 60000) + 0,
-          seconds: Math.trunc(this.time % 60000 / 1000) + 0,
-          milliseconds: Math.trunc(this.time % 1000) + 0,
-          microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
-          nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
-        };
-      }
-    };
+    return createDescriptor<HoursParts>(this.time, this.time / 3600000, hoursPart);
   }
 
   /**
@@ -259,22 +223,6 @@ export class Duration {
    * the parts of the duration in days, hours, minutes, seconds, milliseconds, microseconds, and nanoseconds.
    */
   toDays (): DurationDescriptor<DaysParts> {
-    return {
-      value: this.time / 86400000,
-      format: (formatString: string, numeral?: Numeral) => {
-        return format(daysPart({}, this.time), formatString, numeral);
-      },
-      toParts: () => {
-        return {
-          days: Math.trunc(this.time / 86400000) + 0,
-          hours: Math.trunc(this.time % 86400000 / 3600000) + 0,
-          minutes: Math.trunc(this.time % 3600000 / 60000) + 0,
-          seconds: Math.trunc(this.time % 60000 / 1000) + 0,
-          milliseconds: Math.trunc(this.time % 1000) + 0,
-          microseconds: Math.trunc(this.time * 1000 % 1000) + 0,
-          nanoseconds: Math.trunc(this.time * 1000000 % 1000) + 0
-        };
-      }
-    };
+    return createDescriptor<DaysParts>(this.time, this.time / 86400000, daysPart);
   }
 }

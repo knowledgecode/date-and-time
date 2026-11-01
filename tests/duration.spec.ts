@@ -133,6 +133,61 @@ describe('Duration (Negative Zero)', () => {
   });
 });
 
+// Each value is stored slightly below its decimal form (1.001 is 1.000999...), so truncation drops a unit.
+describe('Duration (floating-point fractions)', () => {
+  test('toSeconds', () => {
+    const duration = 1001.001;
+    expect(new Duration(duration).toSeconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 1, milliseconds: 1, seconds: 1 });
+    expect(new Duration(duration).toSeconds().format('s.SSS.fff.FFF')).toBe('1.001.001.000');
+  });
+
+  test('toMilliseconds', () => {
+    const duration = 1.001;
+    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 1, milliseconds: 1 });
+    expect(new Duration(duration).toMilliseconds().format('S.fff')).toBe('1.001');
+  });
+
+  test('toMilliseconds (nanoseconds)', () => {
+    const duration = 1.000001;
+    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 1, microseconds: 0, milliseconds: 1 });
+  });
+
+  test('toMilliseconds (format only)', () => {
+    const duration = 4.35;
+    expect(new Duration(duration).toMilliseconds().format('SSS.fff.FFF')).toBe('004.350.000');
+  });
+
+  test('toMilliseconds (minus)', () => {
+    const duration = -1.001;
+    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: -1, milliseconds: -1 });
+  });
+
+  test('toMicroseconds', () => {
+    const duration = 1.001;
+    expect(new Duration(duration).toMicroseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 1001 });
+  });
+
+  test('toNanoseconds', () => {
+    const duration = 1.001;
+    expect(new Duration(duration).toNanoseconds().toParts()).toEqual({ nanoseconds: 1001000 });
+  });
+});
+
+// Fractions are rounded to the nearest nanosecond on the magnitude, so a tie rounds away from zero for either sign.
+describe('Duration (nanosecond rounding)', () => {
+  test('toMilliseconds (half nanosecond)', () => {
+    expect(new Duration(12.2277645).toMilliseconds().toParts()).toEqual({ nanoseconds: 765, microseconds: 227, milliseconds: 12 });
+    expect(new Duration(-12.2277645).toMilliseconds().toParts()).toEqual({ nanoseconds: -765, microseconds: -227, milliseconds: -12 });
+    expect(new Duration(-12.2277645).toMilliseconds().format('S.fff.FFF')).toBe('-12.227.765');
+  });
+
+  test('toMilliseconds (carry)', () => {
+    const duration = 0.9999999996;
+    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 1 });
+    expect(new Duration(duration).toMilliseconds().format('SSS.fff.FFF')).toBe('001.000.000');
+  });
+});
+
 describe('Duration comments spanning line breaks', () => {
   test('[D\nH] D H', () => {
     expect(new Duration(90061001).toDays().format('[D\nH] D H')).toBe('D\nH 1 1');

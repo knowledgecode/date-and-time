@@ -204,6 +204,10 @@ console.log(parts);  // { days: 0, hours: -2, minutes: -15, seconds: 0, ... }
 console.log(duration.toDays().format('D[day], H:mm:ss'));  // "-0day, 2:15:00"
 ```
 
+### Sub-millisecond Precision
+
+The millisecond value is rounded to the nearest nanosecond before it is split into units, so a fraction that binary floating point cannot store exactly keeps its last digit: `new Duration(1.001).toMilliseconds().toParts()` returns `{ milliseconds: 1, microseconds: 1, nanoseconds: 0 }`.
+
 ## Immutability
 
 Both input Date objects remain unchanged:
