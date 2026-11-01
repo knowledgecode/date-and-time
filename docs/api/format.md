@@ -359,8 +359,8 @@ format(date, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', { timeZone: 'UTC' });
 // => 2025-08-23T14:30:45.123Z
 
 // RFC 2822 format
-format(date, 'ddd, DD MMM YYYY HH:mm:ss ZZ');
-// => Sat, 23 Aug 2025 14:30:45 +09:00
+format(date, 'ddd, DD MMM YYYY HH:mm:ss Z');
+// => Sat, 23 Aug 2025 14:30:45 +0900
 
 // Log timestamp
 format(date, '\\[YYYY-MM-DD HH:mm:ss.SSS\\]');

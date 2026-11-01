@@ -536,13 +536,14 @@ parse('samedi, 23 août 2025 à 14:30:45', 'dddd, D MMMM YYYY [à] HH:mm:ss', {
 
 ```typescript
 import { parse } from 'date-and-time';
+import { parser as day_of_week } from 'date-and-time/plugins/day-of-week';
 
 // ISO 8601 format
 parse('2025-08-23T14:30:45.123Z', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', { timeZone: 'UTC' });
 // => Sat Aug 23 2025 14:30:45 GMT+0000
 
 // RFC 2822 format
-parse('Sat, 23 Aug 2025 14:30:45 +0900', 'ddd, DD MMM YYYY HH:mm:ss ZZ');
+parse('Sat, 23 Aug 2025 14:30:45 +0900', 'ddd, DD MMM YYYY HH:mm:ss Z', { plugins: [day_of_week] });
 // => Sat Aug 23 2025 14:30:45 GMT+0900
 
 // File naming format
