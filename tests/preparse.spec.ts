@@ -130,7 +130,7 @@ describe('MMMM', () => {
   });
 
   test('Zero', () => {
-    const dt = { _index: 0, _length: 4, _match: 0 };
+    const dt = { _error: true, _index: 0, _length: 4, _match: 0 };
     expect(preparse('Zero', 'MMMM')).toEqual(dt);
   });
 });
@@ -147,7 +147,7 @@ describe('MMM', () => {
   });
 
   test('Zero', () => {
-    const dt = { _index: 0, _length: 4, _match: 0 };
+    const dt = { _error: true, _index: 0, _length: 4, _match: 0 };
     expect(preparse('Zero', 'MMM')).toEqual(dt);
   });
 });
@@ -300,7 +300,7 @@ describe('AA', () => {
   });
 
   test('M.M.', () => {
-    const dt = { _index: 0, _length: 4, _match: 0 };
+    const dt = { _error: true, _index: 0, _length: 4, _match: 0 };
     expect(preparse('M.M.', 'AA')).toEqual(dt);
   });
 });
@@ -317,7 +317,7 @@ describe('A', () => {
   });
 
   test('MM', () => {
-    const dt = { _index: 0, _length: 2, _match: 0 };
+    const dt = { _error: true, _index: 0, _length: 2, _match: 0 };
     expect(preparse('MM', 'A')).toEqual(dt);
   });
 });
@@ -334,7 +334,7 @@ describe('aa', () => {
   });
 
   test('m.m.', () => {
-    const dt = { _index: 0, _length: 4, _match: 0 };
+    const dt = { _error: true, _index: 0, _length: 4, _match: 0 };
     expect(preparse('m.m.', 'aa')).toEqual(dt);
   });
 });
@@ -351,7 +351,7 @@ describe('a', () => {
   });
 
   test('mm', () => {
-    const dt = { _index: 0, _length: 2, _match: 0 };
+    const dt = { _error: true, _index: 0, _length: 2, _match: 0 };
     expect(preparse('mm', 'a')).toEqual(dt);
   });
 });

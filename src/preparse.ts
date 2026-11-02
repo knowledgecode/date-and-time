@@ -21,6 +21,11 @@ export interface PreparseResult extends ParsedComponents {
    * Number of matched tokens
    */
   _match: number;
+
+  /**
+   * True when a required format token could not be matched.
+   */
+  _error?: true;
 }
 
 const wildcard = ' ';
@@ -70,6 +75,7 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
 
     if (result) {
       if (!result.length) {
+        pr._error = true;
         break;
       }
       if (result.token && validateToken(result.token)) {
@@ -77,7 +83,7 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
       }
       pr._index += result.length;
       pr._match++;
-    } else if (token === str[0] || token === wildcard) {
+    } else if (token === str[0] || token === wildcard && str.length > 0) {
       pr._index++;
     } else if (COMMENT.test(token) && !str.indexOf(token.replace(COMMENT, '$1'))) {
       pr._index += token.length - 2;
@@ -85,6 +91,7 @@ export function preparse(dateString: string, arg: string | CompiledObject, optio
       pr._index = dateString.length;
       break;
     } else {
+      pr._error = true;
       break;
     }
   }
