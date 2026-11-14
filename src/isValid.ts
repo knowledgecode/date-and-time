@@ -48,7 +48,8 @@ export function validatePreparseResult(pr: PreparseResult, options?: ParserOptio
   const year = toGregorianYear(pr.Y, options) ?? base.Y;
   const month = pr.M ?? base.M;
 
-  return pr._index > 0
+  return !pr._error
+    && pr._index > 0
     && pr._length > 0
     && pr._index === pr._length
     && pr._match > 0
