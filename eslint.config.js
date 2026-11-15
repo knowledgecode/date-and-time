@@ -98,7 +98,6 @@ export default defineConfig(
       'unicode-bom': 'error',
       'yoda': 'error',
 
-      '@stylistic/array-bracket-spacing': ['warn', 'never'],
       '@stylistic/arrow-spacing': 'warn',
       '@stylistic/block-spacing': 'warn',
       '@stylistic/comma-dangle': 'warn',
@@ -116,6 +115,14 @@ export default defineConfig(
       '@stylistic/keyword-spacing': 'warn',
       '@stylistic/linebreak-style': 'warn',
       '@stylistic/lines-between-class-members': 'warn',
+      '@stylistic/list-style': ['warn', {
+        singleLine: { spacing: 'never' },
+        overrides: {
+          '()': 'off',
+          '<>': 'off',
+          '{}': { singleLine: { spacing: 'always' } }
+        }
+      }],
       '@stylistic/member-delimiter-style': ['warn', { multiline: { delimiter: 'semi', requireLast: true }, singleline: { delimiter: 'semi', requireLast: false } }],
       '@stylistic/new-parens': 'warn',
       '@stylistic/no-extra-parens': ['warn', 'functions'],
@@ -127,8 +134,6 @@ export default defineConfig(
       '@stylistic/no-trailing-spaces': 'warn',
       '@stylistic/no-whitespace-before-property': 'warn',
       '@stylistic/nonblock-statement-body-position': 'warn',
-      '@stylistic/object-curly-newline': 'warn',
-      '@stylistic/object-curly-spacing': ['warn', 'always'],
       '@stylistic/padding-line-between-statements': 'warn',
       '@stylistic/quotes': ['warn', 'single'],
       '@stylistic/rest-spread-spacing': 'warn',
