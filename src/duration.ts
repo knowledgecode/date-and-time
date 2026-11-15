@@ -12,43 +12,55 @@ interface DurationFormatter {
   F?: number;
 }
 
-const nanosecondsPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.F = nanoseconds;
+// Each part function takes whole milliseconds and the sub-millisecond remainder in nanoseconds, both with the same sign.
+const nanosecondsPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.F = milliseconds * 1000000 + nanoseconds;
   return parts;
 };
 
-const microsecondsPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.f = Math.trunc(nanoseconds / 1000);
-  return nanosecondsPart(parts, Math.abs(nanoseconds % 1000));
+const microsecondsPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.f = milliseconds * 1000 + Math.trunc(nanoseconds / 1000);
+  return nanosecondsPart(parts, 0, Math.abs(nanoseconds % 1000));
 };
 
-const millisecondsPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.S = Math.trunc(nanoseconds / 1000000);
-  return microsecondsPart(parts, Math.abs(nanoseconds % 1000000));
+const millisecondsPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.S = milliseconds;
+  return microsecondsPart(parts, 0, Math.abs(nanoseconds));
 };
 
-const secondsPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.s = Math.trunc(nanoseconds / 1000000000);
-  return millisecondsPart(parts, Math.abs(nanoseconds % 1000000000));
+const secondsPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.s = Math.trunc(milliseconds / 1000);
+  return millisecondsPart(parts, Math.abs(milliseconds % 1000), Math.abs(nanoseconds));
 };
 
-const minutesPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.m = Math.trunc(nanoseconds / 60000000000);
-  return secondsPart(parts, Math.abs(nanoseconds % 60000000000));
+const minutesPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.m = Math.trunc(milliseconds / 60000);
+  return secondsPart(parts, Math.abs(milliseconds % 60000), Math.abs(nanoseconds));
 };
 
-const hoursPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.H = Math.trunc(nanoseconds / 3600000000000);
-  return minutesPart(parts, Math.abs(nanoseconds % 3600000000000));
+const hoursPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.H = Math.trunc(milliseconds / 3600000);
+  return minutesPart(parts, Math.abs(milliseconds % 3600000), Math.abs(nanoseconds));
 };
 
-const daysPart = (parts: DurationFormatter, nanoseconds: number) => {
-  parts.D = Math.trunc(nanoseconds / 86400000000000);
-  return hoursPart(parts, Math.abs(nanoseconds % 86400000000000));
+const daysPart = (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => {
+  parts.D = Math.trunc(milliseconds / 86400000);
+  return hoursPart(parts, Math.abs(milliseconds % 86400000), Math.abs(nanoseconds));
 };
 
-const toIntegerNanoseconds = (time: number) => {
-  return Math.sign(time) * Math.round(Math.abs(time) * 1000000);
+// Scaling the whole value to nanoseconds would lose digits past Number.MAX_SAFE_INTEGER (about 104 days),
+// so the fraction, which subtracts out of a double exactly, is split off first.
+const splitTime = (time: number): [number, number] => {
+  const abs = Math.abs(time);
+  const milliseconds = Math.trunc(abs);
+  // The stored binary fraction is rounded on the magnitude, so a tie rounds away from zero for either sign.
+  const nanoseconds = Math.round((abs - milliseconds) * 1000000);
+  const timeSign = Math.sign(time);
+
+  // A fraction that rounds up to a whole millisecond carries into the milliseconds.
+  return nanoseconds >= 1000000
+    ? [timeSign * (milliseconds + 1), 0]
+    : [timeSign * milliseconds, timeSign * nanoseconds];
 };
 
 const sign = (time: number) => {
@@ -130,16 +142,16 @@ const PART_NAMES = {
 const createDescriptor = <T>(
   time: number,
   value: number,
-  decompose: (parts: DurationFormatter, nanoseconds: number) => DurationFormatter
+  decompose: (parts: DurationFormatter, milliseconds: number, nanoseconds: number) => DurationFormatter
 ): DurationDescriptor<T> => {
   return {
     value,
     format: (formatString: string, numeral?: Numeral) => {
-      return format(decompose({}, toIntegerNanoseconds(time)), formatString, numeral);
+      return format(decompose({}, ...splitTime(time)), formatString, numeral);
     },
     toParts: () => {
       const timeSign = Math.sign(time);
-      const parts = decompose({}, toIntegerNanoseconds(time));
+      const parts = decompose({}, ...splitTime(time));
       const entries = Object.entries(parts) as [keyof DurationFormatter, number][];
       const result: Record<string, number> = {};
 

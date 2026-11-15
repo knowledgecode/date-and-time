@@ -69,10 +69,17 @@ const getDayPeriod = (locale: string) => {
 
 const getParts = (locale: string) => {
   const options: Intl.DateTimeFormatOptions = {
-    hour12: false, weekday: 'long',
-    year: 'numeric', month: 'long', day: 'numeric',
-    hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3,
-    timeZone: 'UTC', timeZoneName: 'longOffset'
+    hour12: false,
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    fractionalSecondDigits: 3,
+    timeZone: 'UTC',
+    timeZoneName: 'longOffset'
   };
   const parts = new Intl.DateTimeFormat(locale, options).formatToParts(new Date());
 
@@ -81,10 +88,17 @@ const getParts = (locale: string) => {
 
 const getDate = (locale: string) => {
   const options: Intl.DateTimeFormatOptions = {
-    hour12: true, weekday: 'short',
-    year: 'numeric', month: 'short', day: 'numeric',
-    hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3,
-    timeZone: 'Europe/Paris', timeZoneName: 'longOffset'
+    hour12: true,
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    fractionalSecondDigits: 3,
+    timeZone: 'Europe/Paris',
+    timeZoneName: 'longOffset'
   };
   return new Intl.DateTimeFormat(locale, options).format(new Date());
 };

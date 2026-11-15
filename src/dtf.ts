@@ -4,8 +4,15 @@ export const getDateTimeFormat = (zoneName: string): Intl.DateTimeFormat | undef
   return cache.get(zoneName) ?? (() => {
     try {
       const dtf = new Intl.DateTimeFormat('en-US', {
-        hour12: false, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric',
-        hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3,
+        hour12: false,
+        weekday: 'short',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        fractionalSecondDigits: 3,
         timeZone: zoneName
       });
 
