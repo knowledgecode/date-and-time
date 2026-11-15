@@ -208,6 +208,8 @@ console.log(duration.toDays().format('D[day], H:mm:ss'));  // "-0day, 2:15:00"
 
 The millisecond value is rounded to the nearest nanosecond before it is split into units, so a fraction that binary floating point cannot store exactly keeps its last digit: `new Duration(1.001).toMilliseconds().toParts()` returns `{ milliseconds: 1, microseconds: 1, nanoseconds: 0 }`.
 
+This precision has a limit. A JavaScript number holds only about 15 to 17 significant digits, and as a duration grows, its whole milliseconds use up more of them, leaving fewer for the fraction. Durations up to about 100 days keep every nanosecond. Beyond that, the sub-millisecond part may be slightly off: for a duration of one year, the result can differ from the value you meant by up to about 2 nanoseconds.
+
 ## Immutability
 
 Both input Date objects remain unchanged:

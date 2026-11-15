@@ -1,91 +1,92 @@
 import { describe, expect, test } from 'vitest';
 import { Duration } from '@/index.ts';
 
+// 0.109375 ms (7 / 64) is exact in binary, so its nanoseconds survive at 365 days, where a double's spacing is about 3.8 ns.
 describe('Duration', () => {
   test('toDays', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toDays().value).toBe(365 + 0.123456 / 24 / 60 / 60 / 1000);
-    expect(new Duration(duration).toDays().toParts()).toEqual({ nanoseconds: 456, microseconds: 123, milliseconds: 0, seconds: 0, minutes: 0, hours: 0, days: 365 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toDays().value).toBe(365 + 0.109375 / 24 / 60 / 60 / 1000);
+    expect(new Duration(duration).toDays().toParts()).toEqual({ nanoseconds: 375, microseconds: 109, milliseconds: 0, seconds: 0, minutes: 0, hours: 0, days: 365 });
   });
 
   test('toHours', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toHours().value).toBe(365 * 24 + 0.123456 / 60 / 60 / 1000);
-    expect(new Duration(duration).toHours().toParts()).toEqual({ nanoseconds: 456, microseconds: 123, milliseconds: 0, seconds: 0, minutes: 0, hours: 365 * 24 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toHours().value).toBe(365 * 24 + 0.109375 / 60 / 60 / 1000);
+    expect(new Duration(duration).toHours().toParts()).toEqual({ nanoseconds: 375, microseconds: 109, milliseconds: 0, seconds: 0, minutes: 0, hours: 365 * 24 });
   });
 
   test('toMinutes', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toMinutes().value).toBe(365 * 24 * 60 + 0.123456 / 60 / 1000);
-    expect(new Duration(duration).toMinutes().toParts()).toEqual({ nanoseconds: 456, microseconds: 123, milliseconds: 0, seconds: 0, minutes: 365 * 24 * 60 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toMinutes().value).toBe(365 * 24 * 60 + 0.109375 / 60 / 1000);
+    expect(new Duration(duration).toMinutes().toParts()).toEqual({ nanoseconds: 375, microseconds: 109, milliseconds: 0, seconds: 0, minutes: 365 * 24 * 60 });
   });
 
   test('toSeconds', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toSeconds().value).toBe(365 * 24 * 60 * 60 + 0.123456 / 1000);
-    expect(new Duration(duration).toSeconds().toParts()).toEqual({ nanoseconds: 456, microseconds: 123, milliseconds: 0, seconds: 365 * 24 * 60 * 60 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toSeconds().value).toBe(365 * 24 * 60 * 60 + 0.109375 / 1000);
+    expect(new Duration(duration).toSeconds().toParts()).toEqual({ nanoseconds: 375, microseconds: 109, milliseconds: 0, seconds: 365 * 24 * 60 * 60 });
   });
 
   test('toMilliseconds', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toMilliseconds().value).toBe(365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 456, microseconds: 123, milliseconds: 365 * 24 * 60 * 60 * 1000 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toMilliseconds().value).toBe(365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 375, microseconds: 109, milliseconds: 365 * 24 * 60 * 60 * 1000 });
   });
 
   test('toMicroseconds', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toMicroseconds().value).toBe((365 * 24 * 60 * 60 * 1000 + 0.123456) * 1000);
-    expect(new Duration(duration).toMicroseconds().toParts()).toEqual({ nanoseconds: 456, microseconds: 365 * 24 * 60 * 60 * 1000 * 1000 + 123 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toMicroseconds().value).toBe((365 * 24 * 60 * 60 * 1000 + 0.109375) * 1000);
+    expect(new Duration(duration).toMicroseconds().toParts()).toEqual({ nanoseconds: 375, microseconds: 365 * 24 * 60 * 60 * 1000 * 1000 + 109 });
   });
 
   test('toNanoseconds', () => {
-    const duration = 365 * 24 * 60 * 60 * 1000 + 0.123456;
-    expect(new Duration(duration).toNanoseconds().value).toBe((365 * 24 * 60 * 60 * 1000 + 0.123456) * 1000000);
-    expect(new Duration(duration).toNanoseconds().toParts()).toEqual({ nanoseconds: 365 * 24 * 60 * 60 * 1000 * 1000 * 1000 + 123 * 1000 + 456 });
+    const duration = 365 * 24 * 60 * 60 * 1000 + 0.109375;
+    expect(new Duration(duration).toNanoseconds().value).toBe((365 * 24 * 60 * 60 * 1000 + 0.109375) * 1000000);
+    expect(new Duration(duration).toNanoseconds().toParts()).toEqual({ nanoseconds: 365 * 24 * 60 * 60 * 1000 * 1000 * 1000 + 109 * 1000 + 375 });
   });
 });
 
 describe('Duration (minus)', () => {
   test('toDays', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toDays().value).toBe(-1 * (365 + 0.123456 / 24 / 60 / 60 / 1000));
-    expect(new Duration(duration).toDays().toParts()).toEqual({ nanoseconds: -456, microseconds: -123, milliseconds: 0, seconds: 0, minutes: 0, hours: 0, days: -365 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toDays().value).toBe(-1 * (365 + 0.109375 / 24 / 60 / 60 / 1000));
+    expect(new Duration(duration).toDays().toParts()).toEqual({ nanoseconds: -375, microseconds: -109, milliseconds: 0, seconds: 0, minutes: 0, hours: 0, days: -365 });
   });
 
   test('toHours', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toHours().value).toBe(-1 * (365 * 24 + 0.123456 / 60 / 60 / 1000));
-    expect(new Duration(duration).toHours().toParts()).toEqual({ nanoseconds: -456, microseconds: -123, milliseconds: 0, seconds: 0, minutes: 0, hours: -365 * 24 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toHours().value).toBe(-1 * (365 * 24 + 0.109375 / 60 / 60 / 1000));
+    expect(new Duration(duration).toHours().toParts()).toEqual({ nanoseconds: -375, microseconds: -109, milliseconds: 0, seconds: 0, minutes: 0, hours: -365 * 24 });
   });
 
   test('toMinutes', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toMinutes().value).toBe(-1 * (365 * 24 * 60 + 0.123456 / 60 / 1000));
-    expect(new Duration(duration).toMinutes().toParts()).toEqual({ nanoseconds: -456, microseconds: -123, milliseconds: 0, seconds: 0, minutes: -365 * 24 * 60 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toMinutes().value).toBe(-1 * (365 * 24 * 60 + 0.109375 / 60 / 1000));
+    expect(new Duration(duration).toMinutes().toParts()).toEqual({ nanoseconds: -375, microseconds: -109, milliseconds: 0, seconds: 0, minutes: -365 * 24 * 60 });
   });
 
   test('toSeconds', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toSeconds().value).toBe(-1 * (365 * 24 * 60 * 60 + 0.123456 / 1000));
-    expect(new Duration(duration).toSeconds().toParts()).toEqual({ nanoseconds: -456, microseconds: -123, milliseconds: 0, seconds: -365 * 24 * 60 * 60 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toSeconds().value).toBe(-1 * (365 * 24 * 60 * 60 + 0.109375 / 1000));
+    expect(new Duration(duration).toSeconds().toParts()).toEqual({ nanoseconds: -375, microseconds: -109, milliseconds: 0, seconds: -365 * 24 * 60 * 60 });
   });
 
   test('toMilliseconds', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toMilliseconds().value).toBe(-1 * (365 * 24 * 60 * 60 * 1000 + 0.123456));
-    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: -456, microseconds: -123, milliseconds: -365 * 24 * 60 * 60 * 1000 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toMilliseconds().value).toBe(-1 * (365 * 24 * 60 * 60 * 1000 + 0.109375));
+    expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: -375, microseconds: -109, milliseconds: -365 * 24 * 60 * 60 * 1000 });
   });
 
   test('toMicroseconds', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toMicroseconds().value).toBe((-1 * (365 * 24 * 60 * 60 * 1000 + 0.123456) * 1000));
-    expect(new Duration(duration).toMicroseconds().toParts()).toEqual({ nanoseconds: -456, microseconds: -365 * 24 * 60 * 60 * 1000 * 1000 - 123 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toMicroseconds().value).toBe((-1 * (365 * 24 * 60 * 60 * 1000 + 0.109375) * 1000));
+    expect(new Duration(duration).toMicroseconds().toParts()).toEqual({ nanoseconds: -375, microseconds: -365 * 24 * 60 * 60 * 1000 * 1000 - 109 });
   });
 
   test('toNanoseconds', () => {
-    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.123456);
-    expect(new Duration(duration).toNanoseconds().value).toBe((-1 * (365 * 24 * 60 * 60 * 1000 + 0.123456) * 1000000));
-    expect(new Duration(duration).toNanoseconds().toParts()).toEqual({ nanoseconds: -365 * 24 * 60 * 60 * 1000 * 1000 * 1000 - 123 * 1000 - 456 });
+    const duration = -1 * (365 * 24 * 60 * 60 * 1000 + 0.109375);
+    expect(new Duration(duration).toNanoseconds().value).toBe((-1 * (365 * 24 * 60 * 60 * 1000 + 0.109375) * 1000000));
+    expect(new Duration(duration).toNanoseconds().toParts()).toEqual({ nanoseconds: -365 * 24 * 60 * 60 * 1000 * 1000 * 1000 - 109 * 1000 - 375 });
   });
 });
 
@@ -176,15 +177,62 @@ describe('Duration (floating-point fractions)', () => {
 // Fractions are rounded to the nearest nanosecond on the magnitude, so a tie rounds away from zero for either sign.
 describe('Duration (nanosecond rounding)', () => {
   test('toMilliseconds (half nanosecond)', () => {
-    expect(new Duration(12.2277645).toMilliseconds().toParts()).toEqual({ nanoseconds: 765, microseconds: 227, milliseconds: 12 });
-    expect(new Duration(-12.2277645).toMilliseconds().toParts()).toEqual({ nanoseconds: -765, microseconds: -227, milliseconds: -12 });
-    expect(new Duration(-12.2277645).toMilliseconds().format('S.fff.FFF')).toBe('-12.227.765');
+    // 0.0078125 ms (1 / 128) is exactly 7812.5 ns, a true tie in binary.
+    expect(new Duration(12.0078125).toMilliseconds().toParts()).toEqual({ nanoseconds: 813, microseconds: 7, milliseconds: 12 });
+    expect(new Duration(-12.0078125).toMilliseconds().toParts()).toEqual({ nanoseconds: -813, microseconds: -7, milliseconds: -12 });
+    expect(new Duration(-12.0078125).toMilliseconds().format('S.fff.FFF')).toBe('-12.007.813');
   });
 
   test('toMilliseconds (carry)', () => {
     const duration = 0.9999999996;
     expect(new Duration(duration).toMilliseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 1 });
     expect(new Duration(duration).toMilliseconds().format('SSS.fff.FFF')).toBe('001.000.000');
+  });
+});
+
+// Each duration exceeds Number.MAX_SAFE_INTEGER nanoseconds, while every expected part is a safe integer.
+describe('Duration (beyond safe-integer nanoseconds)', () => {
+  // 2000-01-01T00:00:00.123Z in epoch milliseconds: an integer with no sub-millisecond part.
+  const epoch = 946684800123;
+  // 2 ** 34 + 1 / 64 milliseconds, stored exactly as a double; 1 / 64 ms is 15.625 microseconds.
+  const fraction = 17179869184.015625;
+
+  test('toDays', () => {
+    expect(new Duration(epoch).toDays().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 123, seconds: 0, minutes: 0, hours: 0, days: 10957 });
+    expect(new Duration(-epoch).toDays().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: -123, seconds: 0, minutes: 0, hours: 0, days: -10957 });
+    expect(new Duration(fraction).toDays().toParts()).toEqual({ nanoseconds: 625, microseconds: 15, milliseconds: 184, seconds: 9, minutes: 11, hours: 20, days: 198 });
+    expect(new Duration(epoch).toDays().format('D HH:mm:ss.SSS.fff.FFF')).toBe('10957 00:00:00.123.000.000');
+  });
+
+  test('toHours', () => {
+    expect(new Duration(epoch).toHours().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 123, seconds: 0, minutes: 0, hours: 262968 });
+    expect(new Duration(-epoch).toHours().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: -123, seconds: 0, minutes: 0, hours: -262968 });
+    expect(new Duration(fraction).toHours().toParts()).toEqual({ nanoseconds: 625, microseconds: 15, milliseconds: 184, seconds: 9, minutes: 11, hours: 4772 });
+  });
+
+  test('toMinutes', () => {
+    expect(new Duration(epoch).toMinutes().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 123, seconds: 0, minutes: 15778080 });
+    expect(new Duration(-epoch).toMinutes().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: -123, seconds: 0, minutes: -15778080 });
+    expect(new Duration(fraction).toMinutes().toParts()).toEqual({ nanoseconds: 625, microseconds: 15, milliseconds: 184, seconds: 9, minutes: 286331 });
+  });
+
+  test('toSeconds', () => {
+    expect(new Duration(epoch).toSeconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 123, seconds: 946684800 });
+    expect(new Duration(-epoch).toSeconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: -123, seconds: -946684800 });
+    expect(new Duration(fraction).toSeconds().toParts()).toEqual({ nanoseconds: 625, microseconds: 15, milliseconds: 184, seconds: 17179869 });
+  });
+
+  test('toMilliseconds', () => {
+    expect(new Duration(epoch).toMilliseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: 946684800123 });
+    expect(new Duration(-epoch).toMilliseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 0, milliseconds: -946684800123 });
+    expect(new Duration(fraction).toMilliseconds().toParts()).toEqual({ nanoseconds: 625, microseconds: 15, milliseconds: 17179869184 });
+    expect(new Duration(-fraction).toMilliseconds().format('S.fff.FFF')).toBe('-17179869184.015.625');
+  });
+
+  test('toMicroseconds', () => {
+    expect(new Duration(epoch).toMicroseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: 946684800123000 });
+    expect(new Duration(-epoch).toMicroseconds().toParts()).toEqual({ nanoseconds: 0, microseconds: -946684800123000 });
+    expect(new Duration(fraction).toMicroseconds().toParts()).toEqual({ nanoseconds: 625, microseconds: 17179869184015 });
   });
 });
 
